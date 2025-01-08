@@ -21,7 +21,7 @@ jobs:
 
       - name: Build image
         run: |
-          yes | docker build -t ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }} .
+          docker build -t ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }} .
 
       - name: Deploy
         run: |
