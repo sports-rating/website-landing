@@ -2,7 +2,7 @@ name: Deploy nuxt.js
 on:
   push:
     branches:
-      - master
+      - main
 env:
   DOCKER_IMAGE: ${{ vars.CONTAINER_REGISTRY }}/${{ vars.CONTAINER_REGISTRY_NAMESPACE }}/${{ vars.DOCKER_IMAGE_NAME }}
 
