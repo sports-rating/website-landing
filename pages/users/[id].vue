@@ -29,28 +29,28 @@
           </div>
 
           <!-- Player Details -->
-          <div class="grid grid-cols-2 gap-y-4 text-sm mb-6">
-            <div>
+          <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
+            <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Место рождения</p>
               <p class="text-white">{{data?.sportsman_profile?.place_of_birth}} {{ data?.sportsman_profile?.region }} , {{ data?.sportsman_profile?.city }} район</p>
             </div>
-            <div>
+            <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Гражданство</p>
               <p class="text-white">{{data?.sportsman_profile?.citizenship}}</p>
-            </div>
-            <div>
+            </div >
+            <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">День рождения</p>
               <p class="text-white">{{data?.birth_date}}</p>
             </div>
-            <div>
+            <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Рост</p>
               <p class="text-white">{{ Number(data?.sportsman_profile?.height).toFixed(0) }} см</p>
             </div>
-            <div>
+            <div class="flex justify-between w-[60%] border-b pb-1"> 
               <p class="text-[#8B8992]">Вес</p>
               <p class="text-white">{{ Number(data?.sportsman_profile?.weight).toFixed(0) }} кг</p>
             </div>
-            <div>
+            <div class="flex justify-between w-[60%] ">
               <p class="text-[#8B8992]">Воспитанник</p>
               <p class="text-white">{{data?.sportsman_profile?.educations[0]?.name}}</p>
             </div>
@@ -65,6 +65,45 @@
             class="w-full p-2 object-cover rounded-full border-transparent"
           />
         </div>
+      </div>
+
+      <div class="flex w-full justify-between">
+      
+      <div class="bg-[#1A1B1F] border border-gray-800 w-[60%]">
+      <div class=" mx-auto">
+        <!-- Progress Bar Container -->
+        <div class="flex items-center h-[52px]">
+          <!-- Current Amount -->
+          <div class="bg-red-600 h-full flex items-center px-6 text-white font-medium">
+            10 000 000 сум
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="flex-1 relative h-full flex items-center bg-[#0F1115] px-24">
+            <span class="relative text-white z-10 ">24%</span>
+          </div>
+
+          <!-- Target Amount -->
+          <div class="bg-[#0F1115] h-full flex items-center px-6 text-white">
+            24 000 000 сум
+          </div>
+
+          
+        </div>
+      </div>
+      </div>
+      <div class=" gap-4 border-gray-800 flex ml-5">
+      
+      <!-- Days Remaining -->
+          <div class="bg-[#0F1115]   border h-full flex items-center px-6 text-white border-l border-gray-800 ">
+            Осталось: 24 дней
+          </div>
+
+          <!-- Donate Button -->
+          <button class="h-full bg-red-600 text-white px-8 font-medium hover:bg-red-700 transition-colors">
+            Пожертвовать
+          </button>
+      </div>
       </div>
 
       <!-- <div v-if="activeTab === 'statistics'" class="my-5">
@@ -157,15 +196,8 @@
       <div class="flex flex-col gap-4 w-[50%] ">
         
 
-        <p class="text-sm text-white">Здравствуйте,</p>
-        <p class="text-sm text-white">
-          Меня зовут Мавлонбек, и я из Ташкента, Узбекистан. Я по-настоящему увлечена хоккеем на траве. В январе этого года мы отправимся в Валенсию, Испания, чтобы получить наш последний шанс на олимпийскую квалификацию. Выступить на Олимпийских играх было моей мечтой с детства,
-        и это последний шаг для нас, чтобы пройти квалификацию на Париж-2024. К сожалению, часть расходов на этот турнир ложится на плечи спортсменов, именно поэтому я создал эту кампанию! Каждый, кто внесет пожертвование в эту кампанию, получит право выиграть майку с автографом участника Игр Содружества прошлым летом!
-        </p>
-
-        <p class="text-sm text-white">
-          Разнообразный и богатый опыт начало повседневной работы по формированию позиции позволяет оценить значение позиций, занимаемых участниками в отношении поставленных задач. Таким образом реализация намеченных плановых заданий играет важную роль в формировании модели развития. Товарищи! укрепление и развитие структуры позволяет оценить значение новых предложений. Задача организации, в особенности же консультация с широким активом в значительной степени обуславливает создание новых предложений.
-        </p>
+        <p class="text-sm text-white">{{data?.sportsman_profile?.about_me}}</p>
+        
       </div>
         
         <!-- Action Image -->
@@ -324,12 +356,12 @@
          <div class="bg-[#11101B]   overflow-hidden w-full">
         <div class="">
           <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in statis" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
+            <div v-for="(stat, index) in data?.sportsman_profile?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
               <dt class="text-3xl font-medium text-[#8B8992] truncate">
-                {{ stat.label }}
+              {{ stat.tournament.start_time.split('-')[0] }} - {{ stat.tournament.end_time.split('-')[0] }}
               </dt>
               <dd class="mt-1 text-sm font-semibold text-white">
-                {{ stat.value }}
+                {{ stat.tournament.name }}
               </dd>
             </div>
           </dl>
@@ -364,6 +396,7 @@ const playerImage = '/boy.svg'
 
 
 const data = ref<any>([])
+const dataTournament = ref<any>([])
 
 const getData = async () => {
   try {
@@ -376,8 +409,21 @@ const getData = async () => {
   }
 };
 
+const getTournament = async () => {
+  try {
+    const res = await axios.get(
+      `
+      https://api.7srating.uz/api/dashboard/tournament/`
+    );
+    dataTournament.value = res.data.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 onMounted(() => {
   getData()
+  getTournament()
 })
 
 const tabs = [
