@@ -106,9 +106,9 @@
             class="divide-y divide-gray-700"
           >
             <nuxt-link  
-              v-for="(trainer, index) in data" 
+              v-for="(trainer, index) in data1" 
               :key="trainer.id"
-              :to="`/users/${trainer.id}`" 
+              :to="`/trainer/${trainer.id}`" 
               class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
             >
             
@@ -162,6 +162,7 @@ import axios from 'axios';
 
 
 const data = ref<any>([])
+const data1 = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
 
@@ -176,9 +177,21 @@ const getData = async (name: string = 'Football') => {
   }
 };
 
+const getTrainer = async (name: string = 'Football') => {
+  try {
+    const res = await axios.get(
+      `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
+    );
+    data1.value = res.data.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const toggle = (id: number, name:string) => {
   activeCategory.value = id;
   getData(name);
+  getTrainer(name)
 };
 
 
@@ -191,8 +204,8 @@ const getSport = async() => {
 
     const defaultSport = sports.value.find(sport => sport.name === 'Football');
   if (defaultSport) {
-        activeCategory.value = defaultSport.id; // Set default active category to Football's ID
-        toggle(defaultSport.id, defaultSport.name); // Trigger data load for Football
+        activeCategory.value = defaultSport.id; 
+        toggle(defaultSport.id, defaultSport.name);
       }
       
   } catch (e) {
@@ -202,10 +215,12 @@ const getSport = async() => {
 }
 
 
+
+
 onMounted(() => {
   getData()
   getSport()
-  
+  getTrainer()
 })
 
 

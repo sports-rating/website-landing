@@ -14,8 +14,7 @@
 
           <!-- Player Name -->
           <h1 class="text-4xl font-bold mb-4 py-4 text-white">
-            {{ data?.first_name }} {{  data?.last_name }}<br />
-            {{data?.middle_name}}
+            {{ data?.first_name }} {{  data?.last_name }} {{data?.middle_name}}
           </h1>
 
           <!-- Position Tags -->
