@@ -48,4 +48,4 @@ jobs:
             echo ${{ secrets.ACCESS_TOKEN }} | docker login -u ${{ github.actor }} ${{ vars.CONTAINER_REGISTRY }} --password-stdin
             docker pull ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }}
             docker rm -f ${{ vars.CONTAINER_NAME }} || true
-            docker run -d -p 3000:3000 --name ${{ vars.CONTAINER_NAME }} ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }}
+            docker run -d --restart always -p 3000:3000 --name ${{ vars.CONTAINER_NAME }} ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }}
