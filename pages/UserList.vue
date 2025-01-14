@@ -39,7 +39,7 @@
           
           <div class="relative w-64">
           <!-- Dropdown Button -->
-          <button 
+          <!-- <button 
             class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-gray-300 px-6 py-2 rounded-lg text-sm flex items-center justify-between hover:text-white hover:shadow-lg transition duration-200 ease-in-out w-full"
             @click="toggleRegionDropdown"
           >
@@ -54,7 +54,7 @@
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </button> -->
 
   <!-- Dropdown List -->
   <div 
@@ -93,7 +93,7 @@
 
           <div class="relative w-64">
           <!-- Dropdown Button -->
-          <button 
+          <!-- <button 
             class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-gray-300 px-6 py-2 rounded-lg text-sm flex items-center justify-between hover:text-white hover:shadow-lg transition duration-200 ease-in-out w-full"
             @click="toggleRegionDropdownn"
           >
@@ -108,7 +108,7 @@
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </button> -->
 
   <!-- Dropdown List -->
   <div 

@@ -31,12 +31,14 @@
             >
               Рейтинг спортсменов
             </nuxt-link>
-            <a
-              class="text-white"
+            <nuxt-link
+              to="/trainerList"
+              class="nav-link"
+              active-class="active-link"
             >
-              Рейтинг регионов
-            </a>
-            <a
+              Рейтинг тренеров
+            </nuxt-link>
+            <!-- <a
               class="text-white"
             >
               База тренировок
@@ -45,7 +47,7 @@
               class="text-white"
             >
               Новости
-            </a>
+            </a> -->
             <a
               class="text-white"
             >

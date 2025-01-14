@@ -6,11 +6,11 @@
       <div class="flex justify-between">
         <div class="flex-1">
           <!-- Player Number and Title -->
-          <div class="flex items-center gap-4 mb-2">
+          <!-- <div class="flex items-center gap-4 mb-2">
             <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">№1</span>
             <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">ОБЩ. 96</span>
             <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">Обладатель титула</span>
-          </div>
+          </div> -->
 
           <!-- Player Name -->
           <h1 class="text-4xl font-bold mb-4 py-4 text-white">
@@ -66,23 +66,17 @@
         </div>
       </div>
 
-      <div class="flex w-full justify-between">
+      <!-- <div class="flex w-full justify-between">
       
       <div class="bg-[#1A1B1F] border border-gray-800 w-[60%]">
       <div class=" mx-auto">
-        <!-- Progress Bar Container -->
         <div class="flex items-center h-[52px]">
-          <!-- Current Amount -->
           <div class="bg-red-600 h-full flex items-center px-6 text-white font-medium">
             10 000 000 сум
           </div>
-
-          <!-- Progress Bar -->
           <div class="flex-1 relative h-full flex items-center bg-[#0F1115] px-24">
             <span class="relative text-white z-10 ">24%</span>
           </div>
-
-          <!-- Target Amount -->
           <div class="bg-[#0F1115] h-full flex items-center px-6 text-white">
             24 000 000 сум
           </div>
@@ -93,17 +87,15 @@
       </div>
       <div class=" gap-4 border-gray-800 flex ml-5">
       
-      <!-- Days Remaining -->
           <div class="bg-[#0F1115]   border h-full flex items-center px-6 text-white border-l border-gray-800 ">
             Осталось: 24 дней
           </div>
 
-          <!-- Donate Button -->
           <button class="h-full bg-red-600 text-white px-8 font-medium hover:bg-red-700 transition-colors">
             Пожертвовать
           </button>
       </div>
-      </div>
+      </div> -->
 
       <!-- <div v-if="activeTab === 'statistics'" class="my-5">
         <div class="container bg-white rounded-lg shadow-sm border border-gray-200">
@@ -150,7 +142,7 @@
       </div> -->
     </div>
 
-    <div class="bg-[#11101B] container pb-8  overflow-hidden w-full">
+    <!-- <div class="bg-[#11101B] container pb-8  overflow-hidden w-full">
         <div class="">
           <dl class="grid grid-cols-2">
             <div v-for="(stat, index) in statistics" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
@@ -163,7 +155,7 @@
             </div>
           </dl>
         </div>
-      </div>
+      </div> -->
 
     <!-- Tabs -->
     <div class=" mb-6 container">
@@ -369,7 +361,7 @@
         </div>
       </div>
 
-      <Associated/>
+      <!-- <Associated/> -->
 
 
 
@@ -388,7 +380,7 @@ import Statistic from "~/components/home/Statistic.vue"
 
 const route = useRoute()
 const router = useRouter()
-const activeTab = ref('overview')
+const activeTab = ref('career')
 const playerImage = '/boy.svg'
 
 
@@ -426,12 +418,12 @@ onMounted(() => {
 })
 
 const tabs = [
-  { id: 'overview', name: 'Заявка игрока' },
-  { id: 'statistics', name: 'Статистика' },
+  // { id: 'overview', name: 'Заявка игрока' },
+  // { id: 'statistics', name: 'Статистика' },
   { id: 'career', name: 'Карьера' },
-  { id: 'videos', name: 'Видео материалы' },
-  { id: 'photos', name: 'Фотографии' },
-  { id: 'files', name: 'Загруженные файлы' }
+  // { id: 'videos', name: 'Видео материалы' },
+  // { id: 'photos', name: 'Фотографии' },
+  // { id: 'files', name: 'Загруженные файлы' }
 ]
 
 const statistics = ref([
