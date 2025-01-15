@@ -57,11 +57,11 @@
         </div>
 
         <!-- Profile Image -->
-        <div class="w-72">
+        <div class="py-20 pr-28">
           <img 
             :src="data.photo?.[0].file" 
             alt="Player Profile"
-            class="w-full p-2 object-cover rounded-full border-transparent"
+            class=" w-[32vh] h-[32vh] p-2 object-cover rounded-full border"
           />
         </div>
       </div>
@@ -158,7 +158,7 @@
       </div> -->
 
     <!-- Tabs -->
-    <div class=" mb-6 container">
+    <!-- <div class=" mb-6 container">
       <div class="flex gap-2 ">
         <button 
           v-for="tab in tabs" 
@@ -174,7 +174,7 @@
           {{ tab.name }}
         </button>
       </div>
-    </div>
+    </div> -->
 
 
     
@@ -205,9 +205,8 @@
       </div>
         
 
-      <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
+      <!-- <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
-    <!-- Header -->
     <div class="container bg-gray-800 text-white grid grid-cols-6 text-sm font-medium">
       <div class="p-3">КОМАНДА</div>
       <div class="p-3">СЕЗОН</div>
@@ -217,7 +216,6 @@
       <div class="p-3">ЕВРО КУБОК</div>
     </div>
 
-    <!-- Table Body -->
     <div class="container bg-[#11101B] divide-y divide-gray-200">
       <div v-for="(row, index) in tableData" 
            :key="index"
@@ -234,7 +232,7 @@
       </div>
     </div>
   </div>
-      </div>
+      </div> -->
 
       <div v-if="activeTab === 'videos'" class="container flex flex-col gap-8">
           <div class="mt-5">
