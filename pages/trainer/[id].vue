@@ -158,7 +158,7 @@
       </div> -->
 
     <!-- Tabs -->
-    <!-- <div class=" mb-6 container">
+    <div class=" mb-6 container">
       <div class="flex gap-2 ">
         <button 
           v-for="tab in tabs" 
@@ -174,7 +174,7 @@
           {{ tab.name }}
         </button>
       </div>
-    </div> -->
+    </div>
 
 
     
@@ -206,34 +206,29 @@
       </div>
         
 
-      <!-- <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
+      <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
-    <div class="container bg-gray-800 text-white grid grid-cols-6 text-sm font-medium">
-      <div class="p-3">КОМАНДА</div>
+    <div class="container bg-gray-800 text-white grid grid-cols-4 text-sm font-medium">
+      <div class="p-3">Место</div>
       <div class="p-3">СЕЗОН</div>
-      <div class="p-3">ТРЕНЕР</div>
+      <!-- <div class="p-3">ТРЕНЕР</div> -->
       <div class="p-3">ЧЕМПИОНАТ</div>
-      <div class="p-3">КУБОК</div>
-      <div class="p-3">ЕВРО КУБОК</div>
+      <div class="p-3">Рейтинг</div>
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
-      <div v-for="(row, index) in tableData" 
+      <div v-for="(row, index) in data?.trainer_profile?.results" 
            :key="index"
-           class="grid grid-cols-6 hover:bg-gray-50 text-white hover:text-black cursor-pointer">
-        <div class="p-3 flex items-center space-x-3">
-          <img :src="row.teamLogo" alt="Team Logo" class="w-8 h-8 rounded-full"/>
-          <span>{{ row.team }}</span>
-        </div>
-        <div class="p-3">{{ row.season }}</div>
-        <div class="p-3">{{ row.coach }}</div>
-        <div class="p-3">{{ row.championship }}</div>
-        <div class="p-3">{{ row.cup }}</div>
-        <div class="p-3">{{ row.euroCup }}</div>
+           class="grid grid-cols-4 hover:bg-gray-50 text-white hover:text-black cursor-pointer">
+        <div class="p-3 ">{{ row.country }}</div>
+        <div class="p-3 ">{{ row.year }}</div>
+        <!-- <div class="p-3 ">{{ data?.first_name}} {{ data?.last_name }}</div> -->
+        <div class="p-3 ">{{ row.tournament.name }}</div>
+        <div class="p-3">{{ row.number_of_gold }} - {{ row.number_of_silver }} - {{ row.number_of_bronze }}</div>
       </div>
     </div>
   </div>
-      </div> -->
+      </div>
 
       <div v-if="activeTab === 'videos'" class="container flex flex-col gap-8">
           <div class="mt-5">
@@ -296,20 +291,14 @@
       
       <!-- Image Grid -->
       <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div v-for="(image, index) in images" 
+        <div v-for="(image, index) in data?.trainer_profile?.media" 
              :key="index" 
              class="relative group overflow-hidden rounded-lg">
           <img 
-            :src="image.url" 
-            :alt="image.description"
+            :src="`https://api.7srating.uz/${image.file}`"
+            :alt="image.media_type"
             class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
           />
-          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-            <div class="text-white text-sm">
-              <time class="font-mono">{{ image.time }}</time>
-              <p class="mt-1">{{ image.description }}</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -325,7 +314,7 @@
           :key="index"
           class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
         >
-            <img src="/psg.svg" alt="">
+            <img src="/pdf.svg" alt="">
           
           <h3 class="text-sm text-gray-900  font-medium my-2">
             {{ doc.title }}
@@ -420,8 +409,8 @@ const tabs = [
   // { id: 'statistics', name: 'Статистика' },
   { id: 'career', name: 'Карьера' },
   // { id: 'videos', name: 'Видео материалы' },
-  // { id: 'photos', name: 'Фотографии' },
-  // { id: 'files', name: 'Загруженные файлы' }
+  { id: 'photos', name: 'Фотографии' },
+  { id: 'files', name: 'Загруженные файлы' }
 ]
 
 const statistics = ref([
