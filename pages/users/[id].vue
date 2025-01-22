@@ -31,7 +31,7 @@
           <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Место рождения</p>
-              <p class="text-white">{{data?.sportsman_profile?.place_of_birth}} {{ data?.sportsman_profile?.region }} , {{ data?.sportsman_profile?.city }} район</p>
+              <p class="text-white">{{data?.sportsman_profile?.place_of_birth}}</p>
             </div>
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Гражданство</p>
@@ -51,7 +51,7 @@
             </div>
             <div class="flex justify-between w-[60%] ">
               <p class="text-[#8B8992]">Воспитанник</p>
-              <p class="text-white">{{data?.sportsman_profile?.educations[0]?.name}}</p>
+              <p class="text-white">{{data?.sportsman_profile?.educations[0]?.school_name}}</p>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@
           <img 
             :src="data.photo?.[0].file" 
             alt="Player Profile"
-            class=" w-[32vh] h-[32vh] p-2 object-cover rounded-full border"
+            class=" w-[32vh] h-[56vh] p-2 object-cover rounded-full border"
           />
         </div>
       </div>
@@ -292,7 +292,7 @@
       
       <!-- Image Grid -->
       <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div v-for="(image, index) in data?.sportsman_profile?.media" 
+        <div v-for="(image, index) in data?.sportsman_profile?.media?.filter((item:any) => item.media_type === 'image')" 
              :key="index" 
              class="relative group overflow-hidden rounded-lg">
           <img 
@@ -308,20 +308,36 @@
 
       <div v-if="activeTab === 'files'" class="container flex flex-col gap-8">
             <div class="mt-5">
-    <div class="w-full mx-auto">
+    <div class="w-full">
       
-      <div class="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="(doc, index) in documents" 
+      <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div v-for="(doc, index) in data?.sportsman_profile?.media?.filter((item:any) => item.media_type === 'pdf')" 
           :key="index"
           class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
         >
+          <div v-if="doc.media_type === 'pdf'">
+          <a :href="`http://api.7srating.uz/${doc.file}`" download target="_blank">
+          
             <img src="/pdf.svg" alt="">
           
           <h3 class="text-sm text-gray-900  font-medium my-2">
-            {{ doc.title }}
+            {{ doc.file.split('/').pop() }}
           </h3>
-          
+          </a>
+          </div>
         </div>
+
+        <!-- <div v-for="(doc, index) in data?.sportsman_profile?.media?.filter((item:any) => item.media_type !== 'pdf')" 
+          :key="index"
+          class="bg-white col-span-1  rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
+        >
+          
+            <img src="/pdf.svg" alt="">
+          
+          <h3 class="text-sm text-gray-900  font-medium my-2">
+            PDF Not Found
+          </h3>
+        </div> -->
       </div>
     </div>
   </div>
@@ -336,11 +352,11 @@
         <div class="">
           <dl class="grid grid-cols-3">
             <div v-for="(stat, index) in data?.sportsman_profile?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
-              <dt class="text-3xl font-medium text-[#8B8992] truncate">
-              {{ stat.tournament.start_time.split('-')[0] }} - {{ stat.tournament.end_time.split('-')[0] }}
-              </dt>
-              <dd class="mt-1 text-sm font-semibold text-white">
+              <dt class="text-2xl font-medium text-white truncate">
                 {{ stat.tournament.name }}
+              </dt>
+              <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
+              {{ stat.tournament.start_time.split('-')[0] }} - {{ stat.tournament.end_time.split('-')[0] }}
               </dd>
             </div>
           </dl>

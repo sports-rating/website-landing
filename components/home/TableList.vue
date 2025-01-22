@@ -26,10 +26,10 @@
           {{ sport.name }}
         </button>
       </div>
-        <button class="text-gray-400 hover:text-white flex items-center gap-2">
+        <!-- <button @click="goToRatings" class="text-gray-400 hover:text-white flex items-center gap-2">
           Перейти к рейтингу
           <ChevronRight class="w-4 h-4" />
-        </button>
+        </button> -->
       </div>
 
       <!-- Tables Grid -->
@@ -38,11 +38,12 @@
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
             <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-6 text-gray-400 text-sm">ИГРОК</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">СТР</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">ПОЗ</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">ОБЩ</div>
+            <div class="col-span-3 text-gray-400 text-sm">ИГРОК</div>
+            <div class="col-span-1  text-gray-400 text-sm">СТР</div>
+            <div class="col-span-1  text-gray-400 text-sm">КМ</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
           </div>
           
           <TransitionGroup 
@@ -57,7 +58,7 @@
               class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
             >
               <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-6 flex items-center gap-3">
+              <div class="col-span-3 flex items-center gap-3">
                 <span class="text-white text-sm truncate">{{ player.first_name }} {{ player.last_name }} </span>
               </div>
               <div class="col-span-1 text-center">
@@ -69,22 +70,33 @@
               </div>
               <div class="col-span-1 text-center">
               <img 
-                  src="/public/psg.svg" 
+                  :src="`${player?.logo[0]?.file}`" 
                   :alt="player.team"
                   class="w-6 h-6 rounded-full"
                 />
               </div>
 
+              <div class="col-span-6 flex justify-around">
+              
               <div class="col-span-2 text-center">
-              <span class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                  {{ player.sport }}
-                </span>
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_gold }}
+
+              </span>
               </div>
-              <div class="col-span-1 text-center">
-                <span class="bg-red-600 text-white px-2 py-1 rounded text-sm">
-                  <!-- {{ player.total }} --> 95
-                </span>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_silver }}
+
+              </span>
               </div>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_bronze }}
+              </span>
+              </div>
+              </div>
+              
             </nuxt-link>
           </TransitionGroup>
         </div>
@@ -93,11 +105,12 @@
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
             <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-6 text-gray-400 text-sm">ТРЕНЕР</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">СТР</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">ПОЗ</div>
-            <div class="col-span-1 text-center text-gray-400 text-sm">ОБЩ</div>
+            <div class="col-span-3 text-gray-400 text-sm">ТРЕНЕР</div>
+            <div class="col-span-1  text-gray-400 text-sm">СТР</div>
+            <div class="col-span-1  text-gray-400 text-sm">КМ</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
           </div>
           
           <TransitionGroup 
@@ -114,7 +127,7 @@
             
       
               <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-6 flex items-center gap-3">
+              <div class="col-span-3 flex items-center gap-3">
                 <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
               </div>
               <div class="col-span-1 text-center">
@@ -126,22 +139,34 @@
               </div>
               <div class="col-span-1 text-center">
               <img 
-                  src="/public/psg.svg" 
+                  :src="`${trainer?.logo[0]?.file}`" 
                   :alt="trainer.team"
                   class="w-6 h-6 rounded-full"
                 />
               </div>
+              <div class="col-span-6 flex justify-around">
+              
               <div class="col-span-2 text-center">
-              <span class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                  {{ trainer.sport }}
-                </span>
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ trainer.statistics.total_statistics.gold }}
+
+              </span>
               </div>
-              <div class="col-span-1 text-center">
-                <span class="bg-red-600 text-white px-2 py-1 rounded text-sm">
-                  <!-- {{ trainer.total }} -->
-                   90
-                </span>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ trainer.statistics.total_statistics.silver }}
+
+              </span>
               </div>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ trainer.statistics.total_statistics.bronze }}
+              </span>
+              </div>
+              </div>
+
+
+              
       
       
               
@@ -159,12 +184,20 @@
 import { ref, computed } from 'vue'
 import { ChevronRight } from 'lucide-vue-next'
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 
 
 const data = ref<any>([])
 const data1 = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
+
+const goToRatings = () => {
+  router.push('/ratings');
+};
 
 const getData = async (name: string = 'Football') => {
   try {

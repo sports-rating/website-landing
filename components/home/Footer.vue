@@ -54,11 +54,11 @@
                 Рейтинг тренеров
               </a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">
                 Crowdfunding
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">
                 Отзывы

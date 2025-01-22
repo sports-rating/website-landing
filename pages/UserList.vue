@@ -180,81 +180,69 @@
 
         <!-- Players Table -->
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
-          <!-- Table Header -->
-          <div class="grid grid-cols-12 gap-4 px-6 py-4 bg-[#212226] text-gray-400 font-medium text-sm">
-            <div class="col-span-1">РГТ</div>
-            <div class="col-span-5">ИГРОК</div>
-            <div class="col-span-1 ">СТР</div>
-            <div class="col-span-1 ">КМ</div>
-            <div class="col-span-2 text-center">ПОЗ</div>
-            <div class="col-span-1 text-center">ОБЩ</div>
+          <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
+            <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
+            <div class="col-span-3 text-gray-400 text-sm">ИГРОК</div>
+            <div class="col-span-1  text-gray-400 text-sm">СТР</div>
+            <div class="col-span-1  text-gray-400 text-sm">КМ</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
+            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
           </div>
-
-          <!-- Table Body -->
-          <div class="divide-y divide-gray-800">
-            
-            <nuxt-link   
+          
+          <TransitionGroup 
+            name="list" 
+            tag="div" 
+            class="divide-y divide-gray-700"
+          >
+            <nuxt-link  
               v-for="(player, index) in data" 
-              :to="`/users/${player.id}`" 
               :key="player.id"
-              class="grid grid-cols-12 gap-4 px-6 py-4 items-center hover:bg-[#3A3B41] transition"
+              :to="`/users/${player.id}`" 
+              class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
             >
-              <!-- Rank -->
-              <div class="col-span-1 text-gray-400 text-lg">{{ index + 1 }}</div>
-
-              <!-- Player Info -->
-              <div class="col-span-5 flex items-center gap-3">
-                <!-- <div class="relative w-12 h-12 rounded-lg overflow-hidden">
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#E7273D] to-[#0E044D]"
-                  ></div>
-                  
-                  <img
-                    :src="player.avatar"
-                    :alt="player.name"
-                    class="relative w-full h-full object-cover"
-                  />
-                </div> -->
-                <div class="flex items-center gap-2">
-                  <span class="text-white font-medium">{{ player.first_name }} {{ player.last_name }} </span>
-                </div>
+              <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
+              <div class="col-span-3 flex items-center gap-3">
+                <span class="text-white text-sm truncate">{{ player.first_name }} {{ player.last_name }} </span>
               </div>
-
-              <!-- Stats -->
-              <div class="col-span-1 ">
-                  <img 
+              <div class="col-span-1 text-center">
+              <img 
                   src="/public/UZ.svg"
                   :alt="player.country"
                   class="w-6 h-4 object-cover rounded"
                 />
               </div>
-              <div class="col-span-1">
-                  <img 
-                  src="/public/psg.svg" 
+              <div class="col-span-1 text-center">
+              <img 
+                  :src="`${player?.logo[0]?.file}`" 
                   :alt="player.team"
                   class="w-6 h-6 rounded-full"
                 />
               </div>
-              <div class="col-span-2 text-center">
-                <span class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm font-medium">
-                  {{ player.sport }}
-                </span>
-              </div>
-              <div class="col-span-1 text-center">
-                <span class="bg-red-600 text-white px-2 py-1 rounded text-sm font-medium">
-                  <!-- {{ player.total }} -->
-                  90
-                </span>
-              </div>
 
-              <!-- Actions -->
-              <!-- <div class="col-span-2 flex justify-end">
-                <button class="text-gray-400 hover:text-white transition">
-                  <MoreHorizontal class="w-5 h-5" />
-                </button>
-              </div> -->
+              <div class="col-span-6 flex justify-around">
+              
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_gold }}
+
+              </span>
+              </div>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_silver }}
+
+              </span>
+              </div>
+              <div class="col-span-2 text-center">
+              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
+                {{ player.statistics.total_bronze }}
+              </span>
+              </div>
+              </div>
+              
             </nuxt-link>
-          </div>
+          </TransitionGroup>
         </div>
       </div>
     </div>
