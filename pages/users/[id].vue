@@ -217,7 +217,7 @@
     <div class="container bg-[#11101B] divide-y divide-gray-200">
       <div v-for="(row, index) in data?.sportsman_profile?.results" 
            :key="index"
-           class="grid grid-cols-5 hover:bg-gray-50 text-white hover:text-black cursor-pointer">
+           class="grid grid-cols-5  text-white  cursor-pointer">
         <!-- <div class="p-3 flex items-center ">
           <span>{{ row.country }}</span>
         </div> -->
@@ -356,7 +356,7 @@
                 {{ stat.tournament.name }}
               </dt>
               <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
-              {{ stat.tournament.start_time.split('-')[0] }} - {{ stat.tournament.end_time.split('-')[0] }}
+              {{ stat.tournament.start_time.split('-')[0] }}
               </dd>
             </div>
           </dl>

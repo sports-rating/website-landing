@@ -208,27 +208,37 @@
 
       <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
-    <div class="container bg-gray-800 text-white grid grid-cols-8 text-sm font-medium">
-      <div class="p-3">Место</div>
-      <div class="p-3">СЕЗОН</div>
+    <div class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium">
+      <div class="p-3 col-span-2">Место</div>
+      <div class="p-3 col-span-2">СЕЗОН</div>
       <!-- <div class="p-3">ТРЕНЕР</div> -->
       <div class="p-3 col-span-3">ЧЕМПИОНАТ</div>
-      <div class="p-3">Золото</div>
-      <div class="p-3">Серебро</div>
-      <div class="p-3">Бронза</div>
+      <div class="p-3 col-span-1">Золото</div>
+      <div class="p-3 col-span-1">Серебро</div>
+      <div class="p-3 col-span-1">Бронза</div>
+      <div class="p-3 w-[10rem]">
+      <select
+        v-model="selectedView"
+        class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
+      >
+        <option value="1">Личное достижение</option>
+        <option value="2">Достижения учащихся</option>
+      </select>
+    </div>
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
       <div v-for="(row, index) in data?.trainer_profile?.results" 
            :key="index"
-           class="grid grid-cols-8 hover:bg-gray-50 text-white hover:text-black cursor-pointer">
-        <div class="p-3 ">{{ row.country }}</div>
-        <div class="p-3 ">{{ row.year }}</div>
+           class="grid grid-cols-12  text-white  cursor-pointer">
+        <div class="p-3 col-span-2">{{ row.country }}</div>
+        <div class="p-3 col-span-2">{{ row.year }}</div>
         <!-- <div class="p-3 ">{{ data?.first_name}} {{ data?.last_name }}</div> -->
         <div class="p-3 col-span-3">{{ row.tournament.name }}</div>
-        <div class="p-3">{{ data?.trainer_profile?.statistics?.total_statistics.gold }}</div>
-        <div class="p-3">{{ data?.trainer_profile?.statistics?.total_statistics.silver }}</div>
-        <div class="p-3">{{ data?.trainer_profile?.statistics?.total_statistics.bronze }}</div>
+        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.gold : data?.trainer_profile?.statistics?.students_statistics?.gold }}</div>
+        
+        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.silver : data?.trainer_profile?.statistics?.students_statistics?.silver }}</div>
+        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.bronze : data?.trainer_profile?.statistics?.students_statistics?.bronze }}</div>
       </div>
     </div>
   </div>
@@ -274,9 +284,9 @@
         </video> -->
 
 
-        <div v-if="selectedMatch.hasVideo" class="aspect-w-16 aspect-h-9 ">
+        <div v-if="selectedMatch?.hasVideo" class="aspect-w-16 aspect-h-9 ">
       <iframe
-        :src="selectedMatch.videoUrl"
+        :src="selectedMatch?.videoUrl"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -296,8 +306,8 @@
       <!-- Image Grid -->
       <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div v-for="(image, index) in data?.trainer_profile?.media?.filter((item:any) => item.media_type === 'image')" 
-             :key="index" 
-             class="relative group overflow-hidden rounded-lg">
+            :key="index" 
+            class="relative group overflow-hidden rounded-lg">
           <img 
             :src="`https://api.7srating.uz/${image.file}`"
             :alt="image.media_type"
@@ -359,7 +369,7 @@
                 {{ stat.tournament.name }}
               </dt>
               <dd class="mt-1 text-sm font-semibold  text-[#8B8992]">
-              {{ stat.tournament.start_time.split('-')[0] }} - {{ stat.tournament.end_time.split('-')[0] }}
+              {{ stat.tournament.start_time.split('-')[0] }} 
               </dd>
             </div>
           </dl>
@@ -390,7 +400,7 @@ const router = useRouter()
 const activeTab = ref('career')
 const playerImage = '/boy.svg'
 
-
+const selectedView = ref("1"); 
 
 
 const data = ref<any>([])

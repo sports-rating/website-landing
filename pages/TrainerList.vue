@@ -183,12 +183,21 @@
           <!-- Table Header -->
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
             <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-3 text-gray-400 text-sm">ТРЕНЕР</div>
+            <div class="col-span-2 text-gray-400 text-sm">ТРЕНЕР</div>
             <div class="col-span-1  text-gray-400 text-sm">СТР</div>
             <div class="col-span-1  text-gray-400 text-sm">КМ</div>
             <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
             <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
             <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
+            <div class="">
+              <select
+                v-model="selectedView"
+                class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
+              >
+                <option value="1">Личное достижение</option>
+                <option value="2">Достижения учащихся</option>
+              </select>
+            </div>
           </div>
 
           <!-- Table Body -->
@@ -206,7 +215,7 @@
             
       
               <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-3 flex items-center gap-3">
+              <div class="col-span-2 flex items-center gap-3">
                 <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
               </div>
               <div class="col-span-1 text-center">
@@ -223,26 +232,29 @@
                   class="w-6 h-6 rounded-full"
                 />
               </div>
-              <div class="col-span-6 flex justify-around">
-              
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.gold }}
+               <!-- Medals -->
+      <div class="col-span-6 grid grid-cols-3 gap-4">
+        <!-- Gold -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.gold : trainer.statistics.students_statistics.gold }}
+          </span>
+        </div>
 
-              </span>
-              </div>
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.silver }}
+        <!-- Silver -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.silver : trainer.statistics.students_statistics.silver }}
+          </span>
+        </div>
 
-              </span>
-              </div>
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.bronze }}
-              </span>
-              </div>
-              </div>
+        <!-- Bronze -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.bronze : trainer.statistics.students_statistics.bronze }}
+          </span>
+        </div>
+      </div>
 
 
               
@@ -265,6 +277,8 @@ import axios from 'axios';
 const data = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
+const selectedView = ref("1"); 
+
 
 const getData = async (name: string = 'Football') => {
   try {

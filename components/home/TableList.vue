@@ -26,14 +26,14 @@
           {{ sport.name }}
         </button>
       </div>
-        <!-- <button @click="goToRatings" class="text-gray-400 hover:text-white flex items-center gap-2">
+        <button  @click="goToRatings" class="text-gray-400 hover:text-white flex items-center gap-2">
           Перейти к рейтингу
           <ChevronRight class="w-4 h-4" />
-        </button> -->
+        </button>
       </div>
 
       <!-- Tables Grid -->
-      <div  class="grid lg:grid-cols-2 gap-6">
+      <div  class="grid lg:grid-cols-2 gap-4">
         <!-- Players Table -->
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
@@ -102,77 +102,95 @@
         </div>
 
         <!-- Trainers Table -->
-        <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
-          <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
-            <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-3 text-gray-400 text-sm">ТРЕНЕР</div>
-            <div class="col-span-1  text-gray-400 text-sm">СТР</div>
-            <div class="col-span-1  text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
-          </div>
-          
-          <TransitionGroup 
-            name="list" 
-            tag="div" 
-            class="divide-y divide-gray-700"
-          >
-            <nuxt-link  
-              v-for="(trainer, index) in data1" 
-              :key="trainer.id"
-              :to="`/trainer/${trainer.id}`" 
-              class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
-            >
-            
-      
-              <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-3 flex items-center gap-3">
-                <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
-              </div>
-              <div class="col-span-1 text-center">
-              <img 
-                  src="/public/UZ.svg"
-                  :alt="trainer.country"
-                  class="w-6 h-4 object-cover rounded"
-                />
-              </div>
-              <div class="col-span-1 text-center">
-              <img 
-                  :src="`${trainer?.logo[0]?.file}`" 
-                  :alt="trainer.team"
-                  class="w-6 h-6 rounded-full"
-                />
-              </div>
-              <div class="col-span-6 flex justify-around">
-              
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.gold }}
+        <!-- Dropdown va Trainers Table -->
+  <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
+<div>
+  <!-- Table Header -->
+  <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4 items-center">
+    <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
+    <div class="col-span-3 text-gray-400 text-sm">ТРЕНЕР</div>
+    <div class="col-span-1 text-gray-400 text-sm text-center">СТР</div>
+    <div class="col-span-1 text-gray-400 text-sm text-center">КМ</div>
+    <div class="col-span-1 text-gray-400 text-sm text-center">Золото</div>
+    <div class="col-span-2 text-gray-400 text-sm text-center">Серебро</div>
+    <div class="col-span-1 text-gray-400 text-sm text-center">Бронза</div>
+    <div class="col-span-1 ml-10">
+      <select
+        v-model="selectedView"
+        class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
+      >
+        <option value="1">Личное достижение</option>
+        <option value="2">Достижения учащихся</option>
+      </select>
+    </div>
+  </div>
 
-              </span>
-              </div>
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.silver }}
+  <!-- Table Body -->
+  <TransitionGroup
+    name="list"
+    tag="div"
+    class="divide-y divide-gray-700"
+  >
+    <nuxt-link
+      v-for="(trainer, index) in data1"
+      :key="trainer.id"
+      :to="`/trainer/${trainer.id}`"
+      class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
+    >
+      <!-- Index -->
+      <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
 
-              </span>
-              </div>
-              <div class="col-span-2 text-center">
-              <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
-                {{ trainer.statistics.total_statistics.bronze }}
-              </span>
-              </div>
-              </div>
+      <!-- Trainer Name -->
+      <div class="col-span-3 flex items-center gap-3">
+        <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
+      </div>
 
+      <!-- Country Flag -->
+      <div class="col-span-1 text-center">
+        <img
+          src="/public/UZ.svg"
+          :alt="trainer.country"
+          class="w-6 h-4 object-cover rounded"
+        />
+      </div>
 
-              
-      
-      
-              
-            </nuxt-link>
-          </TransitionGroup>
+      <!-- Team Logo -->
+      <div class="col-span-1 text-center">
+        <img
+          :src="`${trainer?.logo[0]?.file}`"
+          :alt="trainer.team"
+          class="w-6 h-6 rounded-full"
+        />
+      </div>
+
+      <!-- Medals -->
+      <div class="col-span-4 grid grid-cols-3 gap-4">
+        <!-- Gold -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.gold : trainer.statistics.students_statistics.gold }}
+          </span>
         </div>
+
+        <!-- Silver -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.silver : trainer.statistics.students_statistics.silver }}
+          </span>
+        </div>
+
+        <!-- Bronze -->
+        <div class="text-center">
+          <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
+            {{ selectedView === '1' ? trainer.statistics.own_statistics.bronze : trainer.statistics.students_statistics.bronze }}
+          </span>
+        </div>
+      </div>
+    </nuxt-link>
+  </TransitionGroup>
+</div>
+
+      </div>
       </div>
 
      
@@ -194,9 +212,11 @@ const data = ref<any>([])
 const data1 = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
+const selectedView = ref("1"); 
+
 
 const goToRatings = () => {
-  router.push('/ratings');
+  router.push('/RatingsPage');
 };
 
 const getData = async (name: string = 'Football') => {
@@ -209,6 +229,7 @@ const getData = async (name: string = 'Football') => {
     console.log(e);
   }
 };
+
 
 const getTrainer = async (name: string = 'Football') => {
   try {
