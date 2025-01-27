@@ -227,7 +227,7 @@ const data = ref<any>([])
 const data1 = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
-const selectedView = ref("1"); 
+const selectedView = ref("2"); 
 function handleSelect(command:any) {
   selectedView.value = command;
 }

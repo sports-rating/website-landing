@@ -407,7 +407,7 @@ const router = useRouter()
 const activeTab = ref('career')
 const playerImage = '/boy.svg'
 
-const selectedView = ref("1"); 
+const selectedView = ref("2"); 
 function handleSelect(command:any) {
   selectedView.value = command;
 }
