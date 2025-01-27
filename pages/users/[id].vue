@@ -61,7 +61,7 @@
           <img 
             :src="data.photo?.[0].file" 
             alt="Player Profile"
-            class=" w-[32vh] h-[56vh] p-2 object-cover rounded-full border"
+            class=" w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
           />
         </div>
       </div>
@@ -206,25 +206,27 @@
 
       <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
-    <div  class="container bg-gray-800 text-white grid grid-cols-5 text-sm font-medium">
-      <div class="p-3">Место</div>
+    <div  class="container bg-gray-800 text-white grid grid-cols-7 text-sm font-medium">
+      <div class="p-3 col-span-2">ЧЕМПИОНАТ</div>
+      <div class="p-3">Изображение</div>
       <div class="p-3">СЕЗОН</div>
+      <div class="p-3">Место</div>
       <div class="p-3">ТРЕНЕР</div>
-      <div class="p-3">ЧЕМПИОНАТ</div>
       <div class="p-3">Рейтинг</div>
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
       <div v-for="(row, index) in data?.sportsman_profile?.results" 
            :key="index"
-           class="grid grid-cols-5  text-white  cursor-pointer">
+           class="grid grid-cols-7  text-white  cursor-pointer">
         <!-- <div class="p-3 flex items-center ">
           <span>{{ row.country }}</span>
         </div> -->
+        <div class="p-3 col-span-2 ">{{ row.tournament.name }}</div>
+        <div class="p-3"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""></div>
+        <div class="p-3 ">{{ row.year?.split('-')[0] }}</div>
         <div class="p-3 ">{{ row.country }}</div>
-        <div class="p-3 ">{{ row.year }}</div>
         <div class="p-3 ">{{ data?.sportsman_profile?.trainer_name }}</div>
-        <div class="p-3 ">{{ row.tournament.name }}</div>
         <div class="p-3">{{ row.rating }}</div>
       </div>
     </div>

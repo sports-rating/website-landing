@@ -185,9 +185,9 @@
             <div class="col-span-3 text-gray-400 text-sm">ИГРОК</div>
             <div class="col-span-1  text-gray-400 text-sm">СТР</div>
             <div class="col-span-1  text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
+            <div class="col-span-2  text-center items-center text-gray-400 text-xs flex"><img src="/gold.png" class="w-6" alt=""/>Золото</div>
+            <div class="col-span-2  text-center items-center text-gray-400 text-xs flex"><img src="/silver.png" class="w-6" alt=""/>Серебро</div>
+            <div class="col-span-2  text-center items-center text-gray-400 text-xs flex"><img src="/bronza.png" class="w-6" alt=""/>Бронза</div>
           </div>
           
           <TransitionGroup 
@@ -220,25 +220,23 @@
                 />
               </div>
 
-              <div class="col-span-6 flex justify-around">
               
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_gold }}
 
               </span>
               </div>
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_silver }}
 
               </span>
               </div>
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_bronze }}
               </span>
-              </div>
               </div>
               
             </nuxt-link>

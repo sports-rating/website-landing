@@ -61,7 +61,7 @@
           <img 
             :src="data.photo?.[0].file" 
             alt="Player Profile"
-            class=" w-[32vh] h-[56vh] p-2 object-cover rounded-full border"
+            class=" w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
           />
         </div>
       </div>
@@ -209,10 +209,11 @@
       <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
     <div class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium">
-      <div class="p-3 col-span-2">Место</div>
+      <div class="p-3 col-span-3">ЧЕМПИОНАТ</div>
+      <div class="p-3 col-span-2">Изображение</div>
       <div class="p-3 col-span-2">СЕЗОН</div>
       <!-- <div class="p-3">ТРЕНЕР</div> -->
-      <div class="p-3 col-span-3">ЧЕМПИОНАТ</div>
+      <div class="p-3 col-span-1">Место</div>
       <div class="p-3 col-span-1 text-center items-center  flex"><img src="/gold.png" class="w-6" alt="">Золото</div>
       <div class="p-3 col-span-1 text-center items-center  flex"><img src="/silver.png" class="w-6" alt="">Серебро</div>
       <div class="p-3 col-span-1 text-center items-center  flex"><img src="/bronza.png" class="w-6" alt="">Бронза</div>
@@ -238,14 +239,16 @@
       <div v-for="(row, index) in data?.trainer_profile?.results" 
            :key="index"
            class="grid grid-cols-12  text-white  cursor-pointer">
-        <div class="p-3 col-span-2">{{ row.country }}</div>
-        <div class="p-3 col-span-2">{{ row.year }}</div>
-        <!-- <div class="p-3 ">{{ data?.first_name}} {{ data?.last_name }}</div> -->
         <div class="p-3 col-span-3">{{ row.tournament.name }}</div>
-        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.gold : data?.trainer_profile?.statistics?.students_statistics?.gold }}</div>
+        <div class="p-3 col-span-2"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""></div>
+        <div class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
+        <div class="p-3 col-span-1">{{ row.country }}</div>
+        <!-- <div class="p-3 ">{{ data?.first_name}} {{ data?.last_name }}</div> -->
+        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.gold : data?.trainer_profile?.statistics?.students_statistics?.gold }}</div>
         
-        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.silver : data?.trainer_profile?.statistics?.students_statistics?.silver }}</div>
-        <div class="p-3 col-span-1">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.bronze : data?.trainer_profile?.statistics?.students_statistics?.bronze }}</div>
+        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.silver : data?.trainer_profile?.statistics?.students_statistics?.silver }}</div>
+        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.bronze : data?.trainer_profile?.statistics?.students_statistics?.bronze }}</div>
+        
       </div>
     </div>
   </div>
