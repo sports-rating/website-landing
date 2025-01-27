@@ -213,17 +213,24 @@
       <div class="p-3 col-span-2">СЕЗОН</div>
       <!-- <div class="p-3">ТРЕНЕР</div> -->
       <div class="p-3 col-span-3">ЧЕМПИОНАТ</div>
-      <div class="p-3 col-span-1">Золото</div>
-      <div class="p-3 col-span-1">Серебро</div>
-      <div class="p-3 col-span-1">Бронза</div>
+      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/gold.png" class="w-6" alt="">Золото</div>
+      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/silver.png" class="w-6" alt="">Серебро</div>
+      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/bronza.png" class="w-6" alt="">Бронза</div>
       <div class="p-3 w-[10rem]">
-      <select
-        v-model="selectedView"
-        class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
-      >
-        <option value="1">Личное достижение</option>
-        <option value="2">Достижения учащихся</option>
-      </select>
+      <el-dropdown @command="handleSelect">
+      <el-button type="text" size="small" class="!text-sm !text-white">
+        {{ selectedView === "1" ? "Личное " : "Достижения " }}
+        <el-icon class="el-icon--right">
+          <arrow-down />
+        </el-icon>
+      </el-button>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+          <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
     </div>
     </div>
 
@@ -393,7 +400,7 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios';
 import Associated from '~/components/home/Associated.vue';
 import Statistic from "~/components/home/Statistic.vue"
-
+import { ArrowDown } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -401,7 +408,9 @@ const activeTab = ref('career')
 const playerImage = '/boy.svg'
 
 const selectedView = ref("1"); 
-
+function handleSelect(command:any) {
+  selectedView.value = command;
+}
 
 const data = ref<any>([])
 const dataTournament = ref<any>([])

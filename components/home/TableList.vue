@@ -37,13 +37,18 @@
         <!-- Players Table -->
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
-            <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-3 text-gray-400 text-sm">ИГРОК</div>
-            <div class="col-span-1  text-gray-400 text-sm">СТР</div>
-            <div class="col-span-1  text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
+            <div class="col-span-1 text-gray-400 text-xs  flex items-center">РТГ</div>
+            <div class="col-span-3 text-gray-400 text-xs  flex items-center">ИГРОК</div>
+            <div class="col-span-1  text-gray-400 text-xs  flex items-center">СТР</div>
+            <div class="col-span-1  text-gray-400 text-xs flex items-center">КМ</div>
+            <div class="col-span-2 text-center items-center text-gray-400 text-xs flex">
+            <img src="/gold.png" class="w-6" alt="">
+            Золото</div>
+            <div class="col-span-2 text-center items-center text-gray-400 text-xs flex">
+            <img src="/silver.png" class="w-6" alt="">Серебро</div>
+            <div class="col-span-2 text-center items-center text-gray-400 text-xs flex">
+            <img src="/bronza.png" class="w-6" alt="">
+            Бронза</div>
           </div>
           
           <TransitionGroup 
@@ -76,25 +81,23 @@
                 />
               </div>
 
-              <div class="col-span-6 flex justify-around">
               
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_gold }}
 
               </span>
               </div>
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_silver }}
 
               </span>
               </div>
-              <div class="col-span-2 text-center">
+              <div class="col-span-2 ml-7">
               <span  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-sm">
                 {{ player.statistics.total_bronze }}
               </span>
-              </div>
               </div>
               
             </nuxt-link>
@@ -107,22 +110,33 @@
 <div>
   <!-- Table Header -->
   <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4 items-center">
-    <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-    <div class="col-span-3 text-gray-400 text-sm">ТРЕНЕР</div>
-    <div class="col-span-1 text-gray-400 text-sm text-center">СТР</div>
-    <div class="col-span-1 text-gray-400 text-sm text-center">КМ</div>
-    <div class="col-span-1 text-gray-400 text-sm text-center">Золото</div>
-    <div class="col-span-2 text-gray-400 text-sm text-center">Серебро</div>
-    <div class="col-span-1 text-gray-400 text-sm text-center">Бронза</div>
-    <div class="col-span-1 ml-10">
-      <select
-        v-model="selectedView"
-        class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
-      >
-        <option value="1">Личное достижение</option>
-        <option value="2">Достижения учащихся</option>
-      </select>
-    </div>
+    <div class="col-span-1 text-gray-400 text-xs flex items-center">РТГ</div>
+    <div class="col-span-2 text-gray-400 text-xs flex items-center">ТРЕНЕР</div>
+    <div class="col-span-1 text-gray-400 text-xs text-center flex items-center">СТР</div>
+    <div class="col-span-1 text-gray-400 text-xs text-center flex items-center">КМ</div>
+    <div class="col-span-1 text-gray-400 text-xs text-center flex items-center ">
+    <img src="/gold.png" class="w-6" alt="">
+    Золото</div>
+    <div class="col-span-2 text-gray-400 text-xs text-center flex items-center">
+    <img src="/silver.png" class="w-6 ml-5" alt="">Серебро</div>
+    <div class="col-span-2 text-gray-400 text-xs text-center flex items-center ">
+    <img src="/bronza.png" class="w-6" alt="">Бронза</div>
+    <div class="col-span-1 whitespace-nowrap text-xs text-gray-400">
+    <el-dropdown @command="handleSelect">
+      <el-button type="text" size="small" class=" !text-gray-400">
+        {{ selectedView === "1" ? "Личное " : " Учащихся" }}
+        <el-icon class="el-icon--right">
+          <arrow-down />
+        </el-icon>
+      </el-button>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+          <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+  </div>
   </div>
 
   <!-- Table Body -->
@@ -141,7 +155,7 @@
       <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
 
       <!-- Trainer Name -->
-      <div class="col-span-3 flex items-center gap-3">
+      <div class="col-span-2 flex items-center gap-3">
         <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
       </div>
 
@@ -203,9 +217,13 @@ import { ref, computed } from 'vue'
 import { ChevronRight } from 'lucide-vue-next'
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { ArrowDown } from '@element-plus/icons-vue'
 
 const router = useRouter();
 
+function handleSelect(command:any) {
+  selectedView.value = command;
+}
 
 
 const data = ref<any>([])

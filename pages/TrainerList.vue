@@ -183,20 +183,27 @@
           <!-- Table Header -->
           <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
             <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-2 text-gray-400 text-sm">ТРЕНЕР</div>
+            <div class="col-span-4 text-gray-400 text-sm">ТРЕНЕР</div>
             <div class="col-span-1  text-gray-400 text-sm">СТР</div>
             <div class="col-span-1  text-gray-400 text-sm">КМ</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Золото</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Серебро</div>
-            <div class="col-span-2 text-center text-gray-400 text-sm">Бронза</div>
+            <div class="col-span-1  text-center items-center text-gray-400 text-xs flex"><img src="/gold.png" class="w-6" alt="">Золото</div>
+            <div class="col-span-1 text-center items-center text-gray-400 text-xs flex"><img src="/silver.png" class="w-6" alt="">Серебро</div>
+            <div class="col-span-1 text-center items-center text-gray-400 text-xs flex"><img src="/bronza.png" class="w-6" alt="">Бронза</div>
             <div class="">
-              <select
-                v-model="selectedView"
-                class="bg-[#1A1B1F] text-white px-3 m-0 rounded w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#3A3B41]"
-              >
-                <option value="1">Личное достижение</option>
-                <option value="2">Достижения учащихся</option>
-              </select>
+              <el-dropdown @command="handleSelect">
+              <el-button type="text" size="small" class="!text-sm !text-gray-400">
+                {{ selectedView === "1" ? "Личное " : "Достижения " }}
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+                  <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
             </div>
           </div>
 
@@ -215,7 +222,7 @@
             
       
               <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-2 flex items-center gap-3">
+              <div class="col-span-4 flex items-center gap-3">
                 <span class="text-white text-sm truncate">{{ trainer.first_name }} {{ trainer.last_name }}</span>
               </div>
               <div class="col-span-1 text-center">
@@ -233,28 +240,26 @@
                 />
               </div>
                <!-- Medals -->
-      <div class="col-span-6 grid grid-cols-3 gap-4">
         <!-- Gold -->
-        <div class="text-center">
+        <div class=" col-span-1  ml-7">
           <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
             {{ selectedView === '1' ? trainer.statistics.own_statistics.gold : trainer.statistics.students_statistics.gold }}
           </span>
         </div>
 
         <!-- Silver -->
-        <div class="text-center">
+        <div class="col-span-1 ml-7">
           <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
             {{ selectedView === '1' ? trainer.statistics.own_statistics.silver : trainer.statistics.students_statistics.silver }}
           </span>
         </div>
 
         <!-- Bronze -->
-        <div class="text-center">
+        <div class=" col-span-1 ml-7">
           <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
             {{ selectedView === '1' ? trainer.statistics.own_statistics.bronze : trainer.statistics.students_statistics.bronze }}
           </span>
         </div>
-      </div>
 
 
               
@@ -272,12 +277,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import axios from 'axios';
-
+import { ArrowDown } from '@element-plus/icons-vue'
 
 const data = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
 const selectedView = ref("1"); 
+
+function handleSelect(command:any) {
+  selectedView.value = command;
+}
 
 
 const getData = async (name: string = 'Football') => {
