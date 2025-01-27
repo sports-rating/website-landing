@@ -219,7 +219,7 @@
       <div class="p-3 w-[10rem]">
       <el-dropdown @command="handleSelect">
       <el-button type="text" size="small" class="!text-sm !text-white">
-        {{ selectedView === "1" ? "Личное " : "Достижения " }}
+        {{ selectedView === "1" ? "Личное " : "Учащихся " }}
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>

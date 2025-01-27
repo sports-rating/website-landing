@@ -192,7 +192,7 @@
             <div class="">
               <el-dropdown @command="handleSelect">
               <el-button type="text" size="small" class="!text-sm !text-gray-400">
-                {{ selectedView === "1" ? "Личное " : "Достижения " }}
+                {{ selectedView === "1" ? "Личное " : "Учащихся " }}
                 <el-icon class="el-icon--right">
                   <arrow-down />
                 </el-icon>
