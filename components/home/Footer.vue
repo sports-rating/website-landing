@@ -114,7 +114,24 @@
       </div>
 
       <!-- Copyright -->
-      <div class="mt-12 pt-4 border-t border-gray-800">
+      <div class="mt-12 pt-4 border-t flex justify-around border-gray-800">
+        <div class="text-white flex gap-4 text-sm">
+
+        <nuxt-link
+              to="/PrivacyPolicy"
+              class="nav-link"
+              active-class="active-link"
+            >
+              Политика конфиденциальности
+            </nuxt-link>
+            <nuxt-link
+              to="/UserTerms"
+              class="nav-link"
+              active-class="active-link"
+            >
+              Условия эксплуатации
+            </nuxt-link>
+        </div>
         <p class="text-center text-gray-400 text-sm">
           © {{ new Date().getFullYear() }} Sports Rating. Все права защищены
         </p>
