@@ -213,10 +213,17 @@
       <div class="p-3 col-span-2">Изображение</div>
       <div class="p-3 col-span-2">СЕЗОН</div>
       <!-- <div class="p-3">ТРЕНЕР</div> -->
-      <div class="p-3 col-span-1">Место</div>
-      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/gold.png" class="w-6" alt="">Золото</div>
-      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/silver.png" class="w-6" alt="">Серебро</div>
-      <div class="p-3 col-span-1 text-center items-center  flex"><img src="/bronza.png" class="w-6" alt="">Бронза</div>
+      <div class="p-3 col-span-1"
+      :class="selectedView === '2' ? 'col-span-1' :'col-span-2'"
+      >Место</div>
+      <div v-if="selectedView === '2'" class=" col-span-3 text-center items-center  flex">
+      
+      <div class="p-3  text-center items-center  flex"><img src="/gold.png" class="w-6" alt="">Золото</div>
+      <div class="p-3  text-center items-center  flex"><img src="/silver.png" class="w-6" alt="">Серебро</div>
+      <div class="p-3  text-center items-center  flex"><img src="/bronza.png" class="w-6" alt="">Бронза</div>
+      </div>
+
+      <div v-if="selectedView === '1'" class=" col-span-2 text-center items-center  flex">Рейтинг</div>
       <div class="p-3 w-[10rem]">
       <el-dropdown @command="handleSelect">
       <el-button type="text" size="small" class="!text-sm !text-white">
@@ -242,12 +249,24 @@
         <div class="p-3 col-span-3">{{ row.tournament.name }}</div>
         <div class="p-3 col-span-2"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""></div>
         <div class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
-        <div class="p-3 col-span-1">{{ row.country }}</div>
-        <!-- <div class="p-3 ">{{ data?.first_name}} {{ data?.last_name }}</div> -->
-        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.gold : data?.trainer_profile?.statistics?.students_statistics?.gold }}</div>
+        <div class="p-3 col-span-1"
+        :class="selectedView === '2' ? 'col-span-1' :'col-span-2'"
+        >{{ row.country }}</div>
+        <div class="p-3 col-span-3 flex justify-around " v-if="selectedView === '2'">
         
-        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.silver : data?.trainer_profile?.statistics?.students_statistics?.silver }}</div>
-        <div class="p-3 col-span-1 ml-7">{{ selectedView === '1' ? data?.trainer_profile?.statistics?.own_statistics?.bronze : data?.trainer_profile?.statistics?.students_statistics?.bronze }}</div>
+        <div class="p-3 col-span-1 ">{{ row.number_of_gold  }}</div>
+        
+        <div class="p-3 col-span-1 ">{{ row.number_of_silver  }}</div>
+        <div class="p-3 col-span-1 ">{{ row.number_of_bronze  }}</div>
+        </div>
+
+        <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'">
+        
+        <img v-if="row.rating === 1" src="/gold.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 2" src="/silver.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 3" src="/bronza.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 4" src="/bronza.png" class="w-6" alt=""/>
+        {{ row.rating }}</div>
         
       </div>
     </div>

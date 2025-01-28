@@ -227,7 +227,13 @@
         <div class="p-3 ">{{ row.year?.split('-')[0] }}</div>
         <div class="p-3 ">{{ row.country }}</div>
         <div class="p-3 ">{{ data?.sportsman_profile?.trainer_name }}</div>
-        <div class="p-3">{{ row.rating }}</div>
+        <div class="p-3 flex items-center">
+        <img v-if="row.rating === 1" src="/gold.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 2" src="/silver.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 3" src="/bronza.png" class="w-6" alt=""/>
+        <img v-if="row.rating === 4" src="/bronza.png" class="w-6" alt=""/>
+        
+        {{ row.rating }}</div>
       </div>
     </div>
   </div>
