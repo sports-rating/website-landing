@@ -334,33 +334,31 @@
     <div class="w-full">
       
       <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="(doc, index) in data?.trainer_profile?.media?.filter((item:any) => item.media_type === 'pdf')" 
+        <div
+          v-if="data?.trainer_profile?.media?.some((item: any) => item.media_type === 'pdf')"
+          v-for="(doc, index) in data?.trainer_profile?.media?.filter((item: any) => item.media_type === 'pdf')"
           :key="index"
           class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
         >
           <div v-if="doc.media_type === 'pdf'">
-          <a :href="`http://api.7srating.uz/${doc.file}`" download target="_blank">
-          
-            <img src="/pdf.svg" alt="">
-          
-          <h3 class="text-sm text-gray-900  font-medium my-2">
-            {{ doc.file.split('/').pop() }}
-          </h3>
-          </a>
+            <a :href="`http://api.7srating.uz/${doc.file}`" download target="_blank">
+              <img src="/pdf.svg" alt="">
+              <h3 class="text-sm text-gray-900 font-medium my-2">
+                {{ doc.file.split('/').pop() }}
+              </h3>
+            </a>
           </div>
         </div>
-
-        <!-- <div v-for="(doc, index) in data?.trainer_profile?.media?.filter((item:any) => item.media_type !== 'pdf')" 
-          :key="index"
-          class="bg-white col-span-1  rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
+        <div
+          v-else
+          class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
         >
-          
-            <img src="/pdf.svg" alt="">
-          
-          <h3 class="text-sm text-gray-900  font-medium my-2">
-            PDF Not Found
-          </h3>
-        </div> -->
+          <img src="/pdf.svg" alt="">
+              <h3 class="text-sm text-gray-900 font-medium my-2">
+                PDF Not Found
+              </h3>
+        </div>
+
       </div>
     </div>
   </div>
