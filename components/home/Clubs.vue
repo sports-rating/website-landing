@@ -7,7 +7,7 @@
         <div class="flex items-end gap-4">
       
           <h2 class="text-2xl font-bold text-white">ФАН-КЛУБЫ</h2>
-        <span class="text-red-500 text-sm">В процессе...</span>
+        <span class="text-red-500 text-base px-4 py-1 border-2 border-red-500 rounded-lg">В процессе...</span>
       </div>
           
         </div>
