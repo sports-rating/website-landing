@@ -3,7 +3,11 @@
     <div class="container mx-auto px-4">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
+      <div class="flex items-end gap-4">
+      
         <h2 class="text-2xl font-bold text-white">ПОСЛЕДНИЕ НОВОСТИ</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
         <button class="text-gray-400 hover:text-white flex items-center gap-2">
           Все новости
           <ChevronRight class="w-4 h-4" />
@@ -20,7 +24,7 @@
           <!-- Article Image -->
           <div class="relative aspect-[4/3] overflow-hidden">
             <img 
-              src="/public/boks.svg" 
+              :src="article.image" 
               :alt="article.title"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -80,7 +84,7 @@ interface NewsArticle {
 const news: NewsArticle[] = [
   {
     id: 1,
-    image: '/placeholder.svg?height=300&width=400',
+    image: '/boks.svg',
     category: 'Футбол',
     date: '2024-01-20',
     title: 'Юношеская сборная Узбекистана победив Австрию вышла в четвертьфинал Чемпионата мира',
@@ -89,25 +93,25 @@ const news: NewsArticle[] = [
   },
   {
     id: 2,
-    image: '/placeholder.svg?height=300&width=400',
+    image: '/fon-1.jpg',
     category: 'Футбол',
     date: '2024-01-19',
-    title: 'Чемпионат мира по футболу 2034 года пройдет в Саудовской Аравии',
+    title: 'Чемпионат мира по бокса WBSSB 2034 года пройдет в Саудовской Аравии',
     excerpt: 'ФИФА официально объявила о том, что ЧМ-2034 пройдет в Саудовской Аравии. Это будет первый случай, когда Аравия примет участие в турнире.',
     url: '#'
   },
   {
     id: 3,
-    image: '/placeholder.svg?height=300&width=400',
+    image: '/fond-3.jpg',
     category: 'Бокс',
     date: '2024-01-18',
-    title: 'В Ташкенте пройдет матч профессионального бокса WBSSB',
+    title: 'В Ташкенте пройдет матч профессионального Basketbol WBSSB',
     excerpt: 'Профессиональный боксерский турнир WBSSB-45 в Ташкенте соберет лучших боксеров региона.',
     url: '#'
   },
   {
     id: 4,
-    image: '/placeholder.svg?height=300&width=400',
+    image: '/fond-2.jpg',
     category: 'Футбол',
     date: '2024-01-15',
     title: '«Пахтакор» — обладатель Кубка Узбекистана в третий раз подряд',

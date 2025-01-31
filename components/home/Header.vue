@@ -15,7 +15,7 @@
         <div class="flex items-center space-x-2">
           <nuxt-link to="/" class="text-white font-bold text-2xl">
             <img
-              src="/home-logo.svg"
+              src="/saber-logos.svg"
               alt="Sports fans cheering"
               class="w-full h-full object-cover"
             />

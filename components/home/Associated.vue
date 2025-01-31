@@ -3,7 +3,11 @@
     <div class="container mx-auto px-4">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
+      <div class="flex items-end gap-4">
+      
         <h2 class="text-2xl font-bold text-white">Связанные игроки</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
         <button class="text-gray-400 hover:text-white flex items-center gap-2">
           Посмотреть все
           <ChevronRight class="w-4 h-4" />

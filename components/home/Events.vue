@@ -3,7 +3,11 @@
     <div class="container mx-auto px-4">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
+      <div class="flex items-end gap-4">
+      
         <h2 class="text-2xl font-bold text-white">ГОДОВЫЕ СПОРТИВНЫЕ СОЗТЕЗАНИЕ</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
         <button class="text-gray-400 hover:text-white flex items-center gap-2">
           Посмотреть все
           <ChevronRight class="w-4 h-4" />
@@ -20,7 +24,7 @@
           <!-- Event Image -->
           <div class="relative aspect-video overflow-hidden">
             <img 
-              src="/public/events.svg" 
+              :src="event.image" 
               :alt="event.title"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -93,7 +97,7 @@ interface Event {
 const events: Event[] = [
   {
     id: 1,
-    image: '/public/events.svg',
+    image: '/events.svg',
     title: 'Ивановский полумарафон «Красная нить»',
     description: 'В этом забеге принимают участие полумарафонцы. Они используют высокую технику бега по асфальту на большой скорости.',
     date: '2024-01-20',
@@ -105,7 +109,7 @@ const events: Event[] = [
   },
   {
     id: 2,
-    image: '/public/events.svg',
+    image: '/fond-3.jpg',
     title: 'В Ташкенте пройдет бой профессионального бокса WBSSB',
     description: 'Профессиональный боксерский турнир WBSSB-45 в Ташкенте соберет лучших боксеров региона.',
     date: '2024-01-25',
@@ -117,7 +121,7 @@ const events: Event[] = [
   },
   {
     id: 3,
-    image: '/public/events.svg',
+    image: '/fond-2.jpg',
     title: '«Пахтакор» — обладатель Кубка Узбекистана в третий раз подряд',
     description: 'Футбольный клуб завоевал престижный трофей в упорной борьбе.',
     date: '2024-01-15',
@@ -127,42 +131,6 @@ const events: Event[] = [
     location: 'Ташкент, Узбекистан',
     participants: 15000
   },
-  {
-    id: 4,
-    image: '/public/events.svg',
-    title: 'Матчи хоккейного кубка "Лунь"',
-    description: 'Международный хоккейный турнир соберет сильнейшие команды региона.',
-    date: '2024-01-22',
-    category: 'Хоккей',
-    country: 'UZ',
-    countryFlag: '/public/user.svg',
-    location: 'Ташкент, Узбекистан',
-    participants: 5000
-  },
-  {
-    id: 5,
-    image: '/public/events.svg',
-    title: 'Скачки-турнир White Nights Open',
-    description: 'Престижные конные соревнования с участием лучших наездников.',
-    date: '2024-01-28',
-    category: 'Скачки',
-    country: 'UZ',
-    countryFlag: '/public/user.svg',
-    location: 'Ташкент, Узбекистан',
-    participants: 3000
-  },
-  {
-    id: 6,
-    image: '/public/events.svg',
-    title: 'Скачки-турнир White Nights Open',
-    description: 'Престижные конные соревнования с участием лучших наездников.',
-    date: '2024-01-28',
-    category: 'Скачки',
-    country: 'UZ',
-    countryFlag: '/public/user.svg',
-    location: 'Ташкент, Узбекистан',
-    participants: 3000
-  }
 ]
 
 function formatDate(dateString: string): string {

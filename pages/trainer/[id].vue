@@ -209,11 +209,10 @@
       <div v-if="activeTab === 'career'" class=" flex flex-col gap-8">
         <div class="w-full mx-auto mt-5">
     <div class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium">
-      <div class="p-3 col-span-3">ЧЕМПИОНАТ</div>
-      <div class="p-3 col-span-2">Изображение</div>
+      <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
       <div class="p-3 col-span-2">СЕЗОН</div>
       <!-- <div class="p-3">ТРЕНЕР</div> -->
-      <div class="p-3 col-span-1"
+      <div class="p-3 col-span-2"
       :class="selectedView === '2' ? 'col-span-1' :'col-span-2'"
       >Место</div>
       <div v-if="selectedView === '2'" class=" col-span-3 text-center items-center  flex">
@@ -244,23 +243,23 @@
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
       <div v-for="(row, index) in data?.trainer_profile?.results" 
-           :key="index"
-           class="grid grid-cols-12  text-white  cursor-pointer">
-        <div class="p-3 col-span-3">{{ row.tournament.name }}</div>
-        <div class="p-3 col-span-2"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""></div>
-        <div class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
-        <div class="p-3 col-span-1"
-        :class="selectedView === '2' ? 'col-span-1' :'col-span-2'"
-        >{{ row.country }}</div>
-        <div class="p-3 col-span-3 flex justify-around " v-if="selectedView === '2'">
-        
+        :key="index"
+        class="grid grid-cols-12  text-white  cursor-pointer">
+        <div v-if="selectedView === '1' && row.rating"  class="p-3 col-span-4 flex gap-4 items-center"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""> {{ row.tournament.name }}</div>
+        <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
+        <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2":class="selectedView === '1' ? 'col-span-2' :'col-span-1'">{{ row.country }}</div>
+
+        <div v-if="selectedView === '2' && !row.rating"  class="p-3 col-span-4 flex gap-4 items-center"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""> {{ row.tournament.name }}</div>
+        <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
+        <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2":class="selectedView === '2' ? 'col-span-1 ' :'col-span-2'">{{ row.country }}</div>
+
+        <div  class="p-3 col-span-3 flex justify-around " v-if="selectedView === '2' && !row.rating">
         <div class="p-3 col-span-1 ">{{ row.number_of_gold  }}</div>
-        
         <div class="p-3 col-span-1 ">{{ row.number_of_silver  }}</div>
         <div class="p-3 col-span-1 ">{{ row.number_of_bronze  }}</div>
         </div>
 
-        <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'">
+        <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'  && row.rating">
         
         <img v-if="row.rating === 1" src="/gold.png" class="w-6" alt=""/>
         <img v-if="row.rating === 2" src="/silver.png" class="w-6" alt=""/>

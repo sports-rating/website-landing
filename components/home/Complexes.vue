@@ -3,7 +3,11 @@
     <div class="container mx-auto px-4">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
+      <div class="flex items-end gap-4">
+      
         <h2 class="text-2xl font-bold text-white">СПОРТИВНЫЕ КОМПЛЕКСЫ</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
         <button class="text-gray-400 hover:text-white flex items-center gap-2">
           Посмотреть все
           <ChevronRight class="w-4 h-4" />
@@ -20,7 +24,7 @@
           <!-- Complex Image -->
           <div class="relative aspect-[16/7] overflow-hidden">
             <img 
-              src="/public/complexes.svg" 
+              :src="complex.image" 
               :alt="complex.name"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -92,7 +96,7 @@ interface SportComplex {
 const complexes: SportComplex[] = [
   {
     id: 1,
-    image: '/placeholder.svg?height=400&width=600',
+    image: '/complexes.svg',
     name: 'Многофункциональный ледовый комплекс Humo Arena',
     description: 'Спортивный комплекс включает в себя ледовую арену, тренажерный зал, бассейн и другие спортивные объекты.',
     facilities: ['Ледовая арена', 'Тренажерный зал', 'Бассейн', 'Фитнес-центр'],
@@ -102,34 +106,34 @@ const complexes: SportComplex[] = [
   },
   {
     id: 2,
-    image: '/placeholder.svg?height=400&width=600',
-    name: 'Centre FitSPA',
+    image: '/barsa.jpg',
+    name: 'Centre Camp Nou',
     description: 'Современный фитнес-центр с новейшим оборудованием, спа-зоной и профессиональными тренерами.',
     facilities: ['Тренажерный зал', 'СПА', 'Групповые занятия', 'Бассейн'],
     location: 'Ташкент, Мирзо Улугбекский район',
     rating: 4,
     reviewCount: 85
   },
-  {
-    id: 3,
-    image: '/placeholder.svg?height=400&width=600',
-    name: 'Motion Sport',
-    description: 'Специализированный спортивный комплекс с профессиональным оборудованием для силовых тренировок.',
-    facilities: ['Силовые тренажеры', 'Кроссфит', 'Персональные тренировки'],
-    location: 'Ташкент, Мирзо Улугбекский район',
-    rating: 5,
-    reviewCount: 92
-  },
-  {
-    id: 4,
-    image: '/placeholder.svg?height=400&width=600',
-    name: 'Savage',
-    description: 'Многофункциональный спортивный центр с современным оборудованием и опытными тренерами.',
-    facilities: ['Тренажерный зал', 'Бокс', 'Йога', 'Танцы'],
-    location: 'Ташкент, Мирзо Улугбекский район',
-    rating: 4,
-    reviewCount: 76
-  }
+  // {
+  //   id: 3,
+  //   image: '/placeholder.svg?height=400&width=600',
+  //   name: 'Motion Sport',
+  //   description: 'Специализированный спортивный комплекс с профессиональным оборудованием для силовых тренировок.',
+  //   facilities: ['Силовые тренажеры', 'Кроссфит', 'Персональные тренировки'],
+  //   location: 'Ташкент, Мирзо Улугбекский район',
+  //   rating: 5,
+  //   reviewCount: 92
+  // },
+  // {
+  //   id: 4,
+  //   image: '/placeholder.svg?height=400&width=600',
+  //   name: 'Savage',
+  //   description: 'Многофункциональный спортивный центр с современным оборудованием и опытными тренерами.',
+  //   facilities: ['Тренажерный зал', 'Бокс', 'Йога', 'Танцы'],
+  //   location: 'Ташкент, Мирзо Улугбекский район',
+  //   rating: 4,
+  //   reviewCount: 76
+  // }
 ]
 </script>
 

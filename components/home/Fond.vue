@@ -3,7 +3,11 @@
     <div class="container mx-auto px-4">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-2xl font-bold text-white">ФОНД "БИРДАМЛИК"</h2>
+      <div class="flex items-end gap-4">
+      
+        <h2 class="text-2xl font-bold text-white"> ФОНД "БИРДАМЛИК"</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
         <button class="text-gray-400 hover:text-white flex items-center gap-2">
           Посмотреть все
           <ChevronRight class="w-4 h-4" />
@@ -20,7 +24,7 @@
           <!-- Card Image -->
           <div class="relative aspect-[4/3] overflow-hidden">
             <img 
-              src="/public/card.svg" 
+              :src="card.image" 
               :alt="card.title"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -36,7 +40,7 @@
             <!-- Profile -->
             <div class="flex items-center gap-3 mb-3">
               <img 
-                src="/public/user.svg " 
+                :src="card.avatar" 
                 :alt="card.name"
                 class="w-16 h-16 rounded-full "
               />
@@ -101,9 +105,9 @@ interface FundingCard {
 const cards: FundingCard[] = [
   {
     id: 1,
-    image: '/public/card.svg',
+    image: '/card.svg',
     progress: 84,
-    avatar: '/public/user.svg',
+    avatar: '/fond-3.jpg',
     name: 'Пратов Максимбек',
     title: 'Мухтаржони угли',
     description: 'Присоединяйтесь ко мне, чтобы помочь талантливым спортсменам в одной из самых сложных областей спорта в мире. Я надеюсь, что 25 человек смогут...',
@@ -114,10 +118,10 @@ const cards: FundingCard[] = [
   },
   {
     id: 2,
-    image: '/public/card.svg',
+    image: '/fon-1.jpg',
     progress: 88,
-    avatar: '/public/user.svg',
-    name: 'Пратов Максимбек',
+    avatar: '/user.svg',
+    name: 'Руслан Руниддинов',
     title: 'Мухтаржони угли',
     description: 'Присоединяйтесь ко мне, чтобы помочь талантливым спортсменам в одной из самых сложных областей спорта в мире. Я надеюсь, что 25 человек смогут...',
     location: 'Ташкент, Мирзо Улугбекский район',
@@ -127,10 +131,10 @@ const cards: FundingCard[] = [
   },
   {
     id: 3,
-    image: '/public/card.svg',
+    image: '/fond-2.jpg',
     progress: 52,
-    avatar: '/public/user.svg',
-    name: 'Пратов Максимбек',
+    avatar: '/fon-1.jpg',
+    name: 'Алишер Садуллаев',
     title: 'Мухтаржони угли',
     description: 'Присоединяйтесь ко мне, чтобы помочь талантливым спортсменам в одной из самых сложных областей спорта в мире. Я надеюсь, что 25 человек смогут...',
     location: 'Ташкент, Мирзо Улугбекский район',
@@ -140,10 +144,10 @@ const cards: FundingCard[] = [
   },
   {
     id: 4,
-    image: '/public/card.svg',
+    image: '/fond-3.jpg',
     progress: 96,
-    avatar: '/public/user.svg',
-    name: 'Пратов Максимбек',
+    avatar: '/fond-2.jpg',
+    name: 'Бехруз Джамалов',
     title: 'Мухтаржони угли',
     description: 'Присоединяйтесь ко мне, чтобы помочь талантливым спортсменам в одной из самых сложных областей спорта в мире. Я надеюсь, что 25 человек смогут...',
     location: 'Ташкент, Мирзо Улугбекский район',

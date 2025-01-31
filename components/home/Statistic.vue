@@ -1,6 +1,10 @@
 <template>
   <div class=" bg-[#11101B] py-8">
+    <div class="flex items-end gap-4">
+      
       <h1 class="text-2xl font-bold text-white mb-8">Статистика по играм</h1>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
     <div class="container mx-auto px-6 border py-6">
       <!-- Header -->
 

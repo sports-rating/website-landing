@@ -4,7 +4,11 @@
       <!-- Header with Categories -->
       <div class="mb-8">
         <div class="flex justify-between items-center mb-6">
+        <div class="flex items-end gap-4">
+      
           <h2 class="text-2xl font-bold text-white">ФАН-КЛУБЫ</h2>
+        <span class="text-red-500 text-sm">В процессе...</span>
+      </div>
           
         </div>
 

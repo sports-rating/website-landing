@@ -6,7 +6,7 @@
         <div>
           <a href="/" class="inline-block mb-6">
             <img 
-              src="/public/home-logo.svg" 
+              src="/saber-logos.svg" 
               alt="Sports Rating"
               class="h-10"
             />
