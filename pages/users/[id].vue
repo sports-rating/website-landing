@@ -59,7 +59,7 @@
         <!-- Profile Image -->
         <div class="py-20 pr-28">
           <img 
-            :src="data.photo?.[0].file" 
+            :src="data.photo?.[0]?.file" 
             alt="Player Profile"
             class=" w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
           />

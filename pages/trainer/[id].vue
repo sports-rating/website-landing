@@ -59,7 +59,7 @@
         <!-- Profile Image -->
         <div class="py-20 pr-28">
           <img 
-            :src="data.photo?.[0].file" 
+            :src="data.photo?.[0]?.file" 
             alt="Player Profile"
             class=" w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
           />
@@ -257,7 +257,7 @@
         <div class="p-3 col-span-1 ">{{ row.number_of_gold  }}</div>
         <div class="p-3 col-span-1 ">{{ row.number_of_silver  }}</div>
         <div class="p-3 col-span-1 ">{{ row.number_of_bronze  }}</div>
-      </div>
+        </div>
 
         <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'  && row.rating">
         
@@ -268,6 +268,8 @@
         {{ row.rating }}</div>
         
       </div>
+
+      
     </div>
   </div>
       </div>
