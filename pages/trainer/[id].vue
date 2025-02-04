@@ -242,7 +242,7 @@
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
-      <div v-for="(row, index) in data?.trainer_profile?.results" 
+      <div v-for="(row, index) in data?.trainer_profile?.trainer_results" 
         :key="index"
         class="grid grid-cols-12  text-white  cursor-pointer">
         <div v-if="selectedView === '1' && row.rating"  class="p-3 col-span-4 flex gap-4 items-center"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""> {{ row.tournament.name }}</div>
@@ -257,7 +257,7 @@
         <div class="p-3 col-span-1 ">{{ row.number_of_gold  }}</div>
         <div class="p-3 col-span-1 ">{{ row.number_of_silver  }}</div>
         <div class="p-3 col-span-1 ">{{ row.number_of_bronze  }}</div>
-        </div>
+      </div>
 
         <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'  && row.rating">
         
@@ -390,7 +390,7 @@
          <div class="bg-[#11101B]   overflow-hidden w-full">
         <div class="">
           <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in data?.trainer_profile?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
+            <div v-for="(stat, index) in data?.trainer_profile?.trainer_results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
               <dt class="text-2xl font-medium text-white truncate">
                 {{ stat.tournament.name }}
               </dt>

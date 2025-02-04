@@ -216,7 +216,7 @@
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
-      <div v-for="(row, index) in data?.sportsman_profile?.results" 
+      <div v-for="(row, index) in data?.sportsman_profile?.sportsman_results" 
            :key="index"
            class="grid grid-cols-12  text-white  cursor-pointer">
         <!-- <div class="p-3 flex items-center ">
@@ -358,7 +358,7 @@
          <div class="bg-[#11101B]   overflow-hidden w-full">
         <div class="">
           <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in data?.sportsman_profile?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
+            <div v-for="(stat, index) in data?.sportsman_profile?.sportsman_results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
               <dt class="text-2xl font-medium text-white truncate">
                 {{ stat.tournament.name }}
               </dt>
