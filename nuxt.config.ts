@@ -22,6 +22,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         class: "light",
       },
+      link: [{ rel: "icon", type: "image/svg", href: "/s.svg" }],
     },
   },
 

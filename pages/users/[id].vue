@@ -23,7 +23,7 @@
               {{data?.sportsman_profile?.sport?.name}}
             </span>
             <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">
-              {{data?.sportsman_profile?.sport_type}}
+              {{data?.sportsman_profile?.skill_level}}
             </span>
           </div>
 
@@ -31,11 +31,11 @@
           <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Место рождения</p>
-              <p class="text-white">{{data?.sportsman_profile?.place_of_birth}}</p>
+              <p class="text-white">{{data?.sportsman_profile?.address?.place_of_birth}}</p>
             </div>
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Гражданство</p>
-              <p class="text-white">{{data?.sportsman_profile?.citizenship}}</p>
+              <p class="text-white">{{data?.sportsman_profile?.address?.citizenship}}</p>
             </div >
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">День рождения</p>
@@ -43,15 +43,15 @@
             </div>
             <div class="flex justify-between w-[60%] border-b pb-1">
               <p class="text-[#8B8992]">Рост</p>
-              <p class="text-white">{{ Number(data?.sportsman_profile?.height).toFixed(0) }} см</p>
+              <p class="text-white">{{ Number(data?.sportsman_profile?.user_metrics?.height).toFixed(0) }} см</p>
             </div>
             <div class="flex justify-between w-[60%] border-b pb-1"> 
               <p class="text-[#8B8992]">Вес</p>
-              <p class="text-white">{{ Number(data?.sportsman_profile?.weight).toFixed(0) }} кг</p>
+              <p class="text-white">{{ Number(data?.sportsman_profile?.user_metrics?.weight).toFixed(0) }} кг</p>
             </div>
             <div class="flex justify-between w-[60%] ">
               <p class="text-[#8B8992]">Воспитанник</p>
-              <p class="text-white">{{data?.sportsman_profile?.educations[0]?.school_name}}</p>
+              <p class="text-white">{{data?.educations?.[0]?.school_name}}</p>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
         <!-- Profile Image -->
         <div class="py-20 pr-28">
           <img 
-            :src="data.photo?.[0]?.file" 
+            :src="data?.media?.find((item:any) => item.is_profile_photo === true)?.file"
             alt="Player Profile"
             class=" w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
           />
@@ -216,13 +216,13 @@
     </div>
 
     <div class="container bg-[#11101B] divide-y divide-gray-200">
-      <div v-for="(row, index) in data?.sportsman_profile?.sportsman_results" 
+      <div v-for="(row, index) in data?.results" 
            :key="index"
            class="grid grid-cols-12  text-white  cursor-pointer">
         <!-- <div class="p-3 flex items-center ">
           <span>{{ row.country }}</span>
         </div> -->
-        <div class="p-3 col-span-4  flex gap-4 items-center"><img class="w-12 h-12" :src="`https://api.7srating.uz/${row.tournament.logo[0].file}`" alt=""> {{ row.tournament.name }}</div>
+        <div class="p-3 col-span-4  flex gap-4 items-center"><img class="w-12 h-12" :src="getTournamentLogo(row.tournament_name)" alt=""> {{ row.tournament_name }}</div>
         <!-- <div class="p-3"></div> -->
         <div class="p-3 col-span-1 ">{{ row.year?.split('-')[0] }}</div>
         <div class="p-3 col-span-1 ">{{ row.country }}</div>
@@ -300,11 +300,11 @@
       
       <!-- Image Grid -->
       <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div v-for="(image, index) in data?.sportsman_profile?.media?.filter((item:any) => item.media_type === 'image')" 
+        <div v-for="(image, index) in data?.media?.filter((item:any) => item.media_type === 'image' && item.is_profile_photo === false)" 
              :key="index" 
              class="relative group overflow-hidden rounded-lg">
           <img 
-            :src="`https://api.7srating.uz/${image.file}`"
+            :src="`${image.file}`"
             :alt="image.media_type"
             class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
           />
@@ -320,13 +320,13 @@
       
       <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div
-          v-if="data?.sportsman_profile?.media?.some((item: any) => item.media_type === 'pdf')"
-          v-for="(doc, index) in data?.sportsman_profile?.media?.filter((item: any) => item.media_type === 'pdf')"
+          v-if="data?.media?.some((item: any) => item.media_type === 'pdf')"
+          v-for="(doc, index) in data?.media?.filter((item: any) => item.media_type === 'pdf')"
           :key="index"
           class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
         >
           <div v-if="doc.media_type === 'pdf'">
-            <a :href="`http://api.7srating.uz/${doc.file}`" download target="_blank">
+            <a :href="`${doc.file}`" download target="_blank">
               <img src="/pdf.svg" alt="">
               <h3 class="text-sm text-gray-900 font-medium my-2">
                 {{ doc.file.split('/').pop() }}
@@ -358,12 +358,12 @@
          <div class="bg-[#11101B]   overflow-hidden w-full">
         <div class="">
           <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in data?.sportsman_profile?.sportsman_results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
+            <div v-for="(stat, index) in data?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
               <dt class="text-2xl font-medium text-white truncate">
-                {{ stat.tournament.name }}
+                {{ stat.tournament_name }}
               </dt>
               <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
-              {{ stat.tournament.start_time.split('-')[0] }}
+              {{ stat.year }}
               </dd>
             </div>
           </dl>
@@ -415,12 +415,19 @@ const getTournament = async () => {
   try {
     const res = await axios.get(
       `
-      https://api.7srating.uz/api/dashboard/tournament/`
+      https://api.7srating.uz/api/sport/tournament/`
     );
     dataTournament.value = res.data.data;
   } catch (e) {
     console.log(e);
   }
+};
+
+
+// Row uchun turnir logotipini olish
+const getTournamentLogo = (tournamentName:any) => {
+  const tournament = dataTournament.value.find((t:any) => t.name === tournamentName);
+  return tournament ? tournament?.sport?.logo : ""; 
 };
 
 onMounted(() => {

@@ -75,7 +75,7 @@
               </div>
               <div class="col-span-1 text-center">
               <img 
-                  :src="`${player?.logo[0]?.file}`" 
+                  :src="`${player?.logo}`" 
                   :alt="player.team"
                   class="w-6 h-6 rounded-full"
                 />
@@ -170,7 +170,7 @@
       <!-- Team Logo -->
       <div class="col-span-1 text-center">
         <img
-          :src="`${trainer?.logo[0]?.file}`"
+          :src="`${trainer?.logo}`"
           :alt="trainer.team"
           class="w-6 h-6 rounded-full"
         />
@@ -266,7 +266,7 @@ const toggle = (id: number, name:string) => {
 const getSport = async() => {
   try {
     const res = await axios.get(
-    `https://api.7srating.uz/api/dashboard/sport/`);
+    `https://api.7srating.uz/api/sport/`);
 
     sports.value = res.data.data
 
