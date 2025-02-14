@@ -254,9 +254,9 @@
         <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2":class="selectedView === '2' ? 'col-span-1 ' :'col-span-2'">{{ row.country }}</div>
 
         <div  class="p-3 col-span-3 flex justify-around " v-if="selectedView === '2' && !row.rating">
-        <div class="p-3 col-span-1 ">{{ row.number_of_gold  }}</div>
-        <div class="p-3 col-span-1 ">{{ row.number_of_silver  }}</div>
-        <div class="p-3 col-span-1 ">{{ row.number_of_bronze  }}</div>
+        <div class="p-3 col-span-1 ">{{ row.gold  }}</div>
+        <div class="p-3 col-span-1 ">{{ row.silver  }}</div>
+        <div class="p-3 col-span-1 ">{{ row.bronze  }}</div>
         </div>
 
         <div class="p-3 col-span-3  flex items-center" v-if="selectedView === '1'  && row.rating">
