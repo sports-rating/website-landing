@@ -14,23 +14,30 @@
         </div>
 
         <!-- Filters Section -->
-        <div class=" py-4 rounded-lg flex flex-wrap items-center justify-between gap-4 mb-6">
-          <!-- Sport Filters -->
-          <div class="flex gap-4">
-            <button 
-              v-for="sport in sports" 
-              :key="sport.id"
-              @click="toggle(sport.id, sport.name)"
-              :class="[
-                'px-6 py-2 rounded text-xs font-medium transition',
-                activeCategory === sport.id 
-                  ? 'bg-red-600 text-white' 
-                  : 'bg-[#1A1B1F] text-gray-400 hover:bg-red-600 hover:text-white'
-              ]"
-            >
-              {{ sport.name }}
-            </button>
-          </div>
+        <div class=" rounded-lg flex flex-wrap items-center justify-between gap-4 ">
+          <!-- Sports Categories -->
+      <div class="flex  overflow-x-scroll no-scrollbar hide-scrollbar justify-between ">
+      <div class="flex gap-2">
+        
+
+        <button 
+          v-for="(sport) in sports" 
+          :key="sport.id"
+          @click="toggle(sport.id, sport.name)"
+          :class="[
+            'px-4 py-2 rounded text-sm whitespace-nowrap transition-colors',
+            activeCategory === sport.id 
+              ? 'bg-red-600 text-white' 
+              : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]'
+          ]"
+        >
+          {{ sport.name }}
+        </button>
+      </div>
+        
+      </div>
+
+          
 
           <!-- Region Dropdown -->
 
@@ -256,7 +263,7 @@ const data = ref<any>([])
 const activeCategory = ref<any>(null)
 const sports = ref<any[]>([])
 
-const getData = async (name: string = 'Football') => {
+const getData = async (name: string = 'Жиу Житсу') => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/sportsman/?sport=${name}`
@@ -280,7 +287,7 @@ const getSport = async() => {
 
     sports.value = res.data.data
 
-    const defaultSport = sports.value.find(sport => sport.name === 'Football');
+    const defaultSport = sports.value.find(sport => sport.name === 'Жиу Житсу');
   if (defaultSport) {
         activeCategory.value = defaultSport.id; // Set default active category to Football's ID
         toggle(defaultSport.id, defaultSport.name); // Trigger data load for Football
@@ -375,14 +382,14 @@ const applyRatingFilter = () => {
 
 <style >
 .no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #e1e1e1;
+  background-color: transparent !important;
   border: 4px solid transparent;
   border-radius: 8px;
   background-clip: padding-box;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  width: 16px;
+  width: 10px;
 }
 
 .no-scrollbar {

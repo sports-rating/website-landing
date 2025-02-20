@@ -11,7 +11,7 @@
       </div>
 
       <!-- Sports Categories -->
-      <div class="flex  overflow-x-auto pb-4 mb-6 hide-scrollbar justify-between ">
+      <div class="flex  overflow-x-scroll no-scrollbar hide-scrollbar justify-between ">
       <div class="flex gap-2">
         
 
@@ -234,7 +234,7 @@ function handleSelect(command:any) {
 
 
 
-const getData = async (name: string = 'Football') => {
+const getData = async (name: string = 'Жиу Житсу') => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/sportsman/?sport=${name}`
@@ -245,7 +245,7 @@ const getData = async (name: string = 'Football') => {
   }
 };
 
-const getTrainer = async (name: string = 'Football') => {
+const getTrainer = async (name: string = 'Жиу Житсу') => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
@@ -270,7 +270,7 @@ const getSport = async() => {
 
     sports.value = res.data.data
 
-    const defaultSport = sports.value.find(sport => sport.name === 'Football');
+    const defaultSport = sports.value.find(sport => sport.name === 'Жиу Житсу');
   if (defaultSport) {
         activeCategory.value = defaultSport.id; 
         toggle(defaultSport.id, defaultSport.name);
@@ -313,5 +313,19 @@ interface Player {
 </script>
 
 <style scoped>
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+  border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
 
+.no-scrollbar::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scroll-margin-block-start: 0;
+}
 </style>

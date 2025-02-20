@@ -2,14 +2,19 @@
   <div class="pt-10 bg-[#11101B]">
     <div class="container mx-auto px-4 pb-8">
       <!-- Header with Title and View All -->
-      <div class="flex mb-6">
+      <div class=" container flex mb-6 mx-auto p-0 justify-between items-center">
         <h2 class="text-2xl font-bold text-white">РЕЙТИНГИ ИГРОКОВ И ТРЕНЕРОВ</h2>
         
+         <button  @click="goToRatings" class=" text-gray-400  whitespace-nowrap hover:text-white flex items-center gap-2">
+          Перейти к рейтингу
+          <ChevronRight class="w-4 h-4" />
+        </button>
       </div>
 
       <!-- Sports Categories -->
-      <div class="flex  overflow-x-auto pb-4 mb-6 hide-scrollbar justify-between ">
-      <div class="flex gap-2">
+      
+      <div class="flex w-full overflow-x-scroll no-scrollbar   gap-4 hide-scrollbar justify-between ">
+      <div class="flex gap-2 ">
         
 
         <button 
@@ -17,7 +22,7 @@
           :key="sport.id"
           @click="toggle(sport.id, sport.name)"
           :class="[
-            'px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors',
+            'px-4 py-2 rounded-full text-sm whitespace-nowrap overflow-hidden transition-colors',
             activeCategory === sport.id 
               ? 'bg-red-600 text-white' 
               : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]'
@@ -26,10 +31,6 @@
           {{ sport.name }}
         </button>
       </div>
-        <button  @click="goToRatings" class="text-gray-400 hover:text-white flex items-center gap-2">
-          Перейти к рейтингу
-          <ChevronRight class="w-4 h-4" />
-        </button>
       </div>
 
       <!-- Tables Grid -->
@@ -237,7 +238,7 @@ const goToRatings = () => {
   router.push('/RatingsPage');
 };
 
-const getData = async (name: string = 'Football') => {
+const getData = async (name: string = 'Жиу Житсу') => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/sportsman/?sport=${name}`
@@ -249,7 +250,7 @@ const getData = async (name: string = 'Football') => {
 };
 
 
-const getTrainer = async (name: string = 'Football') => {
+const getTrainer = async (name: string = 'Жиу Житсу') => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
@@ -274,7 +275,7 @@ const getSport = async() => {
 
     sports.value = res.data.data
 
-    const defaultSport = sports.value.find(sport => sport.name === 'Football');
+    const defaultSport = sports.value.find(sport => sport.name === 'Жиу Житсу');
   if (defaultSport) {
         activeCategory.value = defaultSport.id; 
         toggle(defaultSport.id, defaultSport.name);
@@ -317,5 +318,19 @@ interface Player {
 </script>
 
 <style scoped>
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+  border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
 
+.no-scrollbar::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scroll-margin-block-start: 0;
+}
 </style>
