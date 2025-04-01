@@ -266,7 +266,7 @@
     <div v-if="selectedMatch" class="container fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-4 rounded-lg max-w-3xl w-full">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold">{{ selectedMatch.title }}</h2>
+          <h2 class="text-xl font-bold">{{ selectedMatch?.title }}</h2>
           <button @click="closeVideo" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -279,9 +279,9 @@
         </video> -->
 
 
-        <div v-if="selectedMatch.hasVideo" class="aspect-w-16 aspect-h-9 ">
+        <div v-if="selectedMatch?.hasVideo" class="aspect-w-16 aspect-h-9 ">
       <iframe
-        :src="selectedMatch.videoUrl"
+        :src="selectedMatch?.videoUrl"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -356,18 +356,22 @@
           <h2 class="text-2xl font-medium text-white">Достижения</h2>
         </div>
          <div class="bg-[#11101B]   overflow-hidden w-full">
-        <div class="">
-          <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in data?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
-              <dt class="text-2xl font-medium text-white truncate">
-                {{ stat.tournament_name }}
-              </dt>
-              <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
-              {{ stat.year }}
-              </dd>
-            </div>
-          </dl>
-        </div>
+        <div>
+  <dl class="grid grid-cols-3">
+    <div 
+      v-for="(stat, index) in filteredResults" 
+      :key="index" 
+      class="px-4 py-5 border overflow-hidden sm:p-6"
+    >
+      <dt class="text-2xl font-medium text-white truncate">
+        {{ stat.tournament_name }}
+      </dt>
+      <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
+        {{ stat.year }} 
+      </dd>
+    </div>
+  </dl>
+</div>
 
         </div>
       </div>
@@ -427,8 +431,13 @@ const getTournament = async () => {
 // Row uchun turnir logotipini olish
 const getTournamentLogo = (tournamentName:any) => {
   const tournament = dataTournament.value.find((t:any) => t.name === tournamentName);
-  return tournament ? tournament?.sport?.logo : ""; 
+  return tournament ? tournament?.logo : ""; 
 };
+
+const filteredResults = computed(() => {
+  return data?.value?.results?.filter((stat: any) => stat.rating === 1 || stat.gold === 1);
+});
+
 
 onMounted(() => {
   getData()

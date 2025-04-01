@@ -390,18 +390,22 @@
           <h2 class="text-2xl font-medium text-white">Достижения</h2>
         </div>
          <div class="bg-[#11101B]   overflow-hidden w-full">
-        <div class="">
-          <dl class="grid grid-cols-3">
-            <div v-for="(stat, index) in data?.results" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
-              <dt class="text-2xl font-medium text-white truncate">
-                {{ stat.tournament_name }}
-              </dt>
-              <dd class="mt-1 text-sm font-semibold  text-[#8B8992]">
-              {{ stat.year }} 
-              </dd>
-            </div>
-          </dl>
-        </div>
+        <div>
+  <dl class="grid grid-cols-3">
+    <div 
+      v-for="(stat, index) in filteredResults" 
+      :key="index" 
+      class="px-4 py-5 border overflow-hidden sm:p-6"
+    >
+      <dt class="text-2xl font-medium text-white truncate">
+        {{ stat.tournament_name }}
+      </dt>
+      <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
+        {{ stat.year }} 
+      </dd>
+    </div>
+  </dl>
+</div>
 
         </div>
       </div>
@@ -447,6 +451,15 @@ const getData = async () => {
   }
 };
 
+const filteredResults = computed(() => {
+  if (selectedView.value === '1') {
+    
+    return data?.value?.results?.filter((stat: any) => stat.rating === 1);
+  } else {
+    return data?.value?.results?.filter((stat: any) => stat.gold === 1);
+  }
+});
+
 
 
 const getTournament = async () => {
@@ -464,7 +477,7 @@ const getTournament = async () => {
 // Row uchun turnir logotipini olish
 const getTournamentLogo = (tournamentName:any) => {
   const tournament = dataTournament.value.find((t:any) => t.name === tournamentName);
-  return tournament ? tournament?.sport?.logo : ""; 
+  return tournament ? tournament?.logo : ""; 
 };
 
 
