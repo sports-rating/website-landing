@@ -224,7 +224,7 @@
         </div> -->
         <div class="p-3 col-span-4  flex gap-4 items-center"><img class="w-12 h-12" :src="getTournamentLogo(row.tournament_name)" alt=""> {{ row.tournament_name }}</div>
         <!-- <div class="p-3"></div> -->
-        <div class="p-3 col-span-1 ">{{ row.year?.split('-')[0] }}</div>
+        <div class="p-3 col-span-1 ">{{ row.year }}</div>
         <div class="p-3 col-span-1 ">{{ row.country }}</div>
         <div class="p-3 col-span-4 ">{{ data?.sportsman_profile?.trainer_name }}</div>
         <div class="p-3 col-span-2 flex items-center">

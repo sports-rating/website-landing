@@ -246,11 +246,11 @@
         :key="index"
         class="grid grid-cols-12  text-white  cursor-pointer">
         <div v-if="selectedView === '1' && row.rating"  class="p-3 col-span-4 flex gap-4 items-center"><img class="w-12 h-12" :src="getTournamentLogo(row.tournament_name)" alt=""> {{ row.tournament_name }}</div>
-        <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
+        <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2">{{ row.year }}</div>
         <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2":class="selectedView === '1' ? 'col-span-2' :'col-span-1'">{{ row.country }}</div>
 
         <div v-if="selectedView === '2' && !row.rating"  class="p-3 col-span-4 flex gap-4 items-center"><img class="w-12 h-12" :src="getTournamentLogo(row.tournament_name)" alt=""> {{ row.tournament_name }}</div>
-        <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2">{{ row.year?.split('-')[0] }}</div>
+        <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2">{{ row.year }}</div>
         <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2":class="selectedView === '2' ? 'col-span-1 ' :'col-span-2'">{{ row.country }}</div>
 
         <div  class="p-3 col-span-3 flex justify-around " v-if="selectedView === '2' && !row.rating">
