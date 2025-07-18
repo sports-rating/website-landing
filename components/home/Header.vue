@@ -1,13 +1,14 @@
 <template>
   <div class=" h-screen relative z-20">
-    <div class="absolute inset-0 z-0">
-      <img
-        src="/public/home.png"
-        alt="Sports fans cheering"
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute  bg-black/30"></div>
-    </div>
+   <div class="absolute inset-0 z-0">
+  <img
+    src="/ee.png"
+    alt="Sports fans cheering"
+    class="w-full h-full object-cover"
+  />
+  <div class="absolute inset-0 bg-black/70"></div>
+</div>
+
 
     <div class="relative z-20 ">
     <nav class="z-10 py-8 container">
