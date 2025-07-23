@@ -7,7 +7,7 @@
 
     <div class="relative z-20">
       <nav class="z-10 py-8 container">
-        <div class="mx-auto grid grid-cols-3">
+        <div class="mx-auto flex items-center justify-between">
           <div class="flex items-center space-x-2">
             <nuxt-link to="/" class="text-white font-bold text-2xl">
               <img
