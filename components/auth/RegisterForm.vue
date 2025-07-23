@@ -162,7 +162,9 @@
               <!-- Phone -->
 
               <div class="mb-4">
-                <label class="block text-sm text-gray-500 font-light mb-1">Логин</label>
+                <label class="block text-sm text-gray-500 font-light mb-1"
+                  >Номер телефона</label
+                >
                 <vue-tel-input
                   v-model="formData.phone_number"
                   :autoFormat="true"
