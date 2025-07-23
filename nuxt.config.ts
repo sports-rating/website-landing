@@ -11,6 +11,8 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
   ],
 
+  css: ["vue-tel-input/vue-tel-input.css"],
+
   colorMode: {
     preference: "light",
     fallback: "light",

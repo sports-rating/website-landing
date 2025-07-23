@@ -1,32 +1,50 @@
 import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  // Create a new Axios instance
-  const axiosInstance = axios.create({
-    baseURL: process.env.API_BASE_URL || "https://example.com/api", // Update baseURL
+  const api = axios.create({
+    baseURL: "https://api.7srating.uz/api/",
+    headers: {
+      "Accept-Language": process.client
+        ? localStorage.getItem("locale") || "en"
+        : "en",
+    },
   });
 
-  // Interceptors (optional)
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      // Modify request config if needed
-      console.log("Request:", config);
+  if (process.client) {
+    const authStore = useAuthStore();
+
+    api.interceptors.request.use((config) => {
+      if (authStore.token) {
+        config.headers.Authorization = `Bearer ${authStore.token}`;
+      }
       return config;
-    },
-    (error) => Promise.reject(error)
-  );
+    });
 
-  axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      // Handle errors globally
-      console.error("Response error:", error);
-      return Promise.reject(error);
-    }
-  );
+    api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401) {
+          try {
+            const refreshResponse = await axios.post(
+              "https://api.7srating.uz/api/user/refresh-token/",
+              {
+                refresh: authStore.refreshToken,
+              }
+            );
 
-  // Inject Axios into Nuxt
-  nuxtApp.provide("axios", axiosInstance);
+            authStore.token = refreshResponse.data.token;
+            error.config.headers.Authorization = `Bearer ${authStore.token}`;
+            return api.request(error.config);
+          } catch (refreshError) {
+            authStore.logout();
+            return Promise.reject(refreshError);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
 
-  // nuxtApp.vueApp.config.globalProperties.$axios = axiosInstance;
+  nuxtApp.provide("api", api);
 });
