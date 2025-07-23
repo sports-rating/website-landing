@@ -83,7 +83,10 @@ const handleSubmit = async () => {
 };
 
 onMounted(() => {
-  authStore.fetchUserProfile();
+  const acToken = localStorage.getItem("access_token");
+  if (acToken) {
+    authStore.fetchUserProfile();
+  }
 });
 </script>
 

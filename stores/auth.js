@@ -29,7 +29,6 @@ export const useAuthStore = defineStore("auth", {
       const { $api } = useNuxtApp();
       try {
         await $api.post("user/auth/send-code/", payload);
-        console.log("test");
 
         this.loginPayload = { ...payload };
       } catch (error) {
@@ -99,7 +98,7 @@ export const useAuthStore = defineStore("auth", {
 
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      router.push("/login");
+      router.push("/");
     },
   },
 
