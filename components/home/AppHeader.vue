@@ -1,5 +1,5 @@
 <template>
-  <div class="relative z-20 bg-[#11101B] ">
+  <div class="relative z-20 bg-[#11101B]">
     <nav class="z-10 py-8 container">
       <div class="mx-auto flex items-center justify-between">
         <!-- Logo -->
@@ -16,19 +16,10 @@
         <!-- Navbar Links -->
         <div class="flex items-center">
           <div class="hidden md:flex space-x-8">
-            <nuxt-link
-              to="/userList"
-              class="nav-link"
-              active-class="active-link"
-            >
+            <nuxt-link to="/userList" class="nav-link" active-class="active-link">
               Рейтинг спортсменов
             </nuxt-link>
-            <nuxt-link
-              to="/trainerList"
-              class="nav-link"
-              active-class="active-link"
-            >
-            
+            <nuxt-link to="/trainerList" class="nav-link" active-class="active-link">
               Рейтинг тренеров
             </nuxt-link>
             <!-- <a
@@ -41,20 +32,23 @@
             >
               Новости
             </a> -->
-            <a
-              class="text-white"
-            >
-              Контакты
-            </a>
+            <a class="text-white"> Контакты </a>
           </div>
         </div>
 
         <!-- Auth Buttons -->
-        <div class="flex items-center space-x-4">
-          <button class="text-white hover:text-gray-300 transition">Войти</button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-            Зарегистрироваться
-          </button>
+        <div v-if="isProfileLoaded" class="flex items-center space-x-4">
+          <NuxtLink to="/login">
+            <button class="text-white hover:text-gray-300 transition">Войти</button>
+          </NuxtLink>
+
+          <NuxtLink to="/register">
+            <button
+              class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              Зарегистрироваться
+            </button>
+          </NuxtLink>
         </div>
       </div>
     </nav>
@@ -62,9 +56,19 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "~/stores/auth";
 
+const authStore = useAuthStore();
+
+const isProfileLoaded = computed(() => !authStore.userProfile);
+
+onMounted(() => {
+  const acToken = localStorage.getItem("access_token");
+  if (acToken) {
+    authStore.fetchUserProfile();
+  }
+});
 </script>
-
 
 <style scoped>
 .nav-link {
@@ -74,7 +78,7 @@
 
 .nav-link:hover {
   color: #d1d5db !important; /* Gray-300 */
-  border-bottom:1px solid red
+  border-bottom: 1px solid red;
 }
 
 .active-link {

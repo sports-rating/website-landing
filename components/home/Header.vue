@@ -66,21 +66,11 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 
-const router = useRouter();
 const authStore = useAuthStore();
 
 const isProfileLoaded = computed(() => !authStore.userProfile);
-
-const handleSubmit = async () => {
-  try {
-    router.push("/login");
-  } catch (error) {
-    console.error("Login error:", error);
-  }
-};
 
 onMounted(() => {
   const acToken = localStorage.getItem("access_token");

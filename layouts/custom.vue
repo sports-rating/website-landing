@@ -5,8 +5,13 @@ import { useAuthStore } from "~/stores/auth";
 
 const authStore = useAuthStore();
 
-onMounted(async () => {
-  await authStore.userProfile;
+const isProfileLoaded = computed(() => !authStore.userProfile);
+
+onMounted(() => {
+  const acToken = localStorage.getItem("access_token");
+  if (acToken) {
+    authStore.fetchUserProfile();
+  }
 });
 </script>
 
