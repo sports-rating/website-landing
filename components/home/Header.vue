@@ -41,17 +41,17 @@
           </div>
 
           <div v-if="isProfileLoaded" class="flex items-center space-x-4">
-            <button
-              @click="handleSubmit"
-              class="text-white hover:text-gray-300 transition"
-            >
-              Войти
-            </button>
-            <button
-              class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-            >
-              Зарегистрироваться
-            </button>
+            <NuxtLink to="/login">
+              <button class="text-white hover:text-gray-300 transition">Войти</button>
+            </NuxtLink>
+
+            <NuxtLink to="/register">
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Зарегистрироваться
+              </button>
+            </NuxtLink>
           </div>
         </div>
       </nav>
