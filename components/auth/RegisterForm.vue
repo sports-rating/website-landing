@@ -152,6 +152,7 @@
                     <option value="" disabled selected>Выберите тип</option>
                     <option value="sportsman">Игрок</option>
                     <option value="trainer">Тренер</option>
+                    <option value="federation">Федерация</option>
                   </select>
                   <p v-if="errors.userType" class="text-red-500 text-xs mt-0.5">
                     {{ errors.userType }}
@@ -220,6 +221,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ["guestOnly"],
+});
+
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
@@ -335,6 +340,13 @@ const handleSubmit = async () => {
     console.error("Registration error:", error);
   }
 };
+
+onMounted(async () => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    return navigateTo("/");
+  }
+});
 </script>
 
 <style scoped></style>

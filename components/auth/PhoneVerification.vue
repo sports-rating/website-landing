@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="bg-[radial-gradient(circle,_#1F1F1F_0%,_#000000_0%)] w-full h-screen"
-    >
+    <div class="bg-[radial-gradient(circle,_#1F1F1F_0%,_#000000_0%)] w-full h-screen">
       <div class="flex items-center relative">
         <img
           src="@/assets/img/login/login-boy.png"
@@ -14,16 +12,10 @@
         >
           <div class="w-full max-w-[360px] bg-white rounded-2xl p-8">
             <div class="flex justify-center mb-4">
-              <img
-                src="@/assets/img/login/logo.svg"
-                alt="Sport Rating"
-                class="h-10"
-              />
+              <img src="@/assets/img/login/logo.svg" alt="Sport Rating" class="h-10" />
             </div>
 
-            <h1 class="text-center font-medium mb-1.5">
-              Подтверждение личности
-            </h1>
+            <h1 class="text-center font-medium mb-1.5">Подтверждение личности</h1>
 
             <p class="text-gray-500 text-xs text-center mb-4">
               Ваш номер телефона будет использоваться для регистрации
@@ -99,11 +91,5 @@ const validatePhone = () => {
   }
   error.value = "";
   return true;
-};
-
-const handleSubmit = () => {
-  if (validatePhone()) {
-    console.log("Phone number submitted:", phoneNumber.value);
-  }
 };
 </script>

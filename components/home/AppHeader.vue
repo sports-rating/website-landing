@@ -26,7 +26,7 @@
             <el-avatar
               :size="40"
               :src="
-                authStore.userProfile.data.image ||
+                authStore.userProfile.data.profile_photo ||
                 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
               "
             />
@@ -76,8 +76,6 @@ import { computed, onMounted } from "vue";
 const authStore = useAuthStore();
 const router = useRouter();
 
-const isProfileLoaded = computed(() => !authStore.userProfile?.data);
-
 onMounted(() => {
   const acToken = localStorage.getItem("access_token");
   if (acToken) {
@@ -89,6 +87,7 @@ const userRoleText = computed(() => {
   const role = authStore.userProfile?.data?.user_role;
   if (role === "sportsman") return "Спортсмен";
   if (role === "trainer") return "Тренер";
+  if (role === "federation") return "Федерация";
   if (role === "ordinary") return "Oбычный";
   if (role === "admin") return "Aдминистратор";
   return "";
@@ -101,7 +100,8 @@ function handleLogout() {
 function goToProfile() {
   const role = authStore.userProfile?.data?.user_role;
   if (role === "sportsman") return router.push("/SportsmanProfile");
-  if (role === "trainer") return router.push("/TrainerList");
+  if (role === "trainer") return router.push("/TrainerProfile");
+  if (role === "federation") return router.push("/FederationProfile");
   return "";
 }
 </script>

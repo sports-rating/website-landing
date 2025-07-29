@@ -1,15 +1,11 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <div>
-    <main >
+    <main>
       <slot />
     </main>
   </div>
 </template>
 
-<style lang="postcss">
-
-</style>
+<style lang="postcss"></style>

@@ -80,6 +80,10 @@ import { ref, reactive } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
 
+definePageMeta({
+  middleware: ["guestOnly"],
+});
+
 const authStore = useAuthStore();
 const router = useRouter();
 const isLoading = ref(false);
@@ -117,14 +121,18 @@ const handleSubmit = async () => {
     localStorage.removeItem("registerData");
     router.push("/phoneVerification");
   } catch (error) {
-    // toast.error(error.response.data.message, {
-    //   autoClose: 3000,
-    // })
     console.error("Login error:", error);
   } finally {
     isLoading.value = false;
   }
 };
+
+onMounted(async () => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    return navigateTo("/");
+  }
+});
 </script>
 
 <style scoped></style>

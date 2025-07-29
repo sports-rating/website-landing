@@ -60,6 +60,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ["guestOnly"],
+});
+
 import OtpInput from "../components/OtpInput.vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
@@ -97,7 +101,13 @@ const handleOtp = async () => {
       if (registerData.value) {
         await authStore.register(registerData.value);
       }
-      router.push("/");
+      const role = authStore.userProfile?.data?.user_role;
+      if (role) {
+        if (role === "sportsman") return router.push("/SportsmanProfile");
+        if (role === "trainer") return router.push("/TrainerProfile");
+        if (role === "federation") return router.push("/FederationProfile");
+        return router.push("/");
+      }
     } catch (error) {
       errorMessage.value = "Verification failed. Please try again.";
     } finally {
@@ -131,12 +141,16 @@ const handleResend = () => {
   authStore.resetVerify();
 };
 
-onMounted(() => {
+onMounted(async () => {
   startTimer();
 
   const dataRe = localStorage.getItem("registerData");
   if (dataRe) {
     registerData.value = JSON.parse(dataRe);
+  }
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    return navigateTo("/");
   }
 });
 </script>

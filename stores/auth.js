@@ -56,7 +56,7 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.data.action !== "signup") {
           this.token = response.data.data.tokens.access;
           this.refreshToken = response.data.data.tokens.refresh;
-
+          this.userProfile = response.data;
           $api.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${this.token}`;
