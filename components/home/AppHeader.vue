@@ -3,7 +3,7 @@
     <nav class="z-10 py-8 container mx-auto flex items-center justify-between">
       <!-- Logo -->
       <nuxt-link to="/" class="text-white font-bold text-2xl">
-        <img src="/saber-logos.svg" alt="Logo" class="w-32 h-auto object-cover" />
+        <img src="/saber-logos.svg" alt="Logo" class="md:w-32 w-24 h-auto object-cover" />
       </nuxt-link>
 
       <!-- Navbar Links -->
@@ -24,7 +24,7 @@
             class="el-dropdown-link cursor-pointer flex items-center space-x-3 text-white"
           >
             <el-avatar
-              :size="40"
+              class="md:!w-[40px] md:!h-[40px] !w-[30px] !h-[30px] object-cover"
               :src="
                 authStore.userProfile.data.profile_photo ||
                 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -71,7 +71,7 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();

@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="bg-[radial-gradient(circle,_#1F1F1F_0%,_#000000_0%)] w-full h-screen">
-      <div class="flex items-center relative">
+      <div
+        class="flex md:flex-row flex-col md:items-start md:justify-start justify-center items-center relative min-h-screen"
+      >
         <img
           src="@/assets/img/login/login-boy.png"
           alt="Login img ball boy"
-          class="h-screen"
+          class="h-screen md:flex hidden"
         />
         <div
-          class="min-h-screen absolute top-50 2xl:right-1/4 right-[15rem] bg-black flex items-center justify-center p-2"
+          class="w-full md:w-auto md:absolute md:top-1/2 md:-translate-y-1/2 md:2xl:right-1/4 md:right-[15rem] p-4 flex justify-center"
         >
           <div class="w-full max-w-[450px] bg-white rounded-2xl xl:p-8 p-4 px-6">
             <div class="flex justify-center mb-3">

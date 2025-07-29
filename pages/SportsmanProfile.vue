@@ -1,371 +1,410 @@
 <template>
-  <NuxtLayout name="custom">
-    <div class="min-h-screen bg-[#11101B] text-white p-6 font-sans">
-      <div class="container">
-        <!-- Header Section -->
-        <header
-          class="rounded-lg border !border-[#11101B] p-6 mb-6 flex flex-col md:flex-row items-center justify-between relative w-[90%]"
-        >
-          <div class="flex items-start md:items-center mb-4 md:mb-0">
-            <div class="flex flex-col mr-6">
-              <div class="flex items-center text-sm text-gray-400 mb-2">
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md mr-2">№1</span>
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md mr-2">ОБЩ 95</span>
-                <span>Обладатель титула</span>
-              </div>
-              <h1 class="text-4xl font-bold mb-2 flex">
-                {{ authStore.userProfile?.data?.first_name }}
-              </h1>
-              <h1 class="text-4xl font-bold mb-4">
-                {{ authStore.userProfile?.data.last_name }}
-              </h1>
-              <div class="flex space-x-2">
-                <span
-                  class="bg-[#A0E727] uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+  <template>
+    <NuxtLayout name="custom">
+      <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
+        <div class="container mx-auto">
+          <!-- Header Section -->
+          <header
+            class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
+          >
+            <div class="flex flex-col md:flex-row items-start md:items-center w-full">
+              <div class="flex flex-col md:mr-6 w-full">
+                <div class="flex flex-wrap items-center text-sm text-gray-400 mb-2 gap-2">
+                  <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">№1</span>
+                  <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">ОБЩ 95</span>
+                  <span>Обладатель титула</span>
+                </div>
+                <h1
+                  class="text-2xl md:text-5xl font-bold mb-2 flex flex-wrap items-center relative"
                 >
-                  {{ authStore.userProfile?.data?.user_role }}
-                </span>
+                  <div class="flex">
+                    {{ authStore.userProfile?.data?.first_name }}
+                    {{ authStore.userProfile?.data.last_name }}
+                  </div>
+                  <img
+                    class="md:hidden flex w-6 h-6"
+                    :src="
+                      authStore.userProfile?.data?.sportsman_profile?.address
+                        ?.is_sportsman_verified
+                        ? 'verified.png'
+                        : 'cancel.png'
+                    "
+                    alt="verify"
+                  />
+                  <p
+                    class="md:flex hidden"
+                    :class="
+                      authStore.userProfile?.data?.sportsman_profile?.address
+                        ?.is_sportsman_verified
+                        ? 'text-green-500 text-sm ml-3'
+                        : 'text-red-500 text-sm ml-3'
+                    "
+                  >
+                    {{
+                      authStore.userProfile?.data?.sportsman_profile?.address
+                        ?.is_sportsman_verified
+                        ? "Подтвержденный"
+                        : "Не подтверждено"
+                    }}
+                  </p>
+                </h1>
+                <div class="flex space-x-2">
+                  <span
+                    class="bg-[#A0E727] uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+                  >
+                    {{ authStore.userProfile?.data?.user_role }}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="relative w-48 h-48 md:w-60 md:h-60 flex-shrink-0 cursor-pointer">
-            <img
-              @click="clickImg"
-              :src="uploadedImageUrl || '/boy.svg'"
-              alt="Profile Picture"
-              class="rounded-full object-cover w-full h-full"
-            />
-            <input
-              type="file"
-              ref="fileInput"
-              accept="image/*"
-              style="display: none"
-              @change="uploadImage"
-            />
-          </div>
-        </header>
+            <div
+              class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0"
+            >
+              <img
+                @click="clickImg"
+                :src="uploadedImageUrl"
+                alt="Profile Picture"
+                class="rounded-full object-cover w-full h-full"
+              />
+              <input
+                type="file"
+                ref="fileInput"
+                accept="image/*"
+                class="hidden"
+                @change="uploadImage"
+              />
+            </div>
+          </header>
 
-        <!-- Main Navigation Tabs -->
-        <nav class="flex space-x-6 border-b border-[#3A3A5A] mb-6">
-          <button
-            class="py-3 px-4 text-lg font-semibold border-b-2 border-[#E91E63] text-[#E91E63]"
-          >
-            Основные
-          </button>
-          <div
-            v-if="
-              authStore.userProfile?.data?.sportsman_profile?.address
-                ?.is_sportsman_verified
-            "
-            class="flex"
-          >
+          <!-- Navigation Tabs -->
+          <nav class="flex flex-wrap gap-2 md:gap-6 border-b border-[#3A3A5A] mb-6">
             <button
-              class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
+              class="py-3 px-4 text-lg font-semibold border-b-2 border-[#E91E63] text-[#E91E63]"
             >
-              Фонд "Бирлик"
+              Основные
             </button>
-            <button
-              class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
+            <template
+              v-if="
+                authStore.userProfile?.data?.sportsman_profile?.address
+                  ?.is_sportsman_verified
+              "
             >
-              Тренировки
-            </button>
-            <button
-              class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
-            >
-              Питание
-            </button>
-          </div>
-        </nav>
-
-        <!-- Content Area: Sidebar and Form -->
-        <div class="flex flex-col md:flex-row gap-6">
-          <!-- Sidebar -->
-          <aside class="w-full md:w-64 h-fit bg-[#2C2C4A] rounded-lg p-4 flex-shrink-0">
-            <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
-            <nav class="space-y-2">
               <button
-                class="w-full text-left py-3 px-4 rounded-md bg-[#E91E63] text-white font-medium"
+                class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
               >
-                Личные данные
+                Фонд "Бирлик"
               </button>
-              <div
-                class="flex flex-col"
-                v-if="
-                  authStore.userProfile?.data?.sportsman_profile?.address
-                    ?.is_sportsman_verified
-                "
+              <button
+                class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
               >
-                <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
-                >
-                  Образование
-                </button>
-                <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
-                >
-                  Карьера и достижения
-                </button>
-              </div>
-            </nav>
-          </aside>
+                Тренировки
+              </button>
+              <button
+                class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
+              >
+                Питание
+              </button>
+            </template>
+          </nav>
 
-          <!-- Form Content -->
-          <main class="flex-1 rounded-lg p-6">
-            <form class="space-y-8" @submit.prevent="handleSubmit">
-              <!-- Информация (Information) Section -->
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Информация</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="name" class="text-sm text-gray-400 mb-1">Имя</label>
-                    <input
-                      type="text"
-                      id="name"
-                      v-model="formData.firstName"
-                      placeholder="Имя"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="surname" class="text-sm text-gray-400 mb-1"
-                      >Фамилия</label
-                    >
-                    <input
-                      type="text"
-                      id="surname"
-                      v-model="formData.lastName"
-                      placeholder="Фамилия"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="patronymic" class="text-sm text-gray-400 mb-1"
-                      >Отчество</label
-                    >
-                    <input
-                      type="text"
-                      id="patronymic"
-                      v-model="formData.middleName"
-                      placeholder="Отчество"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="dob" class="text-sm text-gray-400 mb-1"
-                      >Дата рождения</label
-                    >
-                    <div class="relative">
+          <!-- Main Content Layout -->
+          <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar -->
+            <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
+              <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
+              <nav class="space-y-2">
+                <button
+                  class="w-full text-left py-3 px-4 rounded-md bg-[#E91E63] text-white font-medium"
+                >
+                  Личные данные
+                </button>
+                <template
+                  v-if="
+                    authStore.userProfile?.data?.sportsman_profile?.address
+                      ?.is_sportsman_verified
+                  "
+                >
+                  <button
+                    class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+                  >
+                    Образование
+                  </button>
+                  <button
+                    class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+                  >
+                    Карьера и достижения
+                  </button>
+                </template>
+              </nav>
+            </aside>
+
+            <!-- Form Content -->
+            <main class="flex-1 rounded-lg p-4 md:p-6">
+              <form class="space-y-8" @submit.prevent="handleSubmit">
+                <!-- Информация (Information) Section -->
+                <div>
+                  <h2 class="text-xl font-semibold mb-4">Информация</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                      <label for="name" class="text-sm text-gray-400 mb-1">Имя</label>
                       <input
-                        type="date"
-                        id="dob"
-                        v-model="formData.birthDate"
-                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        type="text"
+                        id="name"
+                        v-model="formData.firstName"
+                        placeholder="Имя"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                       />
                     </div>
-                  </div>
+                    <div class="flex flex-col">
+                      <label for="surname" class="text-sm text-gray-400 mb-1"
+                        >Фамилия</label
+                      >
+                      <input
+                        type="text"
+                        id="surname"
+                        v-model="formData.lastName"
+                        placeholder="Фамилия"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="patronymic" class="text-sm text-gray-400 mb-1"
+                        >Отчество</label
+                      >
+                      <input
+                        type="text"
+                        id="patronymic"
+                        v-model="formData.middleName"
+                        placeholder="Отчество"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="dob" class="text-sm text-gray-400 mb-1"
+                        >Дата рождения</label
+                      >
+                      <div class="relative">
+                        <input
+                          type="date"
+                          id="dob"
+                          v-model="formData.birthDate"
+                          class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        />
+                      </div>
+                    </div>
 
-                  <div class="flex flex-col">
-                    <label for="athleteType" class="text-sm text-gray-400 mb-1"
-                      >Тип спортсмена</label
-                    >
-                    <select
-                      id="athleteType"
-                      v-model="formData.sport"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите тип спортсмена</option>
-                      <option v-for="item in data" :value="item.id">
-                        {{ item.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="height" class="text-sm text-gray-400 mb-1"
-                      >Рост (см)</label
-                    >
-                    <input
-                      type="number"
-                      id="height"
-                      v-model="formData.height"
-                      placeholder="Рост (см)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="weight" class="text-sm text-gray-400 mb-1"
-                      >Вес (кг)</label
-                    >
-                    <input
-                      type="number"
-                      id="weight"
-                      v-model="formData.weight"
-                      placeholder="Вес (кг)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex items-end gap-2 w-full">
-                    <div class="flex flex-col w-[90%]">
-                      <label for="trainer" class="text-sm text-gray-400 mb-1"
-                        >Tренер</label
+                    <div class="flex flex-col">
+                      <label for="athleteType" class="text-sm text-gray-400 mb-1"
+                        >Тип спортсмена</label
                       >
                       <select
-                        id="trainer"
-                        v-model="formData.trainer"
+                        id="athleteType"
+                        v-model="formData.sport"
                         class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                       >
-                        <option value="">Выберите тренер</option>
-                        <option
-                          v-for="item in filteredTrainers"
-                          :key="item.id"
-                          :value="item.id"
-                        >
-                          {{ item.full_name }}
+                        <option value="">Выберите тип спортсмена</option>
+                        <option v-for="item in data" :value="item.id">
+                          {{ item.name }}
                         </option>
                       </select>
                     </div>
 
-                    <div class="w-12 cursor-pointer" @click="openDialog">
-                      <img src="/history.png" alt="history" />
-                    </div>
-
-                    <el-dialog
-                      v-model="dialogVisible"
-                      title="Yuborilgan So‘rovlar"
-                      width="500px"
-                    >
-                      <div v-if="isLoading" class="text-center py-4">
-                        <el-spinner />
-                      </div>
-                      <div v-else>
-                        <el-empty
-                          v-if="requests.length === 0"
-                          description="So‘rovlar topilmadi"
-                        />
-                        <div v-else class="max-h-[400px] overflow-y-auto pr-2">
-                          <ul class="space-y-4">
-                            <li
-                              v-for="item in requests"
-                              :key="item.id"
-                              class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
-                            >
-                              <div>
-                                <p class="text-sm text-gray-700 mb-1">
-                                  <strong>Trainer Name:</strong>
-                                  {{ item.receiver.full_name }}
-                                </p>
-                                <p
-                                  class="text-sm text-gray-700 mb-1 flex items-center gap-2"
-                                >
-                                  <strong>Status:</strong>
-                                  <el-tag
-                                    :type="item.status === 'pending' ? 'warning' : 'info'"
-                                    size="small"
-                                    effect="light"
-                                  >
-                                    {{ item.status }}
-                                  </el-tag>
-                                </p>
-                                <p class="text-sm text-gray-700">
-                                  <strong>Yaratilgan:</strong>
-                                  {{ formatDate(item.created_time) }}
-                                </p>
-                              </div>
-                              <div v-if="item.status === 'pending'">
-                                <el-button
-                                  type="danger"
-                                  size="small"
-                                  @click="cancelRequest(item.id)"
-                                >
-                                  Bekor qilish
-                                </el-button>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </el-dialog>
-                  </div>
-
-                  <div class="flex items-center col-span-1 md:col-span-2">
-                    <label class="text-sm text-gray-400 mr-4">Пол</label>
-                    <div class="flex items-center mr-6">
-                      <input
-                        type="radio"
-                        id="male"
-                        value="male"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="male" class="ml-2 text-white">Мужчина</label>
-                    </div>
-                    <div class="flex items-center">
-                      <input
-                        type="radio"
-                        id="female"
-                        value="female"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="female" class="ml-2 text-white">Женщина</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Фактический адрес (Actual Address) Section -->
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="city" class="text-sm text-gray-400 mb-1"
-                      >Область / Город {{ formData.city }}</label
-                    >
-                    <select
-                      id="city"
-                      v-model="formData.city"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите город</option>
-                      <option
-                        v-for="region in regions"
-                        :key="region.id"
-                        :value="region.name_uz"
+                    <div class="flex flex-col">
+                      <label for="height" class="text-sm text-gray-400 mb-1"
+                        >Рост (см)</label
                       >
-                        {{ region.name_uz }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="street" class="text-sm text-gray-400 mb-1">Улица</label>
-                    <select
-                      id="street"
-                      v-model="formData.region"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Улица</option>
-                      <option v-for="region in filteredDistricts" :value="region.name_uz">
-                        {{ region.name_uz }}
-                      </option>
-                    </select>
+                      <input
+                        type="number"
+                        id="height"
+                        v-model="formData.height"
+                        placeholder="Рост (см)"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="weight" class="text-sm text-gray-400 mb-1"
+                        >Вес (кг)</label
+                      >
+                      <input
+                        type="number"
+                        id="weight"
+                        v-model="formData.weight"
+                        placeholder="Вес (кг)"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      />
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                      <div class="flex flex-col md:w-[90%] w-[80%]">
+                        <label for="trainer" class="text-sm text-gray-400 mb-1"
+                          >Tренер</label
+                        >
+                        <select
+                          id="trainer"
+                          v-model="formData.trainer"
+                          class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        >
+                          <option value="">Выберите тренер</option>
+                          <option
+                            v-for="item in filteredTrainers"
+                            :key="item.id"
+                            :value="item.id"
+                          >
+                            {{ item.full_name }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="w-12 cursor-pointer" @click="openDialog">
+                        <img
+                          src="/public/history.png"
+                          class="w-8 h-8 object-cover"
+                          alt="history"
+                        />
+                      </div>
+
+                      <el-dialog
+                        v-model="dialogVisible"
+                        title="Yuborilgan So‘rovlar"
+                        class="md:!w-[500px] !w-[350px]"
+                      >
+                        <div v-if="isLoading" class="text-center py-4">
+                          <el-spinner />
+                        </div>
+                        <div v-else>
+                          <el-empty
+                            v-if="requests.length === 0"
+                            description="So‘rovlar topilmadi"
+                          />
+                          <div v-else class="max-h-[400px] overflow-y-auto pr-2">
+                            <ul class="space-y-4">
+                              <li
+                                v-for="item in requests"
+                                :key="item.id"
+                                class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
+                              >
+                                <div>
+                                  <p class="text-sm text-gray-700 mb-1">
+                                    <strong>Trainer Name:</strong>
+                                    {{ item.receiver.full_name }}
+                                  </p>
+                                  <p
+                                    class="text-sm text-gray-700 mb-1 flex items-center gap-2"
+                                  >
+                                    <strong>Status:</strong>
+                                    <el-tag
+                                      :type="
+                                        item.status === 'pending' ? 'warning' : 'info'
+                                      "
+                                      size="small"
+                                      effect="light"
+                                    >
+                                      {{ item.status }}
+                                    </el-tag>
+                                  </p>
+                                  <p class="text-sm text-gray-700">
+                                    <strong>Yaratilgan:</strong>
+                                    {{ formatDate(item.created_time) }}
+                                  </p>
+                                </div>
+                                <div v-if="item.status === 'pending'">
+                                  <el-button
+                                    type="danger"
+                                    size="small"
+                                    @click="cancelRequest(item.id)"
+                                  >
+                                    Bekor qilish
+                                  </el-button>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </el-dialog>
+                    </div>
+
+                    <div class="flex items-center col-span-1 md:col-span-2">
+                      <label class="text-sm text-gray-400 mr-4">Пол</label>
+                      <div class="flex items-center mr-6">
+                        <input
+                          type="radio"
+                          id="male"
+                          value="male"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="male" class="ml-2 text-white">Мужчина</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          type="radio"
+                          id="female"
+                          value="female"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="female" class="ml-2 text-white">Женщина</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="flex justify-end pt-4">
-                <button
-                  type="submit"
-                  class="bg-[#E91E63] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#C2185B] transition-colors"
-                >
-                  Сохранить данные
-                </button>
-              </div>
-            </form>
-          </main>
+                <!-- Фактический адрес (Actual Address) Section -->
+                <div>
+                  <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                      <label for="city" class="text-sm text-gray-400 mb-1"
+                        >Область / Город {{ formData.city }}</label
+                      >
+                      <select
+                        id="city"
+                        v-model="formData.city"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      >
+                        <option value="">Выберите город</option>
+                        <option
+                          v-for="region in regions"
+                          :key="region.id"
+                          :value="region.name_uz"
+                        >
+                          {{ region.name_uz }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="street" class="text-sm text-gray-400 mb-1">Улица</label>
+                      <select
+                        id="street"
+                        v-model="formData.region"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      >
+                        <option value="">Выберите Улица</option>
+                        <option
+                          v-for="region in filteredDistricts"
+                          :value="region.name_uz"
+                        >
+                          {{ region.name_uz }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex md:justify-end justify-center pt-4">
+                  <button
+                    type="submit"
+                    class="bg-[#E91E63] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#C2185B] transition-colors"
+                  >
+                    Сохранить данные
+                  </button>
+                </div>
+              </form>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
-  </NuxtLayout>
+    </NuxtLayout>
+  </template>
 </template>
 
 <script setup>
@@ -438,24 +477,12 @@ const filteredDistricts = computed(() => {
   return districts.value.filter((d) => d.region_id === selectedRegion.id);
 });
 
-onMounted(() => {
+onMounted(async () => {
   regions.value = regionsData;
   districts.value = districtsData;
+
+  await authStore.fetchUserProfile();
 });
-
-watch(
-  () => formData.value.city,
-  () => {
-    formData.value.region = "";
-  }
-);
-
-watch(
-  () => formData.value.sport,
-  () => {
-    formData.value.trainer = "";
-  }
-);
 
 const handleSubmit = async () => {
   try {
@@ -465,7 +492,9 @@ const handleSubmit = async () => {
       middle_name: formData.value.middleName,
       birth_date: formData.value.birthDate,
       gender: formData.value.gender,
-      media_ids: uploadedImageId.value ? [uploadedImageId.value] : [],
+      media_ids: uploadedImageId.value
+        ? [uploadedImageId.value]
+        : [authStore.userProfile?.data?.media[0]?.id],
       sportsman_profile: {
         sport_id: formData.value.sport,
         trainer_id: formData.value.trainer,
@@ -508,7 +537,7 @@ const clickImg = () => {
   fileInput.value?.click();
 };
 
-const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo || null);
+const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
 
 const uploadImage = async (event) => {
   const file = event.target.files[0];
@@ -575,6 +604,44 @@ const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   return date.toLocaleString();
 };
+
+watch(
+  () => formData.value.city,
+  () => {
+    formData.value.region = "";
+  }
+);
+
+watch(
+  () => formData.value.sport,
+  () => {
+    formData.value.trainer = "";
+  }
+);
+
+watch(
+  () => authStore.userProfile,
+  (newProfile) => {
+    if (newProfile?.data) {
+      formData.value = {
+        firstName: newProfile.data.first_name || "",
+        lastName: newProfile.data.last_name || "",
+        middleName: newProfile.data.middle_name || "",
+        birthDate: newProfile.data.birth_date || "",
+        sport: newProfile.data.sportsman_profile?.sport?.id || "",
+        trainer: newProfile.data.sportsman_profile?.trainer?.id || "",
+        height: newProfile.data.sportsman_profile?.user_metrics?.height || "",
+        weight: newProfile.data.sportsman_profile?.user_metrics?.weight || "",
+        gender: newProfile.data.gender || "",
+        city: newProfile.data.sportsman_profile?.address?.region || "",
+        region: newProfile.data.sportsman_profile?.address?.city || "",
+      };
+
+      uploadedImageUrl.value = newProfile.data.profile_photo || null;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>

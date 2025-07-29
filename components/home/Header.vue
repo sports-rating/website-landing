@@ -13,7 +13,7 @@
               <img
                 src="/saber-logos.svg"
                 alt="Sports fans cheering"
-                class="w-full h-full object-cover"
+                class="md:w-32 w-24 h-auto object-cover"
               />
             </nuxt-link>
           </div>
@@ -47,7 +47,7 @@
                 class="el-dropdown-link cursor-pointer flex items-center space-x-3 text-white"
               >
                 <el-avatar
-                  :size="40"
+                  class="md:!w-[40px] md:!h-[40px] !w-[30px] !h-[30px] object-cover"
                   :src="
                     authStore.userProfile.data.profile_photo ||
                     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -75,7 +75,7 @@
           </div>
 
           <!-- Auth Buttons -->
-          <div v-else class="flex items-center space-x-4">
+          <div v-else class="flex items-center space-x-4 md:text-base text-xs">
             <NuxtLink to="/login">
               <button class="text-white hover:text-gray-300 transition">Войти</button>
             </NuxtLink>
