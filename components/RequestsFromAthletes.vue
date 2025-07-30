@@ -29,6 +29,13 @@
         type="date"
         class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
       />
+
+      <button
+        class="px-3 py-1 rounded bg-[#919090] hover:bg-[#555] disabled:opacity-50 w-full md:w-[7rem]"
+        @click="reset"
+      >
+        Reset
+      </button>
     </div>
 
     <!-- Table -->
@@ -79,24 +86,24 @@
             </td>
             <td class="py-3 px-4 space-x-2 whitespace-nowrap">
               <button
-                class="text-white bg-[#4A4A6A] p-2 rounded hover:bg-[#5A5A7A]"
+                class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A]"
                 @click="viewRequest(item.id)"
               >
-                👁️
+                <img src="/Eye.svg" alt="eyes" class="w-4" />
               </button>
               <button
                 v-if="item.status === 'pending'"
-                class="bg-green-600 p-2 rounded hover:bg-green-700"
+                class="bg-[#7CBF0F] p-2 rounded hover:bg-green-700"
                 @click="approveRequest(item.id)"
               >
-                ✅
+                <img src="/done.png" alt="done" class="w-4" />
               </button>
               <button
                 v-if="item.status === 'pending'"
-                class="bg-red-600 p-2 rounded hover:bg-red-700"
+                class="bg-[#E7273D] p-2 rounded hover:bg-red-700"
                 @click="deleteRequest(item.id)"
               >
-                ❌
+                <img src="/x.svg" alt="x" class="w-4" />
               </button>
             </td>
           </tr>
@@ -139,10 +146,6 @@
         <!-- ID & Date -->
         <div class="grid grid-cols-1 gap-1.5 md:gap-2.5">
           <p>
-            <span class="text-gray-400">🆔 ID заявки:</span>
-            {{ selectedRequest.id }}
-          </p>
-          <p>
             <span class="text-gray-400">📅 Дата подачи:</span>
             {{ selectedRequest.created_time }}
           </p>
@@ -181,12 +184,6 @@
             {{ selectedRequest.receiver.user_role }}
           </p>
         </div>
-
-        <!-- Type & Status -->
-        <p>
-          <span class="text-gray-400">📌 Тип заявки:</span>
-          {{ selectedRequest.request_type }}
-        </p>
 
         <p>
           <span class="text-gray-400">📍 Статус:</span>
@@ -254,6 +251,10 @@ const fetchRequests = async () => {
   } finally {
     loading.value = false;
   }
+};
+const reset = () => {
+  ElMessage.success("Страница обновлена ✅");
+  fetchRequests();
 };
 
 watch([currentPage, search, selectedStatus, selectedDate], fetchRequests);

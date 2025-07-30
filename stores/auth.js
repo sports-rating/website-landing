@@ -1,4 +1,5 @@
 // ~/stores/auth.js yoki auth.ts
+import { ElMessage } from "element-plus";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -28,11 +29,19 @@ export const useAuthStore = defineStore("auth", {
     async login(payload) {
       const { $api } = useNuxtApp();
       try {
-        await $api.post("user/auth/send-code/", payload);
+        const response = await $api.post("user/auth/send-code/", payload);
 
+        ElMessage({
+          message: response.data.message,
+          type: "success",
+        });
         this.loginPayload = { ...payload };
       } catch (error) {
         console.error("Login failed:", error);
+        ElMessage({
+          message: error.response.data.message,
+          type: "error",
+        });
         throw error;
       }
     },
@@ -75,6 +84,11 @@ export const useAuthStore = defineStore("auth", {
       try {
         const response = await $api.post("user/auth/register/", payload);
 
+        ElMessage({
+          message: response.data.message,
+          type: "success",
+        });
+
         this.token = response.data.data.tokens.access;
         this.refreshToken = response.data.data.tokens.refresh;
 
@@ -84,6 +98,10 @@ export const useAuthStore = defineStore("auth", {
         localStorage.setItem("refresh_token", this.refreshToken);
       } catch (error) {
         console.error("Register failed:", error);
+        ElMessage({
+          message: error.response.data.message,
+          type: "error",
+        });
         throw error;
       }
     },

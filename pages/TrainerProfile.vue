@@ -350,7 +350,6 @@ const formData = ref({
   middleName: authStore.userProfile?.data?.middle_name,
   birthDate: authStore.userProfile?.data?.birth_date,
   sport: authStore.userProfile?.data?.trainer_profile?.sport?.id || "",
-  trainer: authStore.userProfile?.data?.trainer_profile?.trainer?.id || "",
   height: authStore.userProfile?.data?.trainer_profile?.user_metrics?.height,
   weight: authStore.userProfile?.data?.trainer_profile?.user_metrics?.weight,
   gender: authStore.userProfile?.data?.gender || "",
@@ -393,12 +392,8 @@ const handleSubmit = async () => {
       middle_name: formData.value.middleName,
       birth_date: formData.value.birthDate,
       gender: formData.value.gender,
-      media_ids: uploadedImageId.value
-        ? [uploadedImageId.value]
-        : [authStore.userProfile?.data?.media[0]?.id],
       trainer_profile: {
         sport_id: formData.value.sport,
-        trainer_id: formData.value.trainer,
         address: {
           region: formData.value.city,
           city: formData.value.region,
@@ -410,6 +405,12 @@ const handleSubmit = async () => {
         send_request: true,
       },
     };
+
+    if (uploadedImageId.value) {
+      payload.media_ids = [uploadedImageId.value];
+    } else {
+      payload.media_ids = authStore.userProfile?.data?.media[0]?.id;
+    }
 
     const response = await $api.patch("/user/profile/", payload);
     console.log("Profile updated:", response.data);
@@ -423,10 +424,41 @@ const handleSubmit = async () => {
     });
   } catch (error) {
     console.error("Ошибка при обновлении профиля:", error);
+
+    let message = "Произошла ошибка при обновлении профиля.";
+
+    if (error.response?.data) {
+      const errors = error.response.data;
+
+      if (typeof errors.message === "string") {
+        message = errors.message;
+      } else {
+        const allErrors = [];
+
+        for (const key in errors) {
+          const value = errors[key];
+          if (Array.isArray(value)) {
+            allErrors.push(...value);
+          } else if (typeof value === "object" && value !== null) {
+            for (const nestedKey in value) {
+              const nestedVal = value[nestedKey];
+              if (Array.isArray(nestedVal)) {
+                allErrors.push(...nestedVal);
+              }
+            }
+          }
+        }
+
+        if (allErrors.length) {
+          message = allErrors.join("\n");
+        }
+      }
+    }
+
     ElMessage({
-      message: error.response.data.message,
+      message,
       type: "error",
-      duration: 3000,
+      duration: 4000,
     });
   }
 };

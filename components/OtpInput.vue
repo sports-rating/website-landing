@@ -5,19 +5,19 @@ const props = defineProps<{
 
 const data = ref([]);
 const firstInputEl = ref(null);
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 watch(
   () => data,
   (newVal) => {
     if (
-      newVal.value != '' &&
+      newVal.value != "" &&
       newVal.value.length === props.fields &&
-      !newVal.value.includes('')
+      !newVal.value.includes("")
     ) {
-      emit('update:modelValue', Number(newVal.value.join('')));
+      emit("update:modelValue", Number(newVal.value.join("")));
     } else {
-      emit('update:modelValue', null);
+      emit("update:modelValue", null);
     }
   },
   { deep: true }
@@ -32,7 +32,7 @@ const handleOtpInput = (e) => {
 };
 
 const handlePaste = (e) => {
-  const pasteData = e.clipboardData.getData('text');
+  const pasteData = e.clipboardData.getData("text");
   let nextEl = firstInputEl.value[0].nextElementSibling;
   for (let i = 1; i < pasteData.length; i++) {
     if (nextEl) {
@@ -41,7 +41,6 @@ const handlePaste = (e) => {
     }
   }
 };
-
 </script>
 
 <template>
@@ -50,7 +49,9 @@ const handlePaste = (e) => {
       <input
         v-model="data[field - 1]"
         ref="firstInputEl"
-        type="text"
+        type="tel"
+        pattern="[0-9]*"
+        inputmode="numeric"
         maxlength="1"
         class="border rounded w-10 h-10 text-center"
         @paste="field === 1 && handlePaste($event)"
