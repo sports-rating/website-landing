@@ -1,0 +1,342 @@
+<template>
+  <div class="bg-[#2C2C4A] rounded-lg p-4 sm:p-6">
+    <h2 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+      Список спортсменов
+    </h2>
+
+    <!-- Filter Panel -->
+    <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-4">
+      <input
+        v-model="search"
+        type="text"
+        placeholder="Поиск игрока"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+      />
+
+      <select
+        v-model="selectedStatus"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+      >
+        <option value="">Все статусы</option>
+        <option value="pending">В обработке</option>
+        <option value="accepted">Принято</option>
+        <option value="rejected">Отклонено</option>
+        <option value="cancelled">Отменено</option>
+      </select>
+
+      <input
+        v-model="selectedDate"
+        type="date"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+      />
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left text-sm text-white border-collapse">
+        <thead>
+          <tr class="bg-[#1C1B29]">
+            <th class="py-3 px-4 whitespace-nowrap">№</th>
+            <th class="py-3 px-4 whitespace-nowrap">ФИО игрока</th>
+            <th class="py-3 px-4 whitespace-nowrap">Номер телефона</th>
+            <th class="py-3 px-4 whitespace-nowrap">Дата подачи заявки</th>
+            <th class="py-3 px-4 whitespace-nowrap">Статус заявки</th>
+            <th class="py-3 px-4 whitespace-nowrap">Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(item, index) in requests"
+            :key="item.id"
+            class="border-t border-[#4A4A6A] hover:bg-[#383862]"
+          >
+            <td class="py-3 px-4">{{ index + 1 }}</td>
+            <td class="py-3 px-4">{{ item.sender.full_name }}</td>
+            <td class="py-3 px-4">{{ item.sender.phone_number }}</td>
+            <td class="py-3 px-4">{{ item.created_time }}</td>
+            <td class="py-3 px-4">
+              <span
+                class="px-2 py-1 rounded text-xs font-medium"
+                :class="{
+                  'bg-blue-500 text-white': item.status === 'pending',
+                  'bg-green-500 text-white': item.status === 'accepted',
+                  'bg-red-500 text-white': item.status === 'rejected',
+                  'bg-gray-500 text-white': item.status === 'cancelled',
+                }"
+              >
+                {{
+                  item.status === "pending"
+                    ? "В обработке"
+                    : item.status === "accepted"
+                    ? "Принято"
+                    : item.status === "rejected"
+                    ? "Отклонено"
+                    : item.status === "cancelled"
+                    ? "Отменено"
+                    : "Неизвестно"
+                }}
+              </span>
+            </td>
+            <td class="py-3 px-4 space-x-2 whitespace-nowrap">
+              <button
+                class="text-white bg-[#4A4A6A] p-2 rounded hover:bg-[#5A5A7A]"
+                @click="viewRequest(item.id)"
+              >
+                👁️
+              </button>
+              <button
+                v-if="item.status === 'pending'"
+                class="bg-green-600 p-2 rounded hover:bg-green-700"
+                @click="approveRequest(item.id)"
+              >
+                ✅
+              </button>
+              <button
+                v-if="item.status === 'pending'"
+                class="bg-red-600 p-2 rounded hover:bg-red-700"
+                @click="deleteRequest(item.id)"
+              >
+                ❌
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-row justify-center items-center mt-6 gap-3 text-white text-sm">
+      <button
+        @click="changePage(currentPage - 1)"
+        :disabled="currentPage === 1"
+        class="px-3 py-1 rounded bg-[#444] hover:bg-[#555] disabled:opacity-50"
+      >
+        ◀
+      </button>
+
+      <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+
+      <button
+        @click="changePage(currentPage + 1)"
+        :disabled="currentPage === totalPages"
+        class="px-3 py-1 rounded bg-[#444] hover:bg-[#555] disabled:opacity-50"
+      >
+        ▶
+      </button>
+    </div>
+
+    <!-- Dialog -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="Детали заявки"
+      :before-close="() => (dialogVisible = false)"
+      class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-xl !w-[90%]"
+    >
+      <div
+        v-if="selectedRequest"
+        class="text-white space-y-4 max-h-[70vh] overflow-y-auto px-2 sm:px-4 text-sm md:text-base"
+      >
+        <!-- ID & Date -->
+        <div class="grid grid-cols-1 gap-1.5 md:gap-2.5">
+          <p>
+            <span class="text-gray-400">🆔 ID заявки:</span>
+            {{ selectedRequest.id }}
+          </p>
+          <p>
+            <span class="text-gray-400">📅 Дата подачи:</span>
+            {{ selectedRequest.created_time }}
+          </p>
+        </div>
+
+        <!-- Sender -->
+        <div class="pt-2 border-t border-gray-700">
+          <h3 class="font-semibold text-blue-400 text-base mb-1">📤 Отправитель</h3>
+          <p>
+            <span class="text-gray-400">👤 ФИО:</span>
+            {{ selectedRequest.sender.full_name }}
+          </p>
+          <p>
+            <span class="text-gray-400">📞 Телефон:</span>
+            {{ selectedRequest.sender.phone_number }}
+          </p>
+          <p>
+            <span class="text-gray-400">🎯 Роль:</span>
+            {{ selectedRequest.sender.user_role }}
+          </p>
+        </div>
+
+        <!-- Receiver -->
+        <div class="pt-2 border-t border-gray-700">
+          <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
+          <p>
+            <span class="text-gray-400">👤 ФИО:</span>
+            {{ selectedRequest.receiver.full_name }}
+          </p>
+          <p>
+            <span class="text-gray-400">📞 Телефон:</span>
+            {{ selectedRequest.receiver.phone_number }}
+          </p>
+          <p>
+            <span class="text-gray-400">🎯 Роль:</span>
+            {{ selectedRequest.receiver.user_role }}
+          </p>
+        </div>
+
+        <!-- Type & Status -->
+        <p>
+          <span class="text-gray-400">📌 Тип заявки:</span>
+          {{ selectedRequest.request_type }}
+        </p>
+
+        <p>
+          <span class="text-gray-400">📍 Статус:</span>
+          <span
+            class="inline-block px-3 py-1 rounded-full shadow text-xs md:text-sm font-semibold ml-2"
+            :class="{
+              'bg-blue-600': selectedRequest.status === 'pending',
+              'bg-green-600': selectedRequest.status === 'accepted',
+              'bg-red-600': selectedRequest.status === 'rejected',
+              'bg-gray-600': selectedRequest.status === 'cancelled',
+            }"
+          >
+            {{
+              selectedRequest.status === "pending"
+                ? "В обработке"
+                : selectedRequest.status === "accepted"
+                ? "Принято"
+                : selectedRequest.status === "rejected"
+                ? "Отклонено"
+                : selectedRequest.status === "cancelled"
+                ? "Отменено"
+                : "Неизвестно"
+            }}
+          </span>
+        </p>
+      </div>
+
+      <!-- Loading -->
+      <div v-else class="text-center py-8 text-gray-300 text-sm">⏳ Загрузка...</div>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch, onMounted } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+const { $api } = useNuxtApp();
+
+const search = ref("");
+const selectedStatus = ref("");
+const selectedDate = ref("");
+const requests = ref([]);
+const totalCount = ref(0);
+const loading = ref(false);
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
+
+const fetchRequests = async () => {
+  try {
+    loading.value = true;
+    const params = {
+      page: currentPage.value,
+      page_size: itemsPerPage.value,
+      search: search.value || undefined,
+      status: selectedStatus.value || undefined,
+      date: selectedDate.value || undefined,
+    };
+
+    const res = await $api.get("user/requests/?type=received", { params });
+    requests.value = res.data.data.data;
+    totalCount.value = res.data.data.count;
+  } catch (err) {
+    console.error("Ошибка при получении заявок:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+watch([currentPage, search, selectedStatus, selectedDate], fetchRequests);
+
+onMounted(fetchRequests);
+
+const dialogVisible = ref(false);
+const selectedRequest = ref(null);
+
+const viewRequest = async (id) => {
+  try {
+    dialogVisible.value = true;
+    selectedRequest.value = null;
+    const res = await $api.get(`user/requests/${id}/`);
+    selectedRequest.value = res.data.data;
+  } catch (err) {
+    console.error("Ошибка при просмотре:", err);
+  }
+};
+
+const approveRequest = async (id) => {
+  try {
+    await ElMessageBox.confirm(
+      "Вы уверены, что хотите подтвердить эту заявку?",
+      "Подтверждение",
+      {
+        confirmButtonText: "Подтвердить",
+        cancelButtonText: "Отмена",
+        type: "success",
+      }
+    );
+
+    await $api.patch(`user/requests/${id}/`, {
+      status: "accepted",
+    });
+
+    ElMessage.success("Заявка успешно подтверждена ✅");
+    await fetchRequests();
+  } catch (err) {
+    if (err === "cancel") {
+      ElMessage.info("Подтверждение отменено");
+    } else {
+      console.error("Ошибка при подтверждении:", err);
+      ElMessage.error("Ошибка при подтверждении заявки ❌");
+    }
+  }
+};
+
+const deleteRequest = async (id) => {
+  try {
+    await ElMessageBox.confirm(
+      "Вы уверены, что хотите удалить эту заявку?",
+      "Подтверждение удаления",
+      {
+        confirmButtonText: "Удалить",
+        cancelButtonText: "Отмена",
+        type: "warning",
+      }
+    );
+
+    await $api.delete(`user/requests/${id}/`);
+    ElMessage.success("Заявка успешно удалена 🗑️");
+    await fetchRequests();
+  } catch (err) {
+    if (err === "cancel") {
+      ElMessage.info("Удаление отменено");
+    } else {
+      console.error("Ошибка при удалении:", err);
+      ElMessage.error("Ошибка при удалении заявки ❌");
+    }
+  }
+};
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    window.scrollTo(0, 0);
+  }
+};
+</script>
+
+<style>
+.el-dialog__title {
+  color: white !important;
+}
+</style>

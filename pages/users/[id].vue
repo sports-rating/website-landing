@@ -1,23 +1,13 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B]">
-      <!-- Player Info Section -->
       <div class="py-8 container">
         <div class="flex justify-between">
           <div class="flex-1">
-            <!-- Player Number and Title -->
-            <!-- <div class="flex items-center gap-4 mb-2">
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">№1</span>
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">ОБЩ. 96</span>
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">Обладатель титула</span>
-          </div> -->
-
-            <!-- Player Name -->
             <h1 class="text-4xl font-bold mb-4 py-4 text-white">
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
             </h1>
 
-            <!-- Position Tags -->
             <div class="flex gap-2 mb-6">
               <span class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-sm">
                 {{ data?.sportsman_profile?.sport?.name }}
@@ -26,8 +16,6 @@
                 {{ data?.sportsman_profile?.skill_level }}
               </span>
             </div>
-
-            <!-- Player Details -->
             <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
               <div class="flex justify-between w-[60%] border-b pb-1">
                 <p class="text-[#8B8992]">Место рождения</p>
@@ -48,18 +36,14 @@
               <div class="flex justify-between w-[60%] border-b pb-1">
                 <p class="text-[#8B8992]">Рост</p>
                 <p class="text-white">
-                  {{
-                    Number(data?.sportsman_profile?.user_metrics?.height).toFixed(0)
-                  }}
+                  {{ Number(data?.sportsman_profile?.user_metrics?.height).toFixed(0) }}
                   см
                 </p>
               </div>
               <div class="flex justify-between w-[60%] border-b pb-1">
                 <p class="text-[#8B8992]">Вес</p>
                 <p class="text-white">
-                  {{
-                    Number(data?.sportsman_profile?.user_metrics?.weight).toFixed(0)
-                  }}
+                  {{ Number(data?.sportsman_profile?.user_metrics?.weight).toFixed(0) }}
                   кг
                 </p>
               </div>
@@ -70,7 +54,6 @@
             </div>
           </div>
 
-          <!-- Profile Image -->
           <div class="py-20 pr-28">
             <img
               :src="data?.media?.find((item:any) => item.is_profile_photo === true)?.file"
@@ -79,97 +62,7 @@
             />
           </div>
         </div>
-
-        <!-- <div class="flex w-full justify-between">
-      
-      <div class="bg-[#1A1B1F] border border-gray-800 w-[60%]">
-      <div class=" mx-auto">
-        <div class="flex items-center h-[52px]">
-          <div class="bg-red-600 h-full flex items-center px-6 text-white font-medium">
-            10 000 000 сум
-          </div>
-          <div class="flex-1 relative h-full flex items-center bg-[#0F1115] px-24">
-            <span class="relative text-white z-10 ">24%</span>
-          </div>
-          <div class="bg-[#0F1115] h-full flex items-center px-6 text-white">
-            24 000 000 сум
-          </div>
-
-          
-        </div>
       </div>
-      </div>
-      <div class=" gap-4 border-gray-800 flex ml-5">
-      
-          <div class="bg-[#0F1115]   border h-full flex items-center px-6 text-white border-l border-gray-800 ">
-            Осталось: 24 дней
-          </div>
-
-          <button class="h-full bg-red-600 text-white px-8 font-medium hover:bg-red-700 transition-colors">
-            Пожертвовать
-          </button>
-      </div>
-      </div> -->
-
-        <!-- <div v-if="activeTab === 'statistics'" class="my-5">
-        <div class="container bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold mb-6">Статистика по играм</h2>
-            
-            <div class="space-y-4">
-              <div class="flex justify-between items-center border-b pb-4">
-                <div class="space-y-1">
-                  <p class="text-sm text-gray-500">ТУРНИР</p>
-                  <div class="flex items-center space-x-2">
-                    <span class="font-medium">Мир Узбекская Премьер-Лига</span>
-                  </div>
-                </div>
-                
-                <div class="space-y-1">
-                  <p class="text-sm text-gray-500">СЕЗОН</p>
-                  <div class="flex items-center space-x-2">
-                    <span class="font-medium">2023/2024</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-6">
-                <div class="space-y-4">
-                  <div v-for="stat in leftStats" :key="stat.label" 
-                      class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">{{ stat.label }}</span>
-                    <span class="font-semibold">{{ stat.value }}</span>
-                  </div>
-                </div>
-
-                <div class="space-y-4">
-                  <div v-for="stat in rightStats" :key="stat.label" 
-                      class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">{{ stat.label }}</span>
-                    <span class="font-semibold">{{ stat.value }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      </div>
-
-      <!-- <div class="bg-[#11101B] container pb-8  overflow-hidden w-full">
-        <div class="">
-          <dl class="grid grid-cols-2">
-            <div v-for="(stat, index) in statistics" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
-              <dt class="text-sm font-medium text-[#8B8992] truncate">
-                {{ stat.label }}
-              </dt>
-              <dd class="mt-1 text-3xl font-semibold text-white">
-                {{ stat.value }}
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </div> -->
 
       <div class="mb-6 container">
         <div class="flex gap-2">
@@ -189,25 +82,7 @@
         </div>
       </div>
 
-      <!-- Content -->
       <div class="py-8 container">
-        <!-- <div v-if="activeTab === 'overview'" class=" flex gap-8 py-8">
-      <div class="flex flex-col gap-4 w-[50%] ">
-        
-
-        <p class="text-sm text-white">{{data?.sportsman_profile?.about_me}}</p>
-        
-      </div>
-        
-        <div class="mt-6">
-          <img 
-            src="/public/messi.svg" 
-            alt="Game Action"
-            class="w-[530px]  rounded-lg object-cover"
-          />
-        </div>
-      </div> -->
-
         <div v-if="activeTab === 'statistics'" class="flex flex-col gap-8">
           <Statistic />
         </div>
@@ -218,7 +93,6 @@
               class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium"
             >
               <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
-              <!-- <div class="p-3">Изображение</div> -->
               <div class="p-3 col-span-1">СЕЗОН</div>
               <div class="p-3 col-span-1">Место</div>
               <div class="p-3 col-span-4">ТРЕНЕР</div>
@@ -231,9 +105,6 @@
                 :key="index"
                 class="grid grid-cols-12 text-white cursor-pointer"
               >
-                <!-- <div class="p-3 flex items-center ">
-          <span>{{ row.country }}</span>
-        </div> -->
                 <div class="p-3 col-span-4 flex gap-4 items-center">
                   <img
                     class="w-12 h-12"
@@ -242,7 +113,6 @@
                   />
                   {{ row.tournament_name }}
                 </div>
-                <!-- <div class="p-3"></div> -->
                 <div class="p-3 col-span-1">{{ row.year }}</div>
                 <div class="p-3 col-span-1">{{ row.country }}</div>
                 <div class="p-3 col-span-4">
@@ -265,7 +135,6 @@
           <div class="mt-5">
             <div class="container mx-auto">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Match Review Cards -->
                 <div
                   v-for="match in matches"
                   :key="match.id"
@@ -300,7 +169,6 @@
               </div>
             </div>
 
-            <!-- Video Modal -->
             <div
               v-if="selectedMatch"
               class="container fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -325,10 +193,6 @@
                     </svg>
                   </button>
                 </div>
-                <!-- <video ref="videoPlayer" controls class="w-full">
-          <source :src="selectedMatch.videoUrl" type="video/mp4">
-          Your browser does not support the video tag.
-        </video> -->
 
                 <div v-if="selectedMatch?.hasVideo" class="aspect-w-16 aspect-h-9">
                   <iframe
@@ -349,7 +213,6 @@
         <div v-if="activeTab === 'photos'" class="container flex flex-col gap-8">
           <div class="mt-5">
             <div class="w-full mx-auto">
-              <!-- Image Grid -->
               <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div
                   v-for="(image, index) in data?.media?.filter((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
@@ -422,8 +285,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <Associated/> -->
     </div>
   </NuxtLayout>
 </template>

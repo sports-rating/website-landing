@@ -1,6 +1,8 @@
 <template>
   <div class="relative z-20 bg-[#11101B]">
-    <nav class="z-10 py-8 container mx-auto flex items-center justify-between">
+    <nav
+      class="z-10 py-8 sm:px-0 px-4 sm:container mx-auto flex items-center justify-between"
+    >
       <!-- Logo -->
       <nuxt-link to="/" class="text-white font-bold text-2xl">
         <img src="/saber-logos.svg" alt="Logo" class="md:w-32 w-24 h-auto object-cover" />

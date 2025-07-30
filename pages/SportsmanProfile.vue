@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
-      <div class="container mx-auto">
+      <div class="sm:container mx-auto">
         <!-- Header Section -->
         <header
           class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
@@ -35,8 +35,8 @@
                   :class="
                     authStore.userProfile?.data?.sportsman_profile?.address
                       ?.is_sportsman_verified
-                      ? 'text-green-500 text-sm ml-3'
-                      : 'text-red-500 text-sm ml-3'
+                      ? 'text-green-500 text-sm ml-3 mb-5'
+                      : 'text-red-500 text-sm ml-3 mb-5'
                   "
                 >
                   {{
@@ -351,8 +351,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="flex flex-col">
                     <label for="city" class="text-sm text-gray-400 mb-1"
-                      >Область / Город {{ formData.city }}</label
-                    >
+                      >Область / Город
+                    </label>
                     <select
                       id="city"
                       v-model="formData.city"

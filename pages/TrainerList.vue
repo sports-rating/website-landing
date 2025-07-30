@@ -2,22 +2,19 @@
   <NuxtLayout name="custom">
     <div class="bg-[#11101B] min-h-screen text-white">
       <div class="container mx-auto px-6 py-8">
-        <!-- Header Section -->
         <div class="text-center mb-8">
           <div
             class="bg-green-500 text-black px-10 w-fit mx-auto py-2 font-bold uppercase text-4xl skew-x-[-10deg]"
           >
             <span class="inline-block skew-x-[10deg]">Рейтинг игроков и тренеров</span>
           </div>
-          <p class="mt-4 text-gray-400 text-lg w-[60%] mx-auto">
+          <p class="mt-4 text-gray-400 sm:text-lg sm:w-[60%] mx-auto">
             Рейтинг спортсменов и тренеров представляет собой систему оценки и
             классификации, основанную на их достижениях, навыках и вкладе в спорт.
           </p>
         </div>
 
-        <!-- Filters Section -->
         <div class="rounded-lg flex flex-wrap items-center justify-between gap-4">
-          <!-- Sports Categories -->
           <div class="flex overflow-x-scroll no-scrollbar hide-scrollbar justify-between">
             <div class="flex gap-2">
               <button
@@ -35,29 +32,9 @@
               </button>
             </div>
           </div>
-          <!-- Region Dropdown -->
 
           <div class="flex gap-4">
             <div class="relative w-64">
-              <!-- Dropdown Button -->
-              <!-- <button 
-            class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-gray-300 px-6 py-2 rounded-lg text-sm flex items-center justify-between hover:text-white hover:shadow-lg transition duration-200 ease-in-out w-full"
-            @click="toggleRegionDropdown"
-          >
-            <span>{{ selectedRegion || 'Все регионы' }}</span>
-            <svg 
-              class="w-4 h-4 transform transition-transform duration-200" 
-              :class="{ 'rotate-180': regionDropdownVisible }" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button> -->
-
-              <!-- Dropdown List -->
               <div
                 v-if="regionDropdownVisible"
                 class="absolute mt-2 w-full bg-[#1E1F25] rounded-lg shadow-lg border border-gray-700 z-50"
@@ -83,7 +60,6 @@
                 </button>
               </div>
 
-              <!-- Outside Click Handler -->
               <div
                 v-if="regionDropdownVisible"
                 class="fixed inset-0 z-40"
@@ -92,25 +68,6 @@
             </div>
 
             <div class="relative w-64">
-              <!-- Dropdown Button -->
-              <!-- <button 
-            class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-gray-300 px-6 py-2 rounded-lg text-sm flex items-center justify-between hover:text-white hover:shadow-lg transition duration-200 ease-in-out w-full"
-            @click="toggleRegionDropdownn"
-          >
-            <span>{{ selectedRating || 'Рейтинг тренеров' }}</span>
-            <svg 
-              class="w-4 h-4 transform transition-transform duration-200" 
-              :class="{ 'rotate-180': regionDropdownVisiblee }" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button> -->
-
-              <!-- Dropdown List -->
               <div
                 v-if="regionDropdownVisiblee"
                 class="absolute mt-2 w-full bg-[#1E1F25] rounded-lg shadow-lg border border-gray-700 z-50"
@@ -136,7 +93,6 @@
                 </button>
               </div>
 
-              <!-- Outside Click Handler -->
               <div
                 v-if="regionDropdownVisible"
                 class="fixed inset-0 z-40"
@@ -144,138 +100,109 @@
               ></div>
             </div>
           </div>
-          <!-- <div class="relative">
-            <button 
-              class="bg-[#1A1B1F] text-gray-400 px-6 py-2 rounded text-sm flex items-center gap-2 hover:text-white"
-              @click="toggleRegionDropdown"
-            >
-              {{ selectedRegion || 'Все регионы' }}
-              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div 
-              v-if="regionDropdownVisible" 
-              class="absolute mt-2 w-64 bg-[#2A2B31] rounded-lg shadow-lg z-50"
-            >
-              <ul class="py-2 max-h-64 overflow-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-600">
-                <li 
-                  v-for="region in regions" 
-                  :key="region" 
-                  @click="selectRegion(region)"
-                  class="px-4 py-2 hover:bg-[#3A3B41] cursor-pointer text-gray-400 hover:text-white"
-                >
-                  {{ region }}
-                </li>
-              </ul>
-              <button 
-                class="bg-red-600 text-white px-4 py-2 mt-2 w-full rounded"
-                @click="applyRegionFilter"
-              >
-                Применить
-              </button>
-            </div>
-          </div> -->
         </div>
 
-        <!-- Players Table -->
-        <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
-          <!-- Table Header -->
-          <div class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-4">
-            <div class="col-span-1 text-gray-400 text-sm">РТГ</div>
-            <div class="col-span-4 text-gray-400 text-sm">ТРЕНЕР</div>
-            <div class="col-span-1 text-gray-400 text-sm">СТР</div>
-            <div class="col-span-1 text-gray-400 text-sm">КМ</div>
-            <div class="col-span-1 text-center items-center text-gray-400 text-xs flex">
-              <img src="/gold.png" class="w-6" alt="" />Золото
-            </div>
-            <div class="col-span-1 text-center items-center text-gray-400 text-xs flex">
-              <img src="/silver.png" class="w-6" alt="" />Серебро
-            </div>
-            <div class="col-span-1 text-center items-center text-gray-400 text-xs flex">
-              <img src="/bronza.png" class="w-6" alt="" />Бронза
-            </div>
-            <div class="">
-              <el-dropdown @command="handleSelect">
-                <el-button type="text" size="small" class="!text-sm !text-gray-400">
-                  {{ selectedView === "1" ? "Личное " : "Учащихся " }}
-                  <el-icon class="el-icon--right">
-                    <arrow-down />
-                  </el-icon>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                    <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-
-          <!-- Table Body -->
-          <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-            <nuxt-link
-              v-for="(trainer, index) in data"
-              :key="trainer.id"
-              :to="`/trainer/${trainer.id}`"
-              class="px-4 py-3 grid grid-cols-12 gap-4 items-center hover:bg-[#3A3B41] transition-colors"
+        <div class="md:flex justify-center grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+          <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
+            <div
+              class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-2 text-xs text-gray-400 items-center"
             >
-              <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-4 flex items-center gap-3">
-                <span class="text-white text-sm truncate"
-                  >{{ trainer.first_name }} {{ trainer.last_name }}</span
-                >
-              </div>
-              <div class="col-span-1 text-center">
-                <img
-                  src="/public/UZ.svg"
-                  :alt="trainer.country"
-                  class="w-6 h-4 object-cover rounded"
-                />
-              </div>
-              <div class="col-span-1 text-center">
-                <img
-                  :src="`${trainer?.logo}`"
-                  :alt="trainer.team"
-                  class="w-6 h-6 rounded-full"
-                />
-              </div>
-              <!-- Medals -->
-              <!-- Gold -->
-              <div class="col-span-1 ml-7">
-                <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.gold
-                      : trainer.statistics.students_statistics.gold
-                  }}
-                </span>
+              <div class="col-span-1">РТГ</div>
+              <div class="col-span-2">ТРЕНЕР</div>
+              <div class="col-span-1 text-center">СТР</div>
+              <div class="col-span-1 text-center">КМ</div>
+
+              <div class="sm:flex sm:col-span-1 items-center gap-1">
+                <img src="/gold.png" class="w-4 h-4" />
+                <span class="sm:flex hidden">Золото</span>
               </div>
 
-              <!-- Silver -->
-              <div class="col-span-1 ml-7">
-                <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.silver
-                      : trainer.statistics.students_statistics.silver
-                  }}
-                </span>
+              <div class="sm:flex sm:col-span-2 items-center gap-1 sm:ml-5">
+                <img src="/silver.png" class="w-4 h-4" />
+                <span class="sm:flex hidden">Серебро</span>
               </div>
 
-              <!-- Bronze -->
-              <div class="col-span-1 ml-7">
-                <span class="bg-[#1A1B1F] text-white px-3 py-1 rounded text-sm">
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.bronze
-                      : trainer.statistics.students_statistics.bronze
-                  }}
-                </span>
+              <div class="sm:flex sm:col-span-2 items-center gap-1">
+                <img src="/bronza.png" class="w-4 h-4" />
+                <span class="sm:flex hidden">Бронза</span>
               </div>
-            </nuxt-link>
-          </TransitionGroup>
+
+              <div class="col-span-4 sm:col-span-2 flex justify-end">
+                <el-dropdown @command="handleSelect">
+                  <el-button type="text" size="small" class="!text-gray-400 text-xs">
+                    {{ selectedView === "1" ? "Личное" : "Учащихся" }}
+                    <el-icon><arrow-down /></el-icon>
+                  </el-button>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+                      <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+            </div>
+
+            <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
+              <nuxt-link
+                v-for="(trainer, index) in data"
+                :key="trainer.id"
+                :to="`/trainer/${trainer.id}`"
+                class="px-4 py-3 grid grid-cols-12 gap-2 items-center hover:bg-[#3A3B41] transition-colors"
+              >
+                <div class="col-span-1 text-gray-400 text-sm">{{ index + 1 }}</div>
+
+                <!-- Name -->
+                <div class="col-span-2 text-white text-sm truncate">
+                  {{ trainer.first_name }} {{ trainer.last_name }}
+                </div>
+
+                <!-- Country -->
+                <div class="col-span-1 text-center">
+                  <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                </div>
+
+                <!-- Club Logo -->
+                <div class="col-span-1 text-center">
+                  <img
+                    :src="trainer.logo"
+                    class="w-6 h-6 rounded-full mx-auto object-cover"
+                  />
+                </div>
+
+                <!-- Medals -->
+                <div class="col-span-7 grid grid-cols-3 gap-2 text-center">
+                  <span
+                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
+                  >
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.gold
+                        : trainer.statistics.students_statistics.gold
+                    }}
+                  </span>
+                  <span
+                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
+                  >
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.silver
+                        : trainer.statistics.students_statistics.silver
+                    }}
+                  </span>
+                  <span
+                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
+                  >
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.bronze
+                        : trainer.statistics.students_statistics.bronze
+                    }}
+                  </span>
+                </div>
+              </nuxt-link>
+            </TransitionGroup>
+          </div>
         </div>
       </div>
     </div>
