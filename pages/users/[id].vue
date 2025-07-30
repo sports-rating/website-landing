@@ -1,80 +1,118 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B]">
-      <div class="py-8 container">
-        <div class="flex justify-between">
-          <div class="flex-1">
-            <h1 class="text-4xl font-bold mb-4 py-4 text-white">
+      <!-- Header Section -->
+      <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Profile Info -->
+          <div class="flex flex-col order-2 lg:order-1">
+            <h1
+              class="text-2xl sm:text-3xl text-white lg:text-4xl font-bold mb-4 lg:mb-6"
+            >
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
             </h1>
 
-            <div class="flex gap-2 mb-6">
-              <span class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-sm">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span
+                class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-xs sm:text-sm"
+              >
                 {{ data?.sportsman_profile?.sport?.name }}
               </span>
-              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">
+              <span
+                class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-xs sm:text-sm"
+              >
                 {{ data?.sportsman_profile?.skill_level }}
               </span>
             </div>
-            <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Место рождения</p>
+
+            <div class="grid grid-cols-1 gap-y-4 text-sm">
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
                 <p class="text-white">
-                  {{ data?.sportsman_profile?.address?.place_of_birth }}
+                  {{ data?.sportsman_profile?.address?.place_of_birth || "Не указано" }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Гражданство</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Гражданство</p>
                 <p class="text-white">
-                  {{ data?.sportsman_profile?.address?.citizenship }}
+                  {{ data?.sportsman_profile?.address?.citizenship || "Не указано" }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">День рождения</p>
-                <p class="text-white">{{ data?.birth_date }}</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">День рождения</p>
+                <p class="text-white">{{ data?.birth_date || "Не указано" }}</p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Рост</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Рост</p>
                 <p class="text-white">
-                  {{ Number(data?.sportsman_profile?.user_metrics?.height).toFixed(0) }}
-                  см
+                  {{
+                    data?.sportsman_profile?.user_metrics?.height
+                      ? Number(data?.sportsman_profile?.user_metrics?.height).toFixed(0) +
+                        " см"
+                      : "Не указано"
+                  }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Вес</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Вес</p>
                 <p class="text-white">
-                  {{ Number(data?.sportsman_profile?.user_metrics?.weight).toFixed(0) }}
-                  кг
+                  {{
+                    data?.sportsman_profile?.user_metrics?.weight
+                      ? Number(data?.sportsman_profile?.user_metrics?.weight).toFixed(0) +
+                        " кг"
+                      : "Не указано"
+                  }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%]">
-                <p class="text-[#8B8992]">Воспитанник</p>
-                <p class="text-white">{{ data?.educations?.[0]?.school_name }}</p>
+              <div class="flex flex-col sm:flex-row sm:justify-between">
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Воспитанник</p>
+                <p class="text-white">
+                  {{ data?.educations?.[0]?.school_name || "Не указано" }}
+                </p>
               </div>
             </div>
           </div>
 
-          <div class="py-20 pr-28">
-            <img
-              :src="data?.media?.find((item:any) => item.is_profile_photo === true)?.file"
-              alt="Player Profile"
-              class="w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
-            />
+          <!-- Profile Image -->
+          <div
+            class="order-1 lg:order-2 flex justify-center lg:justify-end md:ml-48 md:mt-20"
+          >
+            <div class="relative">
+              <img
+                :src="
+                  data?.media?.find((item:any) => item.is_profile_photo)?.file ||
+                  '/default-avatar.png'
+                "
+                alt="Player Profile"
+                class="w-32 h-32 sm:w-40 sm:h-40 lg:w-[40vh] lg:h-[40vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mb-6 container">
-        <div class="flex gap-2">
+      <!-- Tab Navigation -->
+      <div class="lg:mb-6 container px-4 z-10 sm:px-6">
+        <div class="flex flex-wrap p-2 gap-2 overflow-x-auto pb-2 no-scrollbar">
           <button
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
             :class="[
-              'px-4 py-2 text-sm font-medium',
+              'px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200',
               activeTab === tab.id
-                ? 'text-white border-b-2 border-red-500 bg-red-500 rounded-md'
-                : 'text-white bg-gray-500 rounded-md',
+                ? 'text-white border-b-2 border-red-500 bg-red-500 rounded-md shadow-lg'
+                : 'text-white bg-gray-600 hover:bg-gray-500 rounded-md',
             ]"
           >
             {{ tab.name }}
@@ -82,202 +120,312 @@
         </div>
       </div>
 
-      <div class="py-8 container">
-        <div v-if="activeTab === 'statistics'" class="flex flex-col gap-8">
+      <!-- Tab Content -->
+      <div class="py-4 lg:py-8 container px-4 sm:px-6">
+        <!-- Statistics Tab -->
+        <div v-if="activeTab === 'statistics'" class="flex flex-col gap-6 lg:gap-8">
           <Statistic />
         </div>
 
-        <div v-if="activeTab === 'career'" class="flex flex-col gap-8">
-          <div class="w-full mx-auto mt-5">
-            <div
-              class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium"
-            >
-              <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
-              <div class="p-3 col-span-1">СЕЗОН</div>
-              <div class="p-3 col-span-1">Место</div>
-              <div class="p-3 col-span-4">ТРЕНЕР</div>
-              <div class="p-3 col-span-2">Рейтинг</div>
+        <!-- Career Tab -->
+        <div v-if="activeTab === 'career'" class="flex flex-col gap-6 lg:gap-8">
+          <div class="w-full mx-auto">
+            <!-- Mobile Career View -->
+            <div class="lg:hidden">
+              <div class="space-y-4">
+                <div
+                  v-for="(row, index) in data?.results"
+                  :key="index"
+                  class="bg-gray-800 rounded-lg p-4 text-white"
+                >
+                  <div class="flex items-center gap-3 mb-3">
+                    <img
+                      class="w-10 h-10 rounded-full"
+                      :src="getTournamentLogo(row.tournament_name)"
+                      alt=""
+                      @error="$event.target.style.display = 'none'"
+                    />
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-sm">{{ row.tournament_name }}</h3>
+                      <p class="text-xs text-gray-400">
+                        {{ row.year }} • {{ row.country }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="text-gray-400"
+                      >Тренер:
+                      {{ data?.sportsman_profile?.trainer_name || "Не указано" }}</span
+                    >
+                    <div class="flex items-center gap-2">
+                      <img
+                        v-if="row.rating === 1"
+                        src="/gold.png"
+                        class="w-4 h-4"
+                        alt=""
+                      />
+                      <img
+                        v-if="row.rating === 2"
+                        src="/silver.png"
+                        class="w-4 h-4"
+                        alt=""
+                      />
+                      <img
+                        v-if="row.rating === 3"
+                        src="/bronza.png"
+                        class="w-4 h-4"
+                        alt=""
+                      />
+                      <img
+                        v-if="row.rating === 4"
+                        src="/bronza.png"
+                        class="w-4 h-4"
+                        alt=""
+                      />
+                      <span class="font-semibold">{{ row.rating }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="container bg-[#11101B] divide-y divide-gray-200">
+            <!-- Desktop Career View -->
+            <div class="hidden lg:block">
               <div
-                v-for="(row, index) in data?.results"
-                :key="index"
-                class="grid grid-cols-12 text-white cursor-pointer"
+                class="bg-gray-800 text-white grid grid-cols-12 text-sm font-medium rounded-t-lg"
               >
-                <div class="p-3 col-span-4 flex gap-4 items-center">
-                  <img
-                    class="w-12 h-12"
-                    :src="getTournamentLogo(row.tournament_name)"
-                    alt=""
-                  />
-                  {{ row.tournament_name }}
-                </div>
-                <div class="p-3 col-span-1">{{ row.year }}</div>
-                <div class="p-3 col-span-1">{{ row.country }}</div>
-                <div class="p-3 col-span-4">
-                  {{ data?.sportsman_profile?.trainer_name }}
-                </div>
-                <div class="p-3 col-span-2 flex items-center">
-                  <img v-if="row.rating === 1" src="/gold.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 2" src="/silver.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 3" src="/bronza.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 4" src="/bronza.png" class="w-6" alt="" />
+                <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
+                <div class="p-3 col-span-1">СЕЗОН</div>
+                <div class="p-3 col-span-1">Место</div>
+                <div class="p-3 col-span-4">ТРЕНЕР</div>
+                <div class="p-3 col-span-2">Рейтинг</div>
+              </div>
 
-                  {{ row.rating }}
+              <div class="bg-[#11101B] divide-y divide-gray-700 rounded-b-lg">
+                <div
+                  v-for="(row, index) in data?.results"
+                  :key="index"
+                  class="grid grid-cols-12 text-white cursor-pointer hover:bg-gray-800 transition-colors"
+                >
+                  <div class="p-3 col-span-4 flex gap-4 items-center">
+                    <img
+                      class="w-12 h-12 rounded-full"
+                      :src="getTournamentLogo(row.tournament_name)"
+                      alt=""
+                      @error="$event.target.style.display = 'none'"
+                    />
+                    <span class="truncate">{{ row.tournament_name }}</span>
+                  </div>
+                  <div class="p-3 col-span-1">{{ row.year }}</div>
+                  <div class="p-3 col-span-1">{{ row.country }}</div>
+                  <div class="p-3 col-span-4 truncate">
+                    {{ data?.sportsman_profile?.trainer_name || "Не указано" }}
+                  </div>
+                  <div class="p-3 col-span-2 flex items-center gap-2">
+                    <img v-if="row.rating === 1" src="/gold.png" class="w-6 h-6" alt="" />
+                    <img
+                      v-if="row.rating === 2"
+                      src="/silver.png"
+                      class="w-6 h-6"
+                      alt=""
+                    />
+                    <img
+                      v-if="row.rating === 3"
+                      src="/bronza.png"
+                      class="w-6 h-6"
+                      alt=""
+                    />
+                    <img
+                      v-if="row.rating === 4"
+                      src="/bronza.png"
+                      class="w-6 h-6"
+                      alt=""
+                    />
+                    <span class="font-semibold">{{ row.rating }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="activeTab === 'videos'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="container mx-auto">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div
-                  v-for="match in matches"
-                  :key="match.id"
-                  class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div class="relative">
-                    <img
-                      :src="match.image"
-                      :alt="match.title"
-                      class="w-full h-48 object-cover"
-                    />
-                    <div
-                      v-if="match.hasVideo"
-                      @click="openVideo(match)"
-                      class="absolute inset-0 flex items-center justify-center cursor-pointer"
-                    >
-                      <img src="/psg.svg" alt="" class="w-16 h-16" />
-                    </div>
-                    <div
-                      class="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded"
-                    >
-                      {{ match.time }} / {{ match.date }}
+        <!-- Videos Tab -->
+        <div v-if="activeTab === 'videos'" class="container flex flex-col gap-6 lg:gap-8">
+          <div class="w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+              <div
+                v-for="match in matches"
+                :key="match.id"
+                class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              >
+                <div class="relative">
+                  <img
+                    :src="match.image"
+                    :alt="match.title"
+                    class="w-full h-32 sm:h-48 object-cover"
+                  />
+                  <div
+                    v-if="match.hasVideo"
+                    @click="openVideo(match)"
+                    class="absolute inset-0 flex items-center justify-center cursor-pointer bg-black bg-opacity-30 hover:bg-opacity-50 transition-all"
+                  >
+                    <div class="bg-white bg-opacity-90 rounded-full p-3">
+                      <img src="/psg.svg" alt="" class="w-8 h-8 sm:w-12 sm:h-12" />
                     </div>
                   </div>
-                  <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">{{ match.title }}</h3>
-                    <p class="text-gray-600 text-sm line-clamp-2">
-                      {{ match.description }}
-                    </p>
+                  <div
+                    class="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded"
+                  >
+                    {{ match.time }} / {{ match.date }}
                   </div>
+                </div>
+                <div class="p-3 sm:p-4">
+                  <h3 class="text-sm sm:text-lg font-semibold mb-2 line-clamp-2">
+                    {{ match.title }}
+                  </h3>
+                  <p class="text-gray-600 text-xs sm:text-sm line-clamp-3">
+                    {{ match.description }}
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
 
+          <!-- Video Modal -->
+          <div
+            v-if="selectedMatch"
+            class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+            @click.self="closeVideo"
+          >
             <div
-              v-if="selectedMatch"
-              class="container fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
             >
-              <div class="bg-white p-4 rounded-lg max-w-3xl w-full">
-                <div class="flex justify-between items-center mb-4">
-                  <h2 class="text-xl font-bold">{{ selectedMatch?.title }}</h2>
-                  <button @click="closeVideo" class="text-gray-500 hover:text-gray-700">
-                    <svg
-                      class="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
+              <div class="flex justify-between items-center p-4 border-b">
+                <h2 class="text-lg sm:text-xl font-bold truncate">
+                  {{ selectedMatch?.title }}
+                </h2>
+                <button @click="closeVideo" class="text-gray-500 hover:text-gray-700 p-2">
+                  <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
 
-                <div v-if="selectedMatch?.hasVideo" class="aspect-w-16 aspect-h-9">
+              <div v-if="selectedMatch?.hasVideo" class="p-4">
+                <div class="aspect-w-16 aspect-h-9">
                   <iframe
                     :src="selectedMatch?.videoUrl"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
-                    class="w-full h-[25rem]"
+                    class="w-full h-48 sm:h-64 lg:h-[25rem] rounded"
                   >
                   </iframe>
                 </div>
-                <p v-else>No video available for this match.</p>
+              </div>
+              <p v-else class="p-4 text-gray-500">No video available for this match.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos Tab -->
+        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-6 lg:gap-8">
+          <div class="w-full">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
+              <div
+                v-for="(image, index) in data?.media?.filter(
+                  (item) => item.media_type === 'image' && item.is_profile_photo === false
+                )"
+                :key="index"
+                class="relative group overflow-hidden rounded-lg aspect-square"
+              >
+                <img
+                  :src="`${image.file}`"
+                  :alt="image.media_type"
+                  class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  @error="$event.target.src = '/placeholder-image.png'"
+                />
+                <div
+                  class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"
+                ></div>
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="w-full mx-auto">
-              <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Files Tab -->
+        <div v-if="activeTab === 'files'" class="container flex flex-col gap-6 lg:gap-8">
+          <div class="w-full">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"
+            >
+              <template v-if="data?.media?.some((item) => item.media_type === 'pdf')">
                 <div
-                  v-for="(image, index) in data?.media?.filter((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
+                  v-for="(doc, index) in data?.media?.filter(
+                    (item) => item.media_type === 'pdf'
+                  )"
                   :key="index"
-                  class="relative group overflow-hidden rounded-lg"
-                >
-                  <img
-                    :src="`${image.file}`"
-                    :alt="image.media_type"
-                    class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="activeTab === 'files'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="w-full">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div
-                  v-if="data?.media?.some((item: any) => item.media_type === 'pdf')"
-                  v-for="(doc, index) in data?.media?.filter((item: any) => item.media_type === 'pdf')"
-                  :key="index"
-                  class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
+                  class="bg-white rounded-lg border hover:shadow-lg transition-all duration-200 p-4 transform hover:scale-105"
                 >
                   <div v-if="doc.media_type === 'pdf'">
-                    <a :href="`${doc.file}`" download target="_blank">
-                      <img src="/pdf.svg" alt="" />
-                      <h3 class="text-sm text-gray-900 font-medium my-2">
+                    <a :href="`${doc.file}`" download target="_blank" class="block">
+                      <div class="flex items-center justify-center mb-3">
+                        <img src="/pdf.svg" alt="" class="w-12 h-12" />
+                      </div>
+                      <h3
+                        class="text-xs sm:text-sm text-gray-900 font-medium text-center line-clamp-2"
+                      >
                         {{ doc.file.split("/").pop() }}
                       </h3>
                     </a>
                   </div>
                 </div>
-                <div
-                  v-else
-                  class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
-                >
-                  <img src="/pdf.svg" alt="" />
-                  <h3 class="text-sm text-gray-900 font-medium my-2">PDF Not Found</h3>
+              </template>
+              <div
+                v-else
+                class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4 text-center"
+              >
+                <div class="flex items-center justify-center mb-3">
+                  <img src="/pdf.svg" alt="" class="w-12 h-12 opacity-50" />
                 </div>
+                <h3 class="text-xs sm:text-sm text-gray-500 font-medium">
+                  PDF Not Found
+                </h3>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container flex flex-col gap-8 pb-8">
+      <!-- Achievements Section -->
+      <div class="container flex flex-col gap-6 lg:gap-8 pb-8 px-4 sm:px-6">
         <div class="mt-5">
-          <h2 class="text-2xl font-medium text-white">Достижения</h2>
+          <h2 class="text-xl sm:text-2xl font-medium text-white">Достижения</h2>
         </div>
-        <div class="bg-[#11101B] overflow-hidden w-full">
+        <div class="bg-[#11101B] overflow-hidden w-full rounded-lg">
           <div>
-            <dl class="grid grid-cols-3">
+            <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               <div
                 v-for="(stat, index) in filteredResults"
                 :key="index"
-                class="px-4 py-5 border overflow-hidden sm:p-6"
+                class="px-4 py-4 sm:py-5 border-b border-gray-700 last:border-b-0 sm:border-b-0 sm:border-r last:border-r-0"
               >
-                <dt class="text-2xl font-medium text-white truncate">
+                <dt
+                  class="text-lg sm:text-xl lg:text-2xl font-medium text-white truncate"
+                >
                   {{ stat.tournament_name }}
                 </dt>
-                <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
+                <dd class="mt-1 text-xs sm:text-sm font-semibold text-[#8B8992]">
                   {{ stat.year }}
                 </dd>
               </div>
@@ -490,7 +638,7 @@ const documents = ref([
   },
 ]);
 
-const openVideo = (match) => {
+const openVideo = (match: any) => {
   selectedMatch.value = match;
 };
 
@@ -501,7 +649,7 @@ const closeVideo = () => {
   selectedMatch.value = null;
 };
 
-const handleAction = (project) => {
+const handleAction = (project: any) => {
   // console.log('Action clicked for project:', project.id)
   router.push(project);
 };
@@ -524,5 +672,60 @@ const handleAction = (project) => {
   /* scrollbar-width: thin; */
   /* margin: inherit; */
   scroll-margin-block-start: 0;
+}
+
+/* Responsive utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover\:scale-110:hover {
+  transform: scale(1.1);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Touch-friendly buttons */
+button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improved focus states */
+button:focus {
+  outline: 2px solid #a0e727;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
 }
 </style>

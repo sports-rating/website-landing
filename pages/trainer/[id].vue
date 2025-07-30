@@ -2,181 +2,117 @@
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B]">
       <!-- Player Info Section -->
-      <div class="py-8 container">
-        <div class="flex justify-between">
-          <div class="flex-1">
-            <!-- Player Number and Title -->
-            <!-- <div class="flex items-center gap-4 mb-2">
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">№1</span>
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">ОБЩ. 96</span>
-            <span class="text-white border px-4 py-1 bg-[#2E2F3E] text-sm">Обладатель титула</span>
-          </div> -->
-
-            <!-- Player Name -->
-            <h1 class="text-4xl font-bold mb-4 py-4 text-white">
+      <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Profile Info -->
+          <div class="flex flex-col order-2 lg:order-1">
+            <h1
+              class="text-2xl sm:text-3xl text-white lg:text-4xl font-bold mb-4 lg:mb-6"
+            >
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
             </h1>
 
-            <!-- Position Tags -->
-            <div class="flex gap-2 mb-6">
-              <span class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-sm">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span
+                class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-xs sm:text-sm"
+              >
                 {{ data?.trainer_profile?.sport?.name }}
               </span>
-              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">
+              <span
+                class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-xs sm:text-sm"
+              >
                 {{ data?.trainer_profile?.skill_level }}
               </span>
             </div>
 
-            <!-- Player Details -->
-            <div class="grid grid-cols-1 gap-y-4 text-sm mb-6">
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Место рождения</p>
+            <div class="grid grid-cols-1 gap-y-4 text-sm">
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
                 <p class="text-white">
-                  {{ data?.trainer_profile?.address?.place_of_birth }}
+                  {{ data?.trainer_profile?.address?.place_of_birth || "Не указано" }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Гражданство</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Гражданство</p>
                 <p class="text-white">
-                  {{ data?.trainer_profile?.address?.citizenship }}
+                  {{ data?.trainer_profile?.address?.citizenship || "Не указано" }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">День рождения</p>
-                <p class="text-white">{{ data?.birth_date }}</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">День рождения</p>
+                <p class="text-white">{{ data?.birth_date || "Не указано" }}</p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Рост</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Рост</p>
                 <p class="text-white">
-                  {{ Number(data?.trainer_profile?.user_metrics?.height).toFixed(0) }} см
+                  {{
+                    data?.trainer_profile?.user_metrics?.height
+                      ? Number(data?.trainer_profile?.user_metrics?.height).toFixed(0) +
+                        " см"
+                      : "Не указано"
+                  }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%] border-b pb-1">
-                <p class="text-[#8B8992]">Вес</p>
+              <div
+                class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
+              >
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Вес</p>
                 <p class="text-white">
-                  {{ Number(data?.trainer_profile?.user_metrics?.weight).toFixed(0) }} кг
+                  {{
+                    data?.trainer_profile?.user_metrics?.weight
+                      ? Number(data?.trainer_profile?.user_metrics?.weight).toFixed(0) +
+                        " кг"
+                      : "Не указано"
+                  }}
                 </p>
               </div>
-              <div class="flex justify-between w-[60%]">
-                <p class="text-[#8B8992]">Воспитанник</p>
-                <p class="text-white">{{ data?.educations?.[0]?.school_name }}</p>
+              <div class="flex flex-col sm:flex-row sm:justify-between">
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Воспитанник</p>
+                <p class="text-white">
+                  {{ data?.educations?.[0]?.school_name || "Не указано" }}
+                </p>
               </div>
             </div>
           </div>
 
           <!-- Profile Image -->
-          <div class="py-20 pr-28">
-            <img
-              :src="data?.media?.find((item:any) => item.is_profile_photo === true)?.file"
-              alt="Player Profile"
-              class="w-[40vh] h-[40vh] p-2 object-cover rounded-full border"
-            />
-          </div>
-        </div>
-
-        <!-- <div class="flex w-full justify-between">
-      
-      <div class="bg-[#1A1B1F] border border-gray-800 w-[60%]">
-      <div class=" mx-auto">
-        <div class="flex items-center h-[52px]">
-          <div class="bg-red-600 h-full flex items-center px-6 text-white font-medium">
-            10 000 000 сум
-          </div>
-          <div class="flex-1 relative h-full flex items-center bg-[#0F1115] px-24">
-            <span class="relative text-white z-10 ">24%</span>
-          </div>
-          <div class="bg-[#0F1115] h-full flex items-center px-6 text-white">
-            24 000 000 сум
-          </div>
-
-          
-        </div>
-      </div>
-      </div>
-      <div class=" gap-4 border-gray-800 flex ml-5">
-      
-          <div class="bg-[#0F1115]   border h-full flex items-center px-6 text-white border-l border-gray-800 ">
-            Осталось: 24 дней
-          </div>
-
-          <button class="h-full bg-red-600 text-white px-8 font-medium hover:bg-red-700 transition-colors">
-            Пожертвовать
-          </button>
-      </div>
-      </div> -->
-
-        <!-- <div v-if="activeTab === 'statistics'" class="my-5">
-        <div class="container bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold mb-6">Статистика по играм</h2>
-            
-            <div class="space-y-4">
-              <div class="flex justify-between items-center border-b pb-4">
-                <div class="space-y-1">
-                  <p class="text-sm text-gray-500">ТУРНИР</p>
-                  <div class="flex items-center space-x-2">
-                    <span class="font-medium">Мир Узбекская Премьер-Лига</span>
-                  </div>
-                </div>
-                
-                <div class="space-y-1">
-                  <p class="text-sm text-gray-500">СЕЗОН</p>
-                  <div class="flex items-center space-x-2">
-                    <span class="font-medium">2023/2024</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-6">
-                <div class="space-y-4">
-                  <div v-for="stat in leftStats" :key="stat.label" 
-                      class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">{{ stat.label }}</span>
-                    <span class="font-semibold">{{ stat.value }}</span>
-                  </div>
-                </div>
-
-                <div class="space-y-4">
-                  <div v-for="stat in rightStats" :key="stat.label" 
-                      class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">{{ stat.label }}</span>
-                    <span class="font-semibold">{{ stat.value }}</span>
-                  </div>
-                </div>
-              </div>
+          <div
+            class="order-1 lg:order-2 flex justify-center lg:justify-end md:ml-48 md:mt-20"
+          >
+            <div class="relative">
+              <img
+                :src="
+                  data?.media?.find((item:any) => item.is_profile_photo)?.file ||
+                  '/default-avatar.png'
+                "
+                alt="Player Profile"
+                class="w-32 h-32 sm:w-40 sm:h-40 lg:w-[40vh] lg:h-[40vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
+              />
             </div>
           </div>
         </div>
-      </div> -->
       </div>
 
-      <!-- <div class="bg-[#11101B] container pb-8  overflow-hidden w-full">
-        <div class="">
-          <dl class="grid grid-cols-2">
-            <div v-for="(stat, index) in statistics" :key="index" class="px-4 py-5 border  overflow-hidden sm:p-6">
-              <dt class="text-sm font-medium text-[#8B8992] truncate">
-                {{ stat.label }}
-              </dt>
-              <dd class="mt-1 text-3xl font-semibold text-white">
-                {{ stat.value }}
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </div> -->
-
-      <!-- Tabs -->
-      <div class="mb-6 container">
-        <div class="flex gap-2">
+      <!-- Tab Navigation -->
+      <div class="lg:mb-6 container px-4 z-10 sm:px-6">
+        <div class="flex flex-wrap p-2 gap-2 overflow-x-auto pb-2 no-scrollbar">
           <button
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
             :class="[
-              'px-4 py-2 text-sm font-medium',
+              'px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200',
               activeTab === tab.id
-                ? 'text-white border-b-2 border-red-500 bg-red-500 rounded-md'
-                : 'text-white bg-gray-500 rounded-md',
+                ? 'text-white border-b-2 border-red-500 bg-red-500 rounded-md shadow-lg'
+                : 'text-white bg-gray-600 hover:bg-gray-500 rounded-md',
             ]"
           >
             {{ tab.name }}
@@ -207,124 +143,149 @@
 
         <div v-if="activeTab === 'career'" class="flex flex-col gap-8">
           <div class="w-full mx-auto mt-5">
-            <div
-              class="container bg-gray-800 text-white grid grid-cols-12 text-sm font-medium"
-            >
-              <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
-              <div class="p-3 col-span-2">СЕЗОН</div>
-              <!-- <div class="p-3">ТРЕНЕР</div> -->
+            <!-- Header -->
+            <div class="sm:container bg-gray-800 text-white overflow-x-auto">
               <div
-                class="p-3 col-span-2"
-                :class="selectedView === '2' ? 'col-span-1' : 'col-span-2'"
+                class="min-w-[720px] grid grid-cols-12 text-xs sm:text-sm font-medium whitespace-nowrap"
               >
-                Место
-              </div>
-              <div
-                v-if="selectedView === '2'"
-                class="col-span-3 text-center items-center flex"
-              >
-                <div class="p-3 text-center items-center flex">
-                  <img src="/gold.png" class="w-6" alt="" />Золото
+                <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
+                <div class="p-3 col-span-2">СЕЗОН</div>
+                <div
+                  class="p-3"
+                  :class="selectedView === '2' ? 'col-span-1' : 'col-span-2'"
+                >
+                  Место
                 </div>
-                <div class="p-3 text-center items-center flex">
-                  <img src="/silver.png" class="w-6" alt="" />Серебро
-                </div>
-                <div class="p-3 text-center items-center flex">
-                  <img src="/bronza.png" class="w-6" alt="" />Бронза
-                </div>
-              </div>
 
-              <div
-                v-if="selectedView === '1'"
-                class="col-span-2 text-center items-center flex"
-              >
-                Рейтинг
-              </div>
-              <div class="p-3 w-[10rem]">
-                <el-dropdown @command="handleSelect">
-                  <el-button type="text" size="small" class="!text-sm !text-white">
-                    {{ selectedView === "1" ? "Личное " : "Учащихся " }}
-                    <el-icon class="el-icon--right">
-                      <arrow-down />
-                    </el-icon>
-                  </el-button>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                      <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
+                <div
+                  v-if="selectedView === '2'"
+                  class="col-span-3 flex justify-between items-center text-center"
+                >
+                  <div class="p-3 flex items-center gap-2">
+                    <img src="/gold.png" class="w-6" alt="" />
+                    Золото
+                  </div>
+                  <div class="p-3 flex items-center gap-2">
+                    <img src="/silver.png" class="w-6" alt="" />
+                    Серебр
+                  </div>
+                  <div class="p-3 flex items-center gap-2">
+                    <img src="/bronza.png" class="w-6" alt="" />
+                    Бронза
+                  </div>
+                </div>
+
+                <div
+                  v-if="selectedView === '1'"
+                  class="col-span-2 text-center items-center flex"
+                >
+                  Рейтинг
+                </div>
+
+                <div class="p-3 col-span-2 w-[10rem]">
+                  <el-dropdown @command="handleSelect">
+                    <el-button type="text" size="small" class="!text-sm !text-white">
+                      {{ selectedView === "1" ? "Личное " : "Учащихся " }}
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </el-button>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+                        <el-dropdown-item command="2"
+                          >Достижения учащихся</el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
               </div>
             </div>
 
+            <!-- Table Rows -->
             <div class="container bg-[#11101B] divide-y divide-gray-200">
               <div
                 v-for="(row, index) in data?.results"
                 :key="index"
-                class="grid grid-cols-12 text-white cursor-pointer"
+                class="grid grid-cols-6 sm:grid-cols-12 text-white text-sm cursor-pointer"
               >
+                <!-- Championship -->
                 <div
-                  v-if="selectedView === '1' && row.rating"
-                  class="p-3 col-span-4 flex gap-4 items-center"
+                  v-if="
+                    (selectedView === '1' && row.rating) ||
+                    (selectedView === '2' && !row.rating)
+                  "
+                  class="p-3 col-span-3 sm:col-span-4 flex gap-2 sm:gap-4 items-center"
                 >
                   <img
-                    class="w-12 h-12"
+                    class="w-10 h-10 sm:w-12 sm:h-12"
                     :src="getTournamentLogo(row.tournament_name)"
                     alt=""
                   />
-                  {{ row.tournament_name }}
+                  <span class="truncate">{{ row.tournament_name }}</span>
                 </div>
-                <div v-if="selectedView === '1' && row.rating" class="p-3 col-span-2">
+
+                <!-- Season -->
+                <div
+                  v-if="
+                    (selectedView === '1' && row.rating) ||
+                    (selectedView === '2' && !row.rating)
+                  "
+                  class="p-3 col-span-1 sm:col-span-2"
+                >
                   {{ row.year }}
                 </div>
+
+                <!-- Country -->
                 <div
-                  v-if="selectedView === '1' && row.rating"
-                  class="p-3 col-span-2"
-                  :class="selectedView === '1' ? 'col-span-2' : 'col-span-1'"
+                  v-if="
+                    (selectedView === '1' && row.rating) ||
+                    (selectedView === '2' && !row.rating)
+                  "
+                  class="p-3"
+                  :class="
+                    selectedView === '2'
+                      ? 'col-span-1 sm:col-span-1'
+                      : 'col-span-2 sm:col-span-2'
+                  "
                 >
                   {{ row.country }}
                 </div>
 
+                <!-- Medal Counts -->
                 <div
                   v-if="selectedView === '2' && !row.rating"
-                  class="p-3 col-span-4 flex gap-4 items-center"
+                  class="p-3 col-span-6 sm:col-span-3 flex justify-between sm:justify-around items-center"
+                >
+                  <div class="text-center">{{ row.gold }}</div>
+                  <div class="text-center">{{ row.silver }}</div>
+                  <div class="text-center">{{ row.bronze }}</div>
+                </div>
+
+                <!-- Rating -->
+                <div
+                  v-if="selectedView === '1' && row.rating"
+                  class="p-3 col-span-3 flex items-center gap-2"
                 >
                   <img
-                    class="w-12 h-12"
-                    :src="getTournamentLogo(row.tournament_name)"
+                    v-if="row.rating === 1"
+                    src="/gold.png"
+                    class="w-5 sm:w-6"
                     alt=""
                   />
-                  {{ row.tournament_name }}
-                </div>
-                <div v-if="selectedView === '2' && !row.rating" class="p-3 col-span-2">
-                  {{ row.year }}
-                </div>
-                <div
-                  v-if="selectedView === '2' && !row.rating"
-                  class="p-3 col-span-2"
-                  :class="selectedView === '2' ? 'col-span-1 ' : 'col-span-2'"
-                >
-                  {{ row.country }}
-                </div>
-
-                <div
-                  class="p-3 col-span-3 flex justify-around"
-                  v-if="selectedView === '2' && !row.rating"
-                >
-                  <div class="p-3 col-span-1">{{ row.gold }}</div>
-                  <div class="p-3 col-span-1">{{ row.silver }}</div>
-                  <div class="p-3 col-span-1">{{ row.bronze }}</div>
-                </div>
-
-                <div
-                  class="p-3 col-span-3 flex items-center"
-                  v-if="selectedView === '1' && row.rating"
-                >
-                  <img v-if="row.rating === 1" src="/gold.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 2" src="/silver.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 3" src="/bronza.png" class="w-6" alt="" />
-                  <img v-if="row.rating === 4" src="/bronza.png" class="w-6" alt="" />
+                  <img
+                    v-if="row.rating === 2"
+                    src="/silver.png"
+                    class="w-5 sm:w-6"
+                    alt=""
+                  />
+                  <img
+                    v-if="row.rating === 3 || row.rating === 4"
+                    src="/bronza.png"
+                    class="w-5 sm:w-6"
+                    alt=""
+                  />
                   {{ row.rating }}
                 </div>
               </div>

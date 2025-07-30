@@ -244,7 +244,7 @@
                       >
                         <option value="">Выберите тренер</option>
                         <option
-                          v-for="item in filteredTrainers"
+                          v-for="item in dataTrainer"
                           :key="item.id"
                           :value="item.id"
                         >
@@ -436,10 +436,21 @@ const getData = async () => {
   }
 };
 
+const selectedSportName = computed(() => {
+  const selected = data.value.find((item) => item.id === formData.value.sport);
+  return selected ? selected.name : "";
+});
+
 const getTrainer = async () => {
   try {
-    const res = await $api.get("/user/profile/trainer/");
-    console.log(res);
+    if (!formData.value.sport) {
+      dataTrainer.value = [];
+      return;
+    }
+
+    const res = await $api.get("/user/profile/trainer/", {
+      params: { sport: selectedSportName.value },
+    });
 
     dataTrainer.value = res.data.data.map((trainer) => ({
       ...trainer,
@@ -450,14 +461,17 @@ const getTrainer = async () => {
   }
 };
 
-const filteredTrainers = computed(() => {
-  return Array.isArray(dataTrainer.value)
-    ? dataTrainer.value.map((trainer) => ({
-        ...trainer,
-        full_name: `${trainer.first_name} ${trainer.last_name}`,
-      }))
-    : [];
-});
+watch(
+  () => formData.value.sport,
+  async (newSport) => {
+    formData.value.trainer = "";
+    if (newSport) {
+      await getTrainer();
+    } else {
+      dataTrainer.value = [];
+    }
+  }
+);
 
 await Promise.all([getData(), getTrainer()]);
 
