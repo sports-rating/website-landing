@@ -108,7 +108,9 @@ const handleOtp = async () => {
         if (role === "sportsman") return router.push("/SportsmanProfile");
         if (role === "trainer") return router.push("/TrainerProfile");
         if (role === "federation") return router.push("/FederationProfile");
-        return router.push("/");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        return (window.location.href = "https://admin.7srating.uz/");
       }
     } catch (error) {
       errorMessage.value = "Verification failed. Please try again.";

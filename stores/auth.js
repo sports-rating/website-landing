@@ -107,7 +107,6 @@ export const useAuthStore = defineStore("auth", {
     },
 
     logout() {
-      const router = useRouter();
       this.token = null;
       this.refreshToken = null;
 
@@ -116,7 +115,6 @@ export const useAuthStore = defineStore("auth", {
 
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      // router.push("/");
 
       location.href = "/";
     },
