@@ -195,12 +195,12 @@
                     <label for="dob" class="text-sm text-gray-400 mb-1"
                       >Дата рождения</label
                     >
-                    <div class="relative">
-                      <input
+                    <div class="relative w-full">
+                      <el-input
                         type="date"
                         id="dob"
                         v-model="formData.birthDate"
-                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 pr-10 text-white md:w-full w-[95%] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        class="!bg-[#3A3A5A] !border !border-[#4A4A6A] !rounded-md text-white md:!w-full !h-[50px] !w-[95%] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                       />
                     </div>
                   </div>

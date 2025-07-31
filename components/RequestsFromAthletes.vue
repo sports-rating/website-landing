@@ -7,15 +7,15 @@
     <!-- Filter Panel -->
     <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-4">
       <input
-        v-model="search"
         type="text"
+        v-model="search"
         placeholder="Поиск игрока"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-10"
+        class="bg-[#3A3A5A] border border-[#4A4A6A] w-full rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
       />
 
       <select
         v-model="selectedStatus"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-9.5"
+        class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 w-full text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
       >
         <option value="">Все статусы</option>
         <option value="pending">В обработке</option>
@@ -24,10 +24,10 @@
         <option value="cancelled">Отменено</option>
       </select>
 
-      <input
-        v-model="selectedDate"
+      <el-input
         type="date"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-10"
+        v-model="selectedDate"
+        class="!bg-[#3A3A5A] !border !border-[#4A4A6A] !rounded-md text-white !w-full !h-[50px] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
       />
 
       <button

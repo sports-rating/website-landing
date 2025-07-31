@@ -33,12 +33,12 @@
                 <!-- First Name -->
                 <div>
                   <label class="block font-light text-gray-700 text-sm mb-1">Имя</label>
-                  <input
+                  <el-input
                     v-model="formData.firstName"
                     type="text"
                     placeholder="Введите имя"
                     :class="[
-                      'w-full  px-3 py-2 font-light text-sm bg-white border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.firstName ? 'border-red-500' : 'border-gray-200',
                     ]"
                   />
@@ -52,12 +52,12 @@
                   <label class="block font-light text-gray-700 text-sm mb-1"
                     >Фамилия</label
                   >
-                  <input
+                  <el-input
                     v-model="formData.lastName"
                     type="text"
                     placeholder="Введите фамилию"
                     :class="[
-                      'w-full px-3 py-2 font-light text-sm bg-white border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.lastName ? 'border-red-500' : 'border-gray-200',
                     ]"
                   />
@@ -73,46 +73,48 @@
                   >День рождения</label
                 >
                 <div class="grid grid-cols-3 gap-2">
-                  <select
+                  <el-select
                     v-model="formData.day"
+                    placeholder="Выберите День"
                     :class="[
-                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
-                    <option value="" disabled selected>День</option>
-                    <option v-for="day in 31" :key="day" :value="day">{{ day }}</option>
-                  </select>
+                    <el-option v-for="day in 31" :key="day" :value="day">{{
+                      day
+                    }}</el-option>
+                  </el-select>
 
-                  <select
+                  <el-select
                     v-model="formData.month"
+                    placeholder="Выберите Месяц"
                     :class="[
-                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
-                    <option value="" disabled selected>Месяц</option>
-                    <option
+                    <el-option
                       v-for="(month, index) in months"
                       :key="index"
                       :value="index + 1"
                     >
                       {{ month }}
-                    </option>
-                  </select>
+                    </el-option>
+                  </el-select>
 
-                  <select
+                  <el-select
                     v-model="formData.year"
+                    placeholder="Выберите Год"
                     :class="[
-                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
-                    <option value="" disabled selected>Год</option>
-                    <option v-for="year in years" :key="year" :value="year">
+                    <el-option v-for="year in years" :key="year" :value="year">
                       {{ year }}
-                    </option>
-                  </select>
+                    </el-option>
+                  </el-select>
                 </div>
                 <p v-if="errors.birthday" class="text-red-500 text-xs mt-0.5">
                   {{ errors.birthday }}
@@ -125,12 +127,12 @@
                   <label class="block font-light text-gray-700 text-sm mb-1"
                     >Электронный адрес</label
                   >
-                  <input
+                  <el-input
                     v-model="formData.email"
                     type="email"
                     placeholder="Введите электронную почту"
                     :class="[
-                      'w-full px-3 py-2 font-light text-sm bg-white border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.email ? 'border-red-500' : 'border-gray-200',
                     ]"
                   />
@@ -144,18 +146,18 @@
                   <label class="block font-light text-gray-700 text-sm mb-1"
                     >Тип пользователя</label
                   >
-                  <select
+                  <el-select
                     v-model="formData.userType"
+                    placeholder="Выберите тип"
                     :class="[
-                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full  cursor-pointer font-light text-sm  ',
                       errors.userType ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
-                    <option value="" disabled selected>Выберите тип</option>
-                    <option value="sportsman">Игрок</option>
-                    <option value="trainer">Тренер</option>
-                    <option value="federation">Федерация</option>
-                  </select>
+                    <el-option value="sportsman">Игрок</el-option>
+                    <el-option value="trainer">Тренер</el-option>
+                    <el-option value="federation">Федерация</el-option>
+                  </el-select>
                   <p v-if="errors.userType" class="text-red-500 text-xs mt-0.5">
                     {{ errors.userType }}
                   </p>
