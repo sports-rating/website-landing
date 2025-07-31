@@ -38,7 +38,7 @@
                     type="text"
                     placeholder="Введите имя"
                     :class="[
-                      'w-full px-3 py-2 font-light text-sm bg-white border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500',
+                      'w-full  px-3 py-2 font-light text-sm bg-white border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500',
                       errors.firstName ? 'border-red-500' : 'border-gray-200',
                     ]"
                   />
@@ -76,7 +76,7 @@
                   <select
                     v-model="formData.day"
                     :class="[
-                      'w-full cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
@@ -87,7 +87,7 @@
                   <select
                     v-model="formData.month"
                     :class="[
-                      'w-full cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
@@ -104,7 +104,7 @@
                   <select
                     v-model="formData.year"
                     :class="[
-                      'w-full cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
                       errors.birthday ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >
@@ -147,7 +147,7 @@
                   <select
                     v-model="formData.userType"
                     :class="[
-                      'w-full cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
+                      'w-full !h-9.5 cursor-pointer px-3 py-2 font-light text-sm bg-white border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-red-500',
                       errors.userType ? 'border-red-500' : 'border-gray-200',
                     ]"
                   >

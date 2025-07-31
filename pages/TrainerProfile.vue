@@ -164,7 +164,7 @@
                       id="name"
                       v-model="formData.firstName"
                       placeholder="Имя"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     />
                   </div>
                   <div class="flex flex-col">
@@ -176,7 +176,7 @@
                       id="surname"
                       v-model="formData.lastName"
                       placeholder="Фамилия"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     />
                   </div>
                   <div class="flex flex-col">
@@ -188,7 +188,7 @@
                       id="patronymic"
                       v-model="formData.middleName"
                       placeholder="Отчество"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     />
                   </div>
                   <div class="flex flex-col">
@@ -200,7 +200,7 @@
                         type="date"
                         id="dob"
                         v-model="formData.birthDate"
-                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 pr-10 text-white md:w-full w-[95%] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                       />
                     </div>
                   </div>
@@ -212,7 +212,7 @@
                     <select
                       id="athleteType"
                       v-model="formData.sport"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите тип спортсмена</option>
                       <option v-for="item in data" :value="item.id">
@@ -230,7 +230,7 @@
                       id="height"
                       v-model="formData.height"
                       placeholder="Рост (см)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     />
                   </div>
                   <div class="flex flex-col">
@@ -242,7 +242,7 @@
                       id="weight"
                       v-model="formData.weight"
                       placeholder="Вес (кг)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     />
                   </div>
 
@@ -283,7 +283,7 @@
                     <select
                       id="city"
                       v-model="formData.city"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите город</option>
                       <option
@@ -300,7 +300,7 @@
                     <select
                       id="street"
                       v-model="formData.region"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите Улица</option>
                       <option v-for="region in filteredDistricts" :value="region.name_uz">

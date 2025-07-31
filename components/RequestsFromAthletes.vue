@@ -10,12 +10,12 @@
         v-model="search"
         type="text"
         placeholder="Поиск игрока"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-10"
       />
 
       <select
         v-model="selectedStatus"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-9.5"
       >
         <option value="">Все статусы</option>
         <option value="pending">В обработке</option>
@@ -27,11 +27,11 @@
       <input
         v-model="selectedDate"
         type="date"
-        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto"
+        class="bg-[#1C1B29] text-white px-4 py-2 rounded-md border border-[#4A4A6A] w-full sm:w-auto !h-10"
       />
 
       <button
-        class="px-3 py-1 rounded bg-[#919090] hover:bg-[#555] disabled:opacity-50 w-full md:w-[7rem]"
+        class="px-3 py-1 rounded bg-[#919090] hover:bg-[#555] disabled:opacity-50 w-full md:w-[7rem] !h-10"
         @click="reset"
       >
         Reset
@@ -84,23 +84,25 @@
                 }}
               </span>
             </td>
-            <td class="py-3 px-4 space-x-2 whitespace-nowrap">
+            <td
+              class="py-3 px-4 md:space-x-2 whitespace-nowrap md:flex mx-auto md:space-y-0 space-y-2"
+            >
               <button
-                class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A]"
+                class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A] flex items-center justify-center"
                 @click="viewRequest(item.id)"
               >
                 <img src="/Eye.svg" alt="eyes" class="w-4" />
               </button>
               <button
                 v-if="item.status === 'pending'"
-                class="bg-[#7CBF0F] p-2 rounded hover:bg-green-700"
+                class="bg-[#7CBF0F] p-2 rounded hover:bg-green-700 flex items-center justify-center"
                 @click="approveRequest(item.id)"
               >
                 <img src="/done.png" alt="done" class="w-4" />
               </button>
               <button
                 v-if="item.status === 'pending'"
-                class="bg-[#E7273D] p-2 rounded hover:bg-red-700"
+                class="bg-[#E7273D] p-2 rounded hover:bg-red-700 flex items-center justify-center"
                 @click="deleteRequest(item.id)"
               >
                 <img src="/x.svg" alt="x" class="w-4" />
@@ -255,6 +257,10 @@ const fetchRequests = async () => {
 const reset = () => {
   ElMessage.success("Страница обновлена ✅");
   fetchRequests();
+
+  search = "";
+  selectedStatus = "";
+  selectedDate = "";
 };
 
 watch([currentPage, search, selectedStatus, selectedDate], fetchRequests);
