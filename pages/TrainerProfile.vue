@@ -57,21 +57,45 @@
             </div>
           </div>
           <div
-            class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0"
+            class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0 group"
           >
+            <!-- Profile image -->
             <img
               @click="clickImg"
-              :src="uploadedImageUrl"
+              :src="
+                uploadedImageUrl ||
+                'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+              "
               alt="Profile Picture"
               class="rounded-full object-cover w-full h-full"
             />
-            <input
-              type="file"
-              ref="fileInput"
-              accept="image/*"
-              class="hidden"
-              @change="uploadImage"
-            />
+
+            <div
+              class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
+              @click="$refs.fileInput.click()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 7h2l2-3h10l2 3h2a1 1 0 011 1v11a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1zm9 11a4 4 0 100-8 4 4 0 000 8z"
+                />
+              </svg>
+              <input
+                type="file"
+                ref="fileInput"
+                accept="image/*"
+                class="hidden"
+                @change="uploadImage"
+              />
+            </div>
           </div>
         </header>
 
