@@ -91,7 +91,7 @@ export const useAuthStore = defineStore("auth", {
 
         this.token = response.data.data.tokens.access;
         this.refreshToken = response.data.data.tokens.refresh;
-
+        this.userProfile = response.data.data.user_role;
         $api.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         localStorage.setItem("access_token", this.token);
