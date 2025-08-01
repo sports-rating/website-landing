@@ -104,17 +104,13 @@ const handleOtp = async () => {
         await authStore.register(registerData.value);
       }
       const role = authStore.userProfile?.data?.user_role;
-      if (role) {
-        if (role === "sportsman") return router.push("/SportsmanProfile");
-        if (role === "trainer") return router.push("/TrainerProfile");
-        if (role === "federation") return router.push("/FederationProfile");
-        if (role === "admin") {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          return (window.location.href = "https://admin.7srating.uz/");
-        }
-        return router.push("/");
+      if (role === "sportsman") return router.push("/SportsmanProfile");
+      if (role === "trainer") return router.push("/TrainerProfile");
+      if (role === "federation") return router.push("/FederationProfile");
+      if (role === "admin") {
+        return (window.location.href = "https://admin.7srating.uz/");
       }
+      return router.push("/");
     } catch (error) {
       errorMessage.value = "Verification failed. Please try again.";
     } finally {
