@@ -231,14 +231,14 @@
 
                   <div class="flex flex-col">
                     <label for="athleteType" class="text-sm text-gray-400 mb-1"
-                      >Тип спортсмена</label
+                      >Вид спортсмена</label
                     >
                     <select
                       id="athleteType"
                       v-model="formData.sport"
                       class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
-                      <option value="">Выберите тип спортсмена</option>
+                      <option value="">Выберите Вид спортсмена</option>
                       <option v-for="item in data" :value="item.id">
                         {{ item.name }}
                       </option>
@@ -433,7 +433,7 @@ const handleSubmit = async () => {
     if (uploadedImageId.value) {
       payload.media_ids = [uploadedImageId.value];
     } else {
-      payload.media_ids = authStore.userProfile?.data?.media[0]?.id;
+      payload.media_ids = [authStore.userProfile?.data?.media[0]?.id];
     }
 
     const response = await $api.patch("/user/profile/", payload);

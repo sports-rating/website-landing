@@ -5,7 +5,7 @@
       <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div class="flex flex-col lg:flex-row gap-8">
           <!-- Profile Info -->
-          <div class="flex flex-col order-2 lg:order-1">
+          <div class="flex flex-col sm:w-[35%]">
             <h1
               class="text-2xl sm:text-3xl text-white lg:text-4xl font-bold mb-4 lg:mb-6"
             >
@@ -94,7 +94,7 @@
                   '/default-avatar.png'
                 "
                 alt="Player Profile"
-                class="w-32 h-32 sm:w-40 sm:h-40 lg:w-[40vh] lg:h-[40vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
+                class="w-32 h-32 sm:w-52 sm:h-52 lg:w-[52vh] lg:h-[52vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
               />
             </div>
           </div>
@@ -155,34 +155,36 @@
                   <div class="flex justify-between items-center text-xs">
                     <span class="text-gray-400"
                       >Тренер:
-                      {{ data?.sportsman_profile?.trainer_name || "Не указано" }}</span
+                      {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}</span
                     >
                     <div class="flex items-center gap-2">
                       <img
                         v-if="row.rating === 1"
                         src="/gold.png"
-                        class="w-4 h-4"
+                        class="md:w-4 md:h-4 w-8 h-8"
                         alt=""
                       />
                       <img
                         v-if="row.rating === 2"
                         src="/silver.png"
-                        class="w-4 h-4"
+                        class="md:w-4 md:h-4 w-8 h-8"
                         alt=""
                       />
                       <img
                         v-if="row.rating === 3"
                         src="/bronza.png"
-                        class="w-4 h-4"
+                        class="md:w-4 md:h-4 w-8 h-8"
                         alt=""
                       />
                       <img
                         v-if="row.rating === 4"
                         src="/bronza.png"
-                        class="w-4 h-4"
+                        class="md:w-4 md:h-4 w-8 h-8"
                         alt=""
                       />
-                      <span class="font-semibold">{{ row.rating }}</span>
+                      <span class="m-0 font-semibold md:text-sm text-xl">{{
+                        row.rating
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -219,7 +221,7 @@
                   <div class="p-3 col-span-1">{{ row.year }}</div>
                   <div class="p-3 col-span-1">{{ row.country }}</div>
                   <div class="p-3 col-span-4 truncate">
-                    {{ data?.sportsman_profile?.trainer_name || "Не указано" }}
+                    {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
                   </div>
                   <div class="p-3 col-span-2 flex items-center gap-2">
                     <img v-if="row.rating === 1" src="/gold.png" class="w-6 h-6" alt="" />

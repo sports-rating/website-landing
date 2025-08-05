@@ -5,7 +5,7 @@
       <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div class="flex flex-col lg:flex-row gap-8">
           <!-- Profile Info -->
-          <div class="flex flex-col order-2 lg:order-1">
+          <div class="flex flex-col sm:w-[45%]">
             <h1
               class="text-2xl sm:text-3xl text-white lg:text-4xl font-bold mb-4 lg:mb-6"
             >
@@ -94,7 +94,7 @@
                   '/default-avatar.png'
                 "
                 alt="Player Profile"
-                class="w-32 h-32 sm:w-40 sm:h-40 lg:w-[40vh] lg:h-[40vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
+                class="w-32 h-32 sm:w-52 sm:h-52 lg:w-[52vh] lg:h-[52vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
               />
             </div>
           </div>
