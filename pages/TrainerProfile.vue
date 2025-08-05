@@ -23,8 +23,7 @@
                 <img
                   class="md:hidden flex w-6 h-6"
                   :src="
-                    authStore.userProfile?.data?.sportsman_profile?.address
-                      ?.is_sportsman_verified
+                    authStore.userProfile?.data?.sportsman_profile?.is_trainer_verified
                       ? 'verified.png'
                       : 'cancel.png'
                   "
