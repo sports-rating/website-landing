@@ -23,7 +23,7 @@
                 <img
                   class="md:hidden flex w-6 h-6"
                   :src="
-                    authStore.userProfile?.data?.sportsman_profile?.is_trainer_verified
+                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
                       ? 'verified.png'
                       : 'cancel.png'
                   "
@@ -32,15 +32,13 @@
                 <p
                   class="md:flex hidden"
                   :class="
-                    authStore.userProfile?.data?.sportsman_profile?.address
-                      ?.is_sportsman_verified
+                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
                       ? 'text-green-500 text-sm ml-3 mb-5'
                       : 'text-red-500 text-sm ml-3 mb-5'
                   "
                 >
                   {{
-                    authStore.userProfile?.data?.sportsman_profile?.address
-                      ?.is_sportsman_verified
+                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
                       ? "Подтвержденный"
                       : "Не подтверждено"
                   }}

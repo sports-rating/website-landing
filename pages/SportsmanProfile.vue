@@ -32,15 +32,13 @@
                 <p
                   class="md:flex hidden"
                   :class="
-                    authStore.userProfile?.data?.sportsman_profile?.address
-                      ?.is_sportsman_verified
+                    authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                       ? 'text-green-500 text-sm ml-3 mb-5'
                       : 'text-red-500 text-sm ml-3 mb-5'
                   "
                 >
                   {{
-                    authStore.userProfile?.data?.sportsman_profile?.address
-                      ?.is_sportsman_verified
+                    authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                       ? "Подтвержденный"
                       : "Не подтверждено"
                   }}
