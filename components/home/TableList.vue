@@ -229,7 +229,7 @@ const goToRatings = () => {
   router.push("/RatingsPage");
 };
 
-const getData = async (name: string = "Жиу Житсу") => {
+const getData = async (name: string = "Джиу Джитсу") => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/sportsman/?sport=${name}`
@@ -240,7 +240,7 @@ const getData = async (name: string = "Жиу Житсу") => {
   }
 };
 
-const getTrainer = async (name: string = "Жиу Житсу") => {
+const getTrainer = async (name: string = "Джиу Джитсу") => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
@@ -263,7 +263,7 @@ const getSport = async () => {
 
     sports.value = res.data.data;
 
-    const defaultSport = sports.value.find((sport) => sport.name === "Жиу Житсу");
+    const defaultSport = sports.value.find((sport) => sport.name === "Джиу Джитсу");
     if (defaultSport) {
       activeCategory.value = defaultSport.id;
       toggle(defaultSport.id, defaultSport.name);

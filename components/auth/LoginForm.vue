@@ -16,7 +16,14 @@
       >
         <div class="w-full max-w-[380px] bg-white rounded-2xl p-8">
           <div class="flex justify-center mb-8">
-            <img src="@/assets/img/login/logo.svg" alt="Sport Rating" class="h-10" />
+            <!-- <img src="/saber-logos.svg" alt="Sport Rating" class="h-10" /> -->
+            <nuxt-link to="/" class="text-white font-bold text-2xl">
+              <img
+                src="/saber-logos.svg"
+                alt="Logo"
+                class="md:w-32 w-24 h-auto object-cover"
+              />
+            </nuxt-link>
           </div>
 
           <h1 class="text-center text-gray-700 mb-3">

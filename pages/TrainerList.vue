@@ -223,7 +223,7 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (name: string = "Жиу Житсу") => {
+const getData = async (name: string = "Джиу Джитсу") => {
   try {
     const res = await axios.get(
       `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
@@ -245,9 +245,9 @@ const getSport = async () => {
 
     sports.value = res.data.data;
 
-    const defaultSport = sports.value.find((sport) => sport.name === "Жиу Житсу");
+    const defaultSport = sports.value.find((sport) => sport.name === "Джиу Джитсу");
     if (defaultSport) {
-      activeCategory.value = defaultSport.id; // Set default active category to Жиу Житсу's ID
+      activeCategory.value = defaultSport.id; // Set default active category to Джиу Джитсу's ID
       toggle(defaultSport.id, defaultSport.name); // Trigger data load for Football
     }
   } catch (e) {

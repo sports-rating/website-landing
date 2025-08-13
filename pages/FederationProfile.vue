@@ -1,39 +1,47 @@
 <template>
   <NuxtLayout name="custom">
-    <div class="min-h-screen bg-[#11101B] p-6 text-white">
+    <div
+      v-if="authStore.userProfile?.data?.federation"
+      class="min-h-screen bg-[#11101B] p-6 text-white"
+    >
       <!-- Header -->
       <header class="bg-transparent px-12 py-4">
         <div class="flex items-center justify-between">
-          <div class="flex items-start space-x-4">
-            <div>
-              <h1 class="text-5xl font-bold w-[70%]">Узбекистон жиу-житсу федерацияси</h1>
-              <p class="text-sm mt-5">
-                Ўзбекистон Федерацияси Жиу-житсу Спорт федерацияси
-              </p>
-            </div>
+          <div>
+            <h1 class="text-5xl font-bold">
+              {{ authStore.userProfile?.data?.federation?.name }}
+            </h1>
           </div>
-          <div class="rounded-full flex items-center justify-center">
-            <img src="/federation.svg" alt="federation" />
-          </div>
+          <img
+            :src="authStore.userProfile?.data?.federation?.logo"
+            alt="federation"
+            class="!w-24 !h-24 rounded-full"
+          />
         </div>
       </header>
 
-      <!-- Navigation -->
-      <nav class="bg-gray-800 px-6 py-3 w-[95%] mx-auto">
+      <!-- Navigation Tabs -->
+      <nav class="bg-gray-800 px-4 py-3 w-[97%] mx-auto">
         <div class="flex space-x-6 text-sm">
-          <a href="#" class="text-blue-400 hover:text-blue-300">Спортсмены</a>
-          <a href="#" class="text-gray-300 hover:text-white">Спортивные школы и клубы</a>
-          <a href="#" class="text-gray-300 hover:text-white">Спортивные соревнования</a>
-          <a href="#" class="text-gray-300 hover:text-white">Статистика</a>
-          <a href="#" class="text-gray-300 hover:text-white">Тренеры</a>
-          <a href="#" class="text-gray-300 hover:text-white">Заявки</a>
-          <a href="#" class="text-gray-300 hover:text-white">Архивные</a>
+          <button
+            v-for="tab in tabs"
+            :key="tab.key"
+            @click="activeTab = tab.key"
+            :class="[
+              'transition-colors',
+              activeTab === tab.key
+                ? 'text-blue-400 font-bold'
+                : 'text-gray-300 hover:text-white',
+            ]"
+          >
+            {{ tab.label }}
+          </button>
         </div>
       </nav>
 
       <!-- Content -->
       <div class="p-6">
-        <h2 class="text-xl font-semibold mb-6">Список спортсменов</h2>
+        <h2 class="text-xl font-semibold mb-6">{{ getActiveTabLabel }}</h2>
 
         <!-- Filters -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -77,40 +85,38 @@
             <thead class="bg-gray-700">
               <tr>
                 <th class="px-4 py-3 text-left text-sm font-medium">№</th>
-                <th class="px-4 py-3 text-left text-sm font-medium">ФИО игрока</th>
-                <th class="px-4 py-3 text-left text-sm font-medium">Тип игрока</th>
-                <th class="px-4 py-3 text-left text-sm font-medium">
-                  Дата подачи заявки
-                </th>
-                <th class="px-4 py-3 text-left text-sm font-medium">Статус заявки</th>
+                <th class="px-4 py-3 text-left text-sm font-medium">ФИО</th>
+                <th class="px-4 py-3 text-left text-sm font-medium">Тип</th>
+                <th class="px-4 py-3 text-left text-sm font-medium">Дата</th>
+                <th class="px-4 py-3 text-left text-sm font-medium">Статус</th>
                 <th class="px-4 py-3 text-left text-sm font-medium">Действия</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="(athlete, index) in paginatedAthletes"
+                v-for="(item, index) in paginatedData"
                 :key="index"
                 class="border-t border-gray-700 hover:bg-gray-750"
               >
                 <td class="px-4 py-3 text-sm">
                   {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                 </td>
-                <td class="px-4 py-3 text-sm">{{ athlete.name }}</td>
+                <td class="px-4 py-3 text-sm">{{ item.name }}</td>
                 <td class="px-4 py-3">
                   <span
-                    :class="getStatusClass(athlete.type)"
+                    :class="getStatusClass(item.type)"
                     class="px-2 py-1 rounded text-xs font-medium"
                   >
-                    {{ athlete.type }}
+                    {{ item.type }}
                   </span>
                 </td>
-                <td class="px-4 py-3 text-sm">{{ athlete.date }}</td>
+                <td class="px-4 py-3 text-sm">{{ item.date }}</td>
                 <td class="px-4 py-3">
                   <span
-                    :class="getApplicationStatusClass(athlete.status)"
+                    :class="getApplicationStatusClass(item.status)"
                     class="px-2 py-1 rounded text-xs font-medium"
                   >
-                    {{ athlete.status }}
+                    {{ item.status }}
                   </span>
                 </td>
                 <td class="px-4 py-3">
@@ -165,85 +171,77 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-else
+      class="min-h-[50vh] flex flex-col items-center justify-center bg-[#11101B] text-white text-center p-8"
+    >
+      <h1 class="text-2xl font-bold mb-4">Нет разрешения</h1>
+      <p class="text-gray-400 max-w-md">
+        У вас пока нет разрешения на доступ к странице Федерации. Обратитесь к системному
+        администратору.
+      </p>
+    </div>
   </NuxtLayout>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { Eye, Edit, Trash2 } from "lucide-vue-next";
+import { useAuthStore } from "~/stores/auth";
 
-// Pagination logic
+const authStore = useAuthStore();
+
+// Tabs list
+const tabs = [
+  { key: "federation", label: "Федерации" },
+  { key: "athletes", label: "Спортсмены" },
+  { key: "trainers", label: "Тренеры" },
+  { key: "judges", label: "Судялар" },
+  { key: "applications", label: "Заявки" },
+  { key: "competition", label: "Соревнование" },
+  { key: "statistics", label: "Статистика" },
+];
+
+const activeTab = ref("athletes");
+
+const dataMap = {
+  athletes: [
+    { name: "Иванов Иван", type: "Спортсмен", date: "02.04.2024", status: "В обработке" },
+    {
+      name: "Петров Петр",
+      type: "Игрок в команде",
+      date: "05.04.2024",
+      status: "Завершено",
+    },
+  ],
+  trainers: [
+    {
+      name: "Сидоров Алексей",
+      type: "Тренер",
+      date: "12.04.2024",
+      status: "В обработке",
+    },
+  ],
+  judges: [
+    { name: "Мирзаев Бахтиёр", type: "Судья", date: "15.04.2024", status: "Завершено" },
+  ],
+  applications: [
+    { name: "Заявка №1", type: "Документ", date: "20.04.2024", status: "В обработке" },
+  ],
+};
+
+// Pagination
 const currentPage = ref(1);
 const itemsPerPage = 5;
 
-const athletes = ref([
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Спортсмен",
-    date: "02.04.2024, 16:30",
-    status: "В обработке",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Игрок в команде",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Спортсмен",
-    date: "02.04.2024, 16:30",
-    status: "В обработке",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Игрок в команде",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Спортсмен",
-    date: "02.04.2024, 16:30",
-    status: "В обработке",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Спортсмен",
-    date: "02.04.2024, 16:30",
-    status: "В обработке",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Спортсмен",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Игрок в команде",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Игрок в команде",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-  {
-    name: "Гафуров Максимбек Мухаммадович",
-    type: "Игрок в команде",
-    date: "02.04.2024, 16:30",
-    status: "Завершено",
-  },
-]);
+const activeData = computed(() => dataMap[activeTab.value] || []);
 
-const totalPages = computed(() => Math.ceil(athletes.value.length / itemsPerPage));
+const totalPages = computed(() => Math.ceil(activeData.value.length / itemsPerPage));
 
-const paginatedAthletes = computed(() => {
+const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
-  return athletes.value.slice(start, start + itemsPerPage);
+  return activeData.value.slice(start, start + itemsPerPage);
 });
 
 const changePage = (page) => {
@@ -252,17 +250,19 @@ const changePage = (page) => {
   }
 };
 
-const getStatusClass = (type) => {
-  return type === "Спортсмен"
+const getActiveTabLabel = computed(() => {
+  const tab = tabs.find((t) => t.key === activeTab.value);
+  return tab ? tab.label : "";
+});
+
+// Styles
+const getStatusClass = (type) =>
+  type === "Спортсмен"
     ? "bg-yellow-600 text-yellow-100"
     : "bg-orange-600 text-orange-100";
-};
 
-const getApplicationStatusClass = (status) => {
-  return status === "В обработке"
-    ? "bg-blue-600 text-blue-100"
-    : "bg-green-600 text-green-100";
-};
+const getApplicationStatusClass = (status) =>
+  status === "В обработке" ? "bg-blue-600 text-blue-100" : "bg-green-600 text-green-100";
 </script>
 
 <style scoped>
