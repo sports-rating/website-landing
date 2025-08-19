@@ -164,6 +164,22 @@
                 </div>
               </div>
 
+              <div v-if="formData.userType === 'federation'" class="flex flex-col w-full">
+                <label for="trainer" class="text-sm text-gray-400 mb-1">Федерация</label>
+                <el-select
+                  v-model="formData.federation"
+                  placeholder="Выберите federation"
+                  class="w-full cursor-pointer font-light text-sm border-gray-200"
+                >
+                  <el-option
+                    v-for="item in data"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+
               <!-- Phone -->
 
               <div class="mb-4">
@@ -232,9 +248,20 @@ definePageMeta({
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
+const { $api } = useNuxtApp();
 
+const data = ref([]);
 const auth = useAuthStore();
 const router = useRouter();
+
+const getData = async () => {
+  try {
+    const res = await $api.get("federation/");
+    data.value = res.data.data.data;
+  } catch (e) {
+    console.error("Sport error:", e);
+  }
+};
 
 const months = [
   "Январь",
@@ -263,6 +290,7 @@ const formData = reactive({
   year: "",
   email: "",
   userType: "",
+  federation: "",
 });
 
 const errors = reactive({
@@ -335,6 +363,7 @@ const handleSubmit = async () => {
       birth_date: birthDate,
       email: formData.email,
       user_role: formData.userType,
+      federation: formData.federation,
     };
 
     localStorage.setItem("registerData", JSON.stringify(payload));
@@ -350,6 +379,7 @@ onMounted(async () => {
   if (token) {
     return navigateTo("/");
   }
+  getData();
 });
 </script>
 

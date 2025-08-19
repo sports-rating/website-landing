@@ -21,7 +21,7 @@
                   {{ authStore.userProfile?.data.last_name }}
                 </div>
                 <img
-                  class="md:hidden flex w-6 h-6"
+                  class="flex w-6 h-6 mb-4"
                   :src="
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                       ? 'verified.png'
@@ -29,20 +29,6 @@
                   "
                   alt="verify"
                 />
-                <p
-                  class="md:flex hidden"
-                  :class="
-                    authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
-                      ? 'text-green-500 text-sm ml-3 mb-5'
-                      : 'text-red-500 text-sm ml-3 mb-5'
-                  "
-                >
-                  {{
-                    authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
-                      ? "Подтвержденный"
-                      : "Не подтверждено"
-                  }}
-                </p>
               </h1>
               <div class="flex space-x-2">
                 <span
@@ -58,7 +44,7 @@
           >
             <!-- Profile image -->
             <img
-              @click="clickImg"
+              @click.stop="clickImg"
               :src="
                 uploadedImageUrl ||
                 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -68,8 +54,8 @@
             />
 
             <div
+              @click.stop="clickImg"
               class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
-              @click="$refs.fileInput.click()"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -340,6 +326,24 @@
                     </el-dialog>
                   </div>
 
+                  <div class="flex flex-col md:w-[90%] w-[80%]">
+                    <label for="trainer" class="text-sm text-gray-400 mb-1">Pазряд</label>
+                    <select
+                      id="sport_rank"
+                      v-model="formData.sport_rank"
+                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                    >
+                      <option value="">Выберите razzryad</option>
+                      <option
+                        v-for="rank in sportRanks"
+                        :key="rank.value"
+                        :value="rank.label"
+                      >
+                        {{ rank.label }}
+                      </option>
+                    </select>
+                  </div>
+
                   <div class="flex items-center col-span-1 md:col-span-2">
                     <label class="text-sm text-gray-400 mr-4">Пол</label>
                     <div class="flex items-center mr-6">
@@ -371,34 +375,38 @@
                 <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="flex flex-col">
-                    <label for="city" class="text-sm text-gray-400 mb-1"
-                      >Область / Город
-                    </label>
+                    <label for="region" class="text-sm text-gray-400 mb-1"
+                      >Область / Город</label
+                    >
                     <select
-                      id="city"
-                      v-model="formData.city"
+                      id="region"
+                      v-model="formData.region"
+                      @change="onRegionChange"
                       class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите город</option>
-                      <option
-                        v-for="region in regions"
-                        :key="region.id"
-                        :value="region.name_uz"
-                      >
-                        {{ region.name_uz }}
+                      <option v-for="region in regions" :key="region.id" :value="region">
+                        {{ region.name }}
                       </option>
                     </select>
                   </div>
+
                   <div class="flex flex-col">
-                    <label for="street" class="text-sm text-gray-400 mb-1">Улица</label>
+                    <label for="district" class="text-sm text-gray-400 mb-1"
+                      >Улица
+                    </label>
                     <select
-                      id="street"
-                      v-model="formData.region"
+                      id="district"
+                      v-model="formData.district"
                       class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите Улица</option>
-                      <option v-for="region in filteredDistricts" :value="region.name_uz">
-                        {{ region.name_uz }}
+                      <option
+                        v-for="district in filteredDistricts"
+                        :key="district.id"
+                        :value="district"
+                      >
+                        {{ district.name }}
                       </option>
                     </select>
                   </div>
@@ -424,15 +432,23 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
-import regionsData from "../../assets/data/regions.json";
-import districtsData from "../../assets/data/districts.json";
 import { ElMessage } from "element-plus";
+import { omit } from "lodash";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
 const data = ref([]);
 const dataTrainer = ref([]);
+const sportRanks = [
+  { value: "YOUTH_3", label: "Youth Third Rank" },
+  { value: "YOUTH_2", label: "Youth Second Rank" },
+  { value: "YOUTH_1", label: "Youth First Rank" },
+  { value: "ADULT_3", label: "Adult Third Rank" },
+  { value: "ADULT_2", label: "Adult Second Rank" },
+  { value: "ADULT_1", label: "Adult First Rank" },
+  { value: "CANDIDATE", label: "Candidate for Master of Sport" },
+];
 
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,
@@ -444,8 +460,9 @@ const formData = ref({
   height: authStore.userProfile?.data?.sportsman_profile?.user_metrics?.height,
   weight: authStore.userProfile?.data?.sportsman_profile?.user_metrics?.weight,
   gender: authStore.userProfile?.data?.gender || "",
-  city: authStore.userProfile?.data?.sportsman_profile?.address?.region || "",
-  region: authStore.userProfile?.data?.sportsman_profile?.address?.city || "",
+  district: authStore.userProfile?.data?.district || "",
+  region: authStore.userProfile?.data?.region || "",
+  sport_rank: authStore.userProfile?.data?.sportsman_profile?.sport_rank || "",
 });
 
 const getData = async () => {
@@ -497,20 +514,56 @@ watch(
 await Promise.all([getData(), getTrainer()]);
 
 const regions = ref([]);
-const districts = ref([]);
-const filteredDistricts = computed(() => {
-  if (!formData.value.city) return districts.value;
-  const selectedRegion = regions.value.find((r) => r.name_uz === formData.value.city);
-  if (!selectedRegion) return districts.value;
-  return districts.value.filter((d) => d.region_id === selectedRegion.id);
-});
+const filteredDistricts = ref([]);
 
-onMounted(async () => {
-  regions.value = regionsData;
-  districts.value = districtsData;
+const getRegions = async () => {
+  try {
+    const res = await $api.get("/user/regions/");
+    regions.value = res.data.data.data;
+  } catch (err) {
+    console.error("Regions yuklashda xatolik:", err);
+  }
+};
 
-  await authStore.fetchUserProfile();
+const getDistricts = async (regionId) => {
+  if (!regionId) {
+    filteredDistricts.value = [];
+    return;
+  }
+  try {
+    const res = await $api.get(`/user/districts/?region=${regionId}`);
+    filteredDistricts.value = res.data.data.data.map((item) => omit(item, "region"));
+  } catch (err) {
+    console.error("Districts yuklashda xatolik:", err);
+  }
+};
+
+const onRegionChange = () => {
+  const selectedRegionId = formData.value.region.id;
+  getDistricts(selectedRegionId);
+
+  if (
+    !filteredDistricts.value.find(
+      (district) => district.id === formData.value.district.id
+    )
+  ) {
+    formData.value.district.id;
+  }
+};
+
+watch(
+  () => formData.value.region,
+  (newRegion) => {
+    if (newRegion?.id) {
+      getDistricts(newRegion.id);
+    }
+  }
+);
+
+onMounted(() => {
+  getRegions();
 });
+watch(() => formData.value.region, onRegionChange);
 
 const handleSubmit = async () => {
   try {
@@ -520,14 +573,12 @@ const handleSubmit = async () => {
       middle_name: formData.value.middleName,
       birth_date: formData.value.birthDate,
       gender: formData.value.gender,
-
+      region: formData.value.region?.id || null,
+      district: formData.value.district?.id || null,
       sportsman_profile: {
         sport_id: formData.value.sport,
         trainer_id: formData.value.trainer,
-        address: {
-          region: formData.value.city,
-          city: formData.value.region,
-        },
+        sport_rank: formData.value.sport_rank,
         user_metrics: {
           height: formData.value.height,
           weight: formData.value.weight,
@@ -594,9 +645,30 @@ const handleSubmit = async () => {
 
 const fileInput = ref(null);
 const uploadedImageId = ref(null);
+let isDialogOpen = false;
 
 const clickImg = () => {
-  fileInput.value?.click();
+  if (isDialogOpen) return;
+  isDialogOpen = true;
+
+  ElMessageBox.confirm(
+    "Пожалуйста, загружайте только фотографию в формате спортсмена!",
+    "Загрузить изображение",
+    {
+      confirmButtonText: "Понятно",
+      cancelButtonText: "Отмена",
+      type: "warning",
+    }
+  )
+    .then(() => {
+      fileInput.value?.click();
+    })
+    .catch(() => {
+      ElMessage.info("Не удалось загрузить изображение.");
+    })
+    .finally(() => {
+      isDialogOpen = false;
+    });
 };
 
 const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
@@ -668,20 +740,6 @@ const formatDate = (dateStr) => {
 };
 
 watch(
-  () => formData.value.city,
-  () => {
-    formData.value.region = "";
-  }
-);
-
-watch(
-  () => formData.value.sport,
-  () => {
-    formData.value.trainer = "";
-  }
-);
-
-watch(
   () => authStore.userProfile,
   (newProfile) => {
     if (newProfile?.data) {
@@ -695,8 +753,9 @@ watch(
         height: newProfile.data.sportsman_profile?.user_metrics?.height || "",
         weight: newProfile.data.sportsman_profile?.user_metrics?.weight || "",
         gender: newProfile.data.gender || "",
-        city: newProfile.data.sportsman_profile?.address?.region || "",
-        region: newProfile.data.sportsman_profile?.address?.city || "",
+        district: newProfile.data.district || "",
+        region: newProfile.data.region || "",
+        sport_rank: authStore.userProfile?.data?.sportsman_profile?.sport_rank || "",
       };
 
       uploadedImageUrl.value = newProfile.data.profile_photo || null;

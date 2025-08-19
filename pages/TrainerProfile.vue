@@ -21,7 +21,7 @@
                   {{ authStore.userProfile?.data.last_name }}
                 </div>
                 <img
-                  class="md:hidden flex w-6 h-6"
+                  class="flex w-6 h-6 mb-4"
                   :src="
                     authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
                       ? 'verified.png'
@@ -29,20 +29,6 @@
                   "
                   alt="verify"
                 />
-                <p
-                  class="md:flex hidden"
-                  :class="
-                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
-                      ? 'text-green-500 text-sm ml-3 mb-5'
-                      : 'text-red-500 text-sm ml-3 mb-5'
-                  "
-                >
-                  {{
-                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
-                      ? "Подтвержденный"
-                      : "Не подтверждено"
-                  }}
-                </p>
               </h1>
               <div class="flex space-x-2">
                 <span
@@ -58,7 +44,7 @@
           >
             <!-- Profile image -->
             <img
-              @click="clickImg"
+              @click.stop="clickImg"
               :src="
                 uploadedImageUrl ||
                 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -69,7 +55,7 @@
 
             <div
               class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
-              @click="$refs.fileInput.click()"
+              @click.stop="clickImg"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -267,6 +253,93 @@
                     />
                   </div>
 
+                  <div class="flex items-end gap-2 w-full">
+                    <div class="flex flex-col md:w-[90%] w-[80%]">
+                      <label for="trainer" class="text-sm text-gray-400 mb-1"
+                        >Федерация</label
+                      >
+                      <select
+                        id="federation"
+                        v-model="formData.federation"
+                        class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      >
+                        <option value="">Выберите federation</option>
+                        <option
+                          v-for="item in dataFederation"
+                          :key="item.id"
+                          :value="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="w-12 cursor-pointer" @click="openDialog">
+                      <img
+                        src="/history.png"
+                        class="w-8 h-8 object-cover"
+                        alt="history"
+                      />
+                    </div>
+
+                    <el-dialog
+                      v-model="dialogVisible"
+                      title="Отправленные запросы"
+                      class="md:!w-[500px] !w-[350px] !text-black"
+                    >
+                      <div v-if="isLoading" class="text-center py-4">
+                        <el-spinner />
+                      </div>
+                      <div v-else>
+                        <el-empty
+                          v-if="requests.length === 0"
+                          description="So‘rovlar topilmadi"
+                        />
+                        <div v-else class="max-h-[400px] overflow-y-auto pr-2">
+                          <ul class="space-y-4">
+                            <li
+                              v-for="item in requests"
+                              :key="item.id"
+                              class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
+                            >
+                              <div>
+                                <p class="text-sm text-gray-700 mb-1">
+                                  <strong>Trainer Name:</strong>
+                                  {{ item.receiver?.full_name }}
+                                </p>
+                                <p
+                                  class="text-sm text-gray-700 mb-1 flex items-center gap-2"
+                                >
+                                  <strong>Status:</strong>
+                                  <el-tag
+                                    :type="item.status === 'pending' ? 'warning' : 'info'"
+                                    size="small"
+                                    effect="light"
+                                  >
+                                    {{ item.status }}
+                                  </el-tag>
+                                </p>
+                                <p class="text-sm text-gray-700">
+                                  <strong>Yaratilgan:</strong>
+                                  {{ formatDate(item.created_time) }}
+                                </p>
+                              </div>
+                              <div v-if="item.status === 'pending'">
+                                <el-button
+                                  type="danger"
+                                  size="small"
+                                  @click="cancelRequest(item.id)"
+                                >
+                                  Bekor qilish
+                                </el-button>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </el-dialog>
+                  </div>
+
                   <div class="flex items-center col-span-1 md:col-span-2">
                     <label class="text-sm text-gray-400 mr-4">Пол</label>
                     <div class="flex items-center mr-6">
@@ -298,34 +371,38 @@
                 <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="flex flex-col">
-                    <label for="city" class="text-sm text-gray-400 mb-1"
-                      >Область / Город
-                    </label>
+                    <label for="region" class="text-sm text-gray-400 mb-1"
+                      >Область / Город</label
+                    >
                     <select
-                      id="city"
-                      v-model="formData.city"
-                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      id="region"
+                      v-model="formData.region"
+                      @change="onRegionChange"
+                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите город</option>
-                      <option
-                        v-for="region in regions"
-                        :key="region.id"
-                        :value="region.name_uz"
-                      >
-                        {{ region.name_uz }}
+                      <option v-for="region in regions" :key="region.id" :value="region">
+                        {{ region.name }}
                       </option>
                     </select>
                   </div>
+
                   <div class="flex flex-col">
-                    <label for="street" class="text-sm text-gray-400 mb-1">Улица</label>
+                    <label for="district" class="text-sm text-gray-400 mb-1"
+                      >Улица
+                    </label>
                     <select
-                      id="street"
-                      v-model="formData.region"
-                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      id="district"
+                      v-model="formData.district"
+                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите Улица</option>
-                      <option v-for="region in filteredDistricts" :value="region.name_uz">
-                        {{ region.name_uz }}
+                      <option
+                        v-for="district in filteredDistricts"
+                        :key="district.id"
+                        :value="district"
+                      >
+                        {{ district.name }}
                       </option>
                     </select>
                   </div>
@@ -354,15 +431,15 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
-import regionsData from "../../assets/data/regions.json";
-import districtsData from "../../assets/data/districts.json";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
+import { omit } from "lodash";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
 const data = ref([]);
+const dataFederation = ref([]);
 const activeTab = ref("main");
 
 const formData = ref({
@@ -374,8 +451,10 @@ const formData = ref({
   height: authStore.userProfile?.data?.trainer_profile?.user_metrics?.height,
   weight: authStore.userProfile?.data?.trainer_profile?.user_metrics?.weight,
   gender: authStore.userProfile?.data?.gender || "",
-  city: authStore.userProfile?.data?.trainer_profile?.address?.region || "",
-  region: authStore.userProfile?.data?.trainer_profile?.address?.city || "",
+  district: authStore.userProfile?.data?.district || "",
+  region: authStore.userProfile?.data?.region || "",
+
+  federation: authStore.userProfile?.data?.trainer_profile?.federation?.id || "",
 });
 
 const getData = async () => {
@@ -387,23 +466,70 @@ const getData = async () => {
   }
 };
 
-await Promise.all([getData()]);
+const getFederation = async () => {
+  try {
+    const res = await $api.get("/federation/");
+    dataFederation.value = res.data.data.data.map((federation) => ({
+      ...federation,
+    }));
+  } catch (e) {
+    console.error("Trainer error:", e);
+  }
+};
+
+await Promise.all([getData(), getFederation()]);
 
 const regions = ref([]);
-const districts = ref([]);
-const filteredDistricts = computed(() => {
-  if (!formData.value.city) return districts.value;
-  const selectedRegion = regions.value.find((r) => r.name_uz === formData.value.city);
-  if (!selectedRegion) return districts.value;
-  return districts.value.filter((d) => d.region_id === selectedRegion.id);
-});
+const filteredDistricts = ref([]);
 
-onMounted(async () => {
-  regions.value = regionsData;
-  districts.value = districtsData;
+const getRegions = async () => {
+  try {
+    const res = await $api.get("/user/regions/");
+    regions.value = res.data.data.data;
+  } catch (err) {
+    console.error("Regions yuklashda xatolik:", err);
+  }
+};
 
-  await authStore.fetchUserProfile();
+const getDistricts = async (regionId) => {
+  if (!regionId) {
+    filteredDistricts.value = [];
+    return;
+  }
+  try {
+    const res = await $api.get(`/user/districts/?region=${regionId}`);
+    filteredDistricts.value = res.data.data.data.map((item) => omit(item, "region"));
+  } catch (err) {
+    console.error("Districts yuklashda xatolik:", err);
+  }
+};
+
+const onRegionChange = () => {
+  const selectedRegionId = formData.value.region.id;
+  getDistricts(selectedRegionId);
+
+  if (
+    !filteredDistricts.value.find(
+      (district) => district.id === formData.value.district.id
+    )
+  ) {
+    formData.value.district.id;
+  }
+};
+
+watch(
+  () => formData.value.region,
+  (newRegion) => {
+    if (newRegion?.id) {
+      getDistricts(newRegion.id);
+    }
+  }
+);
+
+onMounted(() => {
+  getRegions();
 });
+watch(() => formData.value.region, onRegionChange);
 
 const handleSubmit = async () => {
   try {
@@ -413,12 +539,11 @@ const handleSubmit = async () => {
       middle_name: formData.value.middleName,
       birth_date: formData.value.birthDate,
       gender: formData.value.gender,
+      region: formData.value.region?.id || null,
+      district: formData.value.district?.id || null,
       trainer_profile: {
         sport_id: formData.value.sport,
-        address: {
-          region: formData.value.city,
-          city: formData.value.region,
-        },
+        federation: formData.value.federation,
         user_metrics: {
           height: formData.value.height,
           weight: formData.value.weight,
@@ -483,12 +608,38 @@ const handleSubmit = async () => {
     });
   }
 };
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleString();
+};
 
 const fileInput = ref(null);
 const uploadedImageId = ref(null);
 
+let isDialogOpen = false;
+
 const clickImg = () => {
-  fileInput.value?.click();
+  if (isDialogOpen) return;
+  isDialogOpen = true;
+
+  ElMessageBox.confirm(
+    "Пожалуйста, загружайте только фотографию в формате спортсмена!",
+    "Загрузить изображение",
+    {
+      confirmButtonText: "Понятно",
+      cancelButtonText: "Отмена",
+      type: "warning",
+    }
+  )
+    .then(() => {
+      fileInput.value?.click();
+    })
+    .catch(() => {
+      ElMessage.info("Не удалось загрузить изображение.");
+    })
+    .finally(() => {
+      isDialogOpen = false;
+    });
 };
 
 const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
@@ -522,12 +673,37 @@ const uploadImage = async (event) => {
   }
 };
 
-watch(
-  () => formData.value.city,
-  () => {
-    formData.value.region = "";
+const dialogVisible = ref(false);
+const requests = ref([]);
+const isLoading = ref(false);
+
+const openDialog = async () => {
+  dialogVisible.value = true;
+  await fetchRequests();
+};
+
+const fetchRequests = async () => {
+  isLoading.value = true;
+  try {
+    const res = await $api.get("/user/requests/?type=sent");
+    requests.value = res.data.data.data || [];
+  } catch (error) {
+    ElMessage.error("So‘rovlarni olishda xatolik yuz berdi.");
+  } finally {
+    isLoading.value = false;
   }
-);
+};
+
+const cancelRequest = async (id) => {
+  try {
+    await $api.patch(`/user/requests/${id}/`, { status: "cancelled" });
+    ElMessage.success("So‘rov bekor qilindi.");
+    await fetchRequests();
+    formData.value.trainer = "";
+  } catch (error) {
+    ElMessage.error("Bekor qilishda xatolik yuz berdi.");
+  }
+};
 
 watch(
   () => authStore.userProfile,
@@ -539,12 +715,12 @@ watch(
         middleName: newProfile.data.middle_name || "",
         birthDate: newProfile.data.birth_date || "",
         sport: newProfile.data.trainer_profile?.sport?.id || "",
-        trainer: newProfile.data.trainer_profile?.trainer?.id || "",
         height: newProfile.data.trainer_profile?.user_metrics?.height || "",
         weight: newProfile.data.trainer_profile?.user_metrics?.weight || "",
         gender: newProfile.data.gender || "",
-        city: newProfile.data.trainer_profile?.address?.region || "",
-        region: newProfile.data.trainer_profile?.address?.city || "",
+        district: newProfile.data.district || "",
+        region: newProfile.data.region || "",
+        federation: newProfile?.data?.trainer_profile?.federation?.id || "",
       };
 
       uploadedImageUrl.value = newProfile.data.profile_photo || null;
@@ -563,5 +739,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   top: 0;
   left: 0;
   cursor: pointer;
+}
+.el-dialog__title {
+  color: black !important;
+}
+</style>
+
+<style>
+.el-dialog__title {
+  color: black !important;
 }
 </style>

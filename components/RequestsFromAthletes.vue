@@ -5,7 +5,7 @@
     </h2>
 
     <!-- Filter Panel -->
-    <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-4">
+    <div class="flex flex-col sm:flex-row gap-4 mb-4">
       <input
         type="text"
         v-model="search"
@@ -31,7 +31,7 @@
       />
 
       <button
-        class="px-3 py-1 rounded bg-[#919090] hover:bg-[#555] disabled:opacity-50 w-full md:w-[7rem] !h-10"
+        class="px-3 py-1 rounded bg-[#919090] hover:bg-[#555] disabled:opacity-50 w-full md:w-[7rem] !h-12"
         @click="reset"
       >
         Reset
@@ -344,6 +344,15 @@ const changePage = (page) => {
 
 <style>
 .el-dialog__title {
+  color: white !important;
+}
+
+.el-input__wrapper {
+  background-color: #3a3a5a !important;
+  box-shadow: none !important;
+}
+
+.el-input__inner {
   color: white !important;
 }
 </style>
