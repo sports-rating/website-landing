@@ -1,24 +1,16 @@
 ARG NODE_VERSION=20.19.0
-FROM node:${NODE_VERSION}-slim AS builder
+
+FROM node:${NODE_VERSION}-slim
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package*.json ./
 
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 COPY . .
 
-RUN yarn build
-
-FROM node:${NODE_VERSION}-slim AS runner
-
-WORKDIR /app
-
-COPY --from=builder /app/package.json /app/yarn.lock ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist  # or /build depending on framework
-
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+RUN npm run build
+CMD [ "npm", "run", "start" ]
