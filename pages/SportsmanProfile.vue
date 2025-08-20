@@ -1,8 +1,7 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
-      test
-      <!-- <div class="sm:container mx-auto">
+      <div class="sm:container mx-auto">
         <header
           class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
         >
@@ -410,7 +409,7 @@
             </form>
           </main>
         </div>
-      </div> -->
+      </div>
     </div>
   </NuxtLayout>
 </template>
@@ -419,7 +418,6 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
-import { omit } from "lodash";
 import { Loading } from "@element-plus/icons-vue";
 
 const authStore = useAuthStore();
@@ -513,7 +511,7 @@ const getDistricts = async (regionId) => {
   }
   try {
     const res = await $api.get(`/user/districts/?region=${regionId}`);
-    filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
+    filteredDistricts.value = res.data.data;
   } catch (err) {
     console.error("Districts yuklashda xatolik:", err);
   }
