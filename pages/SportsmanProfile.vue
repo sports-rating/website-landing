@@ -274,7 +274,7 @@
                       class="md:!w-[500px] !w-[350px]"
                     >
                       <div v-if="isLoading" class="text-center py-4">
-                        <el-spinner />
+                        <Loading class="w-4 h-4" />
                       </div>
                       <div v-else>
                         <el-empty
@@ -434,6 +434,7 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import { omit } from "lodash";
+import { Loading } from "@element-plus/icons-vue";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();

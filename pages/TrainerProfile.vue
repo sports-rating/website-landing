@@ -260,6 +260,7 @@
                       >
                       <select
                         id="federation"
+                        :disabled="!formData.sport"
                         v-model="formData.federation"
                         class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                       >
@@ -288,7 +289,7 @@
                       class="md:!w-[500px] !w-[350px] !text-black"
                     >
                       <div v-if="isLoading" class="text-center py-4">
-                        <el-spinner />
+                        <Loading class="w-4 h-4" />
                       </div>
                       <div v-else>
                         <el-empty
@@ -434,6 +435,7 @@ import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
 import { omit } from "lodash";
+import { Loading } from "@element-plus/icons-vue";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
@@ -466,18 +468,33 @@ const getData = async () => {
   }
 };
 
-const getFederation = async () => {
+const getFederation = async (sportId) => {
   try {
-    const res = await $api.get("/federation/");
-    dataFederation.value = res.data.data.data.map((federation) => ({
-      ...federation,
-    }));
+    const res = await $api.get(`/federation/?sport=${sportId}`);
+    dataFederation.value = res.data.data.data;
   } catch (e) {
     console.error("Trainer error:", e);
+    dataFederation.value = [];
   }
 };
 
-await Promise.all([getData(), getFederation()]);
+await getData();
+if (formData.value.sport) {
+  await getFederation(formData.value.sport);
+}
+
+watch(
+  () => formData.value.sport,
+  async (newVal) => {
+    if (newVal) {
+      formData.value.federation = "";
+      await getFederation(newVal);
+    } else {
+      dataFederation.value = [];
+      formData.value.federation = "";
+    }
+  }
+);
 
 const regions = ref([]);
 const filteredDistricts = ref([]);

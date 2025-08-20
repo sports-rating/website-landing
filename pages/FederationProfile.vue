@@ -68,6 +68,7 @@
           :total-pages="totalPages"
           :data="data"
         />
+        <StatsList v-if="activeTab === 'statistics'" />
       </div>
 
       <div
@@ -97,11 +98,12 @@ import { useAuthStore } from "~/stores/auth";
 import Applications from "~/components/tabs/Applications.vue";
 import TrainerList from "~/components/tabs/TrainerList.vue";
 import SportsmanList from "~/components/tabs/SportsmanList.vue";
+import StatsList from "~/components/tabs/StatsList.vue";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
-const activeTab = ref();
+const activeTab = ref("applications");
 const data = ref([]);
 const requests = ref([]);
 const currentPage = ref(1);

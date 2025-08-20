@@ -190,7 +190,7 @@ const viewRequest = async (id) => {
               </span>
             </td>
             <td class="px-4 py-3">{{ application.sport?.name }}</td>
-            <td class="px-4 py-3">{{ application.receiver?.user_role }}</td>
+            <td class="px-4 py-3">{{ application.sender?.user_role }}</td>
             <td class="px-4 py-3">{{ application.created_time }}</td>
             <td class="px-4 py-3">
               <div class="flex gap-2">
