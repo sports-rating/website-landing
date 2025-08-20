@@ -422,6 +422,16 @@ const { $api } = useNuxtApp();
 const data = ref([]);
 const dataFederation = ref([]);
 const activeTab = ref("main");
+const regions = ref([]);
+const filteredDistricts = ref([]);
+const dialogVisible = ref(false);
+const requests = ref([]);
+const isLoading = ref(false);
+const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
+const fileInput = ref(null);
+const uploadedImageId = ref(null);
+
+let isDialogOpen = false;
 
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,
@@ -461,22 +471,6 @@ if (formData.value.sport) {
   await getFederation(formData.value.sport);
 }
 
-watch(
-  () => formData.value.sport,
-  async (newVal) => {
-    if (newVal) {
-      formData.value.federation = "";
-      await getFederation(newVal);
-    } else {
-      dataFederation.value = [];
-      formData.value.federation = "";
-    }
-  }
-);
-
-const regions = ref([]);
-const filteredDistricts = ref([]);
-
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
@@ -511,20 +505,6 @@ const onRegionChange = () => {
     formData.value.district.id;
   }
 };
-
-watch(
-  () => formData.value.region,
-  (newRegion) => {
-    if (newRegion?.id) {
-      getDistricts(newRegion.id);
-    }
-  }
-);
-
-onMounted(() => {
-  getRegions();
-});
-watch(() => formData.value.region, onRegionChange);
 
 const handleSubmit = async () => {
   try {
@@ -607,11 +587,6 @@ const formatDate = (dateStr) => {
   return date.toLocaleString();
 };
 
-const fileInput = ref(null);
-const uploadedImageId = ref(null);
-
-let isDialogOpen = false;
-
 const clickImg = () => {
   if (isDialogOpen) return;
   isDialogOpen = true;
@@ -635,8 +610,6 @@ const clickImg = () => {
       isDialogOpen = false;
     });
 };
-
-const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
 
 const uploadImage = async (event) => {
   const file = event.target.files[0];
@@ -667,10 +640,6 @@ const uploadImage = async (event) => {
   }
 };
 
-const dialogVisible = ref(false);
-const requests = ref([]);
-const isLoading = ref(false);
-
 const openDialog = async () => {
   dialogVisible.value = true;
   await fetchRequests();
@@ -700,6 +669,26 @@ const cancelRequest = async (id) => {
 };
 
 watch(
+  () => formData.value.region,
+  (newRegion) => {
+    if (newRegion?.id) {
+      getDistricts(newRegion.id);
+    }
+  }
+);
+watch(
+  () => formData.value.sport,
+  async (newVal) => {
+    if (newVal) {
+      formData.value.federation = "";
+      await getFederation(newVal);
+    } else {
+      dataFederation.value = [];
+      formData.value.federation = "";
+    }
+  }
+);
+watch(
   () => authStore.userProfile,
   (newProfile) => {
     if (newProfile?.data) {
@@ -722,6 +711,11 @@ watch(
   },
   { immediate: true }
 );
+watch(() => formData.value.region, onRegionChange);
+
+onMounted(() => {
+  getRegions();
+});
 </script>
 
 <style scoped>

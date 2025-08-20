@@ -15,7 +15,7 @@ export default {
       },
 
       fontFamily: {
-        sans: ["Roboto", "sans-serif"], // Roboto shriftini asosiy sans-serif qilish
+        sans: ["Roboto", "sans-serif"], 
       },
     },
   },

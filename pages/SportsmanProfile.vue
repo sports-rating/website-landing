@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
-      <div class="sm:container mx-auto">
-        <!-- Header Section -->
+      test
+      <!-- <div class="sm:container mx-auto">
         <header
           class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
         >
@@ -42,7 +42,6 @@
           <div
             class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0 group"
           >
-            <!-- Profile image -->
             <img
               @click.stop="clickImg"
               :src="uploadedImageUrl"
@@ -79,7 +78,6 @@
           </div>
         </header>
 
-        <!-- Navigation Tabs -->
         <nav class="flex flex-wrap gap-2 md:gap-6 border-b border-[#3A3A5A] mb-6">
           <button
             class="py-3 px-4 text-lg font-semibold border-b-2 border-[#E91E63] text-[#E91E63]"
@@ -107,9 +105,7 @@
           </template>
         </nav>
 
-        <!-- Main Content Layout -->
         <div class="flex flex-col lg:flex-row gap-6">
-          <!-- Sidebar -->
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
             <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
             <nav class="space-y-2">
@@ -137,8 +133,7 @@
             </nav>
           </aside>
 
-          <!-- Form Content -->
-          <!-- <main class="flex-1 rounded-lg p-4 md:p-6">
+          <main class="flex-1 rounded-lg p-4 md:p-6">
             <form class="space-y-8" @submit.prevent="handleSubmit">
               <div>
                 <h2 class="text-xl font-semibold mb-4">Информация</h2>
@@ -413,9 +408,9 @@
                 </button>
               </div>
             </form>
-          </main> -->
+          </main>
         </div>
-      </div>
+      </div> -->
     </div>
   </NuxtLayout>
 </template>
@@ -432,7 +427,17 @@ const { $api } = useNuxtApp();
 
 const data = ref([]);
 const dataTrainer = ref([]);
-const sportRanks = [
+const dialogVisible = ref(false);
+const requests = ref([]);
+const isLoading = ref(false);
+const regions = ref([]);
+const filteredDistricts = ref([]);
+const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
+const fileInput = ref(null);
+const uploadedImageId = ref(null);
+let isDialogOpen = false;
+
+const sportRanks = ref([
   { value: "YOUTH_3", label: "Youth Third Rank" },
   { value: "YOUTH_2", label: "Youth Second Rank" },
   { value: "YOUTH_1", label: "Youth First Rank" },
@@ -440,7 +445,7 @@ const sportRanks = [
   { value: "ADULT_2", label: "Adult Second Rank" },
   { value: "ADULT_1", label: "Adult First Rank" },
   { value: "CANDIDATE", label: "Candidate for Master of Sport" },
-];
+]);
 
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,
@@ -490,23 +495,7 @@ const getTrainer = async () => {
     console.error("Trainer error:", e);
   }
 };
-
-watch(
-  () => formData.value.sport,
-  async (newSport) => {
-    formData.value.trainer = "";
-    if (newSport) {
-      await getTrainer();
-    } else {
-      dataTrainer.value = [];
-    }
-  }
-);
-
 await Promise.all([getData(), getTrainer()]);
-
-const regions = ref([]);
-const filteredDistricts = ref([]);
 
 const getRegions = async () => {
   try {
@@ -542,20 +531,6 @@ const onRegionChange = () => {
     formData.value.district.id;
   }
 };
-
-watch(
-  () => formData.value.region,
-  (newRegion) => {
-    if (newRegion?.id) {
-      getDistricts(newRegion.id);
-    }
-  }
-);
-
-onMounted(() => {
-  getRegions();
-});
-watch(() => formData.value.region, onRegionChange);
 
 const handleSubmit = async () => {
   try {
@@ -635,10 +610,6 @@ const handleSubmit = async () => {
   }
 };
 
-const fileInput = ref(null);
-const uploadedImageId = ref(null);
-let isDialogOpen = false;
-
 const clickImg = () => {
   if (isDialogOpen) return;
   isDialogOpen = true;
@@ -662,8 +633,6 @@ const clickImg = () => {
       isDialogOpen = false;
     });
 };
-
-const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
 
 const uploadImage = async (event) => {
   const file = event.target.files[0];
@@ -693,10 +662,6 @@ const uploadImage = async (event) => {
     });
   }
 };
-
-const dialogVisible = ref(false);
-const requests = ref([]);
-const isLoading = ref(false);
 
 const openDialog = async () => {
   dialogVisible.value = true;
@@ -732,6 +697,27 @@ const formatDate = (dateStr) => {
 };
 
 watch(
+  () => formData.value.region,
+  (newRegion) => {
+    if (newRegion?.id) {
+      getDistricts(newRegion.id);
+    }
+  }
+);
+watch(() => formData.value.region, onRegionChange);
+watch(
+  () => formData.value.sport,
+  async (newSport) => {
+    formData.value.trainer = "";
+    if (newSport) {
+      await getTrainer();
+    } else {
+      dataTrainer.value = [];
+    }
+  }
+);
+
+watch(
   () => authStore.userProfile,
   (newProfile) => {
     if (newProfile?.data) {
@@ -755,6 +741,10 @@ watch(
   },
   { immediate: true }
 );
+
+onMounted(() => {
+  getRegions();
+});
 </script>
 
 <style scoped>
