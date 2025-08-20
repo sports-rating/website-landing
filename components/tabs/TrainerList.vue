@@ -179,7 +179,7 @@ const getSports = async () => {
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
-    regions.value = res.data.data.data;
+    regions.value = res.data.data;
   } catch (err) {
     console.error("Regions yuklashda xatolik:", err);
   }

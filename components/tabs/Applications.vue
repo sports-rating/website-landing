@@ -68,7 +68,9 @@ const deleteRequest = async (id) => {
       }
     );
 
-    await $api.delete(`user/requests/${id}/`);
+    await $api.patch(`user/requests/${id}/`, {
+      status: "rejected",
+    });
     ElMessage.success("Заявка успешно удалена 🗑️");
     emit("refresh");
   } catch (err) {

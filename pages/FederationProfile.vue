@@ -177,7 +177,13 @@ watch([search, selectedRegion, selectedSport, selectedGender, currentTrainer], (
   getData();
 });
 
-onMounted(getData);
+onMounted(() => {
+  if (activeTab.value === "applications") {
+    getRequest();
+  } else {
+    getData();
+  }
+});
 
 watch(activeTab, (newTab) => {
   if (newTab !== "applications" && authStore.userProfile?.data?.federation) {

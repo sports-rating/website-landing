@@ -468,7 +468,7 @@ const formData = ref({
 
 const getData = async () => {
   try {
-    const sportRes = await $api.get("sport/");
+    const sportRes = await $api.get("/sport/");
     data.value = sportRes.data.data;
   } catch (e) {
     console.error("Sport error:", e);
@@ -520,7 +520,7 @@ const filteredDistricts = ref([]);
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
-    regions.value = res.data.data.data;
+    regions.value = res.data.data;
   } catch (err) {
     console.error("Regions yuklashda xatolik:", err);
   }
@@ -533,7 +533,7 @@ const getDistricts = async (regionId) => {
   }
   try {
     const res = await $api.get(`/user/districts/?region=${regionId}`);
-    filteredDistricts.value = res.data.data.data.map((item) => omit(item, "region"));
+    filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
   } catch (err) {
     console.error("Districts yuklashda xatolik:", err);
   }
