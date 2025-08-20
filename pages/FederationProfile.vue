@@ -35,7 +35,7 @@
       </nav>
 
       <!-- Tab Content -->
-      <div class="p-6">
+      <div class="p-6" v-if="activeTab">
         <Applications
           v-if="activeTab === 'applications'"
           :data="requests"
@@ -69,6 +69,13 @@
           :data="data"
         />
       </div>
+
+      <div
+        v-else
+        class="min-h-[50vh] flex flex-col items-center justify-center bg-[#11101B] text-white text-center p-8"
+      >
+        <el-empty :image-size="200" />
+      </div>
     </div>
 
     <div
@@ -94,7 +101,7 @@ import SportsmanList from "~/components/tabs/SportsmanList.vue";
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
-const activeTab = ref("athletes");
+const activeTab = ref();
 const data = ref([]);
 const requests = ref([]);
 const currentPage = ref(1);
@@ -168,15 +175,7 @@ watch([search, selectedRegion, selectedSport, selectedGender, currentTrainer], (
   getData();
 });
 
-onMounted(() => {
-  if (!authStore.userProfile?.data?.federation) return;
-
-  if (activeTab.value === "applications") {
-    getRequest();
-  } else {
-    getData();
-  }
-});
+onMounted(getData);
 
 watch(activeTab, (newTab) => {
   if (newTab !== "applications" && authStore.userProfile?.data?.federation) {

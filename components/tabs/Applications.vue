@@ -80,6 +80,20 @@ const deleteRequest = async (id) => {
     }
   }
 };
+
+const dialogVisible = ref(false);
+const selectedRequest = ref(null);
+
+const viewRequest = async (id) => {
+  try {
+    dialogVisible.value = true;
+    selectedRequest.value = null;
+    const res = await $api.get(`user/requests/${id}/`);
+    selectedRequest.value = res.data.data;
+  } catch (err) {
+    console.error("Ошибка при просмотре:", err);
+  }
+};
 </script>
 
 <template>
@@ -182,7 +196,7 @@ const deleteRequest = async (id) => {
               <div class="flex gap-2">
                 <button
                   class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A] flex items-center justify-center"
-                  @click="viewRequest(item.id)"
+                  @click="viewRequest(application.id)"
                 >
                   <img src="/Eye.svg" alt="eyes" class="w-4" />
                 </button>
@@ -242,5 +256,94 @@ const deleteRequest = async (id) => {
         Next
       </button>
     </div>
+
+    <!-- Dialog -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="Детали заявки"
+      :before-close="() => (dialogVisible = false)"
+      class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-xl !w-[90%]"
+    >
+      <div
+        v-if="selectedRequest"
+        class="text-white space-y-4 max-h-[70vh] overflow-y-auto px-2 sm:px-4 text-sm md:text-base"
+      >
+        <!-- ID & Date -->
+        <div class="grid grid-cols-1 gap-1.5 md:gap-2.5">
+          <p>
+            <span class="text-gray-400">📅 Дата подачи:</span>
+            {{ selectedRequest.created_time }}
+          </p>
+        </div>
+
+        <!-- Sender -->
+        <div class="pt-2 border-t border-gray-700">
+          <h3 class="font-semibold text-blue-400 text-base mb-1">📤 Отправитель</h3>
+          <p>
+            <span class="text-gray-400">👤 ФИО:</span>
+            {{ selectedRequest.sender.full_name }}
+          </p>
+          <p>
+            <span class="text-gray-400">📞 Телефон:</span>
+            {{ selectedRequest.sender.phone_number }}
+          </p>
+          <p>
+            <span class="text-gray-400">🎯 Роль:</span>
+            {{ selectedRequest.sender.user_role }}
+          </p>
+        </div>
+
+        <!-- Receiver -->
+        <div class="pt-2 border-t border-gray-700">
+          <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
+          <p>
+            <span class="text-gray-400">👤 ФИО:</span>
+            {{ selectedRequest.receiver.full_name }}
+          </p>
+          <p>
+            <span class="text-gray-400">📞 Телефон:</span>
+            {{ selectedRequest.receiver.phone_number }}
+          </p>
+          <p>
+            <span class="text-gray-400">🎯 Роль:</span>
+            {{ selectedRequest.receiver.user_role }}
+          </p>
+        </div>
+
+        <p>
+          <span class="text-gray-400">📍 Статус:</span>
+          <span
+            class="inline-block px-3 py-1 rounded-full shadow text-xs md:text-sm font-semibold ml-2"
+            :class="{
+              'bg-blue-600': selectedRequest.status === 'pending',
+              'bg-green-600': selectedRequest.status === 'accepted',
+              'bg-red-600': selectedRequest.status === 'rejected',
+              'bg-gray-600': selectedRequest.status === 'cancelled',
+            }"
+          >
+            {{
+              selectedRequest.status === "pending"
+                ? "В обработке"
+                : selectedRequest.status === "accepted"
+                ? "Принято"
+                : selectedRequest.status === "rejected"
+                ? "Отклонено"
+                : selectedRequest.status === "cancelled"
+                ? "Отменено"
+                : "Неизвестно"
+            }}
+          </span>
+        </p>
+      </div>
+
+      <!-- Loading -->
+      <div v-else class="text-center py-8 text-gray-300 text-sm">⏳ Загрузка...</div>
+    </el-dialog>
   </div>
 </template>
+
+<style>
+.el-dialog__title {
+  color: white !important;
+}
+</style>
