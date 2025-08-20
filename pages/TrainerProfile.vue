@@ -182,9 +182,7 @@
                     />
                   </div>
                   <div class="flex flex-col">
-                    <label for="dob" class="text-sm text-gray-400 mb-1"
-                      >Дата рождения</label
-                    >
+                    <label class="text-sm text-gray-400 mb-1">Дата рождения</label>
                     <div class="relative w-full">
                       <el-input
                         type="date"
@@ -238,7 +236,7 @@
 
                   <div class="flex items-end gap-2 w-full">
                     <div class="flex flex-col md:w-[90%] w-[80%]">
-                      <label for="trainer" class="text-sm text-gray-400 mb-1"
+                      <label for="federation" class="text-sm text-gray-400 mb-1"
                         >Федерация</label
                       >
                       <select
@@ -436,7 +434,6 @@ const formData = ref({
   gender: authStore.userProfile?.data?.gender || "",
   district: authStore.userProfile?.data?.district || "",
   region: authStore.userProfile?.data?.region || "",
-
   federation: authStore.userProfile?.data?.trainer_profile?.federation?.id || "",
 });
 
@@ -556,8 +553,7 @@ const handleSubmit = async () => {
       payload.media_ids = [authStore.userProfile?.data?.media[0]?.id];
     }
 
-    const response = await $api.patch("/user/profile/", payload);
-    console.log("Profile updated:", response.data);
+    await $api.patch("/user/profile/", payload);
 
     await authStore.fetchUserProfile();
 
