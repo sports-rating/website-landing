@@ -103,11 +103,9 @@
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
 import { computed, onMounted } from "vue";
-const router = useRouter();
 
 const authStore = useAuthStore();
-
-const isProfileLoaded = computed(() => !authStore.userProfile);
+const router = useRouter();
 
 onMounted(() => {
   const acToken = localStorage.getItem("access_token");

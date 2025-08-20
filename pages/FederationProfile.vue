@@ -133,7 +133,7 @@ const getData = async () => {
   const role = tabs.find((t) => t.key === activeTab.value)?.user_role || "";
   if (!authStore.userProfile?.data?.federation) return;
   const res = await $api.get(
-    `/federation/${authStore.userProfile.data.federation.id}/users/`,
+    `/federation/${authStore.userProfile?.data?.federation?.id}/users/`,
     {
       params: {
         user_role: role || undefined,

@@ -18,7 +18,7 @@
               >
                 <div class="flex">
                   {{ authStore.userProfile?.data?.first_name }}
-                  {{ authStore.userProfile?.data.last_name }}
+                  {{ authStore.userProfile?.data?.last_name }}
                 </div>
                 <img
                   class="flex w-6 h-6 mb-4"
@@ -45,10 +45,7 @@
             <!-- Profile image -->
             <img
               @click.stop="clickImg"
-              :src="
-                uploadedImageUrl ||
-                'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-              "
+              :src="uploadedImageUrl"
               alt="Profile Picture"
               class="rounded-full object-cover w-full h-full"
             />
@@ -90,10 +87,7 @@
             Основные
           </button>
           <template
-            v-if="
-              authStore.userProfile?.data?.sportsman_profile?.address
-                ?.is_sportsman_verified
-            "
+            v-if="authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified"
           >
             <button
               class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white"
@@ -126,8 +120,7 @@
               </button>
               <template
                 v-if="
-                  authStore.userProfile?.data?.sportsman_profile?.address
-                    ?.is_sportsman_verified
+                  authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                 "
               >
                 <button
@@ -594,7 +587,7 @@ const handleSubmit = async () => {
       payload.media_ids = [authStore.userProfile?.data?.media[0]?.id];
     }
 
-    const response = await $api.patch("/user/profile/", payload);
+    await $api.patch("/user/profile/", payload);
 
     await authStore.fetchUserProfile();
 
