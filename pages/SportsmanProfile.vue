@@ -107,33 +107,60 @@
         <div class="flex flex-col lg:flex-row gap-6">
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
             <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
-            <nav class="space-y-2">
-              <button
-                class="w-full text-left py-3 px-4 rounded-md bg-[#E91E63] text-white font-medium"
-              >
-                Личные данные
-              </button>
-              <template
-                v-if="
-                  authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
-                "
-              >
+            <div class="flex gap-6">
+              <!-- Tabs -->
+              <nav class="space-y-2 w-64">
                 <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+                  @click="activeTab = 'info'"
+                  :class="[
+                    'w-full text-left py-3 px-4 rounded-md font-medium',
+                    activeTab === 'info'
+                      ? 'bg-[#E91E63] text-white'
+                      : 'text-gray-300 hover:bg-[#3A3A5A]',
+                  ]"
                 >
-                  Образование
+                  Личные данные
                 </button>
-                <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+
+                <template
+                  v-if="
+                    authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
+                  "
                 >
-                  Карьера и достижения
-                </button>
-              </template>
-            </nav>
+                  <button
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTab === 'education'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                    @click="activeTab = 'education'"
+                  >
+                    Образование
+                  </button>
+
+                  <button
+                    @click="activeTab = 'career'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTab === 'career'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Карьера и достижения
+                  </button>
+                </template>
+              </nav>
+            </div>
           </aside>
 
           <main class="flex-1 rounded-lg p-4 md:p-6">
-            <form class="space-y-8" @submit.prevent="handleSubmit">
+            <form
+              v-if="activeTab === 'info'"
+              class="space-y-8"
+              @submit.prevent="handleSubmit"
+            >
               <div>
                 <h2 class="text-xl font-semibold mb-4">Информация</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -407,6 +434,8 @@
                 </button>
               </div>
             </form>
+
+            <achievementManager v-if="activeTab === 'career'" />
           </main>
         </div>
       </div>
@@ -418,7 +447,9 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
+import omit from "lodash/omit.js";
 import { Loading } from "@element-plus/icons-vue";
+import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
@@ -435,6 +466,7 @@ const fileInput = ref(null);
 const uploadedImageId = ref(null);
 let isDialogOpen = false;
 
+const activeTab = ref("info");
 const sportRanks = ref([
   { value: "YOUTH_3", label: "Youth Third Rank" },
   { value: "YOUTH_2", label: "Youth Second Rank" },
@@ -444,6 +476,7 @@ const sportRanks = ref([
   { value: "ADULT_1", label: "Adult First Rank" },
   { value: "CANDIDATE", label: "Candidate for Master of Sport" },
 ]);
+
 
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,
@@ -511,7 +544,7 @@ const getDistricts = async (regionId) => {
   }
   try {
     const res = await $api.get(`/user/districts/?region=${regionId}`);
-    filteredDistricts.value = res.data.data;
+    filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
   } catch (err) {
     console.error("Districts yuklashda xatolik:", err);
   }

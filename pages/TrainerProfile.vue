@@ -413,7 +413,8 @@ import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
+
 import { Loading } from "@element-plus/icons-vue";
 
 const authStore = useAuthStore();
@@ -487,7 +488,7 @@ const getDistricts = async (regionId) => {
   }
   try {
     const res = await $api.get(`/user/districts/?region=${regionId}`);
-    filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
+    filteredDistricts.value = res.data.data.map((item) => omit(item, ["region"]));
   } catch (err) {
     console.error("Districts yuklashda xatolik:", err);
   }
