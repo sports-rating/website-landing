@@ -1,8 +1,8 @@
 <template>
-  <NuxtLayout name="custom">
+  test
+  <!-- <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
       <div class="sm:container mx-auto">
-        <!-- Header Section -->
         <header
           class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
         >
@@ -18,7 +18,7 @@
               >
                 <div class="flex">
                   {{ authStore.userProfile?.data?.first_name }}
-                  {{ authStore.userProfile?.data.last_name }}
+                  {{ authStore.userProfile?.data?.last_name }}
                 </div>
                 <img
                   class="flex w-6 h-6 mb-4"
@@ -42,7 +42,6 @@
           <div
             class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0 group"
           >
-            <!-- Profile image -->
             <img
               @click.stop="clickImg"
               :src="
@@ -82,7 +81,6 @@
           </div>
         </header>
 
-        <!-- Navigation Tabs -->
         <nav class="flex flex-row gap-2 md:gap-6 border-b border-[#3A3A5A] mb-6">
           <button
             :class="[
@@ -108,7 +106,6 @@
             Заявки от спортсменов
           </button>
 
-          <!-- boshqa tablar -->
           <button
             v-if="
               authStore.userProfile?.data?.sportsman_profile?.address
@@ -126,9 +123,7 @@
           </button>
         </nav>
 
-        <!-- Main Content Layout -->
         <div v-if="activeTab === 'main'" class="flex flex-col lg:flex-row gap-6">
-          <!-- Sidebar -->
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
             <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
             <nav class="space-y-2">
@@ -157,10 +152,8 @@
             </nav>
           </aside>
 
-          <!-- Form Content -->
           <main class="flex-1 rounded-lg p-4 md:p-6">
             <form class="space-y-8" @submit.prevent="handleSubmit">
-              <!-- Информация (Information) Section -->
               <div>
                 <h2 class="text-xl font-semibold mb-4">Информация</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -367,7 +360,6 @@
                 </div>
               </div>
 
-              <!-- Фактический адрес (Actual Address) Section -->
               <div>
                 <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -422,329 +414,330 @@
           </main>
         </div>
 
-        <!-- Заявки от спортсменов -->
         <RequestsFromAthletes v-if="activeTab === 'requests'" />
       </div>
     </div>
-  </NuxtLayout>
+  </NuxtLayout> -->
 </template>
 
+//
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useAuthStore } from "~/stores/auth";
-import { ElMessage } from "element-plus";
-import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
-import { omit } from "lodash";
-import { Loading } from "@element-plus/icons-vue";
+// import { ref, onMounted, watch } from "vue";
+// import { useAuthStore } from "~/stores/auth";
+// import { ElMessage } from "element-plus";
+// import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
+// import { omit } from "lodash";
+// import { Loading } from "@element-plus/icons-vue";
 
-const authStore = useAuthStore();
-const { $api } = useNuxtApp();
+// const authStore = useAuthStore();
+// const { $api } = useNuxtApp();
 
-const data = ref([]);
-const dataFederation = ref([]);
-const activeTab = ref("main");
+// const data = ref([]);
+// const dataFederation = ref([]);
+// const activeTab = ref("main");
 
-const formData = ref({
-  firstName: authStore.userProfile?.data?.first_name,
-  lastName: authStore.userProfile?.data?.last_name,
-  middleName: authStore.userProfile?.data?.middle_name,
-  birthDate: authStore.userProfile?.data?.birth_date,
-  sport: authStore.userProfile?.data?.trainer_profile?.sport?.id || "",
-  height: authStore.userProfile?.data?.trainer_profile?.user_metrics?.height,
-  weight: authStore.userProfile?.data?.trainer_profile?.user_metrics?.weight,
-  gender: authStore.userProfile?.data?.gender || "",
-  district: authStore.userProfile?.data?.district || "",
-  region: authStore.userProfile?.data?.region || "",
+// const formData = ref({
+//   firstName: authStore.userProfile?.data?.first_name,
+//   lastName: authStore.userProfile?.data?.last_name,
+//   middleName: authStore.userProfile?.data?.middle_name,
+//   birthDate: authStore.userProfile?.data?.birth_date,
+//   sport: authStore.userProfile?.data?.trainer_profile?.sport?.id || "",
+//   height: authStore.userProfile?.data?.trainer_profile?.user_metrics?.height,
+//   weight: authStore.userProfile?.data?.trainer_profile?.user_metrics?.weight,
+//   gender: authStore.userProfile?.data?.gender || "",
+//   district: authStore.userProfile?.data?.district || "",
+//   region: authStore.userProfile?.data?.region || "",
 
-  federation: authStore.userProfile?.data?.trainer_profile?.federation?.id || "",
-});
+//   federation: authStore.userProfile?.data?.trainer_profile?.federation?.id || "",
+// });
 
-const getData = async () => {
-  try {
-    const sportRes = await $api.get("/sport/");
-    data.value = sportRes.data.data;
-  } catch (e) {
-    console.error("Sport error:", e);
-  }
-};
+// const getData = async () => {
+//   try {
+//     const sportRes = await $api.get("/sport/");
+//     data.value = sportRes.data.data;
+//   } catch (e) {
+//     console.error("Sport error:", e);
+//   }
+// };
 
-const getFederation = async (sportId) => {
-  try {
-    const res = await $api.get(`/federation/?sport=${sportId}`);
-    dataFederation.value = res.data.data.data;
-  } catch (e) {
-    console.error("Trainer error:", e);
-    dataFederation.value = [];
-  }
-};
+// const getFederation = async (sportId) => {
+//   try {
+//     const res = await $api.get(`/federation/?sport=${sportId}`);
+//     dataFederation.value = res.data.data.data;
+//   } catch (e) {
+//     console.error("Trainer error:", e);
+//     dataFederation.value = [];
+//   }
+// };
 
-await getData();
-if (formData.value.sport) {
-  await getFederation(formData.value.sport);
-}
+// await getData();
+// if (formData.value.sport) {
+//   await getFederation(formData.value.sport);
+// }
 
-watch(
-  () => formData.value.sport,
-  async (newVal) => {
-    if (newVal) {
-      formData.value.federation = "";
-      await getFederation(newVal);
-    } else {
-      dataFederation.value = [];
-      formData.value.federation = "";
-    }
-  }
-);
+// watch(
+//   () => formData.value.sport,
+//   async (newVal) => {
+//     if (newVal) {
+//       formData.value.federation = "";
+//       await getFederation(newVal);
+//     } else {
+//       dataFederation.value = [];
+//       formData.value.federation = "";
+//     }
+//   }
+// );
 
-const regions = ref([]);
-const filteredDistricts = ref([]);
+// const regions = ref([]);
+// const filteredDistricts = ref([]);
 
-const getRegions = async () => {
-  try {
-    const res = await $api.get("/user/regions/");
-    regions.value = res.data.data;
-  } catch (err) {
-    console.error("Regions yuklashda xatolik:", err);
-  }
-};
+// const getRegions = async () => {
+//   try {
+//     const res = await $api.get("/user/regions/");
+//     regions.value = res.data.data;
+//   } catch (err) {
+//     console.error("Regions yuklashda xatolik:", err);
+//   }
+// };
 
-const getDistricts = async (regionId) => {
-  if (!regionId) {
-    filteredDistricts.value = [];
-    return;
-  }
-  try {
-    const res = await $api.get(`/user/districts/?region=${regionId}`);
-    filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
-  } catch (err) {
-    console.error("Districts yuklashda xatolik:", err);
-  }
-};
+// const getDistricts = async (regionId) => {
+//   if (!regionId) {
+//     filteredDistricts.value = [];
+//     return;
+//   }
+//   try {
+//     const res = await $api.get(`/user/districts/?region=${regionId}`);
+//     filteredDistricts.value = res.data.data.map((item) => omit(item, "region"));
+//   } catch (err) {
+//     console.error("Districts yuklashda xatolik:", err);
+//   }
+// };
 
-const onRegionChange = () => {
-  const selectedRegionId = formData.value.region.id;
-  getDistricts(selectedRegionId);
+// const onRegionChange = () => {
+//   const selectedRegionId = formData.value.region.id;
+//   getDistricts(selectedRegionId);
 
-  if (
-    !filteredDistricts.value.find(
-      (district) => district.id === formData.value.district.id
-    )
-  ) {
-    formData.value.district.id;
-  }
-};
+//   if (
+//     !filteredDistricts.value.find(
+//       (district) => district.id === formData.value.district.id
+//     )
+//   ) {
+//     formData.value.district.id;
+//   }
+// };
 
-watch(
-  () => formData.value.region,
-  (newRegion) => {
-    if (newRegion?.id) {
-      getDistricts(newRegion.id);
-    }
-  }
-);
+// watch(
+//   () => formData.value.region,
+//   (newRegion) => {
+//     if (newRegion?.id) {
+//       getDistricts(newRegion.id);
+//     }
+//   }
+// );
 
-onMounted(() => {
-  getRegions();
-});
-watch(() => formData.value.region, onRegionChange);
+// onMounted(() => {
+//   getRegions();
+// });
+// watch(() => formData.value.region, onRegionChange);
 
-const handleSubmit = async () => {
-  try {
-    const payload = {
-      first_name: formData.value.firstName,
-      last_name: formData.value.lastName,
-      middle_name: formData.value.middleName,
-      birth_date: formData.value.birthDate,
-      gender: formData.value.gender,
-      region: formData.value.region?.id || null,
-      district: formData.value.district?.id || null,
-      trainer_profile: {
-        sport_id: formData.value.sport,
-        federation: formData.value.federation,
-        user_metrics: {
-          height: formData.value.height,
-          weight: formData.value.weight,
-        },
-        send_request: true,
-      },
-    };
+// const handleSubmit = async () => {
+//   try {
+//     const payload = {
+//       first_name: formData.value.firstName,
+//       last_name: formData.value.lastName,
+//       middle_name: formData.value.middleName,
+//       birth_date: formData.value.birthDate,
+//       gender: formData.value.gender,
+//       region: formData.value.region?.id || null,
+//       district: formData.value.district?.id || null,
+//       trainer_profile: {
+//         sport_id: formData.value.sport,
+//         federation: formData.value.federation,
+//         user_metrics: {
+//           height: formData.value.height,
+//           weight: formData.value.weight,
+//         },
+//         send_request: true,
+//       },
+//     };
 
-    if (uploadedImageId.value) {
-      payload.media_ids = [uploadedImageId.value];
-    } else {
-      payload.media_ids = [authStore.userProfile?.data?.media[0]?.id];
-    }
+//     if (uploadedImageId.value) {
+//       payload.media_ids = [uploadedImageId.value];
+//     } else {
+//       payload.media_ids = [authStore.userProfile?.data?.media[0]?.id];
+//     }
 
-    const response = await $api.patch("/user/profile/", payload);
-    console.log("Profile updated:", response.data);
+//     const response = await $api.patch("/user/profile/", payload);
+//     console.log("Profile updated:", response.data);
 
-    await authStore.fetchUserProfile();
+//     await authStore.fetchUserProfile();
 
-    ElMessage({
-      message: "Профиль успешно обновлен",
-      type: "success",
-      duration: 3000,
-    });
-  } catch (error) {
-    console.error("Ошибка при обновлении профиля:", error);
+//     ElMessage({
+//       message: "Профиль успешно обновлен",
+//       type: "success",
+//       duration: 3000,
+//     });
+//   } catch (error) {
+//     console.error("Ошибка при обновлении профиля:", error);
 
-    let message = "Произошла ошибка при обновлении профиля.";
+//     let message = "Произошла ошибка при обновлении профиля.";
 
-    if (error.response?.data) {
-      const errors = error.response.data;
+//     if (error.response?.data) {
+//       const errors = error.response.data;
 
-      if (typeof errors.message === "string") {
-        message = errors.message;
-      } else {
-        const allErrors = [];
+//       if (typeof errors.message === "string") {
+//         message = errors.message;
+//       } else {
+//         const allErrors = [];
 
-        for (const key in errors) {
-          const value = errors[key];
-          if (Array.isArray(value)) {
-            allErrors.push(...value);
-          } else if (typeof value === "object" && value !== null) {
-            for (const nestedKey in value) {
-              const nestedVal = value[nestedKey];
-              if (Array.isArray(nestedVal)) {
-                allErrors.push(...nestedVal);
-              }
-            }
-          }
-        }
+//         for (const key in errors) {
+//           const value = errors[key];
+//           if (Array.isArray(value)) {
+//             allErrors.push(...value);
+//           } else if (typeof value === "object" && value !== null) {
+//             for (const nestedKey in value) {
+//               const nestedVal = value[nestedKey];
+//               if (Array.isArray(nestedVal)) {
+//                 allErrors.push(...nestedVal);
+//               }
+//             }
+//           }
+//         }
 
-        if (allErrors.length) {
-          message = allErrors.join("\n");
-        }
-      }
-    }
+//         if (allErrors.length) {
+//           message = allErrors.join("\n");
+//         }
+//       }
+//     }
 
-    ElMessage({
-      message,
-      type: "error",
-      duration: 4000,
-    });
-  }
-};
-const formatDate = (dateStr) => {
-  const date = new Date(dateStr);
-  return date.toLocaleString();
-};
+//     ElMessage({
+//       message,
+//       type: "error",
+//       duration: 4000,
+//     });
+//   }
+// };
+// const formatDate = (dateStr) => {
+//   const date = new Date(dateStr);
+//   return date.toLocaleString();
+// };
 
-const fileInput = ref(null);
-const uploadedImageId = ref(null);
+// const fileInput = ref(null);
+// const uploadedImageId = ref(null);
 
-let isDialogOpen = false;
+// let isDialogOpen = false;
 
-const clickImg = () => {
-  if (isDialogOpen) return;
-  isDialogOpen = true;
+// const clickImg = () => {
+//   if (isDialogOpen) return;
+//   isDialogOpen = true;
 
-  ElMessageBox.confirm(
-    "Пожалуйста, загружайте только фотографию в формате спортсмена!",
-    "Загрузить изображение",
-    {
-      confirmButtonText: "Понятно",
-      cancelButtonText: "Отмена",
-      type: "warning",
-    }
-  )
-    .then(() => {
-      fileInput.value?.click();
-    })
-    .catch(() => {
-      ElMessage.info("Не удалось загрузить изображение.");
-    })
-    .finally(() => {
-      isDialogOpen = false;
-    });
-};
+//   ElMessageBox.confirm(
+//     "Пожалуйста, загружайте только фотографию в формате спортсмена!",
+//     "Загрузить изображение",
+//     {
+//       confirmButtonText: "Понятно",
+//       cancelButtonText: "Отмена",
+//       type: "warning",
+//     }
+//   )
+//     .then(() => {
+//       fileInput.value?.click();
+//     })
+//     .catch(() => {
+//       ElMessage.info("Не удалось загрузить изображение.");
+//     })
+//     .finally(() => {
+//       isDialogOpen = false;
+//     });
+// };
 
-const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
+// const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
 
-const uploadImage = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+// const uploadImage = async (event) => {
+//   const file = event.target.files[0];
+//   if (!file) return;
 
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("type", "user");
-  formData.append("is_profile_photo", "true");
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   formData.append("type", "user");
+//   formData.append("is_profile_photo", "true");
 
-  try {
-    const res = await $api.post("/user/media-upload/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+//   try {
+//     const res = await $api.post("/user/media-upload/", formData, {
+//       headers: { "Content-Type": "multipart/form-data" },
+//     });
 
-    uploadedImageId.value = res.data.data.id;
-    uploadedImageUrl.value = res.data.data.file;
+//     uploadedImageId.value = res.data.data.id;
+//     uploadedImageUrl.value = res.data.data.file;
 
-    ElMessage({
-      message: "Изображение успешно загружено",
-      type: "success",
-    });
-  } catch (error) {
-    ElMessage({
-      message: "Ошибка загрузки изображения",
-      type: "error",
-    });
-  }
-};
+//     ElMessage({
+//       message: "Изображение успешно загружено",
+//       type: "success",
+//     });
+//   } catch (error) {
+//     ElMessage({
+//       message: "Ошибка загрузки изображения",
+//       type: "error",
+//     });
+//   }
+// };
 
-const dialogVisible = ref(false);
-const requests = ref([]);
-const isLoading = ref(false);
+// const dialogVisible = ref(false);
+// const requests = ref([]);
+// const isLoading = ref(false);
 
-const openDialog = async () => {
-  dialogVisible.value = true;
-  await fetchRequests();
-};
+// const openDialog = async () => {
+//   dialogVisible.value = true;
+//   await fetchRequests();
+// };
 
-const fetchRequests = async () => {
-  isLoading.value = true;
-  try {
-    const res = await $api.get("/user/requests/?type=sent");
-    requests.value = res.data.data.data || [];
-  } catch (error) {
-    ElMessage.error("So‘rovlarni olishda xatolik yuz berdi.");
-  } finally {
-    isLoading.value = false;
-  }
-};
+// const fetchRequests = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await $api.get("/user/requests/?type=sent");
+//     requests.value = res.data.data.data || [];
+//   } catch (error) {
+//     ElMessage.error("So‘rovlarni olishda xatolik yuz berdi.");
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
 
-const cancelRequest = async (id) => {
-  try {
-    await $api.patch(`/user/requests/${id}/`, { status: "cancelled" });
-    ElMessage.success("So‘rov bekor qilindi.");
-    await fetchRequests();
-    formData.value.trainer = "";
-  } catch (error) {
-    ElMessage.error("Bekor qilishda xatolik yuz berdi.");
-  }
-};
+// const cancelRequest = async (id) => {
+//   try {
+//     await $api.patch(`/user/requests/${id}/`, { status: "cancelled" });
+//     ElMessage.success("So‘rov bekor qilindi.");
+//     await fetchRequests();
+//     formData.value.trainer = "";
+//   } catch (error) {
+//     ElMessage.error("Bekor qilishda xatolik yuz berdi.");
+//   }
+// };
 
-watch(
-  () => authStore.userProfile,
-  (newProfile) => {
-    if (newProfile?.data) {
-      formData.value = {
-        firstName: newProfile.data.first_name || "",
-        lastName: newProfile.data.last_name || "",
-        middleName: newProfile.data.middle_name || "",
-        birthDate: newProfile.data.birth_date || "",
-        sport: newProfile.data.trainer_profile?.sport?.id || "",
-        height: newProfile.data.trainer_profile?.user_metrics?.height || "",
-        weight: newProfile.data.trainer_profile?.user_metrics?.weight || "",
-        gender: newProfile.data.gender || "",
-        district: newProfile.data.district || "",
-        region: newProfile.data.region || "",
-        federation: newProfile?.data?.trainer_profile?.federation?.id || "",
-      };
+// watch(
+//   () => authStore.userProfile,
+//   (newProfile) => {
+//     if (newProfile?.data) {
+//       formData.value = {
+//         firstName: newProfile.data.first_name || "",
+//         lastName: newProfile.data.last_name || "",
+//         middleName: newProfile.data.middle_name || "",
+//         birthDate: newProfile.data.birth_date || "",
+//         sport: newProfile.data.trainer_profile?.sport?.id || "",
+//         height: newProfile.data.trainer_profile?.user_metrics?.height || "",
+//         weight: newProfile.data.trainer_profile?.user_metrics?.weight || "",
+//         gender: newProfile.data.gender || "",
+//         district: newProfile.data.district || "",
+//         region: newProfile.data.region || "",
+//         federation: newProfile?.data?.trainer_profile?.federation?.id || "",
+//       };
 
-      uploadedImageUrl.value = newProfile.data.profile_photo || null;
-    }
-  },
-  { immediate: true }
-);
+//       uploadedImageUrl.value = newProfile.data.profile_photo || null;
+//     }
+//   },
+//   { immediate: true }
+// );
+//
 </script>
 
 <style scoped>
