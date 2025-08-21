@@ -5,19 +5,34 @@
       class="min-h-screen bg-[#11101B] p-6 text-white"
     >
       <!-- Header -->
-      <header class="bg-transparent px-12 py-4 flex justify-between items-center">
-        <h1 class="text-5xl font-bold">
-          {{ authStore.userProfile?.data?.federation?.name }}
-        </h1>
+      <header
+        class="bg-transparent px-6 md:px-12 py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-6"
+      >
+        <!-- Matn -->
+        <div class="flex flex-col gap-2 text-center md:text-left order-2 md:order-1">
+          <h1 class="text-3xl md:text-5xl font-bold">
+            {{ authStore.userProfile?.data?.federation?.name }}
+          </h1>
+
+          <p class="text-lg md:text-2xl font-bold">
+            Управляющий федереции:
+            {{ authStore.userProfile?.data?.first_name }}
+            {{ authStore.userProfile?.data?.last_name }}
+          </p>
+        </div>
+
+        <!-- Rasm -->
         <img
           :src="authStore.userProfile?.data?.federation?.logo"
-          class="!w-24 !h-24 rounded-full"
+          class="w-[200px] h-[200px] md:w-[350px] md:h-[350px] rounded-full mx-auto md:mx-0 order-1 md:order-2"
         />
       </header>
 
       <!-- Tabs -->
-      <nav class="bg-gray-800 px-4 py-3 w-[97%] mx-auto">
-        <div class="flex space-x-6 text-sm">
+      <nav
+        class="bg-gray-800 px-4 py-3 w-full md:w-[97%] mx-auto overflow-x-auto rounded-lg"
+      >
+        <div class="flex space-x-6 text-sm whitespace-nowrap">
           <button
             v-for="tab in tabs"
             :key="tab.key"
@@ -35,7 +50,7 @@
       </nav>
 
       <!-- Tab Content -->
-      <div class="p-6" v-if="activeTab">
+      <div class="p-4 md:p-6 rounded-lg" v-if="activeTab">
         <Applications
           v-if="activeTab === 'applications'"
           :data="requests"
@@ -151,6 +166,8 @@ const getData = async () => {
 };
 
 const getRequest = async () => {
+  if (!authStore.userProfile?.data?.federation?.id) return;
+
   const res = await $api.get(
     `/federation/${authStore.userProfile.data.federation.id}/requests/`,
     {
@@ -177,16 +194,21 @@ watch([search, selectedRegion, selectedSport, selectedGender, currentTrainer], (
   getData();
 });
 
-onMounted(() => {
-  if (activeTab.value === "applications") {
-    getRequest();
-  } else {
-    getData();
+onMounted(async () => {
+  await authStore.fetchUserProfile();
+
+  if (authStore.userProfile?.data?.federation?.id) {
+    if (activeTab.value === "applications") {
+      getRequest();
+    } else {
+      getData();
+    }
   }
 });
 
 watch(activeTab, (newTab) => {
-  if (newTab !== "applications" && authStore.userProfile?.data?.federation) {
+  if (!authStore.userProfile?.data?.federation?.id) return;
+  if (newTab !== "applications") {
     getData();
   } else {
     getRequest();

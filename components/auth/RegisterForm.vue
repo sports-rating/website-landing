@@ -363,8 +363,11 @@ const handleSubmit = async () => {
       birth_date: birthDate,
       email: formData.email,
       user_role: formData.userType,
-      federation: formData.federation,
     };
+
+    if (formData.userType === "federation") {
+      payload.federation = formData.federation;
+    }
 
     localStorage.setItem("registerData", JSON.stringify(payload));
     await auth.login({ phone_number: formData.phone_number, action: "signup" });

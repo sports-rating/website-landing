@@ -1,17 +1,18 @@
 <template>
-  <div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="bg-gray-900 text-white p-6">
     <!-- Header -->
     <h1 class="text-xl font-semibold mb-6">Список спортсмен</h1>
 
     <!-- Filters -->
-    <div class="flex items-center justify-between gap-4 mb-6">
-      <div class="relative">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <!-- Search -->
+      <div class="relative w-full md:w-64">
         <input
           :value="search"
           @input="emit('update:search', $event.target.value)"
           type="text"
           placeholder="Поиск спортсмен"
-          class="bg-gray-800 border border-gray-700 rounded px-3 py-2 pr-10 text-sm focus:outline-none focus:border-gray-600 w-64"
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 pr-10 text-sm focus:outline-none focus:border-gray-600"
         />
         <svg
           class="absolute right-3 top-2.5 w-4 h-4 text-gray-400"
@@ -28,11 +29,12 @@
         </svg>
       </div>
 
-      <div class="flex gap-4">
+      <!-- Select filters -->
+      <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
         <select
           :value="region"
           @change="emit('update:region', $event.target.value)"
-          class="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
+          class="w-full sm:w-[15rem] bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
         >
           <option value="">Все регионы</option>
           <option v-for="region in regions" :key="region.id" :value="region.id">
@@ -43,7 +45,7 @@
         <select
           :value="sport"
           @change="emit('update:sport', $event.target.value)"
-          class="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
+          class="w-full sm:w-[15rem] bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
         >
           <option value="">Все виды спорта</option>
           <option v-for="item in sports" :key="item.id" :value="item.id">
@@ -54,7 +56,7 @@
         <select
           :value="gender"
           @change="emit('update:gender', $event.target.value)"
-          class="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
+          class="w-full sm:w-[15rem] bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-600"
         >
           <option value="">Все полы</option>
           <option value="male">Мужской</option>
@@ -65,48 +67,50 @@
 
     <!-- Table -->
     <div class="bg-gray-800 rounded-lg overflow-hidden">
-      <table class="w-full">
-        <thead class="bg-gray-700">
-          <tr>
-            <th class="px-4 py-3 text-left text-sm font-medium">№</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Ф.И.О</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Дата рождения</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Регион</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Пол</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Номер телефона</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Вид спорта</th>
-            <th class="px-4 py-3 text-left text-sm font-medium">Действие</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(coach, index) in props.data"
-            :key="coach.id"
-            class="border-t border-gray-700 hover:bg-gray-750 transition-colors"
-          >
-            <td class="px-4 py-3">{{ page - 1 + index + 1 }}</td>
-            <td class="px-4 py-3 text-sm">
-              <div class="font-medium">{{ coach.full_name }}</div>
-            </td>
-            <td class="px-4 py-3 text-sm">{{ coach.birth_date || "-" }}</td>
-            <td class="px-4 py-3 text-sm">{{ coach.region?.name || "-" }}</td>
-            <td class="px-4 py-3 text-sm">{{ coach.gender }}</td>
-            <td class="px-4 py-3 text-sm">{{ coach.phone_number }}</td>
-            <td class="px-4 py-3 text-sm">{{ coach.sport?.name }}</td>
-            <td class="px-4 py-3 text-sm">
-              <button
-                class="bg-red-600 hover:bg-red-700 text-white p-2 rounded transition-colors"
-              >
-                Удалить
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Scroll wrapper for mobile -->
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[800px]">
+          <thead class="bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-medium">№</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Ф.И.О</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Дата рождения</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Регион</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Пол</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Номер телефона</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Вид спорта</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Действие</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(coach, index) in props.data"
+              :key="coach.id"
+              class="border-t border-gray-700 hover:bg-gray-750 transition-colors"
+            >
+              <td class="px-4 py-3">{{ page - 1 + index + 1 }}</td>
+              <td class="px-4 py-3 text-sm">
+                <div class="font-medium">{{ coach.full_name }}</div>
+              </td>
+              <td class="px-4 py-3 text-sm">{{ coach.birth_date || "-" }}</td>
+              <td class="px-4 py-3 text-sm">{{ coach.region?.name || "-" }}</td>
+              <td class="px-4 py-3 text-sm">{{ coach.gender }}</td>
+              <td class="px-4 py-3 text-sm">{{ coach.phone_number }}</td>
+              <td class="px-4 py-3 text-sm">{{ coach.sport?.name }}</td>
+              <td class="px-4 py-3 text-sm">
+                <button
+                  class="bg-red-600 hover:bg-red-700 text-white p-2 rounded transition-colors"
+                >
+                  Удалить
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Pagination -->
-      <div class="flex justify-center items-center gap-2 my-6">
-        <!-- Prev button -->
+      <div v-if="totalPages" class="flex justify-center items-center gap-2 my-6">
         <button
           @click="emit('update:page', page - 1)"
           :disabled="page === 1"
@@ -115,7 +119,6 @@
           Prev
         </button>
 
-        <!-- Page numbers -->
         <button
           v-for="p in totalPages"
           :key="p"
@@ -130,7 +133,6 @@
           {{ p }}
         </button>
 
-        <!-- Next button -->
         <button
           @click="emit('update:page', page + 1)"
           :disabled="page === totalPages"
@@ -139,6 +141,7 @@
           Next
         </button>
       </div>
+      <el-empty v-else :image-size="200" />
     </div>
   </div>
 </template>
