@@ -15,12 +15,12 @@
         class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
       >
         <div class="col-span-3">Турнир</div>
-        <div class="col-span-4">Тренер</div>
+        <div class="col-span-2">Тренер</div>
         <div class="col-span-2">Дата получение</div>
+        <div class="col-span-2">Статус</div>
         <div class="col-span-2">Действие</div>
       </div>
 
-      <!-- Table Rows -->
       <div
         v-for="achievement in data"
         :key="achievement.id"
@@ -34,22 +34,38 @@
           />
           <span>{{ achievement.tournament?.name }}</span>
         </div>
-        <div class="col-span-4">{{ achievement.trainer.full_name }}</div>
+        <div class="col-span-2">{{ achievement.trainer.full_name }}</div>
         <div class="col-span-2 text-gray-400">{{ achievement.year }}</div>
+        <div
+          class="col-span-2 px-2 py-1 rounded text-sm font-medium"
+          :class="{
+            'text-blue-400': achievement.status === 'pending',
+            'text-green-400': achievement.status === 'verified',
+            'text-red-400': achievement.status === 'rejected',
+          }"
+        >
+          {{
+            achievement.status === "pending"
+              ? "В обработке"
+              : achievement.status === "verified"
+              ? "Подтверждено"
+              : achievement.status === "rejected"
+              ? "Отклонено"
+              : "Неизвестно"
+          }}
+        </div>
+
         <div class="col-span-2 flex space-x-2">
-          <!-- View -->
           <button
             @click="viewItem(achievement.id)"
             class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors"
           >
             <img src="/Eye.svg" alt="eyes" class="w-4" />
           </button>
-          <!-- Delete -->
           <!-- @click="deleteItem(achievement.id)" -->
           <button class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors">
             <img src="/delete.svg" alt="x" class="w-4" />
           </button>
-          <!-- Edit -->
           <button
             @click="editItem(achievement)"
             class="p-2 bg-green-600 hover:bg-green-500 rounded transition-colors"
@@ -112,13 +128,13 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Название trainer</label
+              >Название тренер</label
             >
             <select
               v-model="form.trainer"
               class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
             >
-              <option value="">Выберите trainer</option>
+              <option value="">Выберите тренер</option>
               <option v-for="item in trainerData" :key="item.id" :value="item.id">
                 {{ item.full_name }}
               </option>
@@ -146,9 +162,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Период оценки</label
-            >
+            <label class="block text-sm font-medium text-gray-300 mb-2">Год</label>
             <input
               v-model="form.year"
               type="text"

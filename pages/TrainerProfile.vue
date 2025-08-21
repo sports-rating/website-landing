@@ -35,6 +35,12 @@
                 >
                   {{ authStore.userProfile?.data?.user_role }}
                 </span>
+
+                <span
+                  class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
+                >
+                  {{ authStore.userProfile?.data?.trainer_profile?.points }} oчки
+                </span>
               </div>
             </div>
           </div>
@@ -270,7 +276,7 @@
                     <el-dialog
                       v-model="dialogVisible"
                       title="Отправленные запросы"
-                      class="md:!w-[500px] !w-[350px] !text-black"
+                      class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
                     >
                       <div v-if="isLoading" class="text-center py-4">
                         <Loading class="w-4 h-4" />
@@ -278,7 +284,7 @@
                       <div v-else>
                         <el-empty
                           v-if="requests.length === 0"
-                          description="So‘rovlar topilmadi"
+                          description="Запросов не найдено."
                         />
                         <div v-else class="max-h-[400px] overflow-y-auto pr-2">
                           <ul class="space-y-4">
@@ -289,13 +295,13 @@
                             >
                               <div>
                                 <p class="text-sm text-gray-700 mb-1">
-                                  <strong>Trainer Name:</strong>
-                                  {{ item.receiver?.full_name }}
+                                  <strong>Имя Федерация:</strong>
+                                  {{ item.receiver?.federation?.name }}
                                 </p>
                                 <p
                                   class="text-sm text-gray-700 mb-1 flex items-center gap-2"
                                 >
-                                  <strong>Status:</strong>
+                                  <strong>Статус:</strong>
                                   <el-tag
                                     :type="item.status === 'pending' ? 'warning' : 'info'"
                                     size="small"
@@ -305,7 +311,7 @@
                                   </el-tag>
                                 </p>
                                 <p class="text-sm text-gray-700">
-                                  <strong>Yaratilgan:</strong>
+                                  <strong>Созданный:</strong>
                                   {{ formatDate(item.created_time) }}
                                 </p>
                               </div>
@@ -315,7 +321,7 @@
                                   size="small"
                                   @click="cancelRequest(item.id)"
                                 >
-                                  Bekor qilish
+                                  Отмена
                                 </el-button>
                               </div>
                             </li>
@@ -684,7 +690,6 @@ watch(
   () => formData.value.sport,
   async (newVal) => {
     if (newVal) {
-      formData.value.federation = "";
       await getFederation(newVal);
     } else {
       dataFederation.value = [];
@@ -733,12 +738,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 .el-dialog__title {
-  color: black !important;
+  color: white !important;
 }
 </style>
 
 <style>
 .el-dialog__title {
-  color: black !important;
+  color: white !important;
 }
 </style>

@@ -35,6 +35,17 @@
                 >
                   {{ authStore.userProfile?.data?.user_role }}
                 </span>
+                <span
+                  class="bg-[#FFFFFF29]/50 uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+                >
+                  {{ authStore.userProfile?.data?.sportsman_profile?.sport_rank }}
+                </span>
+
+                <span
+                  class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
+                >
+                  {{ authStore.userProfile?.data?.sportsman_profile?.points }} oчки
+                </span>
               </div>
             </div>
           </div>
@@ -286,8 +297,8 @@
 
                     <el-dialog
                       v-model="dialogVisible"
-                      title="Yuborilgan So‘rovlar"
-                      class="md:!w-[500px] !w-[350px]"
+                      title="Отправленные запросы"
+                      class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
                     >
                       <div v-if="isLoading" class="text-center py-4">
                         <Loading class="w-4 h-4" />
@@ -295,7 +306,7 @@
                       <div v-else>
                         <el-empty
                           v-if="requests.length === 0"
-                          description="So‘rovlar topilmadi"
+                          description="Запросов не найдено."
                         />
                         <div v-else class="max-h-[400px] overflow-y-auto pr-2">
                           <ul class="space-y-4">
@@ -306,13 +317,13 @@
                             >
                               <div>
                                 <p class="text-sm text-gray-700 mb-1">
-                                  <strong>Trainer Name:</strong>
+                                  <strong>Имя Отправителя:</strong>
                                   {{ item.receiver.full_name }}
                                 </p>
                                 <p
                                   class="text-sm text-gray-700 mb-1 flex items-center gap-2"
                                 >
-                                  <strong>Status:</strong>
+                                  <strong>Статус:</strong>
                                   <el-tag
                                     :type="item.status === 'pending' ? 'warning' : 'info'"
                                     size="small"
@@ -322,7 +333,7 @@
                                   </el-tag>
                                 </p>
                                 <p class="text-sm text-gray-700">
-                                  <strong>Yaratilgan:</strong>
+                                  <strong>Созданный:</strong>
                                   {{ formatDate(item.created_time) }}
                                 </p>
                               </div>
@@ -332,7 +343,7 @@
                                   size="small"
                                   @click="cancelRequest(item.id)"
                                 >
-                                  Bekor qilish
+                                  Отмена
                                 </el-button>
                               </div>
                             </li>
@@ -741,11 +752,11 @@ watch(() => formData.value.region, onRegionChange);
 watch(
   () => formData.value.sport,
   async (newSport) => {
-    formData.value.trainer = "";
     if (newSport) {
       await getTrainer();
     } else {
       dataTrainer.value = [];
+      formData.value.trainer = "";
     }
   }
 );
@@ -797,6 +808,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   box-shadow: none !important;
 }
 
+.el-dialog__title {
+  color: white !important;
+}
 .el-input__inner {
   color: white !important;
 }
