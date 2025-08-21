@@ -43,7 +43,10 @@
           >
             <img
               @click.stop="clickImg"
-              :src="uploadedImageUrl"
+              :src="
+                uploadedImageUrl ||
+                'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+              "
               alt="Profile Picture"
               class="rounded-full object-cover w-full h-full"
             />
@@ -477,7 +480,6 @@ const sportRanks = ref([
   { value: "CANDIDATE", label: "Candidate for Master of Sport" },
 ]);
 
-
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,
   lastName: authStore.userProfile?.data?.last_name,
@@ -515,7 +517,7 @@ const getTrainer = async () => {
     }
 
     const res = await $api.get("/user/profile/trainer/", {
-      params: { sport: selectedSportName.value },
+      params: { sport: selectedSportName.value, verified: true },
     });
 
     dataTrainer.value = res.data.data.map((trainer) => ({
