@@ -298,6 +298,19 @@ const viewRequest = async (id) => {
           </p>
         </div>
 
+        <!-- Receiver -->
+        <div class="pt-2 border-t border-gray-700">
+          <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
+          <p>
+            <span class="text-gray-400">👤 ФИО:</span>
+            {{ selectedRequest.receiver.federation.name }}
+          </p>
+          <p>
+            <span class="text-gray-400">📞 Телефон:</span>
+            {{ selectedRequest.receiver.federation.phone_number }}
+          </p>
+        </div>
+
         <!-- Sender -->
         <div class="pt-2 border-t border-gray-700">
           <h3 class="font-semibold text-blue-400 text-base mb-1">📤 Отправитель</h3>
@@ -315,21 +328,117 @@ const viewRequest = async (id) => {
           </p>
         </div>
 
-        <!-- Receiver -->
-        <div class="pt-2 border-t border-gray-700">
-          <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
-          <p>
-            <span class="text-gray-400">👤 ФИО:</span>
-            {{ selectedRequest.receiver.full_name }}
-          </p>
-          <p>
-            <span class="text-gray-400">📞 Телефон:</span>
-            {{ selectedRequest.receiver.phone_number }}
-          </p>
-          <p>
-            <span class="text-gray-400">🎯 Роль:</span>
-            {{ selectedRequest.receiver.user_role }}
-          </p>
+        <div
+          v-if="selectedRequest.request_type === 'trainer_federation_request'"
+          class="flex w-full justify-between"
+        >
+          <!-- Старые данные -->
+          <div
+            v-if="
+              selectedRequest?.old_data && Object.keys(selectedRequest.old_data).length
+            "
+            class="pt-2 border-t border-gray-700"
+          >
+            <h3 class="font-semibold text-red-400 text-base mb-1">📜 Старые данные</h3>
+
+            <p>
+              <span class="text-gray-400">⚽ Спорт:</span>
+              {{
+                selectedRequest.old_data.sport?.name
+                  ? selectedRequest.old_data.sport?.name
+                  : "не имя"
+              }}
+            </p>
+            <p>
+              <span class="text-gray-400">📏 Рост:</span>
+              {{ selectedRequest.old_data.height ? selectedRequest.old_data.height : 0 }}
+            </p>
+            <p>
+              <span class="text-gray-400">⚖️ Вес:</span>
+              {{ selectedRequest.old_data.weight ? selectedRequest.old_data.weight : 0 }}
+            </p>
+            <p>
+              <span class="text-gray-400">🥋 Уровень навыка:</span>
+              {{
+                selectedRequest.old_data.skill_level
+                  ? selectedRequest.old_data.skill_level
+                  : "нет данных"
+              }}
+            </p>
+          </div>
+
+          <!-- Новые данные -->
+          <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+            <h3 class="font-semibold text-purple-400 text-base mb-1">📋 Новые данные</h3>
+
+            <p>
+              <span class="text-gray-400">⚽ Спорт:</span>
+              {{
+                selectedRequest.new_data.sport?.name
+                  ? selectedRequest.new_data.sport?.name
+                  : "не имя"
+              }}
+            </p>
+            <p>
+              <span class="text-gray-400">📏 Рост:</span>
+              {{ selectedRequest.new_data.height ? selectedRequest.new_data.height : 0 }}
+            </p>
+            <p>
+              <span class="text-gray-400">⚖️ Вес:</span>
+              {{ selectedRequest.new_data.weight ? selectedRequest.new_data.weight : 0 }}
+            </p>
+            <p>
+              <span class="text-gray-400">🥋 Уровень навыка:</span>
+              {{
+                selectedRequest.new_data.skill_level
+                  ? selectedRequest.new_data.skill_level
+                  : "нет данных"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          v-if="selectedRequest.request_type === 'federation_admin_request'"
+          class="flex w-full justify-between"
+        >
+          <!-- Новые данные -->
+          <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+            <h3 class="font-semibold text-purple-400 text-base mb-1">📋 Новые данные</h3>
+
+            <p>
+              <span class="text-gray-400">⚽ Имя:</span>
+              {{
+                selectedRequest.new_data.full_name
+                  ? selectedRequest.new_data.full_name
+                  : "не имя"
+              }}
+            </p>
+            <p>
+              <span class="text-gray-400">📏 Номер телефона:</span>
+              {{
+                selectedRequest.new_data.phone_number
+                  ? selectedRequest.new_data.phone_number
+                  : "нет данных"
+              }}
+            </p>
+            <p>
+              <span class="text-gray-400">⚖️ Электронная почта:</span>
+              {{
+                selectedRequest.new_data.email
+                  ? selectedRequest.new_data.email
+                  : "нет данных"
+              }}
+            </p>
+            <p>
+              <span class="text-gray-400">🥋 Дата рождения:</span>
+              {{
+                selectedRequest.new_data.birth_date
+                  ? selectedRequest.new_data.birth_date
+                  : "нет данных"
+              }}
+            </p>
+          </div>
         </div>
 
         <p>

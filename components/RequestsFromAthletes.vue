@@ -173,23 +173,6 @@
             </p>
           </div>
 
-          <!-- Sender -->
-          <div class="pt-2 border-t border-gray-700">
-            <h3 class="font-semibold text-blue-400 text-base mb-1">📤 Отправитель</h3>
-            <p>
-              <span class="text-gray-400">👤 ФИО:</span>
-              {{ selectedRequest.sender.full_name }}
-            </p>
-            <p>
-              <span class="text-gray-400">📞 Телефон:</span>
-              {{ selectedRequest.sender.phone_number }}
-            </p>
-            <p>
-              <span class="text-gray-400">🎯 Роль:</span>
-              {{ selectedRequest.sender.user_role }}
-            </p>
-          </div>
-
           <!-- Receiver -->
           <div class="pt-2 border-t border-gray-700">
             <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
@@ -204,6 +187,23 @@
             <p>
               <span class="text-gray-400">🎯 Роль:</span>
               {{ selectedRequest.receiver.user_role }}
+            </p>
+          </div>
+
+          <!-- Sender -->
+          <div class="pt-2 border-t border-gray-700">
+            <h3 class="font-semibold text-blue-400 text-base mb-1">📤 Отправитель</h3>
+            <p>
+              <span class="text-gray-400">👤 ФИО:</span>
+              {{ selectedRequest.sender.full_name }}
+            </p>
+            <p>
+              <span class="text-gray-400">📞 Телефон:</span>
+              {{ selectedRequest.sender.phone_number }}
+            </p>
+            <p>
+              <span class="text-gray-400">🎯 Роль:</span>
+              {{ selectedRequest.sender.user_role }}
             </p>
           </div>
 
@@ -224,6 +224,115 @@
               <p>
                 <span class="text-gray-400">🎯 Рейтинг:</span>
                 {{ selectedResult.rating }}
+              </p>
+            </div>
+          </div>
+
+          <div
+            v-if="currentTabb.request_type === 'sportsman_trainer'"
+            class="flex w-full justify-between"
+          >
+            <!-- Старые данные -->
+            <div
+              v-if="
+                selectedRequest?.old_data && Object.keys(selectedRequest.old_data).length
+              "
+              class="pt-2 border-t border-gray-700"
+            >
+              <h3 class="font-semibold text-red-400 text-base mb-1">📜 Старые данные</h3>
+
+              <p>
+                <span class="text-gray-400">⚽ Спорт:</span>
+                {{
+                  selectedRequest.old_data.sport?.name
+                    ? selectedRequest.old_data.sport?.name
+                    : "не имя"
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">📏 Рост:</span>
+                {{
+                  selectedRequest.old_data.height ? selectedRequest.old_data.height : 0
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{
+                  selectedRequest.old_data.weight ? selectedRequest.old_data.weight : 0
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">🥋 Ранг:</span>
+                {{
+                  selectedRequest.old_data.sport_rank
+                    ? selectedRequest.old_data.sport_rank
+                    : "нет данных"
+                }}
+              </p>
+            </div>
+
+            <!-- Новые данные -->
+            <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+              <h3 class="font-semibold text-purple-400 text-base mb-1">
+                📋 Новые данные
+              </h3>
+
+              <p>
+                <span class="text-gray-400">⚽ Спорт:</span>
+                {{
+                  selectedRequest.new_data.sport?.name
+                    ? selectedRequest.new_data.sport?.name
+                    : "не имя"
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">📏 Рост:</span>
+                {{
+                  selectedRequest.new_data.height ? selectedRequest.new_data.height : 0
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{
+                  selectedRequest.new_data.weight ? selectedRequest.new_data.weight : 0
+                }}
+              </p>
+              <p>
+                <span class="text-gray-400">🥋 Ранг:</span>
+                {{
+                  selectedRequest.new_data.sport_rank
+                    ? selectedRequest.new_data.sport_rank
+                    : "нет данных"
+                }}
+              </p>
+            </div>
+          </div>
+
+          <div v-if="currentTabb.request_type === 'sportsman_result'">
+            <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+              <h3 class="font-semibold text-purple-400 text-base mb-1">
+                📋 Новые результат
+              </h3>
+
+              <p v-if="selectedRequest.new_data.country">
+                <span class="text-gray-400">⚽ Страна:</span>
+                {{ selectedRequest.new_data.country }}
+              </p>
+              <p v-if="selectedRequest.new_data.tournament">
+                <span class="text-gray-400">📏 Турнир:</span>
+                {{ selectedRequest.new_data.tournament.name }}
+              </p>
+              <p v-if="selectedRequest.new_data.year">
+                <span class="text-gray-400">⚖️ Год:</span>
+                {{ selectedRequest.new_data.year }}
+              </p>
+              <p v-if="selectedRequest.new_data.rating">
+                <span class="text-gray-400">🥋 Рейтинг:</span>
+                {{ selectedRequest.new_data.rating }}
+              </p>
+              <p v-if="selectedRequest.new_data.score">
+                <span class="text-gray-400">🥋 Счет:</span>
+                {{ selectedRequest.new_data.score }}
               </p>
             </div>
           </div>
@@ -281,12 +390,12 @@ const loading = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
-
+const currentTabb = ref(null);
 const fetchRequests = async () => {
   try {
     loading.value = true;
     const currentTab = tabs.find((t) => t.key === activeTab.value);
-
+    currentTabb.value = tabs.find((t) => t.key === activeTab.value);
     const params = {
       page: currentPage.value,
       page_size: itemsPerPage.value,

@@ -34,22 +34,22 @@
           />
           <span>{{ achievement.tournament?.name }}</span>
         </div>
-        <div class="col-span-2">{{ achievement.trainer.full_name }}</div>
-        <div class="col-span-2 text-gray-400">{{ achievement.year }}</div>
+        <div class="col-span-2">{{ achievement.trainer?.full_name }}</div>
+        <div class="col-span-2 text-gray-400">{{ achievement?.year }}</div>
         <div
           class="col-span-2 px-2 py-1 rounded text-sm font-medium"
           :class="{
-            'text-blue-400': achievement.status === 'pending',
-            'text-green-400': achievement.status === 'verified',
-            'text-red-400': achievement.status === 'rejected',
+            'text-blue-400': achievement?.status === 'pending',
+            'text-green-400': achievement?.status === 'verified',
+            'text-red-400': achievement?.status === 'rejected',
           }"
         >
           {{
-            achievement.status === "pending"
+            achievement?.status === "pending"
               ? "В обработке"
-              : achievement.status === "verified"
+              : achievement?.status === "verified"
               ? "Подтверждено"
-              : achievement.status === "rejected"
+              : achievement?.status === "rejected"
               ? "Отклонено"
               : "Неизвестно"
           }}
@@ -82,7 +82,7 @@
         @click="showModal = true"
         class="px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
       >
-        Добавить новую карьеру
+        Добавить новую Достижение
       </button>
     </div>
 
