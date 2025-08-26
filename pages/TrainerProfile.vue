@@ -225,6 +225,7 @@
                     <input
                       type="number"
                       id="height"
+                      step="0.1"
                       v-model="formData.height"
                       placeholder="Рост (см)"
                       class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
@@ -237,6 +238,7 @@
                     <input
                       type="number"
                       id="weight"
+                      step="0.1"
                       v-model="formData.weight"
                       placeholder="Вес (кг)"
                       class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
@@ -529,8 +531,8 @@ const handleSubmit = async () => {
       trainer_profile: {
         sport_id: formData.value.sport,
         federation: formData.value.federation,
-        height: formData.value.height,
-        weight: formData.value.weight,
+        height: String(formData.value.height),
+        weight: String(formData.value.weight),
         send_request: true,
       },
     };
