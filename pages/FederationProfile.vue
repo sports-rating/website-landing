@@ -83,6 +83,28 @@
           :total-pages="totalPages"
           :data="data"
         />
+
+        <FederationList
+          v-if="activeTab === 'federation'"
+          v-model:search="search"
+          v-model:region="selectedRegion"
+          v-model:sport="selectedSport"
+          v-model:gender="selectedGender"
+          v-model:page="currentTrainer"
+          :total-pages="totalPages"
+          :data="dataFederation"
+        />
+
+        <Judges
+          v-if="activeTab === 'judges'"
+          v-model:search="search"
+          v-model:region="selectedRegion"
+          v-model:sport="selectedSport"
+          v-model:gender="selectedGender"
+          v-model:page="currentTrainer"
+          :total-pages="totalPages"
+          :data="data"
+        />
         <StatsList v-if="activeTab === 'statistics'" />
       </div>
 
@@ -114,12 +136,15 @@ import Applications from "~/components/tabs/Applications.vue";
 import TrainerList from "~/components/tabs/TrainerList.vue";
 import SportsmanList from "~/components/tabs/SportsmanList.vue";
 import StatsList from "~/components/tabs/StatsList.vue";
+import FederationList from "~/components/tabs/FederationList.vue";
+import Judges from "~/components/tabs/Judges.vue";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
 const activeTab = ref("applications");
 const data = ref([]);
+const dataFederation = ref([]);
 const requests = ref([]);
 const currentPage = ref(1);
 const currentTrainer = ref(1);
@@ -138,7 +163,7 @@ const tabs = [
   { key: "federation", label: "Федерации", user_role: "federation" },
   { key: "athletes", label: "Спортсмены", user_role: "sportsman" },
   { key: "trainers", label: "Тренеры", user_role: "trainer" },
-  { key: "judges", label: "Судялар", user_role: null },
+  { key: "judges", label: "Судялар", user_role: "" },
   { key: "applications", label: "Заявки", user_role: null },
   { key: "competition", label: "Соревнование", user_role: null },
   { key: "statistics", label: "Статистика", user_role: null },

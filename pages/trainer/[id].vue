@@ -54,9 +54,8 @@
                 <p class="text-[#8B8992] mb-1 sm:mb-0">Рост</p>
                 <p class="text-white">
                   {{
-                    data?.trainer_profile?.user_metrics?.height
-                      ? Number(data?.trainer_profile?.user_metrics?.height).toFixed(0) +
-                        " см"
+                    data?.trainer_profile?.height
+                      ? Number(data?.trainer_profile?.height).toFixed(0) + " см"
                       : "Не указано"
                   }}
                 </p>
@@ -67,9 +66,8 @@
                 <p class="text-[#8B8992] mb-1 sm:mb-0">Вес</p>
                 <p class="text-white">
                   {{
-                    data?.trainer_profile?.user_metrics?.weight
-                      ? Number(data?.trainer_profile?.user_metrics?.weight).toFixed(0) +
-                        " кг"
+                    data?.trainer_profile?.weight
+                      ? Number(data?.trainer_profile?.weight).toFixed(0) + " кг"
                       : "Не указано"
                   }}
                 </p>
