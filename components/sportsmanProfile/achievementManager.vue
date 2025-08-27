@@ -66,12 +66,12 @@
           <button class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors">
             <img src="/delete.svg" alt="x" class="w-4" />
           </button>
-          <button
+          <!-- <button
             @click="editItem(achievement)"
             class="p-2 bg-green-600 hover:bg-green-500 rounded transition-colors"
           >
             <img src="/edit.svg" alt="done" class="w-4" />
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
