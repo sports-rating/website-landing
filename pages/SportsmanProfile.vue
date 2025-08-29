@@ -154,6 +154,7 @@
                   </button>
 
                   <button
+                    v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'career'"
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
@@ -451,7 +452,38 @@
               </div>
             </form>
 
-            <achievementManager v-if="activeTab === 'career'" />
+            <!-- Content -->
+            <div v-if="activeTab === 'career'" class="mt-4">
+              <achievementManager
+                v-if="authStore.userProfile?.data?.sportsman_profile?.is_result_paid"
+              />
+              <div
+                v-else
+                class="bg-[#2A2A40] p-6 rounded-lg text-center text-white space-y-4"
+              >
+                <p class="text-lg font-medium">Pay to unlock results submission</p>
+                <div class="flex justify-center gap-4">
+                  <!-- Payme -->
+                  <a
+                    :href="`https://checkout.paycom.uz/xxxx?return_url=${encodeURIComponent(
+                      baseUrl + returnUrl
+                    )}`"
+                    class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg shadow-md transition"
+                  >
+                    Pay with Payme
+                  </a>
+
+                  <a
+                    :href="`https://my.click.uz/services/pay?merchant_id=xxxx&return_url=${encodeURIComponent(
+                      baseUrl + returnUrl
+                    )}`"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition"
+                  >
+                    Pay with Click
+                  </a>
+                </div>
+              </div>
+            </div>
           </main>
         </div>
       </div>
@@ -466,6 +498,7 @@ import { ElMessage } from "element-plus";
 import omit from "lodash/omit.js";
 import { Loading } from "@element-plus/icons-vue";
 import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
+import { useRoute, useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
@@ -482,7 +515,7 @@ const fileInput = ref(null);
 const uploadedImageId = ref(null);
 let isDialogOpen = false;
 
-const activeTab = ref("info");
+// const activeTab = ref("info");
 const sportRanks = ref([
   { value: "YOUTH_3", label: "Youth Third Rank" },
   { value: "YOUTH_2", label: "Youth Second Rank" },
@@ -492,6 +525,21 @@ const sportRanks = ref([
   { value: "ADULT_1", label: "Adult First Rank" },
   { value: "CANDIDATE", label: "Candidate for Master of Sport" },
 ]);
+
+const route = useRoute();
+const router = useRouter();
+const activeTab = ref(route.query.tab || "info");
+
+const returnUrl = router.resolve({
+  path: route.fullPath,
+  query: { ...route.query, tab: "career" },
+}).href;
+
+const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+
+watch(activeTab, (val) => {
+  router.replace({ query: { ...route.query, tab: val } });
+});
 
 const formData = ref({
   firstName: authStore.userProfile?.data?.first_name,

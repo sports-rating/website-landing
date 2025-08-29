@@ -58,7 +58,7 @@
         <div class="col-span-2 flex space-x-2">
           <button
             @click="viewItem(achievement.id)"
-            class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors"
+            class="p-2 bg-gray-600 hover:bg-gray-500 rounded transitioncolors"
           >
             <img src="/Eye.svg" alt="eyes" class="w-4" />
           </button>
