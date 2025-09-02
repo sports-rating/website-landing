@@ -567,7 +567,7 @@ const getData = async () => {
 
 const selectedSportName = computed(() => {
   const selected = data.value.find((item) => item.id === formData.value.sport);
-  return selected ? selected.name : "";
+  return selected ? selected.id : "";
 });
 
 const getTrainer = async () => {

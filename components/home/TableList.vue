@@ -20,7 +20,7 @@
         <button
           v-for="sport in sports"
           :key="sport.id"
-          @click="toggle(sport.id, sport.name)"
+          @click="toggle(sport.id)"
           class="px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors min-w-fit"
           :class="
             activeCategory === sport.id
@@ -38,93 +38,95 @@
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <!-- Table Header -->
           <div
-            class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-2 text-xs text-gray-400"
+            class="bg-[#212226] px-4 py-3 grid grid-cols-[40px,1fr,60px,60px,80px,80px,80px,60px] text-xs text-gray-400"
           >
-            <div class="col-span-1 flex items-center">РТГ</div>
-            <div class="col-span-3 flex items-center">ИГРОК</div>
-            <div class="col-span-1 flex items-center">СТР</div>
-            <div class="col-span-1 flex items-center">КМ</div>
-            <div class="col-span-2 flex items-center md:justify-normal justify-center">
+            <div class="flex items-center">РТГ</div>
+            <div class="flex items-center">ИГРОК</div>
+            <div class="flex items-center justify-center">СТР</div>
+            <div class="flex items-center justify-center">КМ</div>
+            <div class="flex items-center justify-center">
               <img src="/gold.png" class="w-5 mr-1" />
-              <span class="sm:flex hidden">Золото</span>
+              <span class="hidden sm:inline">Золото</span>
             </div>
-            <div class="col-span-2 flex items-center md:justify-normal justify-center">
+            <div class="flex items-center justify-center">
               <img src="/silver.png" class="w-5 mr-1" />
-              <span class="sm:flex hidden">Серебро</span>
+              <span class="hidden sm:inline">Серебро</span>
             </div>
-            <div class="col-span-2 flex items-center md:justify-normal justify-center">
+            <div class="flex items-center justify-center">
               <img src="/bronza.png" class="w-5 mr-1" />
-              <span class="sm:flex hidden">Бронза</span>
+              <span class="hidden sm:inline">Бронза</span>
             </div>
+            <div class="flex items-center justify-center">Балл</div>
           </div>
 
           <!-- Players Rows -->
           <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-            <nuxt-link
-              v-for="(player, index) in data"
-              :key="player.id"
-              :to="`/users/${player.id}`"
-              class="px-4 py-3 grid grid-cols-12 gap-2 items-center hover:bg-[#3A3B41] transition-colors"
-            >
-              <div class="col-span-1 text-gray-400">{{ index + 1 }}</div>
-              <div class="col-span-3 text-white truncate text-sm">
-                {{ player.first_name }} {{ player.last_name }}
-              </div>
-              <div class="col-span-1 text-center">
-                <img src="/public/UZ.svg" class="w-5 h-3 rounded object-cover" />
-              </div>
-              <div class="col-span-1 text-center">
-                <img :src="player.logo" class="w-6 h-6 rounded-full" />
-              </div>
-              <div class="col-span-2 text-center">
-                <span class="bg-[#1A1B1F] px-2 py-1 rounded text-white text-sm">{{
-                  player.statistics.total_gold
-                }}</span>
-              </div>
-              <div class="col-span-2 text-center">
-                <span class="bg-[#1A1B1F] px-2 py-1 rounded text-white text-sm">{{
-                  player.statistics.total_silver
-                }}</span>
-              </div>
-              <div class="col-span-2 text-center">
-                <span class="bg-[#1A1B1F] px-2 py-1 rounded text-white text-sm">{{
-                  player.statistics.total_bronze
-                }}</span>
-              </div>
-            </nuxt-link>
+            <div v-if="data.length">
+              <nuxt-link
+                v-for="(player, index) in data"
+                :key="player.id"
+                :to="`/users/${player.id}`"
+                class="px-4 py-3 grid grid-cols-[40px,1fr,60px,60px,80px,80px,80px,60px] items-center hover:bg-[#3A3B41] transition-colors"
+              >
+                <div class="text-gray-400">{{ index + 1 }}</div>
+                <div class="text-white truncate text-sm">
+                  {{ player.first_name }} {{ player.last_name }}
+                </div>
+                <div class="text-center">
+                  <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                </div>
+                <div class="text-center">
+                  <img :src="player.logo" class="w-6 h-6 rounded-full mx-auto" />
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">{{ player.statistics.total_gold }}</span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">{{
+                    player.statistics.total_silver
+                  }}</span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">{{
+                    player.statistics.total_bronze
+                  }}</span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">{{ player.points }}</span>
+                </div>
+              </nuxt-link>
+            </div>
+            <el-empty v-else :image-size="50" description="Нет данных" />
           </TransitionGroup>
         </div>
 
+        <!-- Trainers Table -->
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <!-- Table Header -->
           <div
-            class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-2 text-xs text-gray-400 items-center"
+            :class="data1.length ? 'py-0' : '!py-2.5'"
+            class="px-4 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
           >
-            <div class="col-span-1">РТГ</div>
-            <div class="col-span-2">ТРЕНЕР</div>
-            <div class="col-span-1 text-center">СТР</div>
-            <div class="col-span-1 text-center">КМ</div>
-
-            <!-- Gold -->
-            <div class="sm:flex sm:col-span-1 items-center gap-1">
+            <div>РТГ</div>
+            <div>ТРЕНЕР</div>
+            <div class="text-center">СТР</div>
+            <div class="text-center">КМ</div>
+            <div class="flex items-center justify-center gap-1">
               <img src="/gold.png" class="w-4 h-4" />
-              <span class="sm:flex hidden">Золото</span>
+              <span class="hidden sm:inline">Золото</span>
             </div>
-
-            <!-- Silver -->
-            <div class="sm:flex sm:col-span-2 items-center gap-1 sm:ml-5">
+            <div class="flex items-center justify-center gap-1">
               <img src="/silver.png" class="w-4 h-4" />
-              <span class="sm:flex hidden">Серебро</span>
+              <span class="hidden sm:inline">Серебро</span>
             </div>
-
-            <!-- Bronze -->
-            <div class="sm:flex sm:col-span-2 items-center gap-1">
+            <div class="flex items-center justify-center gap-1">
               <img src="/bronza.png" class="w-4 h-4" />
-              <span class="sm:flex hidden">Бронза</span>
+              <span class="hidden sm:inline">Бронза</span>
             </div>
+            <div class="text-center">Балл</div>
 
             <!-- Dropdown -->
-            <div class="col-span-4 sm:col-span-2 flex justify-end">
+            <div class="ml-auto">
               <el-dropdown @command="handleSelect">
                 <el-button type="text" size="small" class="!text-gray-400 text-xs">
                   {{ selectedView === "1" ? "Личное" : "Учащихся" }}
@@ -140,65 +142,61 @@
             </div>
           </div>
 
-          <!-- Trainers List -->
+          <!-- Trainers Rows -->
           <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-            <nuxt-link
-              v-for="(trainer, index) in data1"
-              :key="trainer.id"
-              :to="`/trainer/${trainer.id}`"
-              class="px-4 py-3 grid grid-cols-12 gap-2 items-center hover:bg-[#3A3B41] transition-colors"
-            >
-              <div class="col-span-1 text-gray-400 text-sm">{{ index + 1 }}</div>
+            <div v-if="data1.length">
+              <nuxt-link
+                v-for="(trainer, index) in data1"
+                :key="trainer.id"
+                :to="`/trainer/${trainer.id}`"
+                class="px-4 py-3 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center hover:bg-[#3A3B41] transition-colors"
+              >
+                <div class="text-gray-400">{{ index + 1 }}</div>
+                <div class="text-white truncate text-sm">
+                  {{ trainer.first_name }} {{ trainer.last_name }}
+                </div>
+                <div class="text-center">
+                  <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                </div>
+                <div class="text-center">
+                  <img :src="trainer.logo" class="w-6 h-6 rounded-full mx-auto" />
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.gold
+                        : trainer.statistics.students_statistics.gold
+                    }}
+                  </span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.silver
+                        : trainer.statistics.students_statistics.silver
+                    }}
+                  </span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">
+                    {{
+                      selectedView === "1"
+                        ? trainer.statistics.own_statistics.bronze
+                        : trainer.statistics.students_statistics.bronze
+                    }}
+                  </span>
+                </div>
+                <div class="text-center">
+                  <span class="badge text-white">{{ trainer.points }}</span>
+                </div>
 
-              <!-- Name -->
-              <div class="col-span-2 text-white text-sm truncate">
-                {{ trainer.first_name }} {{ trainer.last_name }}
-              </div>
+                <div></div>
+              </nuxt-link>
+            </div>
 
-              <!-- Country -->
-              <div class="col-span-1 text-center">
-                <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
-              </div>
-
-              <!-- Club Logo -->
-              <div class="col-span-1 text-center">
-                <img
-                  :src="trainer.logo"
-                  class="w-6 h-6 rounded-full mx-auto object-cover"
-                />
-              </div>
-
-              <!-- Medals -->
-              <div class="col-span-7 grid grid-cols-3 gap-2 text-center">
-                <span
-                  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                >
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.gold
-                      : trainer.statistics.students_statistics.gold
-                  }}
-                </span>
-                <span
-                  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                >
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.silver
-                      : trainer.statistics.students_statistics.silver
-                  }}
-                </span>
-                <span
-                  class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                >
-                  {{
-                    selectedView === "1"
-                      ? trainer.statistics.own_statistics.bronze
-                      : trainer.statistics.students_statistics.bronze
-                  }}
-                </span>
-              </div>
-            </nuxt-link>
+            <el-empty v-else :image-size="50" description="Нет данных" />
           </TransitionGroup>
         </div>
       </div>
@@ -207,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { ChevronRight } from "lucide-vue-next";
 import axios from "axios";
 import { useRouter } from "vue-router";
@@ -229,10 +227,11 @@ const goToRatings = () => {
   router.push("/RatingsPage");
 };
 
-const getData = async (name: string = "Джиу Джитсу") => {
+const getData = async (id: number) => {
+  if (!id) return;
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${name}`
+      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${id}`
     );
     data.value = res.data.data;
   } catch (e) {
@@ -240,10 +239,11 @@ const getData = async (name: string = "Джиу Джитсу") => {
   }
 };
 
-const getTrainer = async (name: string = "Джиу Джитсу") => {
+const getTrainer = async (id: number) => {
+  if (!id) return;
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
+      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}`
     );
     data1.value = res.data.data;
   } catch (e) {
@@ -251,22 +251,20 @@ const getTrainer = async (name: string = "Джиу Джитсу") => {
   }
 };
 
-const toggle = (id: number, name: string) => {
+const toggle = (id: number) => {
   activeCategory.value = id;
-  getData(name);
-  getTrainer(name);
+  getData(id);
+  getTrainer(id);
 };
 
 const getSport = async () => {
   try {
     const res = await axios.get(`https://api.7srating.uz/api/sport/`);
-
     sports.value = res.data.data;
 
-    const defaultSport = sports.value.find((sport) => sport.name === "Джиу Джитсу");
-    if (defaultSport) {
-      activeCategory.value = defaultSport.id;
-      toggle(defaultSport.id, defaultSport.name);
+    if (sports.value.length > 0) {
+      activeCategory.value = sports.value[0].id;
+      toggle(activeCategory.value);
     }
   } catch (e) {
     console.log(e);
@@ -274,24 +272,8 @@ const getSport = async () => {
 };
 
 onMounted(() => {
-  getData();
   getSport();
-  getTrainer();
 });
-
-interface Player {
-  id: number;
-  name: string;
-  country: string;
-  flag: string;
-  team: string;
-  teamLogo: string;
-  str: number;
-  km: number;
-  nap: string;
-  total: number;
-  categoryId: number;
-}
 </script>
 
 <style scoped>

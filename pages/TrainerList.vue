@@ -20,7 +20,7 @@
               <button
                 v-for="sport in sports"
                 :key="sport.id"
-                @click="toggle(sport.id, sport.name)"
+                @click="toggle(sport.id)"
                 :class="[
                   'px-4 py-2 rounded text-sm whitespace-nowrap transition-colors',
                   activeCategory === sport.id
@@ -103,31 +103,33 @@
         </div>
 
         <div class="md:flex justify-center grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+          <!-- Trainers Table -->
           <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
+            <!-- Table Header -->
             <div
-              class="bg-[#212226] px-4 py-3 grid grid-cols-12 gap-2 text-xs text-gray-400 items-center"
+              :class="data ? 'py-0' : '!py-2.5'"
+              class="px-4 py-2.5 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
             >
-              <div class="col-span-1">РТГ</div>
-              <div class="col-span-2">ТРЕНЕР</div>
-              <div class="col-span-1 text-center">СТР</div>
-              <div class="col-span-1 text-center">КМ</div>
-
-              <div class="sm:flex sm:col-span-1 items-center gap-1">
+              <div>РТГ</div>
+              <div>ТРЕНЕР</div>
+              <div class="text-center">СТР</div>
+              <div class="text-center">КМ</div>
+              <div class="flex items-center justify-center gap-1">
                 <img src="/gold.png" class="w-4 h-4" />
-                <span class="sm:flex hidden">Золото</span>
+                <span class="hidden sm:inline">Золото</span>
               </div>
-
-              <div class="sm:flex sm:col-span-2 items-center gap-1 sm:ml-5">
+              <div class="flex items-center justify-center gap-1">
                 <img src="/silver.png" class="w-4 h-4" />
-                <span class="sm:flex hidden">Серебро</span>
+                <span class="hidden sm:inline">Серебро</span>
               </div>
-
-              <div class="sm:flex sm:col-span-2 items-center gap-1">
+              <div class="flex items-center justify-center gap-1">
                 <img src="/bronza.png" class="w-4 h-4" />
-                <span class="sm:flex hidden">Бронза</span>
+                <span class="hidden sm:inline">Бронза</span>
               </div>
+              <div class="text-center">Балл</div>
 
-              <div class="col-span-4 sm:col-span-2 flex justify-end">
+              <!-- Dropdown -->
+              <div class="ml-auto">
                 <el-dropdown @command="handleSelect">
                   <el-button type="text" size="small" class="!text-gray-400 text-xs">
                     {{ selectedView === "1" ? "Личное" : "Учащихся" }}
@@ -143,64 +145,61 @@
               </div>
             </div>
 
+            <!-- Trainers Rows -->
             <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-              <nuxt-link
-                v-for="(trainer, index) in data"
-                :key="trainer.id"
-                :to="`/trainer/${trainer.id}`"
-                class="px-4 py-3 grid grid-cols-12 gap-2 items-center hover:bg-[#3A3B41] transition-colors"
-              >
-                <div class="col-span-1 text-gray-400 text-sm">{{ index + 1 }}</div>
+              <div v-if="data.length">
+                <nuxt-link
+                  v-for="(trainer, index) in data"
+                  :key="trainer.id"
+                  :to="`/trainer/${trainer.id}`"
+                  class="px-4 py-3 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center hover:bg-[#3A3B41] transition-colors"
+                >
+                  <div class="text-gray-400">{{ index + 1 }}</div>
+                  <div class="text-white truncate text-sm">
+                    {{ trainer.first_name }} {{ trainer.last_name }}
+                  </div>
+                  <div class="text-center">
+                    <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                  </div>
+                  <div class="text-center">
+                    <img :src="trainer.logo" class="w-6 h-6 rounded-full mx-auto" />
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">
+                      {{
+                        selectedView === "1"
+                          ? trainer.statistics.own_statistics.gold
+                          : trainer.statistics.students_statistics.gold
+                      }}
+                    </span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">
+                      {{
+                        selectedView === "1"
+                          ? trainer.statistics.own_statistics.silver
+                          : trainer.statistics.students_statistics.silver
+                      }}
+                    </span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">
+                      {{
+                        selectedView === "1"
+                          ? trainer.statistics.own_statistics.bronze
+                          : trainer.statistics.students_statistics.bronze
+                      }}
+                    </span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">{{ trainer.points }}</span>
+                  </div>
 
-                <!-- Name -->
-                <div class="col-span-2 text-white text-sm truncate">
-                  {{ trainer.first_name }} {{ trainer.last_name }}
-                </div>
+                  <div></div>
+                </nuxt-link>
+              </div>
 
-                <!-- Country -->
-                <div class="col-span-1 text-center">
-                  <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
-                </div>
-
-                <!-- Club Logo -->
-                <div class="col-span-1 text-center">
-                  <img
-                    :src="trainer.logo"
-                    class="w-6 h-6 rounded-full mx-auto object-cover"
-                  />
-                </div>
-
-                <!-- Medals -->
-                <div class="col-span-7 grid grid-cols-3 gap-2 text-center">
-                  <span
-                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                  >
-                    {{
-                      selectedView === "1"
-                        ? trainer.statistics.own_statistics.gold
-                        : trainer.statistics.students_statistics.gold
-                    }}
-                  </span>
-                  <span
-                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                  >
-                    {{
-                      selectedView === "1"
-                        ? trainer.statistics.own_statistics.silver
-                        : trainer.statistics.students_statistics.silver
-                    }}
-                  </span>
-                  <span
-                    class="bg-[#1A1B1F] text-white px-2 py-1 rounded text-xs sm:text-sm"
-                  >
-                    {{
-                      selectedView === "1"
-                        ? trainer.statistics.own_statistics.bronze
-                        : trainer.statistics.students_statistics.bronze
-                    }}
-                  </span>
-                </div>
-              </nuxt-link>
+              <el-empty v-else :image-size="50" description="Нет данных" />
             </TransitionGroup>
           </div>
         </div>
@@ -223,10 +222,10 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (name: string = "Джиу Джитсу") => {
+const getData = async (id: number) => {
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/?sport=${name}`
+      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}`
     );
     data.value = res.data.data;
   } catch (e) {
@@ -234,9 +233,9 @@ const getData = async (name: string = "Джиу Джитсу") => {
   }
 };
 
-const toggle = (id: number, name: string) => {
+const toggle = (id: number) => {
   activeCategory.value = id;
-  getData(name);
+  getData(id);
 };
 
 const getSport = async () => {
@@ -245,10 +244,9 @@ const getSport = async () => {
 
     sports.value = res.data.data;
 
-    const defaultSport = sports.value.find((sport) => sport.name === "Джиу Джитсу");
-    if (defaultSport) {
-      activeCategory.value = defaultSport.id; // Set default active category to Джиу Джитсу's ID
-      toggle(defaultSport.id, defaultSport.name); // Trigger data load for Football
+    if (sports.value.length > 0) {
+      activeCategory.value = sports.value[0].id;
+      toggle(activeCategory.value);
     }
   } catch (e) {
     console.log(e);
@@ -256,7 +254,6 @@ const getSport = async () => {
 };
 
 onMounted(() => {
-  getData();
   getSport();
 });
 
