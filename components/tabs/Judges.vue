@@ -84,7 +84,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(coach, index) in props.data"
+              v-for="(coach, index) in !props.data"
               :key="coach.id"
               class="border-t border-gray-700 hover:bg-gray-750 transition-colors"
             >

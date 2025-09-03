@@ -459,29 +459,53 @@
               />
               <div
                 v-else
-                class="bg-[#2A2A40] p-6 rounded-lg text-center text-white space-y-4"
+                class="bg-gradient-to-br from-[#2A2A40] to-[#1C1C2E] p-8 rounded-2xl text-center text-white shadow-xl space-y-6 relative overflow-hidden"
               >
-                <p class="text-lg font-medium">Pay to unlock results submission</p>
-                <div class="flex justify-center gap-4">
+                <!-- Glow Background -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-tr from-green-500/10 via-blue-500/10 to-transparent blur-3xl"
+                ></div>
+
+                <!-- Title -->
+                <p class="text-2xl font-semibold relative z-10">
+                  🔒 Заплатите, чтобы разблокировать отправку результатов
+                </p>
+
+                <!-- Payment Options -->
+                <div class="flex justify-center gap-6 relative z-10">
                   <!-- Payme -->
                   <a
                     :href="`https://checkout.paycom.uz/xxxx?return_url=${encodeURIComponent(
                       baseUrl + returnUrl
                     )}`"
-                    class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg shadow-md transition"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105"
                   >
-                    Pay with Payme
+                    <img
+                      src="/payme.png"
+                      alt="payme"
+                      class="h-6 w-auto group-hover:scale-110 transition-transform"
+                    />
                   </a>
 
+                  <!-- Click -->
                   <a
                     :href="`https://my.click.uz/services/pay?merchant_id=xxxx&return_url=${encodeURIComponent(
                       baseUrl + returnUrl
                     )}`"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105"
                   >
-                    Pay with Click
+                    <img
+                      src="/click.png"
+                      alt="click"
+                      class="h-6 w-auto group-hover:scale-110 transition-transform"
+                    />
                   </a>
                 </div>
+
+                <!-- Note -->
+                <p class="text-sm text-gray-400 relative z-10">
+                  Безопасная оплата через надежных поставщиков
+                </p>
               </div>
             </div>
           </main>

@@ -18,10 +18,11 @@
               >
                 {{ data?.trainer_profile?.sport?.name }}
               </span>
+
               <span
-                class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-xs sm:text-sm"
+                class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
               >
-                {{ data?.trainer_profile?.skill_level }}
+                {{ data?.trainer_profile?.points }} oчки
               </span>
             </div>
 
@@ -31,7 +32,7 @@
               >
                 <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
                 <p class="text-white">
-                  {{ data?.trainer_profile?.address?.place_of_birth || "Не указано" }}
+                  {{ data?.region?.name || "Не указано" }}
                 </p>
               </div>
               <div
@@ -73,9 +74,9 @@
                 </p>
               </div>
               <div class="flex flex-col sm:flex-row sm:justify-between">
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Воспитанник</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">Федерация</p>
                 <p class="text-white">
-                  {{ data?.educations?.[0]?.school_name || "Не указано" }}
+                  {{ data?.trainer_profile?.federation?.name || "Не указано" }}
                 </p>
               </div>
             </div>

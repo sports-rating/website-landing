@@ -21,7 +21,12 @@
               <span
                 class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-xs sm:text-sm"
               >
-                {{ data?.sportsman_profile?.skill_level }}
+                {{ data?.sportsman_profile?.sport_rank }}
+              </span>
+              <span
+                class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
+              >
+                {{ data?.sportsman_profile?.points }} oчки
               </span>
             </div>
 
@@ -31,7 +36,7 @@
               >
                 <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
                 <p class="text-white">
-                  {{ data?.sportsman_profile?.address?.place_of_birth || "Не указано" }}
+                  {{ data?.region?.name || "Не указано" }}
                 </p>
               </div>
               <div
@@ -75,7 +80,7 @@
               <div class="flex flex-col sm:flex-row sm:justify-between">
                 <p class="text-[#8B8992] mb-1 sm:mb-0">Воспитанник</p>
                 <p class="text-white">
-                  {{ data?.educations?.[0]?.school_name || "Не указано" }}
+                  {{ data?.sportsman_profile?.trainer?.full_name || "Не указано" }}
                 </p>
               </div>
             </div>
