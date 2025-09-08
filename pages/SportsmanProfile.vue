@@ -472,34 +472,32 @@
                 </p>
 
                 <!-- Payment Options -->
-                <div class="flex justify-center gap-6 relative z-10">
+                <div class="flex justify-center gap-6 flex-wrap relative z-10">
                   <!-- Payme -->
-                  <a
-                    :href="`https://checkout.paycom.uz/xxxx?return_url=${encodeURIComponent(
-                      baseUrl + returnUrl
-                    )}`"
-                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105"
+                  <button
+                    @click="createCheckout('payme')"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                    :disabled="isLoading"
                   >
                     <img
                       src="/payme.png"
                       alt="payme"
                       class="h-6 w-auto group-hover:scale-110 transition-transform"
                     />
-                  </a>
+                  </button>
 
                   <!-- Click -->
-                  <a
-                    :href="`https://my.click.uz/services/pay?merchant_id=xxxx&return_url=${encodeURIComponent(
-                      baseUrl + returnUrl
-                    )}`"
-                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105"
+                  <button
+                    @click="createCheckout('click')"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                    :disabled="isLoading"
                   >
                     <img
                       src="/click.png"
                       alt="click"
                       class="h-6 w-auto group-hover:scale-110 transition-transform"
                     />
-                  </a>
+                  </button>
                 </div>
 
                 <!-- Note -->
@@ -538,6 +536,24 @@ const uploadedImageUrl = ref(authStore.userProfile?.data?.profile_photo);
 const fileInput = ref(null);
 const uploadedImageId = ref(null);
 let isDialogOpen = false;
+
+const createCheckout = async (method) => {
+  try {
+    isLoading.value = true;
+
+    const response = await $api.post("/payment/create-checkout/", {
+      payment_method: method,
+    });
+
+    if (response.data?.success) {
+      window.location.href = response.data.data.payment_link;
+    }
+  } catch (err) {
+    console.error("Payment checkout error:", err);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 // const activeTab = ref("info");
 const sportRanks = ref([
