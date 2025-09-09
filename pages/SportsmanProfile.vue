@@ -543,6 +543,7 @@ const createCheckout = async (method) => {
 
     const response = await $api.post("/payment/create-checkout/", {
       payment_method: method,
+      section_type: "result",
     });
 
     if (response.data?.success) {
