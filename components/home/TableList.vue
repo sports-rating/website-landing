@@ -21,14 +21,14 @@
           v-for="sport in sports"
           :key="sport.id"
           @click="toggle(sport.id)"
-          class="px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors min-w-fit"
+          class="px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors min-w-fit"
           :class="
             activeCategory === sport.id
               ? 'bg-red-600 text-white'
               : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]'
           "
         >
-          {{ sport.name }}
+          <img :src="sport.logo" :alt="sport.name" class="w-10 h-10" />
         </button>
       </div>
 
