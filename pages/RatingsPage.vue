@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="default">
+  <NuxtLayout name="custom">
     <div class="bg-[#11101B] min-h-screen text-white">
       <div class="container mx-auto px-6 py-8">
         <div class="pt-10 bg-[#11101B]">
@@ -11,22 +11,24 @@
 
             <!-- Sports Categories -->
             <div
-              class="flex overflow-x-scroll no-scrollbar hide-scrollbar justify-between"
+              class="flex overflow-x-scroll no-scrollbar hide-scrollbar gap-2 justify-between"
             >
-              <div class="flex gap-2">
-                <button
-                  v-for="sport in sports"
-                  :key="sport.id"
-                  @click="toggle(sport.id)"
-                  :class="[
-                    'px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors',
-                    activeCategory === sport.id
-                      ? 'bg-red-600 text-white'
-                      : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]',
-                  ]"
-                >
-                  <img :src="sport.logo" :alt="sport.name" class="w-10 h-10" />
-                </button>
+              <div
+                v-for="sport in sports"
+                :key="sport.id"
+                @click="toggle(sport.id)"
+                :class="[
+                  'p-2 rounded-lg text-sm whitespace-nowrap transition-colors',
+                  activeCategory === sport.id
+                    ? 'bg-[#2A2B31] text-gray-400 border-red-500 border-2'
+                    : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]',
+                ]"
+              >
+                <img
+                  :src="sport?.logo"
+                  :alt="sport.name"
+                  class="w-10 h-10 object-contain"
+                />
               </div>
             </div>
 

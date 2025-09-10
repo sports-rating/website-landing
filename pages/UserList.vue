@@ -17,21 +17,25 @@
 
         <!-- Filters -->
         <div class="rounded-lg flex flex-wrap items-center justify-between gap-4">
-          <div class="flex overflow-x-scroll no-scrollbar hide-scrollbar justify-between">
-            <div class="flex gap-2">
-              <button
-                v-for="sport in sports"
-                :key="sport.id"
-                @click="toggle(sport.id)"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors',
-                  activeCategory === sport.id
-                    ? 'bg-red-600 text-white'
-                    : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]',
-                ]"
-              >
-                <img :src="sport.logo" :alt="sport.name" class="w-10 h-10" />
-              </button>
+          <div
+            class="flex overflow-x-scroll no-scrollbar hide-scrollbar gap-2 justify-between"
+          >
+            <div
+              v-for="sport in sports"
+              :key="sport.id"
+              @click="toggle(sport.id)"
+              :class="[
+                ' rounded-lg p-2 text-sm whitespace-nowrap transition-colors',
+                activeCategory === sport.id
+                  ? 'bg-[#2A2B31] text-gray-400 border-red-500 border-2'
+                  : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]',
+              ]"
+            >
+              <img
+                :src="sport?.logo"
+                :alt="sport.name"
+                class="w-10 h-10 object-contain"
+              />
             </div>
           </div>
 
