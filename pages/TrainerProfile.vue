@@ -3,49 +3,11 @@
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
       <div class="sm:container mx-auto">
         <header
-          class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full md:w-[90%] mx-auto"
+          class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full mx-auto"
         >
-          <div class="flex flex-col md:flex-row items-start md:items-center w-full">
-            <div class="flex flex-col md:mr-6 w-full">
-              <div class="flex flex-wrap items-center text-sm text-gray-400 mb-2 gap-2">
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">№1</span>
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">ОБЩ 95</span>
-                <span>Обладатель титула</span>
-              </div>
-              <h1
-                class="text-2xl md:text-5xl font-bold mb-2 flex flex-wrap items-center relative"
-              >
-                <div class="flex">
-                  {{ authStore.userProfile?.data?.first_name }}
-                  {{ authStore.userProfile?.data?.last_name }}
-                </div>
-                <img
-                  class="flex w-6 h-6 mb-4"
-                  :src="
-                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
-                      ? 'verified.png'
-                      : 'cancel.png'
-                  "
-                  alt="verify"
-                />
-              </h1>
-              <div class="flex space-x-2">
-                <span
-                  class="bg-[#A0E727] uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
-                >
-                  {{ authStore.userProfile?.data?.user_role }}
-                </span>
-
-                <span
-                  class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
-                >
-                  {{ authStore.userProfile?.data?.trainer_profile?.points }} oчки
-                </span>
-              </div>
-            </div>
-          </div>
+          <!-- Rasm (mobilda birinchi chiqadi) -->
           <div
-            class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mt-4 md:mt-0 group"
+            class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mb-10 md:mb-0 group order-1 md:order-2"
           >
             <img
               @click.stop="clickImg"
@@ -84,12 +46,56 @@
               />
             </div>
           </div>
+
+          <!-- Textlar -->
+          <div
+            class="flex flex-col md:flex-row items-start md:items-center w-full order-2 md:order-1"
+          >
+            <div class="flex flex-col md:mr-6 w-full">
+              <div class="flex flex-wrap items-center text-sm text-gray-400 mb-2 gap-2">
+                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">№1</span>
+                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">ОБЩ 95</span>
+                <span>Обладатель титула</span>
+              </div>
+              <h1
+                class="text-2xl md:text-5xl font-bold mb-2 flex flex-wrap items-center relative"
+              >
+                <div class="flex">
+                  {{ authStore.userProfile?.data?.first_name }}
+                  {{ authStore.userProfile?.data?.last_name }}
+                </div>
+                <img
+                  class="flex w-6 h-6 mb-4"
+                  :src="
+                    authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
+                      ? 'verified.png'
+                      : 'cancel.png'
+                  "
+                  alt="verify"
+                />
+              </h1>
+              <div class="flex space-x-2">
+                <span
+                  class="bg-[#A0E727] uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+                >
+                  {{ authStore.userProfile?.data?.user_role }}
+                </span>
+                <span
+                  class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
+                >
+                  {{ authStore.userProfile?.data?.trainer_profile?.points }} oчки
+                </span>
+              </div>
+            </div>
+          </div>
         </header>
 
-        <nav class="flex flex-row gap-2 md:gap-6 border-b border-[#3A3A5A] mb-6">
+        <nav
+          class="flex flex-row gap-2 md:gap-6 border-b border-[#3A3A5A] mb-6 overflow-x-auto whitespace-nowrap scrollbar-hide"
+        >
           <button
             :class="[
-              'py-3 px-4 text-lg font-semibold border-b-2',
+              'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
               activeTab === 'main'
                 ? 'border-[#E91E63] text-[#E91E63]'
                 : 'text-gray-400 hover:text-white border-transparent',
@@ -101,7 +107,7 @@
 
           <button
             :class="[
-              'py-3 px-4 text-lg font-semibold border-b-2',
+              'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
               activeTab === 'requests'
                 ? 'border-[#E91E63] text-[#E91E63]'
                 : 'text-gray-400 hover:text-white border-transparent',
@@ -114,7 +120,7 @@
           <button
             v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
             :class="[
-              'py-3 px-4 text-lg font-semibold border-b-2',
+              'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
               activeTab === 'fund'
                 ? 'border-[#E91E63] text-[#E91E63]'
                 : 'text-gray-400 hover:text-white border-transparent',

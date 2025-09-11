@@ -21,7 +21,7 @@
           v-for="sport in sports"
           :key="sport.id"
           @click="toggle(sport.id)"
-          class="p-2 rounded-lg text-sm whitespace-nowrap transition-colors min-w-fit cursor-pointer"
+          class="p-2 rounded-lg text-xs whitespace-nowrap transition-colors min-w-fit cursor-pointer"
           :class="
             activeCategory === sport.id
               ? 'bg-[#1b1b1d] text-gray-400 border-red-500 border-2'

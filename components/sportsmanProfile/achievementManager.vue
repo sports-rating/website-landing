@@ -9,69 +9,64 @@
     </div>
 
     <!-- Data Table -->
-    <div class="bg-gray-800 rounded-lg overflow-hidden">
-      <!-- Table Header -->
-      <div
-        class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
-      >
-        <div class="col-span-3">Турнир</div>
-        <div class="col-span-2">Тренер</div>
-        <div class="col-span-2">Дата получение</div>
-        <div class="col-span-2">Статус</div>
-        <div class="col-span-2">Действие</div>
-      </div>
-
-      <div
-        v-for="achievement in data"
-        :key="achievement.id"
-        class="grid grid-cols-12 gap-4 p-4 border-b border-gray-700 hover:bg-gray-750 transition-colors"
-      >
-        <div class="col-span-3 flex items-center space-x-3">
-          <img
-            :src="achievement.tournament?.logo"
-            :alt="achievement.tournament?.name"
-            class="w-8 h-8 rounded-full"
-          />
-          <span>{{ achievement.tournament?.name }}</span>
-        </div>
-        <div class="col-span-2">{{ achievement.trainer?.full_name }}</div>
-        <div class="col-span-2 text-gray-400">{{ achievement?.year }}</div>
+    <div class="bg-gray-800 rounded-lg overflow-hidden overflow-x-auto">
+      <div class="min-w-[800px]">
+        <!-- Table Header -->
         <div
-          class="col-span-2 px-2 py-1 rounded text-sm font-medium"
-          :class="{
-            'text-blue-400': achievement?.status === 'pending',
-            'text-green-400': achievement?.status === 'verified',
-            'text-red-400': achievement?.status === 'rejected',
-          }"
+          class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
         >
-          {{
-            achievement?.status === "pending"
-              ? "В обработке"
-              : achievement?.status === "verified"
-              ? "Подтверждено"
-              : achievement?.status === "rejected"
-              ? "Отклонено"
-              : "Неизвестно"
-          }}
+          <div class="col-span-3">Турнир</div>
+          <div class="col-span-2">Тренер</div>
+          <div class="col-span-2">Дата получение</div>
+          <div class="col-span-2">Статус</div>
+          <div class="col-span-2">Действие</div>
         </div>
 
-        <div class="col-span-2 flex space-x-2">
-          <button
-            @click="viewItem(achievement.id)"
-            class="p-2 bg-gray-600 hover:bg-gray-500 rounded transitioncolors"
+        <div
+          v-for="achievement in data"
+          :key="achievement.id"
+          class="grid grid-cols-12 gap-4 p-4 border-b border-gray-700 hover:bg-gray-750 transition-colors"
+        >
+          <div class="col-span-3 flex items-center space-x-3">
+            <img
+              :src="achievement.tournament?.logo"
+              :alt="achievement.tournament?.name"
+              class="w-8 h-8 rounded-full"
+            />
+            <span>{{ achievement.tournament?.name }}</span>
+          </div>
+          <div class="col-span-2">{{ achievement.trainer?.full_name }}</div>
+          <div class="col-span-2 text-gray-400">{{ achievement?.year }}</div>
+          <div
+            class="col-span-2 px-2 py-1 rounded text-sm font-medium"
+            :class="{
+              'text-blue-400': achievement?.status === 'pending',
+              'text-green-400': achievement?.status === 'verified',
+              'text-red-400': achievement?.status === 'rejected',
+            }"
           >
-            <img src="/Eye.svg" alt="eyes" class="w-4" />
-          </button>
-          <!-- @click="deleteItem(achievement.id)" -->
-          <button class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors">
-            <img src="/delete.svg" alt="x" class="w-4" />
-          </button>
-          <!-- <button
-            @click="editItem(achievement)"
-            class="p-2 bg-green-600 hover:bg-green-500 rounded transition-colors"
-          >
-            <img src="/edit.svg" alt="done" class="w-4" />
-          </button> -->
+            {{
+              achievement?.status === "pending"
+                ? "В обработке"
+                : achievement?.status === "verified"
+                ? "Подтверждено"
+                : achievement?.status === "rejected"
+                ? "Отклонено"
+                : "Неизвестно"
+            }}
+          </div>
+
+          <div class="col-span-2 flex space-x-2">
+            <button
+              @click="viewItem(achievement.id)"
+              class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors"
+            >
+              <img src="/Eye.svg" alt="eyes" class="w-4" />
+            </button>
+            <button class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors">
+              <img src="/delete.svg" alt="x" class="w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

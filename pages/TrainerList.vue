@@ -15,23 +15,21 @@
         </div>
 
         <div class="rounded-lg flex flex-wrap items-center justify-between gap-4">
-          <div
-            class="flex overflow-x-scroll no-scrollbar gap-2 hide-scrollbar justify-between"
-          >
+          <div class="flex overflow-x-auto no-scrollbar gap-2 py-2 scroll-smooth">
             <div
               v-for="sport in sports"
               :key="sport.id"
               @click="toggle(sport.id)"
-              :class="[
-                'p-2 rounded-lg text-sm whitespace-nowrap transition-colors',
+              class="p-2 rounded-lg text-xs whitespace-nowrap transition-colors min-w-fit cursor-pointer"
+              :class="
                 activeCategory === sport.id
-                  ? 'bg-[#2A2B31] text-gray-400 border-red-500 border-2'
-                  : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]',
-              ]"
+                  ? 'bg-[#1b1b1d] text-gray-400 border-red-500 border-2'
+                  : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]'
+              "
             >
               <img
                 :src="sport?.logo"
-                :alt="sport?.name"
+                :alt="sport.name"
                 class="w-10 h-10 object-contain"
               />
             </div>

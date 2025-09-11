@@ -3,16 +3,30 @@
     <div class="min-h-screen bg-[#11101B]">
       <!-- Player Info Section -->
       <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <div class="flex flex-col lg:flex-row gap-8">
-          <!-- Profile Info -->
-          <div class="flex flex-col sm:w-[45%]">
+        <div class="flex flex-col lg:flex-row md:gap-48 gap-8">
+          <!-- Profile Image (mobilda birinchi chiqishi uchun order-1 qo‘ydim) -->
+          <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div class="relative">
+              <img
+                :src="
+            data?.media?.find((item:any) => item.is_profile_photo)?.file ||
+            '/default-avatar.png'
+          "
+                alt="Player Profile"
+                class="w-32 h-32 sm:w-44 sm:h-44 md:w-56 md:h-56 lg:w-[50vh] lg:h-[50vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
+              />
+            </div>
+          </div>
+
+          <!-- Profile Info (mobilda ikkinchi chiqadi) -->
+          <div class="order-2 lg:order-1 flex flex-col w-full lg:w-[55%]">
             <h1
-              class="text-2xl sm:text-3xl text-white lg:text-4xl font-bold mb-4 lg:mb-6"
+              class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
             >
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
             </h1>
 
-            <div class="flex flex-wrap gap-2 mb-6">
+            <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
               <span
                 class="bg-[#A0E727] text-black px-3 py-1 rounded-md text-xs sm:text-sm"
               >
@@ -22,7 +36,7 @@
               <span
                 class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
               >
-                {{ data?.trainer_profile?.points }} oчки
+                {{ data?.trainer_profile?.points }} очки
               </span>
             </div>
 
@@ -79,22 +93,6 @@
                   {{ data?.trainer_profile?.federation?.name || "Не указано" }}
                 </p>
               </div>
-            </div>
-          </div>
-
-          <!-- Profile Image -->
-          <div
-            class="order-1 lg:order-2 flex justify-center lg:justify-end md:ml-48 md:mt-20"
-          >
-            <div class="relative">
-              <img
-                :src="
-                  data?.media?.find((item:any) => item.is_profile_photo)?.file ||
-                  '/default-avatar.png'
-                "
-                alt="Player Profile"
-                class="w-32 h-32 sm:w-52 sm:h-52 lg:w-[52vh] lg:h-[52vh] object-cover rounded-full border-4 border-gray-600 shadow-lg"
-              />
             </div>
           </div>
         </div>

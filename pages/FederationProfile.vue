@@ -105,7 +105,7 @@
           :total-pages="totalPages"
           :data="data"
         />
-        <StatsList v-if="activeTab === 'statistics'" />
+        <!-- <StatsList v-if="activeTab === 'statistics'" /> -->
       </div>
 
       <div
