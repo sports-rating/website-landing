@@ -214,6 +214,37 @@
                 </p>
               </div>
 
+              <!-- Submit tugmasidan oldin -->
+              <div class="flex items-start gap-2">
+                <el-checkbox v-model="formData.accepted">
+                  <span class="text-sm text-gray-600">
+                    Я принимаю условия
+                    <a
+                      v-if="
+                        formData.userType === 'sportsman' ||
+                        formData.userType === 'trainer'
+                      "
+                      href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-14"
+                      target="_blank"
+                      class="text-red-500 underline"
+                    >
+                      пользовательского соглашения
+                    </a>
+                    <a
+                      v-else-if="formData.userType === 'federation'"
+                      href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-15"
+                      target="_blank"
+                      class="text-red-500 underline"
+                    >
+                      пользовательского соглашения
+                    </a>
+                  </span>
+                </el-checkbox>
+              </div>
+              <p v-if="errors.accepted" class="text-red-500 text-xs !m-0">
+                {{ errors.accepted }}
+              </p>
+
               <!-- Submit -->
               <button
                 type="submit"
@@ -291,6 +322,7 @@ const formData = reactive({
   email: "",
   userType: "",
   federation: "",
+  accepted: false,
 });
 
 const errors = reactive({
@@ -300,6 +332,7 @@ const errors = reactive({
   email: "",
   phone_number: "",
   userType: "",
+  accepted: "",
 });
 
 const validateForm = () => {
@@ -327,6 +360,16 @@ const validateForm = () => {
     isValid = false;
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
     errors.email = "Пожалуйста, введите корректный адрес электронной почты";
+    isValid = false;
+  }
+
+  if (!formData.userType) {
+    errors.userType = "Пожалуйста, выберите тип пользователя";
+    isValid = false;
+  }
+
+  if (!formData.accepted) {
+    errors.accepted = "Вы должны принять условия соглашения";
     isValid = false;
   }
 
