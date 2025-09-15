@@ -21,14 +21,15 @@
           v-for="sport in sports"
           :key="sport.id"
           @click="toggle(sport.id)"
-          class="p-2 rounded-lg text-xs whitespace-nowrap transition-colors min-w-fit cursor-pointer"
+          class="p-2 rounded-lg text-xs whitespace-nowrap transition-colors min-w-fit cursor-pointer flex justify-center flex-col items-center gap-2"
           :class="
             activeCategory === sport.id
-              ? 'bg-[#1b1b1d] text-gray-400 border-red-500 border-2'
-              : 'bg-[#2A2B31] text-gray-400 hover:bg-[#3A3B41]'
+              ? ' text-gray-400 bg-[#3A3B41] border-[#868688] border-2'
+              : ' text-gray-400 hover:bg-[#3A3B41]'
           "
         >
           <img :src="sport?.logo" :alt="sport.name" class="w-10 h-10 object-contain" />
+          {{ sport?.name }}
         </div>
       </div>
 
