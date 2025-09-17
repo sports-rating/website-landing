@@ -109,101 +109,109 @@
           <!-- Trainers Table -->
           <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
             <!-- Table Header -->
-            <div
-              :class="data ? 'py-0' : '!py-2.5'"
-              class="px-4 py-2.5 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
-            >
-              <div>РТГ</div>
-              <div>ТРЕНЕР</div>
-              <div class="text-center">СТР</div>
-              <div class="text-center">КМ</div>
-              <div class="flex items-center justify-center gap-1">
-                <img src="/gold.png" class="w-4 h-4" />
-                <span class="hidden sm:inline">Золото</span>
-              </div>
-              <div class="flex items-center justify-center gap-1">
-                <img src="/silver.png" class="w-4 h-4" />
-                <span class="hidden sm:inline">Серебро</span>
-              </div>
-              <div class="flex items-center justify-center gap-1">
-                <img src="/bronza.png" class="w-4 h-4" />
-                <span class="hidden sm:inline">Бронза</span>
-              </div>
-              <div class="text-center">Балл</div>
+            <div class="overflow-x-auto no-scrollbar">
+              <div
+                :class="data ? 'py-0' : '!py-2.5'"
+                class="px-4 min-w-[800px] py-2.5 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
+              >
+                <div>РТГ</div>
+                <div>ТРЕНЕР</div>
+                <div class="text-center">СТР</div>
+                <div class="text-center">КМ</div>
+                <div class="flex items-center justify-center gap-1">
+                  <img src="/gold.png" class="w-4 h-4" />
+                  <span class="hidden sm:inline">Золото</span>
+                </div>
+                <div class="flex items-center justify-center gap-1">
+                  <img src="/silver.png" class="w-4 h-4" />
+                  <span class="hidden sm:inline">Серебро</span>
+                </div>
+                <div class="flex items-center justify-center gap-1">
+                  <img src="/bronza.png" class="w-4 h-4" />
+                  <span class="hidden sm:inline">Бронза</span>
+                </div>
+                <div class="text-center">Балл</div>
 
-              <!-- Dropdown -->
-              <div class="ml-auto">
-                <el-dropdown @command="handleSelect">
-                  <el-button type="text" size="small" class="!text-gray-400 text-xs">
-                    {{ selectedView === "1" ? "Личное" : "Учащихся" }}
-                    <el-icon><arrow-down /></el-icon>
-                  </el-button>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                      <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
+                <!-- Dropdown -->
+                <div class="ml-auto">
+                  <el-dropdown @command="handleSelect">
+                    <el-button type="text" size="small" class="!text-gray-400 text-xs">
+                      {{ selectedView === "1" ? "Личное" : "Учащихся" }}
+                      <el-icon><arrow-down /></el-icon>
+                    </el-button>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+                        <el-dropdown-item command="2"
+                          >Достижения учащихся</el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
               </div>
+
+              <!-- Trainers Rows -->
+              <TransitionGroup
+                name="list"
+                tag="div"
+                class="divide-y divide-gray-700 min-w-[800px]"
+              >
+                <div v-if="data.length">
+                  <nuxt-link
+                    v-for="(trainer, index) in data"
+                    :key="trainer.id"
+                    :to="`/trainer/${trainer.id}`"
+                    class="px-4 py-3 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center hover:bg-[#3A3B41] transition-colors"
+                  >
+                    <div class="text-gray-400">{{ index + 1 }}</div>
+                    <div class="text-white truncate text-sm">
+                      {{ trainer.first_name }} {{ trainer.last_name }}
+                    </div>
+                    <div class="text-center">
+                      <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                    </div>
+                    <div class="text-center">
+                      <img :src="trainer.logo" class="w-6 h-6 rounded-full mx-auto" />
+                    </div>
+                    <div class="text-center">
+                      <span class="badge text-white">
+                        {{
+                          selectedView === "1"
+                            ? trainer.statistics.own_statistics.gold
+                            : trainer.statistics.students_statistics.gold
+                        }}
+                      </span>
+                    </div>
+                    <div class="text-center">
+                      <span class="badge text-white">
+                        {{
+                          selectedView === "1"
+                            ? trainer.statistics.own_statistics.silver
+                            : trainer.statistics.students_statistics.silver
+                        }}
+                      </span>
+                    </div>
+                    <div class="text-center">
+                      <span class="badge text-white">
+                        {{
+                          selectedView === "1"
+                            ? trainer.statistics.own_statistics.bronze
+                            : trainer.statistics.students_statistics.bronze
+                        }}
+                      </span>
+                    </div>
+                    <div class="text-center">
+                      <span class="badge text-white">{{ trainer.points }}</span>
+                    </div>
+
+                    <div></div>
+                  </nuxt-link>
+                </div>
+
+                <el-empty v-else :image-size="50" description="Нет данных" />
+              </TransitionGroup>
             </div>
-
-            <!-- Trainers Rows -->
-            <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-              <div v-if="data.length">
-                <nuxt-link
-                  v-for="(trainer, index) in data"
-                  :key="trainer.id"
-                  :to="`/trainer/${trainer.id}`"
-                  class="px-4 py-3 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center hover:bg-[#3A3B41] transition-colors"
-                >
-                  <div class="text-gray-400">{{ index + 1 }}</div>
-                  <div class="text-white truncate text-sm">
-                    {{ trainer.first_name }} {{ trainer.last_name }}
-                  </div>
-                  <div class="text-center">
-                    <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
-                  </div>
-                  <div class="text-center">
-                    <img :src="trainer.logo" class="w-6 h-6 rounded-full mx-auto" />
-                  </div>
-                  <div class="text-center">
-                    <span class="badge text-white">
-                      {{
-                        selectedView === "1"
-                          ? trainer.statistics.own_statistics.gold
-                          : trainer.statistics.students_statistics.gold
-                      }}
-                    </span>
-                  </div>
-                  <div class="text-center">
-                    <span class="badge text-white">
-                      {{
-                        selectedView === "1"
-                          ? trainer.statistics.own_statistics.silver
-                          : trainer.statistics.students_statistics.silver
-                      }}
-                    </span>
-                  </div>
-                  <div class="text-center">
-                    <span class="badge text-white">
-                      {{
-                        selectedView === "1"
-                          ? trainer.statistics.own_statistics.bronze
-                          : trainer.statistics.students_statistics.bronze
-                      }}
-                    </span>
-                  </div>
-                  <div class="text-center">
-                    <span class="badge text-white">{{ trainer.points }}</span>
-                  </div>
-
-                  <div></div>
-                </nuxt-link>
-              </div>
-
-              <el-empty v-else :image-size="50" description="Нет данных" />
-            </TransitionGroup>
           </div>
         </div>
       </div>

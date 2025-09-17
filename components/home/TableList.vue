@@ -38,67 +38,74 @@
         <!-- Players Table -->
         <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
           <!-- Table Header -->
-          <div
-            class="bg-[#212226] px-4 py-3 grid grid-cols-[40px,1fr,60px,60px,80px,80px,80px,60px] text-xs text-gray-400"
-          >
-            <div class="flex items-center">РТГ</div>
-            <div class="flex items-center">ИГРОК</div>
-            <div class="flex items-center justify-center">СТР</div>
-            <div class="flex items-center justify-center">КМ</div>
-            <div class="flex items-center justify-center">
-              <img src="/gold.png" class="w-5 mr-1" />
-              <span class="hidden sm:inline">Золото</span>
+          <div class="overflow-x-auto no-scrollbar">
+            <div
+              class="bg-[#212226] min-w-[800px] px-4 py-3 grid grid-cols-[40px,180px,60px,60px,80px,80px,80px,60px] text-xs text-gray-400"
+            >
+              <div class="flex items-center">РТГ</div>
+              <div class="flex items-center">ИГРОК</div>
+              <div class="flex items-center justify-center">СТР</div>
+              <div class="flex items-center justify-center">КМ</div>
+              <div class="flex items-center justify-center">
+                <img src="/gold.png" class="w-5 mr-1" />
+                <span class="hidden sm:inline">Золото</span>
+              </div>
+              <div class="flex items-center justify-center">
+                <img src="/silver.png" class="w-5 mr-1" />
+                <span class="hidden sm:inline">Серебро</span>
+              </div>
+              <div class="flex items-center justify-center">
+                <img src="/bronza.png" class="w-5 mr-1" />
+                <span class="hidden sm:inline">Бронза</span>
+              </div>
+              <div class="flex items-center justify-center">Балл</div>
             </div>
-            <div class="flex items-center justify-center">
-              <img src="/silver.png" class="w-5 mr-1" />
-              <span class="hidden sm:inline">Серебро</span>
-            </div>
-            <div class="flex items-center justify-center">
-              <img src="/bronza.png" class="w-5 mr-1" />
-              <span class="hidden sm:inline">Бронза</span>
-            </div>
-            <div class="flex items-center justify-center">Балл</div>
+            <!-- Players Rows -->
+            <TransitionGroup
+              name="list"
+              tag="div"
+              class="divide-y divide-gray-700 min-w-[800px]"
+            >
+              <div v-if="data.length">
+                <nuxt-link
+                  v-for="(player, index) in data"
+                  :key="player.id"
+                  :to="`/users/${player.id}`"
+                  class="px-4 py-3 grid grid-cols-[40px,180px,60px,60px,80px,80px,80px,60px] items-center hover:bg-[#3A3B41] transition-colors"
+                >
+                  <div class="text-gray-400">{{ index + 1 }}</div>
+                  <div class="text-white truncate text-sm">
+                    {{ player.first_name }} {{ player.last_name }}
+                  </div>
+                  <div class="text-center">
+                    <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
+                  </div>
+                  <div class="text-center">
+                    <img :src="player.logo" class="w-6 h-6 rounded-full mx-auto" />
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">{{
+                      player.statistics.total_gold
+                    }}</span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">{{
+                      player.statistics.total_silver
+                    }}</span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">{{
+                      player.statistics.total_bronze
+                    }}</span>
+                  </div>
+                  <div class="text-center">
+                    <span class="badge text-white">{{ player.points }}</span>
+                  </div>
+                </nuxt-link>
+              </div>
+              <el-empty v-else :image-size="50" description="Нет данных" />
+            </TransitionGroup>
           </div>
-
-          <!-- Players Rows -->
-          <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
-            <div v-if="data.length">
-              <nuxt-link
-                v-for="(player, index) in data"
-                :key="player.id"
-                :to="`/users/${player.id}`"
-                class="px-4 py-3 grid grid-cols-[40px,1fr,60px,60px,80px,80px,80px,60px] items-center hover:bg-[#3A3B41] transition-colors"
-              >
-                <div class="text-gray-400">{{ index + 1 }}</div>
-                <div class="text-white truncate text-sm">
-                  {{ player.first_name }} {{ player.last_name }}
-                </div>
-                <div class="text-center">
-                  <img src="/UZ.svg" class="w-5 h-3 rounded object-cover mx-auto" />
-                </div>
-                <div class="text-center">
-                  <img :src="player.logo" class="w-6 h-6 rounded-full mx-auto" />
-                </div>
-                <div class="text-center">
-                  <span class="badge text-white">{{ player.statistics.total_gold }}</span>
-                </div>
-                <div class="text-center">
-                  <span class="badge text-white">{{
-                    player.statistics.total_silver
-                  }}</span>
-                </div>
-                <div class="text-center">
-                  <span class="badge text-white">{{
-                    player.statistics.total_bronze
-                  }}</span>
-                </div>
-                <div class="text-center">
-                  <span class="badge text-white">{{ player.points }}</span>
-                </div>
-              </nuxt-link>
-            </div>
-            <el-empty v-else :image-size="50" description="Нет данных" />
-          </TransitionGroup>
         </div>
 
         <!-- Trainers Table -->

@@ -36,7 +36,7 @@
               <!-- Players Table -->
               <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
                 <!-- Table Header -->
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto no-scrollbar">
                   <div
                     class="md:min-w-full min-w-[800px] bg-[#212226] px-4 py-3 grid grid-cols-[40px,1fr,60px,60px,80px,80px,80px,60px] text-xs text-gray-400"
                   >
