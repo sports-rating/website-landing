@@ -123,7 +123,7 @@
       </div>
 
       <!-- Tab Content -->
-      <div class="py-4 lg:py-8 container px-4 sm:px-6">
+      <div class="container px-4 sm:px-6">
         <!-- Statistics Tab -->
         <div v-if="activeTab === 'statistics'" class="flex flex-col gap-6 lg:gap-8">
           <Statistic />
@@ -132,281 +132,193 @@
         <!-- Career Tab -->
         <div v-if="activeTab === 'career'" class="flex flex-col gap-6 lg:gap-8">
           <div class="w-full mx-auto">
-            <!-- Mobile Career View -->
-            <div class="lg:hidden">
-              <div class="space-y-4">
-                <div
-                  v-for="(row, index) in data?.results"
-                  :key="index"
-                  class="bg-gray-800 rounded-lg p-4 text-white"
-                >
-                  <div class="flex items-center gap-3 mb-3">
-                    <img
-                      class="w-10 h-10 rounded-full"
-                      :src="getTournamentLogo(row.tournament_name)"
-                      alt=""
-                      @error="$event.target.style.display = 'none'"
-                    />
-                    <div class="flex-1">
-                      <h3 class="font-semibold text-sm">{{ row.tournament_name }}</h3>
-                      <p class="text-xs text-gray-400">
-                        {{ row.year }} • {{ row.country }}
-                      </p>
+            <template v-if="data?.results?.length">
+              <!-- Mobile Career View -->
+              <div class="lg:hidden">
+                <div class="space-y-4">
+                  <div
+                    v-for="(row, index) in data?.results"
+                    :key="index"
+                    class="bg-gray-800 rounded-lg p-4 text-white"
+                  >
+                    <div class="flex items-center gap-3 mb-3">
+                      <img
+                        class="w-10 h-10 rounded-full"
+                        :src="getTournamentLogo(row.tournament_name)"
+                        alt=""
+                        @error="$event.target.style.display = 'none'"
+                      />
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-sm">{{ row.tournament_name }}</h3>
+                        <p class="text-xs text-gray-400">
+                          {{ row.year }} • {{ row.country }}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="flex justify-between items-center text-xs">
-                    <span class="text-gray-400"
-                      >Тренер:
-                      {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}</span
-                    >
-                    <div class="flex items-center gap-2">
-                      <img
-                        v-if="row.rating === 1"
-                        src="/gold.png"
-                        class="md:w-4 md:h-4 w-8 h-8"
-                        alt=""
-                      />
-                      <img
-                        v-if="row.rating === 2"
-                        src="/silver.png"
-                        class="md:w-4 md:h-4 w-8 h-8"
-                        alt=""
-                      />
-                      <img
-                        v-if="row.rating === 3"
-                        src="/bronza.png"
-                        class="md:w-4 md:h-4 w-8 h-8"
-                        alt=""
-                      />
-                      <img
-                        v-if="row.rating === 4"
-                        src="/bronza.png"
-                        class="md:w-4 md:h-4 w-8 h-8"
-                        alt=""
-                      />
-                      <span class="m-0 font-semibold md:text-sm text-xl">{{
-                        row.rating
-                      }}</span>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-gray-400">
+                        Тренер:
+                        {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
+                      </span>
+                      <div class="flex items-center gap-2">
+                        <img
+                          v-if="row.rating === 1"
+                          src="/gold.png"
+                          class="md:w-4 md:h-4 w-8 h-8"
+                        />
+                        <img
+                          v-if="row.rating === 2"
+                          src="/silver.png"
+                          class="md:w-4 md:h-4 w-8 h-8"
+                        />
+                        <img
+                          v-if="row.rating === 3"
+                          src="/bronza.png"
+                          class="md:w-4 md:h-4 w-8 h-8"
+                        />
+                        <img
+                          v-if="row.rating === 4"
+                          src="/bronza.png"
+                          class="md:w-4 md:h-4 w-8 h-8"
+                        />
+                        <span class="m-0 font-semibold md:text-sm text-xl">{{
+                          row.rating
+                        }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Desktop Career View -->
-            <div class="hidden lg:block">
-              <div
-                class="bg-gray-800 text-white grid grid-cols-12 text-sm font-medium rounded-t-lg"
-              >
-                <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
-                <div class="p-3 col-span-1">СЕЗОН</div>
-                <div class="p-3 col-span-1">Место</div>
-                <div class="p-3 col-span-4">ТРЕНЕР</div>
-                <div class="p-3 col-span-2">Рейтинг</div>
-              </div>
-
-              <div class="bg-[#11101B] divide-y divide-gray-700 rounded-b-lg">
+              <!-- Desktop Career View -->
+              <div class="hidden lg:block">
                 <div
-                  v-for="(row, index) in data?.results"
-                  :key="index"
-                  class="grid grid-cols-12 text-white cursor-pointer hover:bg-gray-800 transition-colors"
+                  class="bg-gray-800 text-white grid grid-cols-12 text-sm font-medium rounded-t-lg"
                 >
-                  <div class="p-3 col-span-4 flex gap-4 items-center">
-                    <img
-                      class="w-12 h-12 rounded-full"
-                      :src="getTournamentLogo(row.tournament_name)"
-                      alt=""
-                      @error="$event.target.style.display = 'none'"
-                    />
-                    <span class="truncate">{{ row.tournament_name }}</span>
-                  </div>
-                  <div class="p-3 col-span-1">{{ row.year }}</div>
-                  <div class="p-3 col-span-1">{{ row.country }}</div>
-                  <div class="p-3 col-span-4 truncate">
-                    {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
-                  </div>
-                  <div class="p-3 col-span-2 flex items-center gap-2">
-                    <img v-if="row.rating === 1" src="/gold.png" class="w-6 h-6" alt="" />
-                    <img
-                      v-if="row.rating === 2"
-                      src="/silver.png"
-                      class="w-6 h-6"
-                      alt=""
-                    />
-                    <img
-                      v-if="row.rating === 3"
-                      src="/bronza.png"
-                      class="w-6 h-6"
-                      alt=""
-                    />
-                    <img
-                      v-if="row.rating === 4"
-                      src="/bronza.png"
-                      class="w-6 h-6"
-                      alt=""
-                    />
-                    <span class="font-semibold">{{ row.rating }}</span>
+                  <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
+                  <div class="p-3 col-span-1">СЕЗОН</div>
+                  <div class="p-3 col-span-1">СТРАНА</div>
+                  <div class="p-3 col-span-4">ТРЕНЕР</div>
+                  <div class="p-3 col-span-2">Рейтинг</div>
+                </div>
+
+                <div class="bg-[#11101B] divide-y divide-gray-700 rounded-b-lg">
+                  <div
+                    v-for="(row, index) in data?.results"
+                    :key="index"
+                    class="grid grid-cols-12 text-white cursor-pointer hover:bg-gray-800 transition-colors"
+                  >
+                    <div class="p-3 col-span-4 flex gap-4 items-center">
+                      <img
+                        class="w-12 h-12 rounded-full"
+                        :src="getTournamentLogo(row.tournament_name)"
+                        alt=""
+                        @error="$event.target.style.display = 'none'"
+                      />
+                      <span class="truncate">{{ row.tournament_name }}</span>
+                    </div>
+                    <div class="p-3 col-span-1">{{ row.year }}</div>
+                    <div class="p-3 col-span-1">{{ row.country }}</div>
+                    <div class="p-3 col-span-4 truncate">
+                      {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
+                    </div>
+                    <div class="p-3 col-span-2 flex items-center gap-2">
+                      <img v-if="row.rating === 1" src="/gold.png" class="w-6 h-6" />
+                      <img v-if="row.rating === 2" src="/silver.png" class="w-6 h-6" />
+                      <img v-if="row.rating === 3" src="/bronza.png" class="w-6 h-6" />
+                      <img v-if="row.rating === 4" src="/bronza.png" class="w-6 h-6" />
+                      <span class="font-semibold">{{ row.rating }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </template>
+
+            <!-- Empty State -->
+            <el-empty v-else :image-size="100" description="Результаты не найдены." />
           </div>
         </div>
 
         <!-- Videos Tab -->
-        <div v-if="activeTab === 'videos'" class="container flex flex-col gap-6 lg:gap-8">
-          <div class="w-full">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              <div
-                v-for="match in matches"
-                :key="match.id"
-                class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                <div class="relative">
-                  <img
-                    :src="match.image"
-                    :alt="match.title"
-                    class="w-full h-32 sm:h-48 object-cover"
-                  />
-                  <div
-                    v-if="match.hasVideo"
-                    @click="openVideo(match)"
-                    class="absolute inset-0 flex items-center justify-center cursor-pointer bg-black bg-opacity-30 hover:bg-opacity-50 transition-all"
-                  >
-                    <div class="bg-white bg-opacity-90 rounded-full p-3">
-                      <img src="/psg.svg" alt="" class="w-8 h-8 sm:w-12 sm:h-12" />
-                    </div>
-                  </div>
-                  <div
-                    class="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded"
-                  >
-                    {{ match.time }} / {{ match.date }}
-                  </div>
-                </div>
-                <div class="p-3 sm:p-4">
-                  <h3 class="text-sm sm:text-lg font-semibold mb-2 line-clamp-2">
-                    {{ match.title }}
-                  </h3>
-                  <p class="text-gray-600 text-xs sm:text-sm line-clamp-3">
-                    {{ match.description }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Video Modal -->
-          <div
-            v-if="selectedMatch"
-            class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-            @click.self="closeVideo"
-          >
+        <div v-if="activeTab === 'videos'" class="container flex flex-col p-0">
+          <template v-if="data?.media?.some((item:any) => item.media_type === 'video')">
             <div
-              class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-0"
             >
-              <div class="flex justify-between items-center p-4 border-b">
-                <h2 class="text-lg sm:text-xl font-bold truncate">
-                  {{ selectedMatch?.title }}
-                </h2>
-                <button @click="closeVideo" class="text-gray-500 hover:text-gray-700 p-2">
-                  <svg
-                    class="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    ></path>
-                  </svg>
-                </button>
+              <div
+                v-for="(video, index) in data?.media?.filter((item: any) => item.media_type === 'video')"
+                :key="video.id"
+                class="relative group overflow-hidden rounded-lg"
+              >
+                <video
+                  :src="video.file"
+                  controls
+                  class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+                ></video>
               </div>
-
-              <div v-if="selectedMatch?.hasVideo" class="p-4">
-                <div class="aspect-w-16 aspect-h-9">
-                  <iframe
-                    :src="selectedMatch?.videoUrl"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                    class="w-full h-48 sm:h-64 lg:h-[25rem] rounded"
-                  >
-                  </iframe>
-                </div>
-              </div>
-              <p v-else class="p-4 text-gray-500">No video available for this match.</p>
             </div>
-          </div>
+          </template>
+          <el-empty v-else :image-size="100" description="Нет видео" />
         </div>
 
         <!-- Photos Tab -->
-        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-6 lg:gap-8">
-          <div class="w-full">
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
-              <div
-                v-for="(image, index) in data?.media?.filter(
-                  (item) => item.media_type === 'image' && item.is_profile_photo === false
-                )"
-                :key="index"
-                class="relative group overflow-hidden rounded-lg aspect-square"
+        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-8 p-0">
+          <div class="w-full mx-auto">
+            <div
+              class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-0"
+            >
+              <template
+                v-if="data?.media?.some((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
               >
-                <img
-                  :src="`${image.file}`"
-                  :alt="image.media_type"
-                  class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
-                  @error="$event.target.src = '/placeholder-image.png'"
-                />
                 <div
-                  class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"
-                ></div>
-              </div>
+                  v-for="(image, index) in data?.media?.filter((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
+                  :key="index"
+                  class="relative group overflow-hidden rounded-lg"
+                >
+                  <img
+                    :src="image.file"
+                    :alt="image.media_type"
+                    class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+              </template>
+
+              <!-- Agar rasm topilmasa -->
+              <el-empty v-else :image-size="100" description="Нет изображения" />
             </div>
           </div>
         </div>
 
         <!-- Files Tab -->
-        <div v-if="activeTab === 'files'" class="container flex flex-col gap-6 lg:gap-8">
+        <div
+          v-if="activeTab === 'files'"
+          class="container flex flex-col gap-6 lg:gap-8 p-0"
+        >
           <div class="w-full">
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"
-            >
-              <template v-if="data?.media?.some((item) => item.media_type === 'pdf')">
+            <template v-if="data?.media?.some((item:any) => item.media_type === 'pdf')">
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 p-0"
+              >
                 <div
-                  v-for="(doc, index) in data?.media?.filter(
-                    (item) => item.media_type === 'pdf'
-                  )"
+                  v-for="(doc, index) in data?.media?.filter((item:any) => item.media_type === 'pdf')"
                   :key="index"
                   class="bg-white rounded-lg border hover:shadow-lg transition-all duration-200 p-4 transform hover:scale-105"
                 >
-                  <div v-if="doc.media_type === 'pdf'">
-                    <a :href="`${doc.file}`" download target="_blank" class="block">
-                      <div class="flex items-center justify-center mb-3">
-                        <img src="/pdf.svg" alt="" class="w-12 h-12" />
-                      </div>
-                      <h3
-                        class="text-xs sm:text-sm text-gray-900 font-medium text-center line-clamp-2"
-                      >
-                        {{ doc.file.split("/").pop() }}
-                      </h3>
-                    </a>
-                  </div>
+                  <a :href="doc.file" download target="_blank" class="block">
+                    <div class="flex items-center justify-center mb-3">
+                      <img src="/pdf.svg" alt="pdf icon" class="w-12 h-12" />
+                    </div>
+                    <h3
+                      class="text-xs sm:text-sm text-gray-900 font-medium text-center line-clamp-2"
+                    >
+                      {{ doc.file.split("/").pop() }}
+                    </h3>
+                  </a>
                 </div>
-              </template>
-              <div
-                v-else
-                class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4 text-center"
-              >
-                <div class="flex items-center justify-center mb-3">
-                  <img src="/pdf.svg" alt="" class="w-12 h-12 opacity-50" />
-                </div>
-                <h3 class="text-xs sm:text-sm text-gray-500 font-medium">
-                  PDF Not Found
-                </h3>
               </div>
-            </div>
+            </template>
+
+            <el-empty v-else :image-size="100" description="PDF-файл не найден" />
           </div>
         </div>
       </div>
@@ -416,26 +328,32 @@
         <div class="mt-5">
           <h2 class="text-xl sm:text-2xl font-medium text-white">Достижения</h2>
         </div>
-        <div class="bg-[#11101B] overflow-hidden w-full rounded-lg">
-          <div>
-            <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              <div
-                v-for="(stat, index) in filteredResults"
-                :key="index"
-                class="px-4 py-4 sm:py-5 border-b border-gray-700 last:border-b-0 sm:border-b-0 sm:border-r last:border-r-0"
-              >
-                <dt
-                  class="text-lg sm:text-xl lg:text-2xl font-medium text-white truncate"
+
+        <template v-if="filteredResults?.length">
+          <div class="bg-[#11101B] overflow-hidden w-full rounded-lg">
+            <div>
+              <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                  v-for="(stat, index) in filteredResults"
+                  :key="index"
+                  class="px-4 py-4 sm:py-5 border-b border-gray-700 last:border-b-0 sm:border-b-0 sm:border-r last:border-r-0"
                 >
-                  {{ stat.tournament_name }}
-                </dt>
-                <dd class="mt-1 text-xs sm:text-sm font-semibold text-[#8B8992]">
-                  {{ stat.year }}
-                </dd>
-              </div>
-            </dl>
+                  <dt
+                    class="text-lg sm:text-xl lg:text-2xl font-medium text-white truncate"
+                  >
+                    {{ stat.tournament_name }}
+                  </dt>
+                  <dd class="mt-1 text-xs sm:text-sm font-semibold text-[#8B8992]">
+                    {{ stat.year }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
-        </div>
+        </template>
+
+        <!-- Empty State -->
+        <el-empty v-else :image-size="100" description="Достижения не найдены" />
       </div>
     </div>
   </NuxtLayout>
@@ -501,7 +419,7 @@ const tabs = [
   // { id: 'overview', name: 'Заявка игрока' },
   // { id: 'statistics', name: 'Статистика' },
   { id: "career", name: "Карьера" },
-  // { id: 'videos', name: 'Видео материалы' },
+  { id: "videos", name: "Видео материалы" },
   { id: "photos", name: "Фотографии" },
   { id: "files", name: "Загруженные файлы" },
 ];

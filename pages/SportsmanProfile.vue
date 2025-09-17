@@ -169,6 +169,22 @@
                   >
                     Карьера и достижения
                   </button>
+
+                  <button
+                    v-if="
+                      authStore.userProfile?.data?.sportsman_profile
+                        ?.is_sportsman_verified
+                    "
+                    @click="activeTab = 'media'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTab === 'media'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Медиа
+                  </button>
                 </template>
               </nav>
             </div>
@@ -456,7 +472,6 @@
               </div>
             </form>
 
-            <!-- Content -->
             <div v-if="activeTab === 'career'" class="mt-4">
               <achievementManager
                 v-if="authStore.userProfile?.data?.sportsman_profile?.is_result_paid"
@@ -510,6 +525,10 @@
                 </p>
               </div>
             </div>
+
+            <div v-if="activeTab === 'media'">
+              <SportsmanMedia />
+            </div>
           </main>
         </div>
       </div>
@@ -524,6 +543,7 @@ import { ElMessage } from "element-plus";
 import omit from "lodash/omit.js";
 import { Loading } from "@element-plus/icons-vue";
 import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
+import SportsmanMedia from "~/components/SportsmanMedia.vue";
 import { useRoute, useRouter } from "vue-router";
 
 const authStore = useAuthStore();

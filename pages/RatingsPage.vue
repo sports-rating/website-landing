@@ -112,12 +112,12 @@
 
               <!-- Trainers Table -->
               <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
-                <!-- Table Header -->
-
-                <div class="md:overflow-hidden overflow-x-auto">
+                <!-- SCROLL WRAPPER -->
+                <div class="overflow-x-auto no-scrollbar">
+                  <!-- Table Header -->
                   <div
                     :class="data1.length ? 'py-0' : '!py-2.5'"
-                    class="md:min-w-full min-w-[900px] px-4 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
+                    class="px-4 min-w-[800px] grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,60px] items-center text-xs text-gray-400 bg-[#212226]"
                   >
                     <div>РТГ</div>
                     <div>ТРЕНЕР</div>
@@ -166,7 +166,7 @@
                   <TransitionGroup
                     name="list"
                     tag="div"
-                    class="divide-y divide-gray-700 md:min-w-full min-w-[900px]"
+                    class="divide-y divide-gray-700 min-w-[800px]"
                   >
                     <div v-if="data1.length">
                       <nuxt-link

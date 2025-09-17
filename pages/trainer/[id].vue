@@ -118,7 +118,7 @@
       </div>
 
       <!-- Content -->
-      <div class="py-8 container">
+      <div class="container">
         <div v-if="activeTab === 'overview'" class="flex gap-8 py-8">
           <div class="flex flex-col gap-4 w-[50%]">
             <p class="text-sm text-white">{{ data?.bio }}</p>
@@ -190,9 +190,9 @@
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                        <el-dropdown-item command="2"
-                          >Достижения учащихся</el-dropdown-item
-                        >
+                        <el-dropdown-item command="2">
+                          Достижения учащихся
+                        </el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
@@ -202,227 +202,179 @@
 
             <!-- Table Rows -->
             <div class="container bg-[#11101B] divide-y divide-gray-200">
-              <div
-                v-for="(row, index) in data?.results"
-                :key="index"
-                class="grid grid-cols-6 sm:grid-cols-12 text-white text-sm cursor-pointer"
-              >
-                <!-- Championship -->
+              <template v-if="data?.results?.length">
                 <div
-                  v-if="
-                    (selectedView === '1' && row.rating) ||
-                    (selectedView === '2' && !row.rating)
-                  "
-                  class="p-3 col-span-3 sm:col-span-4 flex gap-2 sm:gap-4 items-center"
+                  v-for="(row, index) in data?.results"
+                  :key="index"
+                  class="grid grid-cols-6 sm:grid-cols-12 text-white text-sm cursor-pointer"
                 >
-                  <img
-                    class="w-10 h-10 sm:w-12 sm:h-12"
-                    :src="getTournamentLogo(row.tournament_name)"
-                    alt=""
-                  />
-                  <span class="truncate">{{ row.tournament_name }}</span>
-                </div>
-
-                <!-- Season -->
-                <div
-                  v-if="
-                    (selectedView === '1' && row.rating) ||
-                    (selectedView === '2' && !row.rating)
-                  "
-                  class="p-3 col-span-1 sm:col-span-2"
-                >
-                  {{ row.year }}
-                </div>
-
-                <!-- Country -->
-                <div
-                  v-if="
-                    (selectedView === '1' && row.rating) ||
-                    (selectedView === '2' && !row.rating)
-                  "
-                  class="p-3"
-                  :class="
-                    selectedView === '2'
-                      ? 'col-span-1 sm:col-span-1'
-                      : 'col-span-2 sm:col-span-2'
-                  "
-                >
-                  {{ row.country }}
-                </div>
-
-                <!-- Medal Counts -->
-                <div
-                  v-if="selectedView === '2' && !row.rating"
-                  class="p-3 col-span-6 sm:col-span-3 flex justify-between sm:justify-around items-center"
-                >
-                  <div class="text-center">{{ row.gold }}</div>
-                  <div class="text-center">{{ row.silver }}</div>
-                  <div class="text-center">{{ row.bronze }}</div>
-                </div>
-
-                <!-- Rating -->
-                <div
-                  v-if="selectedView === '1' && row.rating"
-                  class="p-3 col-span-3 flex items-center gap-2"
-                >
-                  <img
-                    v-if="row.rating === 1"
-                    src="/gold.png"
-                    class="w-5 sm:w-6"
-                    alt=""
-                  />
-                  <img
-                    v-if="row.rating === 2"
-                    src="/silver.png"
-                    class="w-5 sm:w-6"
-                    alt=""
-                  />
-                  <img
-                    v-if="row.rating === 3 || row.rating === 4"
-                    src="/bronza.png"
-                    class="w-5 sm:w-6"
-                    alt=""
-                  />
-                  {{ row.rating }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="activeTab === 'videos'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="container mx-auto">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Match Review Cards -->
-                <div
-                  v-for="match in matches"
-                  :key="match.id"
-                  class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div class="relative">
-                    <img
-                      :src="match.image"
-                      :alt="match.title"
-                      class="w-full h-48 object-cover"
-                    />
-                    <div
-                      v-if="match.hasVideo"
-                      @click="openVideo(match)"
-                      class="absolute inset-0 flex items-center justify-center cursor-pointer"
-                    >
-                      <img src="/psg.svg" alt="" class="w-16 h-16" />
-                    </div>
-                    <div
-                      class="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded"
-                    >
-                      {{ match.time }} / {{ match.date }}
-                    </div>
-                  </div>
-                  <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">{{ match.title }}</h3>
-                    <p class="text-gray-600 text-sm line-clamp-2">
-                      {{ match.description }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Video Modal -->
-            <div
-              v-if="selectedMatch"
-              class="container fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            >
-              <div class="bg-white p-4 rounded-lg max-w-3xl w-full">
-                <div class="flex justify-between items-center mb-4">
-                  <h2 class="text-xl font-bold">{{ selectedMatch.title }}</h2>
-                  <button @click="closeVideo" class="text-gray-500 hover:text-gray-700">
-                    <svg
-                      class="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-                <!-- <video ref="videoPlayer" controls class="w-full">
-          <source :src="selectedMatch.videoUrl" type="video/mp4">
-          Your browser does not support the video tag.
-        </video> -->
-
-                <div v-if="selectedMatch?.hasVideo" class="aspect-w-16 aspect-h-9">
-                  <iframe
-                    :src="selectedMatch?.videoUrl"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                    class="w-full h-[25rem]"
+                  <!-- Championship -->
+                  <div
+                    v-if="
+                      (selectedView === '1' && row.rating) ||
+                      (selectedView === '2' && !row.rating)
+                    "
+                    class="p-3 col-span-3 sm:col-span-4 flex gap-2 sm:gap-4 items-center"
                   >
-                  </iframe>
+                    <img
+                      class="w-10 h-10 sm:w-12 sm:h-12"
+                      :src="getTournamentLogo(row.tournament_name)"
+                      alt=""
+                    />
+                    <span class="truncate">{{ row.tournament_name }}</span>
+                  </div>
+
+                  <!-- Season -->
+                  <div
+                    v-if="
+                      (selectedView === '1' && row.rating) ||
+                      (selectedView === '2' && !row.rating)
+                    "
+                    class="p-3 col-span-1 sm:col-span-2"
+                  >
+                    {{ row.year }}
+                  </div>
+
+                  <!-- Country -->
+                  <div
+                    v-if="
+                      (selectedView === '1' && row.rating) ||
+                      (selectedView === '2' && !row.rating)
+                    "
+                    class="p-3"
+                    :class="
+                      selectedView === '2'
+                        ? 'col-span-1 sm:col-span-1'
+                        : 'col-span-2 sm:col-span-2'
+                    "
+                  >
+                    {{ row.country }}
+                  </div>
+
+                  <!-- Medal Counts -->
+                  <div
+                    v-if="selectedView === '2' && !row.rating"
+                    class="p-3 col-span-6 sm:col-span-3 flex justify-between sm:justify-around items-center"
+                  >
+                    <div class="text-center">{{ row.gold }}</div>
+                    <div class="text-center">{{ row.silver }}</div>
+                    <div class="text-center">{{ row.bronze }}</div>
+                  </div>
+
+                  <!-- Rating -->
+                  <div
+                    v-if="selectedView === '1' && row.rating"
+                    class="p-3 col-span-3 flex items-center gap-2"
+                  >
+                    <img
+                      v-if="row.rating === 1"
+                      src="/gold.png"
+                      class="w-5 sm:w-6"
+                      alt=""
+                    />
+                    <img
+                      v-if="row.rating === 2"
+                      src="/silver.png"
+                      class="w-5 sm:w-6"
+                      alt=""
+                    />
+                    <img
+                      v-if="row.rating === 3 || row.rating === 4"
+                      src="/bronza.png"
+                      class="w-5 sm:w-6"
+                      alt=""
+                    />
+                    {{ row.rating }}
+                  </div>
                 </div>
-                <p v-else>No video available for this match.</p>
-              </div>
+              </template>
+
+              <!-- Agar hech qanday natija bo'lmasa -->
+              <el-empty v-else :image-size="100" description="Нет данных" />
             </div>
           </div>
         </div>
 
-        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="w-full mx-auto">
-              <!-- Image Grid -->
-              <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Videos Tab -->
+        <div v-if="activeTab === 'videos'" class="container flex flex-col p-0">
+          <template v-if="data?.media?.some((item:any) => item.media_type === 'video')">
+            <div
+              class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-0"
+            >
+              <div
+                v-for="(video, index) in data?.media?.filter((item: any) => item.media_type === 'video')"
+                :key="video.id"
+                class="relative group overflow-hidden rounded-lg"
+              >
+                <video
+                  :src="video.file"
+                  controls
+                  class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+                ></video>
+              </div>
+            </div>
+          </template>
+          <el-empty v-else :image-size="100" description="Нет видео" />
+        </div>
+
+        <!-- Photos Tab -->
+        <div v-if="activeTab === 'photos'" class="container flex flex-col gap-8 p-0">
+          <div class="w-full mx-auto">
+            <div
+              class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-0"
+            >
+              <template
+                v-if="data?.media?.some((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
+              >
                 <div
                   v-for="(image, index) in data?.media?.filter((item:any) => item.media_type === 'image' && item.is_profile_photo === false)"
                   :key="index"
                   class="relative group overflow-hidden rounded-lg"
                 >
                   <img
-                    :src="`${image.file}`"
+                    :src="image.file"
                     :alt="image.media_type"
                     class="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-              </div>
+              </template>
+
+              <!-- Agar rasm topilmasa -->
+              <el-empty v-else :image-size="100" description="Нет изображения" />
             </div>
           </div>
         </div>
 
-        <div v-if="activeTab === 'files'" class="container flex flex-col gap-8">
-          <div class="mt-5">
-            <div class="w-full">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div v-if="activeTab === 'files'" class="container flex flex-col gap-8 p-0">
+          <div class="w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-0">
+              <!-- Agar PDF bo'lsa -->
+              <template
+                v-if="data?.media?.some((item: any) => item.media_type === 'pdf')"
+              >
                 <div
-                  v-if="data?.media?.some((item: any) => item.media_type === 'pdf')"
                   v-for="(doc, index) in data?.media?.filter((item: any) => item.media_type === 'pdf')"
                   :key="index"
                   class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
                 >
-                  <div v-if="doc.media_type === 'pdf'">
-                    <a :href="`${doc.file}`" download target="_blank">
-                      <img src="/pdf.svg" alt="" />
-                      <h3 class="text-sm text-gray-900 font-medium my-2">
-                        {{ doc.file.split("/").pop() }}
-                      </h3>
-                    </a>
-                  </div>
+                  <a :href="doc.file" download target="_blank">
+                    <img src="/pdf.svg" alt="PDF" />
+                    <h3 class="text-sm text-gray-900 font-medium my-2">
+                      {{ doc.file.split("/").pop() }}
+                    </h3>
+                  </a>
                 </div>
+              </template>
+
+              <!-- Agar PDF topilmasa -->
+              <template v-else>
                 <div
-                  v-else
                   class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
                 >
-                  <img src="/pdf.svg" alt="" />
+                  <img src="/pdf.svg" alt="PDF Not Found" />
                   <h3 class="text-sm text-gray-900 font-medium my-2">PDF Not Found</h3>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
         </div>
@@ -432,24 +384,29 @@
         <div class="mt-5">
           <h2 class="text-2xl font-medium text-white">Достижения</h2>
         </div>
-        <div class="bg-[#11101B] overflow-hidden w-full">
-          <div>
-            <dl class="grid grid-cols-3">
-              <div
-                v-for="(stat, index) in filteredResults"
-                :key="index"
-                class="px-4 py-5 border overflow-hidden sm:p-6"
-              >
-                <dt class="text-2xl font-medium text-white truncate">
-                  {{ stat.tournament_name }}
-                </dt>
-                <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
-                  {{ stat.year }}
-                </dd>
-              </div>
-            </dl>
+
+        <template v-if="filteredResults?.length">
+          <div class="bg-[#11101B] overflow-hidden w-full">
+            <div>
+              <dl class="grid grid-cols-3">
+                <div
+                  v-for="(stat, index) in filteredResults"
+                  :key="index"
+                  class="px-4 py-5 border overflow-hidden sm:p-6"
+                >
+                  <dt class="text-2xl font-medium text-white truncate">
+                    {{ stat.tournament_name }}
+                  </dt>
+                  <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
+                    {{ stat.year }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
-        </div>
+        </template>
+
+        <el-empty v-else :image-size="100" description="Достижения не найдены" />
       </div>
 
       <!-- <Associated/> -->
@@ -525,7 +482,7 @@ const tabs = [
   // { id: 'overview', name: 'Заявка игрока' },
   // { id: 'statistics', name: 'Статистика' },
   { id: "career", name: "Карьера" },
-  // { id: 'videos', name: 'Видео материалы' },
+  { id: "videos", name: "Видео материалы" },
   { id: "photos", name: "Фотографии" },
   { id: "files", name: "Загруженные файлы" },
 ];

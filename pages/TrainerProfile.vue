@@ -134,31 +134,74 @@
         <div v-if="activeTab === 'main'" class="flex flex-col lg:flex-row gap-6">
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
             <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
-            <nav class="space-y-2">
-              <button
-                class="w-full text-left py-3 px-4 rounded-md bg-[#E91E63] text-white font-medium"
-              >
-                Личные данные
-              </button>
-              <template
-                v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
-              >
+            <div class="flex gap-6">
+              <!-- Tabs -->
+              <nav class="space-y-2 w-64">
                 <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+                  @click="activeTabe = 'info'"
+                  :class="[
+                    'w-full text-left py-3 px-4 rounded-md font-medium',
+                    activeTabe === 'info'
+                      ? 'bg-[#E91E63] text-white'
+                      : 'text-gray-300 hover:bg-[#3A3A5A]',
+                  ]"
                 >
-                  Образование
+                  Личные данные
                 </button>
-                <button
-                  class="w-full text-left py-3 px-4 rounded-md text-gray-300 hover:bg-[#3A3A5A]"
+
+                <template
+                  v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
                 >
-                  Карьера и достижения
-                </button>
-              </template>
-            </nav>
+                  <button
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTabe === 'education'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                    @click="activeTabe = 'education'"
+                  >
+                    Образование
+                  </button>
+
+                  <button
+                    v-if="authStore.userProfile?.data?.trainer_profile?.federation"
+                    @click="activeTabe = 'career'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTabe === 'career'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Карьера и достижения
+                  </button>
+
+                  <button
+                    v-if="
+                      authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
+                    "
+                    @click="activeTabe = 'media'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTabe === 'media'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Медиа
+                  </button>
+                </template>
+              </nav>
+            </div>
           </aside>
 
           <main class="flex-1 rounded-lg p-4 md:p-6">
-            <form class="space-y-8" @submit.prevent="handleSubmit">
+            <form
+              v-if="activeTabe === 'info'"
+              class="space-y-8"
+              @submit.prevent="handleSubmit"
+            >
               <div>
                 <h2 class="text-xl font-semibold mb-4">Информация</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -416,6 +459,58 @@
                 </button>
               </div>
             </form>
+
+            <div v-if="activeTabe === 'media'">
+              <TrainerMedia />
+            </div>
+
+            <!-- <div v-if="activeTabe === 'career'" class="mt-4">
+              <achievementManager
+                v-if="authStore.userProfile?.data?.trainer_profile?.is_result_paid"
+              />
+              <div
+                v-else
+                class="bg-gradient-to-br from-[#2A2A40] to-[#1C1C2E] p-8 rounded-2xl text-center text-white shadow-xl space-y-6 relative overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-tr from-green-500/10 via-blue-500/10 to-transparent blur-3xl"
+                ></div>
+
+                <p class="text-2xl font-semibold relative z-10">
+                  🔒 Заплатите, чтобы разблокировать отправку результатов
+                </p>
+
+                <div class="flex justify-center gap-6 flex-wrap relative z-10">
+                  <button
+                    @click="createCheckout('payme')"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                    :disabled="isLoading"
+                  >
+                    <img
+                      src="/payme.png"
+                      alt="payme"
+                      class="h-6 w-auto group-hover:scale-110 transition-transform"
+                    />
+                  </button>
+
+                  <button
+                    @click="createCheckout('click')"
+                    class="group bg-white hover:bg-white/50 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex items-center gap-3 shadow-md transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                    :disabled="isLoading"
+                  >
+                    <img
+                      src="/click.png"
+                      alt="click"
+                      class="h-6 w-auto group-hover:scale-110 transition-transform"
+                    />
+                  </button>
+                </div>
+
+                <p class="text-sm text-gray-400 relative z-10">
+                  Безопасная оплата через надежных поставщиков
+                </p>
+              </div>
+            </div> -->
           </main>
         </div>
 
@@ -431,6 +526,8 @@ import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
 import { omit } from "lodash-es";
+import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
+import TrainerMedia from "~/components/TrainerMedia.vue";
 
 import { Loading } from "@element-plus/icons-vue";
 
@@ -440,6 +537,7 @@ const { $api } = useNuxtApp();
 const data = ref([]);
 const dataFederation = ref([]);
 const activeTab = ref("main");
+const activeTabe = ref("info");
 const regions = ref([]);
 const filteredDistricts = ref([]);
 const dialogVisible = ref(false);
