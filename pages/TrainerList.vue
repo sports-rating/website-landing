@@ -115,7 +115,7 @@
               <!-- Table Header -->
               <div
                 :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
-                class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
+                class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px,auto]"
               >
                 <div>РТГ</div>
                 <div>ТРЕНЕР</div>
@@ -162,7 +162,7 @@
                     v-for="(trainer, index) in paginatedTrainers"
                     :key="trainer.id"
                     :to="`/trainer/${trainer.id}`"
-                    class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
+                    class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px,auto]"
                   >
                     <div class="text-gray-400">{{ index + 1 }}</div>
                     <div class="text-white truncate text-sm">
@@ -217,8 +217,8 @@
               <el-pagination
                 v-model:current-page="currentPageTrainers"
                 :page-size="pageSize"
-                layout="prev, pager, next "
-                :total="data.length"
+                layout="prev, pager, next"
+                :total="count"
                 background
               />
             </div>
@@ -234,7 +234,9 @@ import { ref, computed } from "vue";
 import axios from "axios";
 import { ArrowDown } from "@element-plus/icons-vue";
 
-const data = ref<any>([]);
+const data = ref<any[]>([]);
+const count = ref(0);
+
 const activeCategory = ref<any>(null);
 const sports = ref<any[]>([]);
 const selectedView = ref("2");
@@ -243,9 +245,9 @@ const currentPageTrainers = ref(1);
 const pageSize = ref(10);
 
 const paginatedTrainers = computed(() => {
-  const start = (currentPageTrainers.value - 1) * pageSize.value;
-  return data.value?.data ? data.value.data.slice(start, start + pageSize.value) : [];
+  return data.value ?? [];
 });
+
 function handleSelect(command: any) {
   selectedView.value = command;
 }
@@ -253,9 +255,10 @@ function handleSelect(command: any) {
 const getData = async (id: number) => {
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}`
+      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
     );
-    data.value = res.data.data;
+    count.value = res.data.data.count;
+    data.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
@@ -361,6 +364,10 @@ const applyRatingFilter = () => {
 //     return matchesRegion && matchesSport && matchesRating
 //   })
 // })
+
+watch(currentPageTrainers, () => {
+  getData(activeCategory.value);
+});
 </script>
 
 <style>

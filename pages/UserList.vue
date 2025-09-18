@@ -181,7 +181,7 @@
                 v-model:current-page="currentPagePlayers"
                 :page-size="pageSize"
                 layout="prev, pager, next"
-                :total="data.length"
+                :total="count"
                 background
               />
             </div>
@@ -196,7 +196,9 @@
 import { ref, computed } from "vue";
 import axios from "axios";
 
-const data = ref<any>([]);
+const data = ref<any[]>([]);
+const count = ref(0);
+
 const activeCategory = ref<any>(null);
 const sports = ref<any[]>([]);
 const selectedView = ref("2");
@@ -205,8 +207,7 @@ const currentPagePlayers = ref(1);
 const pageSize = ref(10);
 
 const paginatedPlayers = computed(() => {
-  const start = (currentPagePlayers.value - 1) * pageSize.value;
-  return data.value?.data ? data.value.data.slice(start, start + pageSize.value) : [];
+  return data.value ?? [];
 });
 
 function handleSelect(command: any) {
@@ -216,9 +217,10 @@ function handleSelect(command: any) {
 const getData = async (id: number) => {
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${id}`
+      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
     );
-    data.value = res.data.data;
+    count.value = res.data.data.count;
+    data.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
@@ -324,6 +326,9 @@ const applyRatingFilter = () => {
 //     return matchesRegion && matchesSport && matchesRating
 //   })
 // })
+watch(currentPagePlayers, () => {
+  getData(activeCategory.value);
+});
 </script>
 
 <style>

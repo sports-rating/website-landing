@@ -108,7 +108,7 @@
                     v-model:current-page="currentPagePlayers"
                     :page-size="pageSize"
                     layout="prev, pager, next"
-                    :total="data.length"
+                    :total="count"
                     background
                   />
                 </div>
@@ -230,8 +230,8 @@
                   <el-pagination
                     v-model:current-page="currentPageTrainers"
                     :page-size="pageSize"
-                    layout="prev, pager, next "
-                    :total="data1.length"
+                    layout="prev, pager, next"
+                    :total="count1"
                     background
                   />
                 </div>
@@ -246,30 +246,38 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { ChevronRight } from "lucide-vue-next";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
 
 const router = useRouter();
-const data = ref<any>([]);
-const data1 = ref<any>([]);
+
+// Players
+const data = ref<any[]>([]);
+const count = ref(0);
+
+// Trainers
+const data1 = ref<any[]>([]);
+const count1 = ref(0);
+
+// Sports
 const activeCategory = ref<any>(null);
 const sports = ref<any[]>([]);
 const selectedView = ref("2");
 
+// Pagination states
 const currentPagePlayers = ref(1);
 const currentPageTrainers = ref(1);
 const pageSize = ref(10);
 
+// Players list
 const paginatedPlayers = computed(() => {
-  const start = (currentPagePlayers.value - 1) * pageSize.value;
-  return data.value?.data ? data.value.data.slice(start, start + pageSize.value) : [];
+  return data.value ?? [];
 });
 
+// Trainers list
 const paginatedTrainers = computed(() => {
-  const start = (currentPageTrainers.value - 1) * pageSize.value;
-  return data1.value?.data ? data1.value.data.slice(start, start + pageSize.value) : [];
+  return data1.value ?? [];
 });
 
 function handleSelect(command: any) {
@@ -280,36 +288,42 @@ const goToRatings = () => {
   router.push("/RatingsPage");
 };
 
+// API: Players
 const getData = async (id: number) => {
   if (!id) return;
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${id}`
+      `https://api.7srating.uz/api/user/profile/sportsman/?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
     );
-    data.value = res.data.data;
+    count.value = res.data.data.count;
+    data.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
 };
 
+// API: Trainers
 const getTrainer = async (id: number) => {
   if (!id) return;
   try {
     const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}`
+      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
     );
-    data1.value = res.data.data;
+    count1.value = res.data.data.count;
+    data1.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
 };
 
+// Toggle category
 const toggle = (id: number) => {
   activeCategory.value = id;
   getData(id);
   getTrainer(id);
 };
 
+// API: Sports list
 const getSport = async () => {
   try {
     const res = await axios.get(`https://api.7srating.uz/api/sport/`);
@@ -327,7 +341,16 @@ const getSport = async () => {
 onMounted(() => {
   getSport();
 });
+
+// Watch pagination
+watch(currentPagePlayers, () => {
+  getData(activeCategory.value);
+});
+watch(currentPageTrainers, () => {
+  getTrainer(activeCategory.value);
+});
 </script>
+
 <style>
 .no-scrollbar::-webkit-scrollbar-thumb {
   background-color: transparent !important;
