@@ -42,7 +42,7 @@
           <!-- Table Header -->
           <div class="overflow-x-auto no-scrollbar">
             <div
-              class="bg-[#212226] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,80px,80px,60px,60px,60px,80px]"
+              class="bg-[#212226] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
             >
               <div class="flex items-center">РТГ</div>
               <div class="flex items-center">ИГРОК</div>
@@ -66,7 +66,7 @@
                   v-for="(player, index) in paginatedPlayers"
                   :key="player.id"
                   :to="`/users/${player.id}`"
-                  class="px-4 py-3 grid items-center hover:bg-[#3A3B41] grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,80px,80px,60px,60px,60px,80px]"
+                  class="px-4 py-3 grid items-center hover:bg-[#3A3B41] grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
                 >
                   <div class="text-gray-400">{{ index + 1 }}</div>
                   <div class="text-white truncate text-sm">
@@ -102,7 +102,7 @@
             </TransitionGroup>
           </div>
 
-          <div class="flex justify-center p-3">
+          <!-- <div class="flex justify-center p-3">
             <el-pagination
               v-model:current-page="currentPagePlayers"
               :page-size="pageSize"
@@ -110,7 +110,7 @@
               :total="data.length"
               background
             />
-          </div>
+          </div> -->
         </div>
 
         <!-- Trainers Table -->
@@ -122,7 +122,7 @@
             <!-- Table Header -->
             <div
               :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
-              class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,80px,80px,60px,60px,60px,80px,auto]"
+              class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
             >
               <div>РТГ</div>
               <div>ТРЕНЕР</div>
@@ -167,7 +167,7 @@
                   v-for="(trainer, index) in paginatedTrainers"
                   :key="trainer.id"
                   :to="`/trainer/${trainer.id}`"
-                  class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,80px,80px,60px,60px,60px,80px,auto]"
+                  class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
                 >
                   <div class="text-gray-400">{{ index + 1 }}</div>
                   <div class="text-white truncate text-sm">
@@ -218,7 +218,7 @@
             </TransitionGroup>
           </div>
 
-          <div class="flex justify-center p-3">
+          <!-- <div class="flex justify-center p-3">
             <el-pagination
               v-model:current-page="currentPageTrainers"
               :page-size="pageSize"
@@ -226,7 +226,7 @@
               :total="data1.length"
               background
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

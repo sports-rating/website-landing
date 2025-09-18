@@ -107,35 +107,39 @@
 
         <div class="md:flex justify-center grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
           <!-- Trainers Table -->
-          <div class="bg-[#2A2B31] rounded-lg overflow-hidden">
-            <!-- Table Header -->
-            <div class="overflow-x-auto no-scrollbar">
+          <div
+            class="bg-[#2A2B31] rounded-lg overflow-hidden justify-between flex flex-col"
+          >
+            <!-- SCROLL WRAPPER -->
+            <div class="overflow-x-auto no-scrollbar min-w-[800px]">
+              <!-- Table Header -->
               <div
-                :class="data ? 'py-0' : '!py-2.5'"
-                class="px-4 min-w-[800px] py-2.5 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center text-xs text-gray-400 bg-[#212226]"
+                :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
+                class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
               >
                 <div>РТГ</div>
                 <div>ТРЕНЕР</div>
                 <div class="text-center">СТР</div>
                 <div class="text-center">КМ</div>
-                <div class="flex items-center justify-center gap-1">
+                <div class="flex justify-center gap-1">
                   <img src="/gold.png" class="w-4 h-4" />
-                  <span class="hidden sm:inline">Золото</span>
                 </div>
-                <div class="flex items-center justify-center gap-1">
+                <div class="flex justify-center gap-1">
                   <img src="/silver.png" class="w-4 h-4" />
-                  <span class="hidden sm:inline">Серебро</span>
                 </div>
-                <div class="flex items-center justify-center gap-1">
+                <div class="flex justify-center gap-1">
                   <img src="/bronza.png" class="w-4 h-4" />
-                  <span class="hidden sm:inline">Бронза</span>
                 </div>
                 <div class="text-center">Балл</div>
 
                 <!-- Dropdown -->
                 <div class="ml-auto">
                   <el-dropdown @command="handleSelect">
-                    <el-button type="text" size="small" class="!text-gray-400 text-xs">
+                    <el-button
+                      type="text"
+                      size="small"
+                      class="!text-gray-400 text-xs !pb-[2.3rem]"
+                    >
                       {{ selectedView === "1" ? "Личное" : "Учащихся" }}
                       <el-icon><arrow-down /></el-icon>
                     </el-button>
@@ -152,17 +156,13 @@
               </div>
 
               <!-- Trainers Rows -->
-              <TransitionGroup
-                name="list"
-                tag="div"
-                class="divide-y divide-gray-700 min-w-[800px]"
-              >
-                <div v-if="data.length">
+              <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
+                <div v-if="paginatedTrainers.length">
                   <nuxt-link
-                    v-for="(trainer, index) in data"
+                    v-for="(trainer, index) in paginatedTrainers"
                     :key="trainer.id"
                     :to="`/trainer/${trainer.id}`"
-                    class="px-4 py-3 grid grid-cols-[40px,160px,60px,60px,80px,80px,80px,60px,auto] items-center hover:bg-[#3A3B41] transition-colors"
+                    class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
                   >
                     <div class="text-gray-400">{{ index + 1 }}</div>
                     <div class="text-white truncate text-sm">
@@ -212,6 +212,16 @@
                 <el-empty v-else :image-size="50" description="Нет данных" />
               </TransitionGroup>
             </div>
+
+            <div class="flex justify-center p-3">
+              <el-pagination
+                v-model:current-page="currentPageTrainers"
+                :page-size="pageSize"
+                layout="prev, pager, next "
+                :total="data.length"
+                background
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -228,6 +238,14 @@ const data = ref<any>([]);
 const activeCategory = ref<any>(null);
 const sports = ref<any[]>([]);
 const selectedView = ref("2");
+
+const currentPageTrainers = ref(1);
+const pageSize = ref(10);
+
+const paginatedTrainers = computed(() => {
+  const start = (currentPageTrainers.value - 1) * pageSize.value;
+  return data.value.slice(start, start + pageSize.value);
+});
 
 function handleSelect(command: any) {
   selectedView.value = command;
@@ -363,5 +381,11 @@ const applyRatingFilter = () => {
   /* scrollbar-width: thin; */
   /* margin: inherit; */
   scroll-margin-block-start: 0;
+}
+
+.el-pagination.is-background .btn-next.is-active,
+.el-pagination.is-background .btn-prev.is-active,
+.el-pagination.is-background .el-pager li.is-active {
+  background-color: red !important;
 }
 </style>
