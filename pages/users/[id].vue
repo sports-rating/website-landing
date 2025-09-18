@@ -635,7 +635,7 @@ const handleAction = (project: any) => {
 
 /* Touch-friendly buttons */
 button {
-  min-height: 44px;
+  /* min-height: 44px; */
   min-width: 44px;
 }
 
