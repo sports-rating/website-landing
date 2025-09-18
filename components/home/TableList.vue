@@ -253,12 +253,12 @@ const pageSize = ref(10);
 
 const paginatedPlayers = computed(() => {
   const start = (currentPagePlayers.value - 1) * pageSize.value;
-  return data.value?.slice(start, start + pageSize.value);
+  return data.value?.data ? data.value.data.slice(start, start + pageSize.value) : [];
 });
 
 const paginatedTrainers = computed(() => {
   const start = (currentPageTrainers.value - 1) * pageSize.value;
-  return data1.value?.slice(start, start + pageSize.value);
+  return data1.value?.data ? data1.value.data.slice(start, start + pageSize.value) : [];
 });
 
 function handleSelect(command: any) {

@@ -206,7 +206,7 @@ const pageSize = ref(10);
 
 const paginatedPlayers = computed(() => {
   const start = (currentPagePlayers.value - 1) * pageSize.value;
-  return data.value?.slice(start, start + pageSize.value);
+  return data.value?.data ? data.value.data.slice(start, start + pageSize.value) : [];
 });
 
 function handleSelect(command: any) {
