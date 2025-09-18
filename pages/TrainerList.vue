@@ -244,7 +244,7 @@ const pageSize = ref(10);
 
 const paginatedTrainers = computed(() => {
   const start = (currentPageTrainers.value - 1) * pageSize.value;
-  return data.value.slice(start, start + pageSize.value);
+  return data.value?.slice(start, start + pageSize.value);
 });
 
 function handleSelect(command: any) {
