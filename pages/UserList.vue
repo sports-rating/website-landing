@@ -142,7 +142,9 @@
                     :to="`/users/${player.id}`"
                     class="px-4 py-3 grid items-center hover:bg-[#3A3B41] grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
                   >
-                    <div class="text-gray-400">{{ index + 1 }}</div>
+                    <div class="text-gray-400">
+                      {{ index + 1 + (currentPagePlayers - 1) * pageSize }}
+                    </div>
                     <div class="text-white truncate text-sm">
                       {{ player.first_name }} {{ player.last_name }}
                     </div>
@@ -332,24 +334,6 @@ watch(currentPagePlayers, () => {
 </script>
 
 <style>
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent !important;
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  width: 10px;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* scrollbar-width: thin; */
-  /* margin: inherit; */
-  scroll-margin-block-start: 0;
-}
-
 .el-pagination.is-background .btn-next.is-active,
 .el-pagination.is-background .btn-prev.is-active,
 .el-pagination.is-background .el-pager li.is-active {

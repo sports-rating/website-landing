@@ -1,6 +1,5 @@
 <template>
   <div class="container p-8">
-  
     <div v-for="item in data" :key="item.id">
       <h1 class="text-2xl mb-5">{{ item.title }}</h1>
 
@@ -10,50 +9,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import axios from 'axios';
+import { ref, computed } from "vue";
+import axios from "axios";
 
-const data = ref<any>([])
+const data = ref<any>([]);
 
 const getData = async () => {
   try {
-    const res = await axios.get(
-      `https://api.7srating.uz/api/dashboard/privacy-policy`
-    );
+    const res = await axios.get(`https://api.7srating.uz/api/dashboard/privacy-policy`);
     data.value = res.data.data;
   } catch (e) {
     console.log(e);
   }
 };
 
-
-
 onMounted(() => {
-  getData()
-  
-})
-
-
-
+  getData();
+});
 </script>
 
-
-<style >
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #e1e1e1;
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  width: 16px;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* scrollbar-width: thin; */
-  /* margin: inherit; */
-  scroll-margin-block-start: 0;
-}
-</style>
+<style></style>

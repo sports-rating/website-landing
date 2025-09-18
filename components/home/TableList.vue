@@ -42,7 +42,7 @@
           <!-- Table Header -->
           <div class="overflow-x-auto no-scrollbar">
             <div
-              class="bg-[#212226] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
+              class="bg-[#212226] min-w-[700px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
             >
               <div class="flex items-center">РТГ</div>
               <div class="flex items-center">ИГРОК</div>
@@ -122,7 +122,7 @@
             <!-- Table Header -->
             <div
               :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
-              class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
+              class="px-4 text-xs h-11 text-gray-400 min-w-[700px] bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
             >
               <div>РТГ</div>
               <div>ТРЕНЕР</div>
@@ -318,22 +318,6 @@ onMounted(() => {
 });
 </script>
 <style>
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent !important;
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  width: 10px !important;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scroll-margin-block-start: 0;
-}
-
 .el-pagination.is-background .btn-next.is-active,
 .el-pagination.is-background .btn-prev.is-active,
 .el-pagination.is-background .el-pager li.is-active {

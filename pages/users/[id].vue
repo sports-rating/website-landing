@@ -578,24 +578,6 @@ const handleAction = (project: any) => {
 </script>
 
 <style>
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #e1e1e1;
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  width: 16px;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* scrollbar-width: thin; */
-  /* margin: inherit; */
-  scroll-margin-block-start: 0;
-}
-
 /* Responsive utilities */
 .line-clamp-2 {
   display: -webkit-box;

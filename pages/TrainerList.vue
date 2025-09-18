@@ -111,11 +111,11 @@
             class="bg-[#2A2B31] rounded-lg overflow-hidden justify-between flex flex-col"
           >
             <!-- SCROLL WRAPPER -->
-            <div class="overflow-x-auto no-scrollbar min-w-[800px]">
+            <div class="overflow-x-auto no-scrollbar">
               <!-- Table Header -->
               <div
                 :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
-                class="px-4 text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px,auto]"
+                class="px-4 min-w-[800px] text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px,auto]"
               >
                 <div>РТГ</div>
                 <div>ТРЕНЕР</div>
@@ -164,7 +164,9 @@
                     :to="`/trainer/${trainer.id}`"
                     class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px,auto]"
                   >
-                    <div class="text-gray-400">{{ index + 1 }}</div>
+                    <div class="text-gray-400">
+                      {{ index + 1 + (currentPageTrainers - 1) * pageSize }}
+                    </div>
                     <div class="text-white truncate text-sm">
                       {{ trainer.first_name }} {{ trainer.last_name }}
                     </div>
@@ -371,24 +373,6 @@ watch(currentPageTrainers, () => {
 </script>
 
 <style>
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent !important;
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  width: 10px;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* scrollbar-width: thin; */
-  /* margin: inherit; */
-  scroll-margin-block-start: 0;
-}
-
 .el-pagination.is-background .btn-next.is-active,
 .el-pagination.is-background .btn-prev.is-active,
 .el-pagination.is-background .el-pager li.is-active {
