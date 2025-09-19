@@ -52,11 +52,6 @@
             class="flex flex-col md:flex-row items-start md:items-center w-full order-2 md:order-1"
           >
             <div class="flex flex-col md:mr-6 w-full">
-              <div class="flex flex-wrap items-center text-sm text-gray-400 mb-2 gap-2">
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">№1</span>
-                <span class="bg-[#4A4A6A] px-2 py-1 rounded-md">ОБЩ 95</span>
-                <span>Обладатель титула</span>
-              </div>
               <h1
                 class="text-2xl md:text-5xl font-bold mb-2 flex flex-wrap items-center relative"
               >
