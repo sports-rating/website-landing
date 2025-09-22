@@ -17,7 +17,7 @@
                 @click="toggle(sport.id)"
                 class="p-2 rounded-lg text-xs whitespace-nowrap transition-colors min-w-fit cursor-pointer flex justify-center flex-col items-center gap-2"
                 :class="
-                  activeCategory === sport.id
+                  sportStore.activeCategory === sport.id
                     ? ' text-gray-400 bg-[#3A3B41] border-[#868688] border-2'
                     : ' text-gray-400 hover:bg-[#3A3B41]'
                 "
@@ -40,12 +40,10 @@
                 <!-- Table Header -->
                 <div class="overflow-x-auto no-scrollbar">
                   <div
-                    class="bg-[#212226] min-w-[700px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
+                    class="bg-[#212226] md:min-w-[580px] min-w-[610px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,220px,70px,70px,70px,70px]"
                   >
                     <div class="flex items-center">РТГ</div>
                     <div class="flex items-center">ИГРОК</div>
-                    <div class="flex items-center justify-center">СТР</div>
-                    <div class="flex items-center justify-center">КМ</div>
                     <div class="flex items-center justify-center">
                       <img src="/gold.png" class="w-5 mr-1" />
                     </div>
@@ -64,23 +62,16 @@
                         v-for="(player, index) in paginatedPlayers"
                         :key="player.id"
                         :to="`/users/${player.id}`"
-                        class="px-4 py-3 grid items-center hover:bg-[#3A3B41] grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px] md:grid-cols-[40px,180px,60px,60px,40px,40px,40px,60px] lg:grid-cols-[40px,200px,50px,50px,50px,50px,50px,80px]"
+                        class="px-4 py-3 grid items-center hover:bg-[#3A3B41] grid-cols-[40px,220px,70px,70px,70px,70px]"
                       >
                         <div class="text-gray-400">
                           {{ index + 1 + (currentPagePlayers - 1) * pageSize }}
                         </div>
-                        <div class="text-white truncate text-sm">
+                        <div class="text-white truncate text-sm flex items-center gap-2">
+                          <img :src="player.profile_photo" class="w-6 h-6 rounded-full" />
                           {{ player.first_name }} {{ player.last_name }}
                         </div>
-                        <div class="text-center">
-                          <img
-                            src="/UZ.svg"
-                            class="w-5 h-3 rounded object-cover mx-auto"
-                          />
-                        </div>
-                        <div class="text-center">
-                          <img :src="player.logo" class="w-6 h-6 rounded-full mx-auto" />
-                        </div>
+
                         <div class="text-center">
                           <span class="badge text-white">{{
                             player.statistics.total_gold
@@ -125,12 +116,10 @@
                   <!-- Table Header -->
                   <div
                     :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
-                    class="px-4 text-xs min-w-[700px] h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
+                    class="px-4 text-xs md:min-w-[580px] min-w-[610px] h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,200px,60px,60px,60px,60px,60px]"
                   >
                     <div>РТГ</div>
                     <div>ТРЕНЕР</div>
-                    <div class="text-center">СТР</div>
-                    <div class="text-center">КМ</div>
                     <div class="flex justify-center gap-1">
                       <img src="/gold.png" class="w-4 h-4" />
                     </div>
@@ -143,7 +132,7 @@
                     <div class="text-center">Балл</div>
 
                     <!-- Dropdown -->
-                    <div class="ml-auto">
+                    <div class="ml-auto mt-[2px]">
                       <el-dropdown @command="handleSelect">
                         <el-button
                           type="text"
@@ -174,23 +163,19 @@
                         v-for="(trainer, index) in paginatedTrainers"
                         :key="trainer.id"
                         :to="`/trainer/${trainer.id}`"
-                        class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,120px,50px,50px,40px,40px,40px,50px,auto] sm:grid-cols-[40px,150px,60px,60px,40px,40px,40px,60px,auto] md:grid-cols-[40px,160px,60px,60px,40px,40px,40px,60px,auto] lg:grid-cols-[40px,140px,50px,50px,50px,50px,50px,80px,auto]"
+                        class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,200px,60px,60px,60px,60px,auto]"
                       >
                         <div class="text-gray-400">
                           {{ index + 1 + (currentPageTrainers - 1) * pageSize }}
                         </div>
-                        <div class="text-white truncate text-sm">
+                        <div class="text-white truncate text-sm flex items-center gap-2">
+                          <img
+                            :src="trainer.profile_photo"
+                            class="w-6 h-6 rounded-full"
+                          />
                           {{ trainer.first_name }} {{ trainer.last_name }}
                         </div>
-                        <div class="text-center">
-                          <img
-                            src="/UZ.svg"
-                            class="w-5 h-3 rounded object-cover mx-auto"
-                          />
-                        </div>
-                        <div class="text-center">
-                          <img :src="trainer.logo" class="w-6 h-6 rounded-full mx-auto" />
-                        </div>
+
                         <div class="text-center">
                           <span class="badge text-white">
                             {{
@@ -251,10 +236,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
+import { useSportStore } from "@/stores/sport";
 
-const router = useRouter();
+const sportStore = useSportStore();
 
 // Players
 const data = ref<any[]>([]);
@@ -265,7 +250,6 @@ const data1 = ref<any[]>([]);
 const count1 = ref(0);
 
 // Sports
-const activeCategory = ref<any>(null);
 const sports = ref<any[]>([]);
 const selectedView = ref("2");
 
@@ -276,23 +260,18 @@ const pageSize = ref(10);
 
 // Players list
 const paginatedPlayers = computed(() => {
-  return data.value ?? [];
+  return data?.value ?? [];
 });
 
 // Trainers list
 const paginatedTrainers = computed(() => {
-  return data1.value ?? [];
+  return data1?.value ?? [];
 });
 
 function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const goToRatings = () => {
-  router.push("/RatingsPage");
-};
-
-// API: Players
 const getData = async (id: number) => {
   if (!id) return;
   try {
@@ -306,7 +285,6 @@ const getData = async (id: number) => {
   }
 };
 
-// API: Trainers
 const getTrainer = async (id: number) => {
   if (!id) return;
   try {
@@ -320,38 +298,38 @@ const getTrainer = async (id: number) => {
   }
 };
 
-// Toggle category
 const toggle = (id: number) => {
-  activeCategory.value = id;
+  sportStore.activeCategory = id as any;
   getData(id);
   getTrainer(id);
 };
 
-// API: Sports list
 const getSport = async () => {
   try {
     const res = await axios.get(`https://api.7srating.uz/api/sport/`);
     sports.value = res.data.data;
 
-    if (sports.value.length > 0) {
-      activeCategory.value = sports.value[0].id;
-      toggle(activeCategory.value);
+    if (!sportStore.activeCategory && sports.value.length > 0) {
+      sportStore.activeCategory = sports.value[0].id;
     }
   } catch (e) {
     console.log(e);
   }
 };
 
-onMounted(() => {
-  getSport();
+onMounted(async () => {
+  await getSport();
+
+  if (sportStore.activeCategory) {
+    toggle(sportStore.activeCategory);
+  }
 });
 
-// Watch pagination
 watch(currentPagePlayers, () => {
-  getData(activeCategory.value);
+  getData(sportStore.activeCategory as any);
 });
 watch(currentPageTrainers, () => {
-  getTrainer(activeCategory.value);
+  getTrainer(sportStore.activeCategory as any);
 });
 </script>
 
