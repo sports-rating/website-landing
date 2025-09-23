@@ -4,7 +4,6 @@
       <div
         class="max-w-5xl mx-auto bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-2xl p-8 lg:p-12 shadow-2xl"
       >
-        <!-- Header -->
         <header
           class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6"
         >
