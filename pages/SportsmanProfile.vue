@@ -653,7 +653,9 @@ const getTrainer = async () => {
     console.error("Trainer error:", e);
   }
 };
-await Promise.all([getData(), getTrainer()]);
+
+await getData();
+await getTrainer();
 
 const getRegions = async () => {
   try {
