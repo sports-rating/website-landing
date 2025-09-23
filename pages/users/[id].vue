@@ -160,6 +160,11 @@
                         Тренер:
                         {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
                       </span>
+
+                      <span class="text-gray-400">
+                        Балл:
+                        {{ row.score || "Не указано" }}
+                      </span>
                       <div class="flex items-center gap-2">
                         <img
                           v-if="row.rating === 1"
@@ -198,7 +203,8 @@
                   <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
                   <div class="p-3 col-span-1">СЕЗОН</div>
                   <div class="p-3 col-span-1">СТРАНА</div>
-                  <div class="p-3 col-span-4">ТРЕНЕР</div>
+                  <div class="p-3 col-span-2">ТРЕНЕР</div>
+                  <div class="p-3 col-span-2">Балл</div>
                   <div class="p-3 col-span-2">Рейтинг</div>
                 </div>
 
@@ -219,8 +225,11 @@
                     </div>
                     <div class="p-3 col-span-1">{{ row.year }}</div>
                     <div class="p-3 col-span-1">{{ row.country }}</div>
-                    <div class="p-3 col-span-4 truncate">
+                    <div class="p-3 col-span-2 truncate">
                       {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
+                    </div>
+                    <div class="p-3 col-span-2 flex items-center gap-2">
+                      <span class="font-semibold">{{ row.score }}</span>
                     </div>
                     <div class="p-3 col-span-2 flex items-center gap-2">
                       <img v-if="row.rating === 1" src="/gold.png" class="w-6 h-6" />

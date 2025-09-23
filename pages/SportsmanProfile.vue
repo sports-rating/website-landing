@@ -192,7 +192,7 @@
               @submit.prevent="handleSubmit"
             >
               <div>
-                <h2 class="text-xl font-semibold mb-4">Информация</h2>
+                <h2 class="text-xl font-semibold mb-4">Личная информация</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="flex flex-col">
                     <label for="name" class="text-sm text-gray-400 mb-1">Имя</label>
@@ -241,7 +241,77 @@
                       />
                     </div>
                   </div>
+                  <div class="flex items-center col-span-2">
+                    <label class="text-sm text-gray-400 mr-4">Пол</label>
+                    <div class="flex items-center mr-6">
+                      <input
+                        type="radio"
+                        id="male"
+                        value="male"
+                        v-model="formData.gender"
+                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                      />
+                      <label for="male" class="ml-2 text-white">Мужчина</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input
+                        type="radio"
+                        id="female"
+                        value="female"
+                        v-model="formData.gender"
+                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                      />
+                      <label for="female" class="ml-2 text-white">Женщина</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div>
+                <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col">
+                    <label for="region" class="text-sm text-gray-400 mb-1"
+                      >Область / Город</label
+                    >
+                    <select
+                      id="region"
+                      v-model="formData.region"
+                      @change="onRegionChange"
+                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                    >
+                      <option value="">Выберите город</option>
+                      <option v-for="region in regions" :key="region.id" :value="region">
+                        {{ region.name }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="flex flex-col">
+                    <label for="district" class="text-sm text-gray-400 mb-1"
+                      >Улица
+                    </label>
+                    <select
+                      id="district"
+                      v-model="formData.district"
+                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                    >
+                      <option value="">Выберите Улица</option>
+                      <option
+                        v-for="district in filteredDistricts"
+                        :key="district.id"
+                        :value="district"
+                      >
+                        {{ district.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="text-xl font-semibold mb-4">Спортивные данные</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="flex flex-col">
                     <label for="athleteType" class="text-sm text-gray-400 mb-1"
                       >Вид спортсмена</label
@@ -385,72 +455,6 @@
                         :value="rank.label"
                       >
                         {{ rank.label }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex items-center col-span-1 md:col-span-2">
-                    <label class="text-sm text-gray-400 mr-4">Пол</label>
-                    <div class="flex items-center mr-6">
-                      <input
-                        type="radio"
-                        id="male"
-                        value="male"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="male" class="ml-2 text-white">Мужчина</label>
-                    </div>
-                    <div class="flex items-center">
-                      <input
-                        type="radio"
-                        id="female"
-                        value="female"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="female" class="ml-2 text-white">Женщина</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="region" class="text-sm text-gray-400 mb-1"
-                      >Область / Город</label
-                    >
-                    <select
-                      id="region"
-                      v-model="formData.region"
-                      @change="onRegionChange"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите город</option>
-                      <option v-for="region in regions" :key="region.id" :value="region">
-                        {{ region.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="district" class="text-sm text-gray-400 mb-1"
-                      >Улица
-                    </label>
-                    <select
-                      id="district"
-                      v-model="formData.district"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Улица</option>
-                      <option
-                        v-for="district in filteredDistricts"
-                        :key="district.id"
-                        :value="district"
-                      >
-                        {{ district.name }}
                       </option>
                     </select>
                   </div>
@@ -637,11 +641,11 @@ const getTrainer = async () => {
       return;
     }
 
-    const res = await $api.get("/user/profile/trainer/", {
+    const res = await $api.get("/user/profile/trainer/?page=1&page_size=1000", {
       params: { sport: selectedSportName.value, verified: true },
     });
 
-    dataTrainer.value = res.data.data.map((trainer) => ({
+    dataTrainer.value = res.data.data.data.map((trainer) => ({
       ...trainer,
       full_name: `${trainer.first_name} ${trainer.last_name}`,
     }));
