@@ -1,4 +1,4 @@
-name: Deploy nuxt.js
+name: Dev Deploy nuxt.js
 on:
   push:
     branches:
