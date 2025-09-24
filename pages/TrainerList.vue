@@ -162,7 +162,19 @@
                     :to="`/trainer/${trainer.id}`"
                     class="px-4 py-3 grid items-center hover:bg-[#3A3B41] transition-colors grid-cols-[40px,220px,90px,90px,90px,90px,auto]"
                   >
-                    <div class="text-gray-400">
+                    <div
+                      class="w-6 h-6 flex items-center justify-center rounded-full font-bold"
+                      :class="{
+                        'bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 text-black':
+                          index + 1 + (currentPageTrainers - 1) * pageSize === 1,
+                        'bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 text-black':
+                          index + 1 + (currentPageTrainers - 1) * pageSize === 2,
+                        'bg-gradient-to-r from-orange-500 via-orange-400 to-orange-600 text-black':
+                          index + 1 + (currentPageTrainers - 1) * pageSize === 3,
+                        'bg-[#3A3B41] text-gray-300':
+                          index + 1 + (currentPageTrainers - 1) * pageSize > 3,
+                      }"
+                    >
                       {{ index + 1 + (currentPageTrainers - 1) * pageSize }}
                     </div>
                     <div class="text-white truncate text-sm flex items-center gap-2">

@@ -8,13 +8,15 @@
 
       <!-- Navbar Links -->
       <div class="hidden md:flex space-x-8 text-white">
+        <nuxt-link to="/about" class="nav-link" active-class="active-link">
+          О нас
+        </nuxt-link>
         <nuxt-link to="/userList" class="nav-link" active-class="active-link">
           Рейтинг спортсменов
         </nuxt-link>
         <nuxt-link to="/trainerList" class="nav-link" active-class="active-link">
           Рейтинг тренеров
         </nuxt-link>
-        <a class="nav-link">Контакты</a>
       </div>
 
       <!-- Profile Dropdown -->
