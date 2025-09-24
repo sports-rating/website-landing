@@ -4,6 +4,10 @@ on:
     branches:
       - dev
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   DOCKER_IMAGE: ${{ vars.DEV_CONTAINER_REGISTRY }}/${{ vars.DEV_CONTAINER_REGISTRY_NAMESPACE }}/${{ vars.DOCKER_IMAGE_NAME }}
 
