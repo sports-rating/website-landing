@@ -63,7 +63,7 @@ jobs:
             echo ${{ secrets.PAT_ACCESS_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Determine active container
-            if docker ps | grep ${{ secrets.DOCKER_IMAGE_NAME }}_blue; then
+            if docker ps | grep ${{ vars.CONTAINER_NAME }}_blue; then
               ACTIVE=blue
               NEW=green
               NEW_PORT=${{ env.GREEN_PORT }}
@@ -81,19 +81,19 @@ jobs:
             docker pull $IMAGE
 
             # Run new container
-            docker rm -f ${{DOCKER_IMAGE_NAME}}_$NEW || true
+            docker rm -f ${{ vars.CONTAINER_NAME }}_$NEW || true
             docker run -d --restart always \
               -p $NEW_PORT:${{ env.APP_PORT }} \
-              --name ${{DOCKER_IMAGE_NAME}}_$NEW $IMAGE
+              --name ${{ vars.CONTAINER_NAME }}_$NEW $IMAGE
 
             # Wait for health check (Nuxt: assume / returns 200)
-            echo "Waiting for ${{DOCKER_IMAGE_NAME}}_$NEW to be healthy..."
+            echo "Waiting for ${{ vars.CONTAINER_NAME }}_$NEW to be healthy..."
             if timeout 120 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:'$NEW_PORT'/)" != "200" ]]; do sleep 5; done'; then
               echo "✅ Health check passed!"
             else
               echo "❌ Health check failed"
-              docker logs ${{DOCKER_IMAGE_NAME}}_$NEW
-              docker rm -f ${{DOCKER_IMAGE_NAME}}_$NEW
+              docker logs ${{ vars.CONTAINER_NAME }}_$NEW
+              docker rm -f ${{ vars.CONTAINER_NAME }}_$NEW
               exit 1
             fi
 
@@ -103,7 +103,7 @@ jobs:
             sudo nginx -s reload
 
             # Stop old container
-            docker rm -f ${{DOCKER_IMAGE_NAME}}_$ACTIVE || true
+            docker rm -f ${{ vars.CONTAINER_NAME }}_$ACTIVE || true
 
             # Cleanup old images
             docker image prune -f
