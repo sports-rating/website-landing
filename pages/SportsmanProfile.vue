@@ -154,6 +154,19 @@
 
                   <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
+                    @click="activeTab = 'careerr'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTab === 'careerr'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Карьера
+                  </button>
+
+                  <button
+                    v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'career'"
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
@@ -666,7 +679,9 @@ const getTrainer = async () => {
     console.error("Trainer error:", e);
   }
 };
-await Promise.all([getData(), getTrainer()]);
+
+await getData();
+await getTrainer();
 
 const getRegions = async () => {
   try {

@@ -20,6 +20,9 @@
 
           <div class="flex items-center">
             <div class="hidden md:flex space-x-8">
+              <nuxt-link to="/about" class="nav-link" active-class="active-link">
+                О нас
+              </nuxt-link>
               <nuxt-link to="/userList" class="nav-link" active-class="active-link">
                 Рейтинг спортсменов
               </nuxt-link>
@@ -36,7 +39,6 @@
             >
               Новости
             </a> -->
-              <a class="text-white"> Контакты </a>
             </div>
           </div>
 
