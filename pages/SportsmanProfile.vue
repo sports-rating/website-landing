@@ -175,7 +175,7 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Достигения
+                    Достижения
                   </button>
 
                   <button
