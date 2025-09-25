@@ -98,8 +98,8 @@ jobs:
             fi
 
             # Switch Nginx upstream
-            sudo sed -i "s|proxy_pass http://landing_${ACTIVE};|# proxy_pass http://landing_${ACTIVE};|" /etc/nginx/sites-available/dev.7srating.uz
-            sudo sed -i "s|# proxy_pass http://landing_${NEW};|proxy_pass http://landing_${NEW};|" /etc/nginx/sites-available/dev.7srating.uz
+            sudo sed -i "s|proxy_pass http://landing_${ACTIVE};|# proxy_pass http://landing_${ACTIVE};|" /etc/nginx/sites-available/7srating.uz
+            sudo sed -i "s|# proxy_pass http://landing_${NEW};|proxy_pass http://landing_${NEW};|" /etc/nginx/sites-available/7srating.uz
             sudo systemctl reload nginx
 
             # Stop old container
