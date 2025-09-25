@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
    runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_API_BASE || "https://api.7srating.uz/api/",
+      apiBase: process.env.NUXT_API_BASE,
     },
   },
 
