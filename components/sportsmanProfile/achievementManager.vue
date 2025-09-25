@@ -1,17 +1,34 @@
 <template>
   <div class="text-white">
-    <!-- Header -->
     <div class="flex justify-between items-center mb-6">
       <div class="flex space-x-8">
-        <button class="text-gray-400 hover:text-white transition-colors">Карьера</button>
-        <button class="text-white border-b-2 border-red-500 pb-1">Достижение</button>
+        <button
+          @click="activeTab = 'pending'"
+          :class="[
+            'transition-colors',
+            activeTab === 'pending'
+              ? 'text-white border-b-2 border-red-500 pb-1'
+              : 'text-gray-400 hover:text-white',
+          ]"
+        >
+          Ожидающие запросы
+        </button>
+        <button
+          @click="activeTab = 'verified'"
+          :class="[
+            'transition-colors',
+            activeTab === 'verified'
+              ? 'text-white border-b-2 border-red-500 pb-1'
+              : 'text-gray-400 hover:text-white',
+          ]"
+        >
+          Подтвержденные результаты
+        </button>
       </div>
     </div>
 
-    <!-- Data Table -->
     <div class="bg-gray-800 rounded-lg overflow-hidden overflow-x-auto">
       <div class="min-w-[800px]">
-        <!-- Table Header -->
         <div
           class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
         >
@@ -23,9 +40,10 @@
         </div>
 
         <div
+          v-if="activeTab === 'verified'"
           v-for="achievement in data"
           :key="achievement.id"
-          class="grid grid-cols-12 gap-4 p-4 border-b border-gray-700 hover:bg-gray-750 transition-colors"
+          class="grid grid-cols-12 gap-4 p-4 border-b items-center border-gray-700 hover:bg-gray-750 transition-colors"
         >
           <div class="col-span-3 flex items-center space-x-3">
             <img
@@ -59,20 +77,71 @@
           <div class="col-span-2 flex space-x-2">
             <button
               @click="viewItem(achievement.id)"
-              class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors"
+              class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
               <img src="/Eye.svg" alt="eyes" class="w-4" />
             </button>
-            <button class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors">
+            <button
+              @click="deleteItem(achievement.id)"
+              class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
+            >
               <img src="/delete.svg" alt="x" class="w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          v-if="activeTab === 'pending'"
+          v-for="achievement in dataRequest"
+          :key="achievement.id"
+          class="grid grid-cols-12 gap-4 p-4 border-b items-center border-gray-700 hover:bg-gray-750 transition-colors"
+        >
+          <div class="col-span-3 flex items-center space-x-3">
+            <span>{{ achievement?.new_data?.tournament?.name }}</span>
+          </div>
+          <div class="col-span-2">{{ achievement?.receiver?.full_name }}</div>
+          <div class="col-span-2 text-gray-400">{{ achievement?.new_data?.year }}</div>
+          <div
+            class="col-span-2 px-2 py-1 rounded text-sm font-medium"
+            :class="{
+              'text-blue-400': achievement?.status === 'pending',
+              'text-green-400': achievement?.status === 'accepted',
+              'text-red-400': achievement?.status === 'rejected',
+              'text-red-400': achievement?.status === 'cancelled',
+            }"
+          >
+            {{
+              achievement?.status === "pending"
+                ? "В обработке"
+                : achievement?.status === "accepted"
+                ? "Принял"
+                : achievement?.status === "rejected"
+                ? "Отклонено"
+                : achievement?.status === "cancelled"
+                ? "Отменено"
+                : "Неизвестно"
+            }}
+          </div>
+
+          <div class="col-span-2 flex space-x-2">
+            <button
+              @click="viewItemm(achievement.id)"
+              class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
+            >
+              <img src="/Eye.svg" alt="eyes" class="w-4" />
+            </button>
+            <button
+              @click="cancelRequest(achievement.id)"
+              class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
+            >
+              <img src="/e-clos.png" alt="x" class="w-4" />
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Buttons -->
-    <div class="flex justify-end mt-6">
+    <div class="flex justify-end mt-6" v-if="activeTab === 'pending'">
       <button
         @click="showModal = true"
         class="px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
@@ -81,13 +150,11 @@
       </button>
     </div>
 
-    <!-- Add/Edit Modal -->
     <div
       v-if="showModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-        <!-- Modal Header -->
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-xl font-semibold">
             {{ isEditing ? "Редактировать достижение" : "Добавить достижение" }}
@@ -104,7 +171,6 @@
           </button>
         </div>
 
-        <!-- Form -->
         <form @submit.prevent="submitForm" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-300 mb-2"
@@ -176,7 +242,6 @@
       </div>
     </div>
 
-    <!-- View Modal -->
     <div
       v-if="viewModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -209,6 +274,45 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-if="viewModall"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold">Просмотр достижения</h2>
+          <button @click="viewModall = false" class="text-gray-400 hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <p>
+            <span class="font-semibold">Турнир:</span>
+            {{ viewDataa?.new_data?.tournament?.name }}
+          </p>
+          <p>
+            <span class="font-semibold">Тренер:</span> {{ viewDataa.receiver?.full_name }}
+          </p>
+          <p>
+            <span class="font-semibold">Рейтинг:</span> {{ viewDataa.new_data?.rating }}
+          </p>
+          <p><span class="font-semibold">Балл:</span> {{ viewDataa.new_data?.score }}</p>
+          <p>
+            <span class="font-semibold">Country:</span> {{ viewDataa.new_data?.country }}
+          </p>
+          <p><span class="font-semibold">Год:</span> {{ viewDataa.new_data?.year }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -221,11 +325,23 @@ const { $api } = useNuxtApp();
 
 const showModal = ref(false);
 const viewModal = ref(false);
+const viewModall = ref(false);
 const isEditing = ref(false);
 const editingId = ref(null);
-
 const data = ref([]);
 const viewData = ref({});
+const viewDataa = ref({});
+const activeTab = ref("pending");
+const dataRequest = ref([]);
+
+const getDataRequest = async () => {
+  try {
+    const res = await $api.get("/user/requests/?type=sent&request_type=sportsman_result");
+    dataRequest.value = res.data.data.data;
+  } catch (e) {
+    console.error("res error:", e);
+  }
+};
 
 const getData = async () => {
   try {
@@ -235,7 +351,6 @@ const getData = async () => {
     console.error("res error:", e);
   }
 };
-getData();
 
 const form = reactive({
   country: "",
@@ -248,30 +363,25 @@ const form = reactive({
 const tournamentData = ref([]);
 const getTournament = async () => {
   try {
-    const res = await $api.get(
-      `/sport/tournament/?federation=${authStore.userProfile?.data?.sportsman_profile?.federation?.id}`
-    );
+    const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
+    const res = await $api.get(`/sport/tournament/?federation=${federationId}`);
     tournamentData.value = res.data.data;
   } catch (e) {
     console.log(e);
   }
 };
-getTournament();
 
 const trainerData = ref([]);
 const getTrainer = async () => {
   try {
-    const res = await $api.get(
-      `/federation/${authStore.userProfile?.data?.sportsman_profile?.federation?.id}/users/?user_role=trainer`
-    );
+    const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
+    const res = await $api.get(`/federation/${federationId}/users/?user_role=trainer`);
     trainerData.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
 };
-getTrainer();
 
-// 🔹 Create or Edit
 const submitForm = async () => {
   try {
     if (isEditing.value) {
@@ -291,6 +401,16 @@ const viewItem = async (id) => {
     const res = await $api.get(`/user/profile/results/${id}/`);
     viewData.value = res.data.data;
     viewModal.value = true;
+  } catch (e) {
+    console.error("view error:", e);
+  }
+};
+
+const viewItemm = async (id) => {
+  try {
+    const res = await $api.get(`/user/requests/${id}/`);
+    viewDataa.value = res.data.data;
+    viewModall.value = true;
   } catch (e) {
     console.error("view error:", e);
   }
@@ -318,6 +438,19 @@ const deleteItem = async (id) => {
   }
 };
 
+const cancelRequest = async (id) => {
+  try {
+    await $api.patch(`/user/requests/${id}/`, { status: "cancelled" });
+    await getDataRequest();
+    ElMessage.success("So‘rov bekor qilindi.");
+    formData.value.trainer = "";
+  } catch (error) {
+    ElMessage.error("Bekor qilishda xatolik yuz berdi.");
+  } finally {
+    await getDataRequest();
+  }
+};
+
 const resetForm = () => {
   showModal.value = false;
   isEditing.value = false;
@@ -330,4 +463,9 @@ const resetForm = () => {
     rating: 0,
   });
 };
+
+getDataRequest();
+getData();
+getTournament();
+getTrainer();
 </script>

@@ -227,10 +227,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import axios from "axios";
+
 import { ArrowDown } from "@element-plus/icons-vue";
 import { useSportStore } from "@/stores/sport";
 
+const { $api } = useNuxtApp();
 const sportStore = useSportStore();
 
 const data = ref<any[]>([]);
@@ -252,8 +253,8 @@ function handleSelect(command: any) {
 
 const getData = async (id: number) => {
   try {
-    const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
+    const res = await $api.get(
+      `/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
     );
     count.value = res.data.data.count;
     data.value = res.data.data.data;
@@ -269,7 +270,7 @@ const toggle = (id: number) => {
 
 const getSport = async () => {
   try {
-    const res = await axios.get(`https://api.7srating.uz/api/sport/`);
+    const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
 
     if (!sportStore.activeCategory && sports.value.length > 0) {

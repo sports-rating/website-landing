@@ -3,6 +3,12 @@ import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
+   runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_API_BASE || "https://api.7srating.uz/api/",
+    },
+  },
+
   modules: [
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
