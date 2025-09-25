@@ -154,19 +154,6 @@
 
                   <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
-                    @click="activeTab = 'careerr'"
-                    :class="[
-                      'w-full text-left py-3 px-4 rounded-md',
-                      activeTab === 'careerr'
-                        ? 'bg-[#E91E63] text-white'
-                        : 'text-gray-300 hover:bg-[#3A3A5A]',
-                    ]"
-                  >
-                    Карьера
-                  </button>
-
-                  <button
-                    v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'career'"
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
@@ -345,7 +332,7 @@
                     <select
                       id="athleteType"
                       v-model="formData.sport"
-                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border !h-11 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите Вид спортсмена</option>
                       <option v-for="item in data" :value="item.id">
@@ -467,12 +454,12 @@
                     </el-dialog>
                   </div>
 
-                  <div class="flex flex-col md:w-[90%] w-[80%]">
+                  <div class="flex flex-col w-full">
                     <label for="trainer" class="text-sm text-gray-400 mb-1">Pазряд</label>
                     <select
                       id="sport_rank"
                       v-model="formData.sport_rank"
-                      class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                      class="bg-[#3A3A5A] border !h-12 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
                       <option value="">Выберите razzryad</option>
                       <option
@@ -483,6 +470,20 @@
                         {{ rank.label }}
                       </option>
                     </select>
+                  </div>
+
+                  <div class="flex flex-col">
+                    <label for="federation" class="text-sm text-gray-400 mb-1"
+                      >Федерация</label
+                    >
+                    <input
+                      type="text"
+                      id="federation"
+                      disabled
+                      v-model="federation"
+                      placeholder="Федерация"
+                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                    />
                   </div>
                 </div>
               </div>
@@ -615,6 +616,9 @@ const sportRanks = ref([
   { value: "ADULT_1", label: "Adult First Rank" },
   { value: "CANDIDATE", label: "Candidate for Master of Sport" },
 ]);
+const federation = computed(
+  () => authStore.userProfile?.data?.sportsman_profile?.federation?.name ?? ""
+);
 
 const route = useRoute();
 const router = useRouter();
