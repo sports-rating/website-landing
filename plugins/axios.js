@@ -29,7 +29,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         if (error.response?.status === 401) {
           try {
             const refreshResponse = await axios.post(
-              `${config.public.apiBase}user/refresh-token/`,
+              `${config.public.apiBase}/user/refresh-token/`,
               { refresh: authStore.refreshToken }
             );
 
