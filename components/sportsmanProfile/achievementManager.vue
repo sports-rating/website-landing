@@ -264,7 +264,7 @@
             <div class="bg-red-500 p-2 rounded-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-white"
+                class="h-6 w-6 text-yellow-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -273,7 +273,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M12 6v6l4 2"
+                  d="M8 21h8m-4-4v4m0-4a7 7 0 007-7V5H5v5a7 7 0 007 7zM5 5V3h14v2"
                 />
               </svg>
             </div>
@@ -349,7 +349,7 @@
             <div class="bg-red-500 p-2 rounded-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-yellow-500"
+                class="h-5 w-5 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -358,7 +358,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M8 21h8m-4-4v4m0-4a7 7 0 007-7V5H5v5a7 7 0 007 7zM5 5V3h14v2"
+                  d="M12 6v6l4 2"
                 />
               </svg>
             </div>
