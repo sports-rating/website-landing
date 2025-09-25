@@ -388,7 +388,7 @@
 import { ref, onMounted } from "vue";
 import { ChevronLeftIcon } from "lucide-vue-next";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+const { $api } = useNuxtApp();
 import Associated from "~/components/home/Associated.vue";
 import Statistic from "~/components/home/Statistic.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
@@ -408,9 +408,7 @@ const dataTournament = ref<any>([]);
 
 const getData = async () => {
   try {
-    const res = await axios.get(
-      `https://api.7srating.uz/api/user/profile/trainer/${route.params.id}/`
-    );
+    const res = await $api.get(`/user/profile/trainer/${route.params.id}/`);
     data.value = res.data.data;
   } catch (e) {
     console.log(e);
@@ -427,9 +425,9 @@ const filteredResults = computed(() => {
 
 const getTournament = async () => {
   try {
-    const res = await axios.get(
+    const res = await $api.get(
       `
-      https://api.7srating.uz/api/sport/tournament/`
+      /sport/tournament/`
     );
     dataTournament.value = res.data.data;
   } catch (e) {

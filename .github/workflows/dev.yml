@@ -1,0 +1,110 @@
+name: Dev Deploy Nuxt.js (Blue/Green)
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  DOCKER_IMAGE: ${{ vars.CONTAINER_REGISTRY }}/${{ vars.CONTAINER_REGISTRY_NAMESPACE }}/dev-${{ vars.DOCKER_IMAGE_NAME }}
+  APP_PORT: 3000
+  BLUE_PORT: 3001
+  GREEN_PORT: 3002
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get Commit Hash
+        id: commit
+        uses: prompt/actions-commit-hash@v3
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log into registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.CONTAINER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          provenance: false
+          file: Dockerfile
+          tags: ${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }}
+          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache,mode=max
+
+      - name: SSH Deploy (Blue/Green)
+        uses: appleboy/ssh-action@master
+        with:
+          port: 22
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            IMAGE=${{ env.DOCKER_IMAGE }}:${{ steps.commit.outputs.short }}
+
+            echo ${{ secrets.PAT_ACCESS_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Determine active container
+            if docker ps | grep ${{ vars.CONTAINER_NAME }}_blue; then
+              ACTIVE=blue
+              NEW=green
+              NEW_PORT=${{ env.GREEN_PORT }}
+              OLD_PORT=${{ env.BLUE_PORT }}
+            else
+              ACTIVE=green
+              NEW=blue
+              NEW_PORT=${{ env.BLUE_PORT }}
+              OLD_PORT=${{ env.GREEN_PORT }}
+            fi
+
+            echo "Active=$ACTIVE, New=$NEW"
+
+            # Pull new image
+            docker pull $IMAGE
+
+            # Run new container
+            docker rm -f ${{ vars.CONTAINER_NAME }}_$NEW || true
+            docker run -d --restart always \
+              -p $NEW_PORT:${{ env.APP_PORT }} \
+              --name ${{ vars.CONTAINER_NAME }}_$NEW $IMAGE
+
+            # Wait for health check (Nuxt: assume / returns 200)
+            echo "Waiting for ${{ vars.CONTAINER_NAME }}_$NEW to be healthy..."
+            if timeout 120 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:'$NEW_PORT'/)" != "200" ]]; do sleep 5; done'; then
+              echo "✅ Health check passed!"
+            else
+              echo "❌ Health check failed"
+              docker logs ${{ vars.CONTAINER_NAME }}_$NEW
+              docker rm -f ${{ vars.CONTAINER_NAME }}_$NEW
+              exit 1
+            fi
+
+            # Switch Nginx upstream
+            sudo sed -i "s|proxy_pass http://landing_${ACTIVE};|# proxy_pass http://landing_${ACTIVE};|" /etc/nginx/sites-available/dev.7srating.uz
+            sudo sed -i "s|# proxy_pass http://landing_${NEW};|proxy_pass http://landing_${NEW};|" /etc/nginx/sites-available/dev.7srating.uz
+            sudo systemctl reload nginx
+
+            # Stop old container
+            docker rm -f ${{ vars.CONTAINER_NAME }}_$ACTIVE || true
+
+            # Cleanup old images
+            docker image prune -f
+            docker system prune -f

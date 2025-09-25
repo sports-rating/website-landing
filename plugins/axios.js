@@ -2,8 +2,10 @@ import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
 
 export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
+
   const api = axios.create({
-    baseURL: "https://api.7srating.uz/api/",
+    baseURL: config.public.apiBase,
     headers: {
       "Accept-Language": process.client
         ? localStorage.getItem("locale") || "en"
@@ -27,10 +29,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         if (error.response?.status === 401) {
           try {
             const refreshResponse = await axios.post(
-              "https://api.7srating.uz/api/user/refresh-token/",
-              {
-                refresh: authStore.refreshToken,
-              }
+              `${config.public.apiBase}user/refresh-token/`,
+              { refresh: authStore.refreshToken }
             );
 
             authStore.token = refreshResponse.data.token;

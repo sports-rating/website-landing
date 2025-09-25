@@ -224,7 +224,7 @@ function generateThumbnail(videoUrl) {
 
 const deletePhoto = async (photo, index) => {
   try {
-    await $api.delete(`https://api.7srating.uz/api/user/media/${photo.id}/`);
+    await $api.delete(`/user/media/${photo.id}/`);
     photos.value.splice(index, 1);
     localMediaIds.value = localMediaIds.value.filter((id) => id !== photo.id);
   } catch (error) {
@@ -234,7 +234,7 @@ const deletePhoto = async (photo, index) => {
 
 const deleteVideo = async (video, index) => {
   try {
-    await $api.delete(`https://api.7srating.uz/api/user/media/${video.id}/`);
+    await $api.delete(`/user/media/${video.id}/`);
     videos.value.splice(index, 1);
     localMediaIds.value = localMediaIds.value.filter((id) => id !== video.id);
   } catch (error) {
@@ -253,13 +253,9 @@ const handlePhotoUpload = async (event) => {
       formData.append("type", "user");
       formData.append("is_profile_photo", false);
 
-      const response = await $api.post(
-        "https://api.7srating.uz/api/user/media-upload/",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await $api.post("/user/media-upload/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       localMediaIds.value.push(response.data.data.id);
       photos.value.push({
@@ -296,13 +292,9 @@ const handleVideoUpload = async (event) => {
     formData.append("is_profile_photo", false);
 
     try {
-      const response = await $api.post(
-        "https://api.7srating.uz/api/user/media-upload/",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await $api.post("/user/media-upload/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       localMediaIds.value.push(response.data.data.id);
       videos.value.push({
         id: response.data.data.id,
@@ -326,13 +318,9 @@ const handlePdfUpload = async (event) => {
       formData.append("type", "user");
       formData.append("is_profile_photo", false);
 
-      const response = await $api.post(
-        "https://api.7srating.uz/api/user/media-upload/",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await $api.post("/user/media-upload/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       localMediaIds.value.push(response.data.data.id);
       pdfs.value.push({
@@ -348,7 +336,7 @@ const handlePdfUpload = async (event) => {
 
 const deletePdf = async (pdf, index) => {
   try {
-    await $api.delete(`https://api.7srating.uz/api/user/media/${pdf.id}/`);
+    await $api.delete(`/user/media/${pdf.id}/`);
     pdfs.value.splice(index, 1);
     localMediaIds.value = localMediaIds.value.filter((id) => id !== pdf.id);
   } catch (error) {

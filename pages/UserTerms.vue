@@ -10,15 +10,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import axios from "axios";
+const { $api } = useNuxtApp();
 
 const data = ref<any>([]);
 
 const getData = async () => {
   try {
-    const res = await axios.get(
-      `https://api.7srating.uz/api/dashboard/terms-of-condition/`
-    );
+    const res = await $api.get(`/dashboard/terms-of-condition/`);
     data.value = res.data.data;
   } catch (e) {
     console.log(e);
@@ -29,5 +27,3 @@ onMounted(() => {
   getData();
 });
 </script>
-
-
