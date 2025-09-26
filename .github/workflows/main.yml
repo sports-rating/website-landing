@@ -48,7 +48,7 @@ jobs:
           cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache,mode=max
           build-args: |
-            NUXT_API_BASE=https://api.7srating.uz/api/
+            NUXT_API_BASE=https://dev-api.7srating.uz/api/
 
       - name: SSH Deploy (Blue/Green)
         uses: appleboy/ssh-action@master
