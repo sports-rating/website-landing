@@ -156,28 +156,11 @@
                   >
                     <el-option value="sportsman">Игрок</el-option>
                     <el-option value="trainer">Тренер</el-option>
-                    <el-option value="federation">Федерация</el-option>
                   </el-select>
                   <p v-if="errors.userType" class="text-red-500 text-xs mt-0.5">
                     {{ errors.userType }}
                   </p>
                 </div>
-              </div>
-
-              <div v-if="formData.userType === 'federation'" class="flex flex-col w-full">
-                <label for="trainer" class="text-sm text-gray-400 mb-1">Федерация</label>
-                <el-select
-                  v-model="formData.federation"
-                  placeholder="Выберите federation"
-                  class="w-full cursor-pointer font-light text-sm border-gray-200"
-                >
-                  <el-option
-                    v-for="item in data"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
               </div>
 
               <!-- Phone -->
@@ -225,14 +208,6 @@
                         formData.userType === 'trainer'
                       "
                       href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-14"
-                      target="_blank"
-                      class="text-red-500 underline"
-                    >
-                      пользовательского соглашения
-                    </a>
-                    <a
-                      v-else-if="formData.userType === 'federation'"
-                      href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-15"
                       target="_blank"
                       class="text-red-500 underline"
                     >
