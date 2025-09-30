@@ -156,7 +156,7 @@
                   >
                     <el-option value="sportsman">Игрок</el-option>
                     <el-option value="trainer">Тренер</el-option>
-                    <el-option value="federation">Федерация</el-option>
+                    <!-- <el-option value="federation">Федерация</el-option> -->
                   </el-select>
                   <p v-if="errors.userType" class="text-red-500 text-xs mt-0.5">
                     {{ errors.userType }}
@@ -164,7 +164,7 @@
                 </div>
               </div>
 
-              <div v-if="formData.userType === 'federation'" class="flex flex-col w-full">
+              <!-- <div v-if="formData.userType === 'federation'" class="flex flex-col w-full">
                 <label for="trainer" class="text-sm text-gray-400 mb-1">Федерация</label>
                 <el-select
                   v-model="formData.federation"
@@ -178,7 +178,7 @@
                     :value="item.id"
                   />
                 </el-select>
-              </div>
+              </div> -->
 
               <!-- Phone -->
 
@@ -230,14 +230,14 @@
                     >
                       пользовательского соглашения
                     </a>
-                    <a
+                    <!-- <a
                       v-else-if="formData.userType === 'federation'"
                       href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-15"
                       target="_blank"
                       class="text-red-500 underline"
                     >
                       пользовательского соглашения
-                    </a>
+                    </a> -->
                   </span>
                 </el-checkbox>
               </div>
