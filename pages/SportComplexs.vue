@@ -7,7 +7,7 @@
           <div
             class="bg-yellow-500 text-black px-10 w-fit mx-auto py-2 font-bold uppercase text-4xl skew-x-[-10deg]"
           >
-            <span class="inline-block skew-x-[10deg]">Спортивные комплексы</span>
+            <span class="inline-block skew-x-[10deg]">Спортивное учреждение</span>
           </div>
           <p class="mt-4 text-white sm:text-lg sm:w-[60%] mx-auto">
             Фан-клуб – это не просто группа единомышленников, но и семья, где люди находят

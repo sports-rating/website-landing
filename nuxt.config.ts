@@ -17,7 +17,11 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
   ],
 
-  css: ["vue-tel-input/vue-tel-input.css"],
+  css: [
+    "vue-tel-input/vue-tel-input.css",
+    "mapbox-gl/dist/mapbox-gl.css",
+    "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css",
+  ],
 
   colorMode: {
     preference: "light",

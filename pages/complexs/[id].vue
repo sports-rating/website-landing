@@ -138,7 +138,7 @@
 
         <!-- Other Complexes -->
         <section class="container mx-auto px-4 mt-16">
-          <h2 class="text-2xl font-bold mb-6">ДРУГИЕ СПОРТИВНЫЕ КОМПЛЕКСЫ</h2>
+          <h2 class="text-2xl font-bold mb-6">ДРУГИЕ Спортивное учреждение</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div
               v-for="complex in otherComplexes"

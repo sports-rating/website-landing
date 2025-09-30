@@ -6,12 +6,16 @@
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-3 sm:gap-0"
       >
         <div class="flex flex-wrap items-end gap-3">
-          <h2 class="text-xl sm:text-2xl font-bold text-white">СПОРТИВНЫЕ КОМПЛЕКСЫ</h2>
+          <h2 class="text-xl sm:text-2xl font-bold text-white uppercase">
+            Спортивное учреждение
+          </h2>
           <span
             class="text-red-500 text-sm sm:text-base px-3 py-1 border-2 border-red-500 rounded-lg whitespace-nowrap"
           >
             В процессе...
           </span>
+
+          <el-button type="success" class="p-4" @click="openDialog"> В create </el-button>
         </div>
         <button
           class="text-gray-400 hover:text-white flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
@@ -20,6 +24,154 @@
           <ChevronRight class="w-4 h-4" />
         </button>
       </div>
+
+      <!-- Dialog -->
+      <el-dialog v-model="dialogVisible" title="Создать учреждение" width="950px">
+        <el-form :model="formData" label-width="160px" label-position="top">
+          <div class="grid grid-cols-4 w-full gap-4">
+            <el-form-item label="Имя менеджера">
+              <el-input v-model="formData.manager_first_name" placeholder="Имя" />
+            </el-form-item>
+            <el-form-item label="Фамилия менеджера">
+              <el-input v-model="formData.manager_last_name" placeholder="Фамилия" />
+            </el-form-item>
+            <el-form-item label="Телефон менеджера">
+              <vue-tel-input
+                v-model="formData.manager_phone_number"
+                :autoFormat="true"
+                :inputOptions="{
+                  showDialCode: true,
+                  maxlength: 17,
+                  valid: false,
+                  required: true,
+                  type: 'tel',
+                  autocomplete: 'on',
+                  autofocus: true,
+                }"
+                :dropdownOptions="{ showFlags: true }"
+                :onlyCountries="['UZ']"
+                :defaultCountry="'UZ'"
+                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+              />
+            </el-form-item>
+            <el-form-item label="Название школы">
+              <el-input v-model="formData.school_name" placeholder="Название школы" />
+            </el-form-item>
+          </div>
+          <div class="grid grid-cols-4 w-full gap-4">
+            <el-form-item label="Телефон школы">
+              <vue-tel-input
+                v-model="formData.school_phone_number"
+                :autoFormat="true"
+                :inputOptions="{
+                  showDialCode: true,
+                  maxlength: 17,
+                  valid: false,
+                  required: true,
+                  type: 'tel',
+                  autocomplete: 'on',
+                  autofocus: true,
+                }"
+                :dropdownOptions="{ showFlags: true }"
+                :onlyCountries="['UZ']"
+                :defaultCountry="'UZ'"
+                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+              />
+            </el-form-item>
+            <el-form-item label="Директор школы">
+              <el-input v-model="formData.school_director" placeholder="Директор школы" />
+            </el-form-item>
+            <el-form-item label="Тип школы">
+              <el-select v-model="formData.school_type" placeholder="Выберите">
+                <el-option label="Спортивная школа" value="sport_school" />
+                <el-option label="Спортивный клуб" value="sport_club" />
+                <el-option label="Спорткомплекс" value="sport_complex" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Адрес школы">
+              <el-input v-model="formData.school_address" placeholder="Адрес школы" />
+            </el-form-item>
+          </div>
+
+          <div class="grid grid-cols-3 w-full gap-4">
+            <el-form-item label="Регион">
+              <el-select
+                v-model="formData.school_region"
+                placeholder="Регион"
+                multiple
+                filterable
+                @change="onRegionChange"
+              >
+                <el-option
+                  v-for="item in regions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Район">
+              <el-select
+                v-model="formData.school_district"
+                placeholder="Район"
+                multiple
+                filterable
+              >
+                <el-option
+                  v-for="item in filteredDistricts"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Виды спорта">
+              <el-select
+                v-model="formData.school_sports"
+                placeholder="Выберите"
+                multiple
+                filterable
+              >
+                <el-option
+                  v-for="item in sports"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+
+          <div class="col-span-3">
+            <label class="block text-sm font-medium text-gray-700"
+              >Локация на карте</label
+            >
+            <div class="h-[300px] w-full mt-2 border rounded-lg overflow-hidden">
+              <MapboxMap
+                access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
+                style="height: 600px"
+                map-style="mapbox://styles/mapbox/streets-v11"
+                :center="center"
+                :zoom="10"
+                @mb-created="onMapClick"
+              >
+                <MapboxMarker
+                  :lng-lat="[formData.school_longitude, formData.school_latitude]"
+                />
+              </MapboxMap>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              Latitude: {{ formData.school_latitude }} | Longitude:
+              {{ formData.school_longitude }}
+            </p>
+          </div>
+        </el-form>
+
+        <template #footer>
+          <el-button @click="dialogVisible = false">Отмена</el-button>
+          <el-button type="primary" @click="submitForm">Сохранить</el-button>
+        </template>
+      </el-dialog>
 
       <!-- Complexes Grid -->
       <div class="md:grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
@@ -179,6 +331,120 @@
 import { ChevronRight, MapPin, Star } from "lucide-vue-next";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
+import { ElMessage } from "element-plus";
+import { MapboxMap, MapboxMarker } from "@studiometa/vue-mapbox-gl";
+
+const { $api } = useNuxtApp();
+
+const dialogVisible = ref(false);
+const sports = ref([]);
+const regions = ref([]);
+const filteredDistricts = ref([]);
+
+const formData = ref({
+  manager_first_name: "",
+  manager_last_name: "",
+  manager_phone_number: "",
+  school_name: "",
+  school_phone_number: "",
+  school_director: "",
+  school_type: "sport_school",
+  school_address: "",
+  school_latitude: 41.311151,
+  school_longitude: 69.279737,
+  school_region: "",
+  school_district: "",
+  school_sports: [],
+});
+
+const center = ref([69.279737, 41.311151]);
+const map = ref();
+const onMapClick = (mapboxInstance: any) => {
+  map.value = mapboxInstance;
+  map.value.on("click", (event: any) => {
+    const { lngLat } = event;
+
+    formData.value.school_latitude = lngLat.lat.toFixed(4);
+    formData.value.school_longitude = lngLat.lng.toFixed(4);
+  });
+};
+
+function openDialog() {
+  dialogVisible.value = true;
+}
+
+const getSports = async () => {
+  try {
+    const sportRes = await $api.get("sport/");
+    sports.value = sportRes.data.data;
+  } catch (e) {
+    console.error("Sport error:", e);
+  }
+};
+
+getSports();
+
+async function submitForm() {
+  try {
+    await $api.post("/sport/sport-institution-request/", formData.value);
+    ElMessage.success("Успешно создано!");
+    dialogVisible.value = false;
+  } catch (e) {
+    ElMessage.error("Ошибка при создании!");
+  }
+}
+
+const getRegions = async () => {
+  try {
+    const res = await api.get("/user/regions/");
+    regions.value = res.data.data;
+  } catch (err) {
+    console.error("Regions yuklashda xatolik:", err);
+  }
+};
+
+const getDistricts = async (regionId) => {
+  if (!regionId) {
+    filteredDistricts.value = [];
+    return;
+  }
+  try {
+    const res = await api.get(`/user/districts/?region=${regionId}`);
+    filteredDistricts.value = res.data.data;
+  } catch (err) {
+    console.error("Districts yuklashda xatolik:", err);
+  }
+};
+
+const onRegionChange = () => {
+  const selectedRegionId = formData.value.school_region?.id;
+  getDistricts(selectedRegionId);
+
+  if (
+    !filteredDistricts.value.find(
+      (district) => district.id === formData.value.school_district?.id
+    )
+  ) {
+    formData.value.school_district.id;
+  }
+};
+
+watch(
+  () => formData.value.school_region.region,
+  (newRegion) => {
+    if (newRegion?.id) {
+      getDistricts(newRegion.id);
+    } else {
+      filteredDistricts.value = [];
+      formData.value.school_district = null;
+    }
+  }
+);
+onMounted(() => {
+  getRegions();
+});
+
+watch(() => formData.value.school_region, onRegionChange);
 
 interface SportComplex {
   id: number;
