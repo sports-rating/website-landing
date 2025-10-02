@@ -53,151 +53,233 @@
             ref="formRef"
             :model="formData"
             :rules="rules"
-            label-width="160px"
             label-position="top"
+            class="flex flex-col lg:flex-row gap-6 w-full"
           >
-            <!-- Birinchi qator -->
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-4"
-            >
-              <el-form-item label="Название школы" prop="name">
-                <el-input
-                  v-model="formData.name"
-                  :disabled="!uData"
-                  placeholder="Название школы"
-                />
-              </el-form-item>
-              <el-form-item label="Телефон школы" prop="phone_number">
-                <vue-tel-input
-                  v-model="formData.phone_number"
-                  :autoFormat="true"
-                  :inputOptions="{
-                    showDialCode: true,
-                    maxlength: 17,
-                    valid: false,
-                    required: true,
-                    type: 'tel',
-                    autocomplete: 'on',
-                    autofocus: true,
-                  }"
-                  :disabled="!uData"
-                  :dropdownOptions="{ showFlags: true }"
-                  :onlyCountries="['UZ']"
-                  :defaultCountry="'UZ'"
-                  class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
-                />
-              </el-form-item>
-              <el-form-item label="Директор школы" prop="director">
-                <el-input
-                  v-model="formData.director"
-                  :disabled="!uData"
-                  placeholder="Директор школы"
-                />
-              </el-form-item>
-              <el-form-item label="Тип школы" prop="type">
-                <el-select
-                  v-model="formData.type"
-                  :disabled="!uData"
-                  placeholder="Выберите"
-                >
-                  <el-option label="Спортивная школа" value="sport_school" />
-                  <el-option label="Спортивный клуб" value="sport_club" />
-                  <el-option label="Спорткомплекс" value="sport_complex" />
-                </el-select>
-              </el-form-item>
+            <!-- Chap tomondagi kartalar -->
+            <div class="flex flex-col gap-6 w-full lg:w-1/2">
+              <!-- Asosiy ma’lumot -->
+              <el-card class="!bg-transparent !text-white" shadow="never">
+                <div class="flex gap-4 items-center">
+                  <div
+                    class="w-8 h-8 bg-gray-300 border rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-building2 h-4 w-4 text-primary"
+                    >
+                      <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
+                      <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                      <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                      <path d="M10 6h4"></path>
+                      <path d="M10 10h4"></path>
+                      <path d="M10 14h4"></path>
+                      <path d="M10 18h4"></path>
+                    </svg>
+                  </div>
+                  <h1 class="text-lg font-semibold">Основная информация</h1>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+                  <el-form-item label="Название школы" prop="name">
+                    <el-input
+                      v-model="formData.name"
+                      :disabled="!uData"
+                      placeholder="Название школы"
+                      class="rounded-lg shadow-sm"
+                    />
+                  </el-form-item>
+
+                  <el-form-item label="Телефон школы" prop="phone_number">
+                    <vue-tel-input
+                      v-model="formData.phone_number"
+                      :autoFormat="true"
+                      :inputOptions="{
+                        showDialCode: true,
+                        maxlength: 17,
+                        required: true,
+                        type: 'tel',
+                        autocomplete: 'on',
+                      }"
+                      :disabled="!uData"
+                      :dropdownOptions="{ showFlags: true }"
+                      :onlyCountries="['UZ']"
+                      :defaultCountry="'UZ'"
+                      class="!bg-white w-full !h-8 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200"
+                    />
+                  </el-form-item>
+
+                  <el-form-item label="Директор школы" prop="director">
+                    <el-input
+                      v-model="formData.director"
+                      :disabled="!uData"
+                      placeholder="Директор школы"
+                      class="rounded-lg shadow-sm"
+                    />
+                  </el-form-item>
+
+                  <el-form-item label="Тип школы" prop="type">
+                    <el-select
+                      v-model="formData.type"
+                      :disabled="!uData"
+                      placeholder="Выберите"
+                      class="rounded-lg shadow-sm"
+                    >
+                      <el-option label="Спортивная школа" value="sport_school" />
+                      <el-option label="Спортивный клуб" value="sport_club" />
+                      <el-option label="Спорткомплекс" value="sport_complex" />
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-card>
+
+              <!-- Lokatsiya -->
+              <el-card class="!bg-transparent !text-white" shadow="never">
+                <div class="flex gap-4 items-center">
+                  <div
+                    class="w-8 h-8 bg-gray-300 border rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-map-pin h-4 w-4 text-primary"
+                    >
+                      <path
+                        d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
+                      ></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <h1 class="text-lg font-semibold">Местоположение</h1>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <el-form-item label="Адрес школы" prop="address">
+                    <el-input
+                      v-model="formData.address"
+                      :disabled="!uData"
+                      placeholder="Адрес школы"
+                      class="rounded-lg shadow-sm"
+                    />
+                  </el-form-item>
+
+                  <el-form-item label="Регион" prop="region">
+                    <el-select
+                      v-model="formData.region"
+                      placeholder="Регион"
+                      filterable
+                      :disabled="!uData"
+                      clearable
+                      @change="onRegionChange"
+                      class="rounded-lg shadow-sm"
+                    >
+                      <el-option
+                        v-for="item in regions"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </el-form-item>
+
+                  <el-form-item label="Район" prop="district">
+                    <el-select
+                      v-model="formData.district"
+                      placeholder="Район"
+                      filterable
+                      :disabled="!uData"
+                      clearable
+                      class="rounded-lg shadow-sm"
+                    >
+                      <el-option
+                        v-for="item in filteredDistricts"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </el-form-item>
+
+                  <el-form-item label="Виды спорта" prop="sports">
+                    <el-select
+                      v-model="formData.sports"
+                      placeholder="Выберите"
+                      multiple
+                      :disabled="!uData"
+                      filterable
+                      class="rounded-lg shadow-sm"
+                    >
+                      <el-option
+                        v-for="item in sports"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-card>
             </div>
 
-            <!-- Ikkinchi qator -->
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-4 mt-4"
-            >
-              <el-form-item label="Адрес школы" prop="address">
-                <el-input
-                  v-model="formData.address"
-                  :disabled="!uData"
-                  placeholder="Адрес школы"
-                />
-              </el-form-item>
-              <el-form-item label="Регион" :disabled="!uData" prop="region">
-                <el-select
-                  v-model="formData.region"
-                  placeholder="Регион"
-                  filterable
-                  :disabled="!uData"
-                  clearable
-                  @change="onRegionChange"
+            <!-- O‘ng tomonda xarita -->
+            <el-card class="!bg-transparent !text-white w-full lg:w-1/2" shadow="never">
+              <div>
+                <label class="block text-lg font-medium text-gray-300 !m-0 !p-0"
+                  >Локация на карте</label
                 >
-                  <el-option
-                    v-for="item in regions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="Район" prop="district">
-                <el-select
-                  v-model="formData.district"
-                  placeholder="Район"
-                  filterable
-                  :disabled="!uData"
-                  clearable
-                >
-                  <el-option
-                    v-for="item in filteredDistricts"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="Виды спорта" prop="sports">
-                <el-select
-                  v-model="formData.sports"
-                  placeholder="Выберите"
-                  multiple
-                  :disabled="!uData"
-                  filterable
-                >
-                  <el-option
-                    v-for="item in sports"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-            </div>
-
-            <!-- Map qismi -->
-            <div class="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 mt-6">
-              <label class="block text-sm font-medium text-white">Локация на карте</label>
-              <div class="h-[400px] w-full mt-2 border rounded-lg overflow-hidden">
-                <MapboxMap
-                  access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
-                  style="height: 400px"
-                  map-style="mapbox://styles/mapbox/streets-v11"
-                  :center="center"
-                  :zoom="10"
-                  @mb-created="onMapClick"
-                >
-                  <MapboxMarker :lng-lat="[formData.longitude, formData.latitude]" />
-                </MapboxMap>
+                <div class="h-[400px] w-full border rounded-xl shadow-lg overflow-hidden">
+                  <MapboxMap
+                    access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
+                    style="height: 400px"
+                    map-style="mapbox://styles/mapbox/streets-v11"
+                    :center="center"
+                    :zoom="10"
+                    @mb-created="onMapClick"
+                  >
+                    <MapboxMarker :lng-lat="[formData.longitude, formData.latitude]" />
+                  </MapboxMap>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">
+                  📍 Latitude: {{ formData.latitude }} | Longitude:
+                  {{ formData.longitude }}
+                </p>
               </div>
-              <p class="text-sm text-white mt-1">
-                Latitude: {{ formData.latitude }} | Longitude: {{ formData.longitude }}
-              </p>
-            </div>
 
-            <!-- Tugmalar -->
-            <div class="w-full flex justify-end mt-6">
-              <el-button v-if="!uData" type="danger" @click="updateData" class="w-fit">
-                Хотите изменить uchrejdeniye?
-              </el-button>
-              <el-button v-else type="primary" @click="updateForm" class="w-fit">
-                Uchrejdeniye Обновлять
-              </el-button>
-            </div>
+              <!-- Tugmalar -->
+              <div class="w-full flex flex-col sm:flex-row justify-end gap-4 mt-2">
+                <el-button
+                  v-if="!uData"
+                  type="danger"
+                  size="large"
+                  @click="updateData"
+                  class="rounded-xl px-6"
+                >
+                  Хотите изменить учреждение?
+                </el-button>
+                <el-button
+                  v-else
+                  type="primary"
+                  size="large"
+                  @click="updateForm"
+                  class="rounded-xl px-6"
+                >
+                  Обновить учреждение
+                </el-button>
+              </div>
+            </el-card>
           </el-form>
         </div>
 

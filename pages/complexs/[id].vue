@@ -121,11 +121,13 @@
         <section class="container mx-auto px-4 mt-16">
           <h2 class="text-2xl font-bold mb-6">ДРУГИЕ Спортивное учреждение</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              v-for="complex in complexes.slice(0, 4)"
+            <nuxt-link
+              v-for="complex in filteredComplexes"
               :key="complex.id"
+              :to="`/complexs/${complex.id}`"
               class="group bg-[#2A2B31] rounded-lg overflow-hidden hover:bg-[#3A3B41] transition-colors"
             >
+              <!-- Complex Card -->
               <div
                 class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors flex flex-col h-full"
               >
@@ -149,13 +151,6 @@
                     >
                       {{ complex.name }}
                     </h3>
-                    <!-- <span
-                  v-for="sport in complex.sports"
-                  :key="sport.id"
-                  class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
-                >
-                  {{ sport.name }}
-                </span> -->
                   </div>
 
                   <div class="mt-auto">
@@ -189,7 +184,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </nuxt-link>
           </div>
         </section>
 
@@ -214,6 +209,14 @@ const complex = ref(null);
 const center = ref([69.279737, 41.311151]);
 const complexes = ref([]);
 
+const filteredComplexes = computed(() => {
+  if (!complexes.value) return [];
+
+  return complexes.value
+    .filter((c) => c.id !== route.params.id)
+    .sort((a, b) => new Date(b.created_time) - new Date(a.created_time))
+    .slice(0, 4);
+});
 const fetchComplex = async () => {
   try {
     const { $api } = useNuxtApp();

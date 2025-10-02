@@ -178,7 +178,7 @@
 
       <div class="md:grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
         <nuxt-link
-          v-for="complex in complexes.slice(0, 2)"
+          v-for="complex in filteredComplexes"
           :key="complex.id"
           :to="`/complexs/${complex.id}`"
           class="group bg-[#2A2B31] rounded-lg overflow-hidden hover:bg-[#3A3B41] transition-colors"
@@ -255,7 +255,7 @@
         class="!pb-4 md:!hidden !block"
       >
         <SwiperSlide
-          v-for="complex in complexes"
+          v-for="complex in filteredComplexes"
           :key="complex.id"
           class="!w-[280px] sm:!w-[360px] !h-full"
         >
@@ -348,6 +348,14 @@ const formRef = ref();
 const center = ref([69.279737, 41.311151]);
 const map = ref();
 const complexes = ref([]);
+
+const filteredComplexes = computed(() => {
+  if (!complexes.value) return [];
+
+  return complexes.value
+    .sort((a, b) => new Date(b.created_time) - new Date(a.created_time))
+    .slice(0, 2);
+});
 
 function getDefaultFormData() {
   return {

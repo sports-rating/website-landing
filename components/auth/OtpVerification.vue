@@ -13,8 +13,8 @@
           class="w-full md:w-auto md:absolute md:top-1/2 md:-translate-y-1/2 md:2xl:right-1/4 md:right-[15rem] p-4 flex justify-center"
         >
           <div class="w-full max-w-[360px] bg-white rounded-2xl p-8">
-            <div class="flex justify-center mb-4">
-              <img src="@/assets/img/login/logo.svg" alt="Sport Rating" class="h-7" />
+            <div class="flex justify-center">
+              <img src="/sab.png" alt="Sport Rating" class="h-16" />
             </div>
 
             <h1 class="text-center font-medium mb-1.5">Подтверждение личности</h1>
