@@ -17,7 +17,11 @@
         <div class="w-full max-w-[380px] bg-white rounded-2xl p-8">
           <div class="flex justify-center">
             <nuxt-link to="/" class="text-white font-bold text-2xl">
-              <img src="/sab.png" alt="Logo" class="md:w-32 w-24 h-auto object-cover" />
+              <img
+                src="@/assets/img/login/sab.png"
+                alt="Logo"
+                class="md:w-32 w-24 h-auto object-cover"
+              />
             </nuxt-link>
           </div>
 

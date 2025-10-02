@@ -14,7 +14,11 @@
         >
           <div class="w-full max-w-[450px] bg-white rounded-2xl xl:p-8 p-4 px-6">
             <div class="flex justify-center">
-              <img src="/sab.png" alt="Sport Rating" class="2xl:h-20 h-12" />
+              <img
+                src="@/assets/img/login/sab.png"
+                alt="Sport Rating"
+                class="2xl:h-20 h-12"
+              />
             </div>
             <h1 class="text-center text-base font-medium mb-1.5">
               Создайте свой учетный запись s-rating

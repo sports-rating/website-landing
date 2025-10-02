@@ -14,7 +14,7 @@
         >
           <div class="w-full max-w-[360px] bg-white rounded-2xl p-8">
             <div class="flex justify-center">
-              <img src="/sab.png" alt="Sport Rating" class="h-16" />
+              <img src="@/assets/img/login/sab.png" alt="Sport Rating" class="h-16" />
             </div>
 
             <h1 class="text-center font-medium mb-1.5">Подтверждение личности</h1>
