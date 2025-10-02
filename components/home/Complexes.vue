@@ -353,7 +353,9 @@ const filteredComplexes = computed(() => {
   if (!complexes.value) return [];
 
   return complexes.value
-    .sort((a, b) => new Date(b.created_time) - new Date(a.created_time))
+    .sort(
+      (a, b) => new Date(b.created_time).getTime() - new Date(a.created_time).getTime()
+    )
     .slice(0, 2);
 });
 
