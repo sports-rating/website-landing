@@ -9,10 +9,11 @@
             Спортивное учреждение
           </h2>
           <el-button type="default" class="!h-6 !rounded-lg" @click="openDialog">
-            В создании учреждения
+            Оставить заявку
           </el-button>
         </div>
         <button
+          @click="goToRatings"
           class="text-gray-400 hover:text-white flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
         >
           Посмотреть все
@@ -20,7 +21,12 @@
         </button>
       </div>
 
-      <el-dialog v-model="dialogVisible" title="Создать учреждение" width="950px">
+      <el-dialog
+        v-model="dialogVisible"
+        title="Форма заявки"
+        width="950px"
+        class="!bg-[#2E2F3E] !text-white"
+      >
         <el-form
           ref="formRef"
           :model="formData"
@@ -142,9 +148,7 @@
           </div>
 
           <div class="col-span-3">
-            <label class="block text-sm font-medium text-gray-700"
-              >Локация на карте</label
-            >
+            <label class="block text-sm font-medium text-white">Локация на карте</label>
             <div class="h-[200px] w-full mt-2 border rounded-lg overflow-hidden">
               <MapboxMap
                 access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
@@ -159,7 +163,7 @@
                 />
               </MapboxMap>
             </div>
-            <p class="text-sm text-gray-500 mt-1">
+            <p class="text-sm text-white mt-1">
               Latitude: {{ formData.school_latitude }} | Longitude:
               {{ formData.school_longitude }}
             </p>
@@ -168,73 +172,81 @@
 
         <template #footer>
           <el-button @click="handleCancel">Отмена</el-button>
-          <el-button type="primary" @click="submitForm">Сохранить</el-button>
+          <el-button type="primary" @click="submitForm"> Отправить </el-button>
         </template>
       </el-dialog>
 
       <div class="md:grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
-        <div
-          v-for="complex in complexes"
+        <nuxt-link
+          v-for="complex in complexes.slice(0, 2)"
           :key="complex.id"
+          :to="`/complexs/${complex.id}`"
           class="group bg-[#2A2B31] rounded-lg overflow-hidden hover:bg-[#3A3B41] transition-colors"
         >
-          <div class="relative aspect-[16/7] overflow-hidden">
-            <img
-              :src="complex.image"
-              :alt="complex.name"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-            ></div>
-          </div>
-
-          <div class="p-4">
-            <h3 class="text-white font-medium text-lg mb-2 line-clamp-2">
-              {{ complex.name }}
-            </h3>
-
-            <p class="text-gray-400 text-sm mb-4 line-clamp-3">
-              {{ complex.description }}
-            </p>
-
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span
-                v-for="facility in complex.facilities"
-                :key="facility"
-                class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
-              >
-                {{ facility }}
-              </span>
-            </div>
-
-            <div
-              class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0"
-            >
-              <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
-                <MapPin class="w-4 h-4" />
-                <span class="truncate">{{ complex.location }}</span>
-              </div>
-
+          <div
+            class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors flex flex-col h-full"
+          >
+            <!-- Complex Image -->
+            <div class="relative aspect-[16/5] overflow-hidden">
+              <img
+                :src="complex.media[0]?.file || '/default.jpg'"
+                :alt="complex.name"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
               <div
-                class="flex items-center gap-2 text-gray-400 text-sm whitespace-nowrap"
-              >
-                <div class="flex">
-                  <Star
-                    v-for="i in 5"
-                    :key="i"
-                    :class="[
-                      'w-4 h-4',
-                      i <= complex.rating ? 'text-yellow-400' : 'text-gray-600',
-                    ]"
-                    :fill="i <= complex.rating ? 'currentColor' : 'none'"
-                  />
+                class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+              ></div>
+            </div>
+
+            <!-- Complex Content -->
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex justify-between w-full gap-2 mb-4">
+                <h3
+                  class="text-white whitespace-nowrap font-medium text-lg mb-2 line-clamp-2"
+                >
+                  {{ complex.name }}
+                </h3>
+                <!-- <span
+                  v-for="sport in complex.sports"
+                  :key="sport.id"
+                  class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
+                >
+                  {{ sport.name }}
+                </span> -->
+              </div>
+
+              <div class="mt-auto">
+                <div
+                  class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0"
+                >
+                  <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
+                    <MapPin class="w-4 h-4" />
+                    <span class="truncate">
+                      {{ complex.region?.name }}, {{ complex.district?.name }}
+                    </span>
+                  </div>
                 </div>
-                <span>{{ complex.reviewCount }} отзывов</span>
+
+                <div class="flex w-full justify-between">
+                  <div class="mt-3 text-gray-300 text-sm">
+                    📞 {{ complex.phone_number }}
+                  </div>
+                  <div class="mt-3 text-gray-400 text-sm capitalize">
+                    {{
+                      complex.type === "club"
+                        ? "Спортивный клуб"
+                        : complex.type === "school"
+                        ? "Спортивная школа"
+                        : complex.type === "complex"
+                        ? "Спорткомплекс"
+                        : "Учреждение"
+                    }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </nuxt-link>
       </div>
 
       <Swiper
@@ -245,74 +257,73 @@
         <SwiperSlide
           v-for="complex in complexes"
           :key="complex.id"
-          class="!w-[280px] sm:!w-[320px]"
+          class="!w-[280px] sm:!w-[360px] !h-full"
         >
-          <div
-            class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors"
-          >
-            <!-- Complex Image -->
-            <div class="relative aspect-[16/7] overflow-hidden">
-              <img
-                :src="complex.image"
-                :alt="complex.name"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-              ></div>
-            </div>
+          <nuxt-link :to="`/complexs/${complex.id}`">
+            <div
+              class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors flex flex-col h-full"
+            >
+              <!-- Complex Image -->
+              <div class="relative aspect-[16/10] overflow-hidden">
+                <img
+                  :src="complex.media[0]?.file || '/default.jpg'"
+                  :alt="complex.name"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                ></div>
+              </div>
 
-            <!-- Complex Content -->
-            <div class="p-4">
-              <h3 class="text-white font-medium text-lg mb-2 line-clamp-2">
-                {{ complex.name }}
-              </h3>
-
-              <p class="text-gray-400 text-sm mb-4 line-clamp-3">
-                {{ complex.description }}
-              </p>
-
-              <!-- Facilities -->
-              <div class="flex flex-wrap gap-2 mb-4">
-                <span
-                  v-for="facility in complex.facilities"
-                  :key="facility"
+              <!-- Complex Content -->
+              <div class="p-4 flex flex-col flex-1">
+                <div class="flex justify-between w-full gap-2 mb-4">
+                  <h3
+                    class="text-white whitespace-nowrap font-medium text-lg mb-2 line-clamp-2"
+                  >
+                    {{ complex.name }}
+                  </h3>
+                  <!-- <span
+                  v-for="sport in complex.sports"
+                  :key="sport.id"
                   class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
                 >
-                  {{ facility }}
-                </span>
-              </div>
-
-              <!-- Footer -->
-              <div
-                class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0"
-              >
-                <!-- Location -->
-                <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
-                  <MapPin class="w-4 h-4" />
-                  <span class="truncate">{{ complex.location }}</span>
+                  {{ sport.name }}
+                </span> -->
                 </div>
 
-                <!-- Rating -->
-                <div
-                  class="flex items-center gap-2 text-gray-400 text-sm whitespace-nowrap"
-                >
-                  <div class="flex">
-                    <Star
-                      v-for="i in 5"
-                      :key="i"
-                      :class="[
-                        'w-4 h-4',
-                        i <= complex.rating ? 'text-yellow-400' : 'text-gray-600',
-                      ]"
-                      :fill="i <= complex.rating ? 'currentColor' : 'none'"
-                    />
+                <div class="mt-auto">
+                  <div
+                    class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0"
+                  >
+                    <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
+                      <MapPin class="w-4 h-4" />
+                      <span class="truncate">
+                        {{ complex.region?.name }}, {{ complex.district?.name }}
+                      </span>
+                    </div>
                   </div>
-                  <span>{{ complex.reviewCount }} отзывов</span>
+
+                  <div class="flex w-full justify-between">
+                    <div class="mt-3 text-gray-300 text-sm">
+                      📞 {{ complex.phone_number }}
+                    </div>
+                    <div class="mt-3 text-gray-400 text-sm capitalize">
+                      {{
+                        complex.type === "club"
+                          ? "Спортивный клуб"
+                          : complex.type === "school"
+                          ? "Спортивная школа"
+                          : complex.type === "complex"
+                          ? "Спорткомплекс"
+                          : "Учреждение"
+                      }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </nuxt-link>
         </SwiperSlide>
       </Swiper>
     </div>
@@ -325,9 +336,10 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import { ElMessage } from "element-plus";
 import { MapboxMap, MapboxMarker } from "@studiometa/vue-mapbox-gl";
+import { useRouter } from "vue-router";
 
 const { $api } = useNuxtApp();
-
+const router = useRouter();
 const dialogVisible = ref(false);
 const sports = ref([]);
 const regions = ref([]);
@@ -335,6 +347,7 @@ const filteredDistricts = ref([]);
 const formRef = ref();
 const center = ref([69.279737, 41.311151]);
 const map = ref();
+const complexes = ref([]);
 
 function getDefaultFormData() {
   return {
@@ -353,6 +366,10 @@ function getDefaultFormData() {
     school_sports: [],
   };
 }
+
+const goToRatings = () => {
+  router.push("/SchoolAllPage");
+};
 
 const formData = ref(getDefaultFormData());
 
@@ -404,6 +421,19 @@ const getSports = async () => {
 };
 
 getSports();
+
+const getSportsAbout = async () => {
+  try {
+    const sportRes = await $api.get("/sport/sport-institutions/");
+    complexes.value = sportRes.data.data.data as any;
+  } catch (e) {
+    console.error("Sport error:", e);
+  }
+};
+
+onMounted(() => {
+  getSportsAbout();
+});
 
 async function submitForm() {
   try {
@@ -522,47 +552,42 @@ onMounted(() => {
 });
 
 watch(() => formData.value.school_region, onRegionChange);
-
-interface SportComplex {
-  id: number;
-  image: string;
-  name: string;
-  description: string;
-  facilities: string[];
-  location: string;
-  rating: number;
-  reviewCount: number;
-}
-
-const complexes: SportComplex[] = [
-  {
-    id: 1,
-    image: "/complexes.svg",
-    name: " Humo Arena",
-    description:
-      "Спортивный комплекс включает в себя ледовую арену, тренажерный зал, бассейн и другие спортивные объекты.",
-    facilities: ["Ледовая арена", "Тренажерный зал", "Бассейн", "Фитнес-центр"],
-    location: "Ташкент, Мирзо Улугбекский район",
-    rating: 5,
-    reviewCount: 128,
-  },
-  {
-    id: 2,
-    image: "/barsa.jpg",
-    name: "Centre Camp Nou",
-    description:
-      "Современный фитнес-центр с новейшим оборудованием, спа-зоной и профессиональными тренерами.",
-    facilities: ["Тренажерный зал", "СПА", "Групповые занятия", "Бассейн"],
-    location: "Ташкент, Мирзо Улугбекский район",
-    rating: 4,
-    reviewCount: 85,
-  },
-];
 </script>
 
 <style scoped>
 :deep(.el-dialog) {
   margin-top: 3rem !important;
+}
+:deep(.el-dialog__title) {
+  color: white !important;
+}
+:deep(.el-form-item__label) {
+  color: white !important;
+}
+:deep(.el-input__wrapper) {
+  background-color: #2e2f3e !important;
+  color: white !important;
+}
+:deep(.el-input__inner) {
+  color: white !important;
+}
+:deep(.el-select__wrapper) {
+  background-color: #2e2f3e !important;
+  color: white !important;
+}
+:deep(.el-select__selected-item .el-select__placeholder) {
+  color: white !important;
+}
+:deep(.el-select__selected-item) {
+  color: white !important;
+}
+:deep(.vti__input) {
+  background-color: #2e2f3e !important;
+  color: white !important;
+}
+:deep(.vti__dropdown) {
+  background-color: #2e2f3e !important;
+  color: white !important;
 }
 /* Add any component-specific styles here */
 </style>

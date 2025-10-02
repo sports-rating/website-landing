@@ -112,6 +112,8 @@ const handleOtp = async () => {
             return router.push("/TrainerProfile");
           case "federation":
             return router.push("/FederationProfile");
+          case "sport_institution_admin":
+            return router.push("/SchoolProfile");
           case "admin": {
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");

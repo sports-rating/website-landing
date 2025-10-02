@@ -90,6 +90,7 @@ const userRoleText = computed(() => {
   if (role === "sportsman") return "Спортсмен";
   if (role === "trainer") return "Тренер";
   if (role === "federation") return "Федерация";
+  if (role === "sport_institution_admin") return "Администратор спортивного учреждения";
   if (role === "ordinary") return "Oбычный";
   if (role === "admin") return "Aдминистратор";
   return "";
@@ -104,6 +105,7 @@ function goToProfile() {
   if (role === "sportsman") return router.push("/SportsmanProfile");
   if (role === "trainer") return router.push("/TrainerProfile");
   if (role === "federation") return router.push("/FederationProfile");
+  if (role === "sport_institution_admin") return router.push("/SchoolProfile");
   return "";
 }
 </script>
