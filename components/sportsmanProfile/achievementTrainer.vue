@@ -44,9 +44,11 @@
           class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
         >
           <div class="col-span-3">Спортивное учреждение</div>
-          <div class="col-span-2">Спорт</div>
-          <div class="col-span-2">Время создания</div>
-          <div class="col-span-2">Статус</div>
+          <div :class="activeTab === 'pending' ? 'col-span-2' : 'col-span-3'">Спорт</div>
+          <div :class="activeTab === 'pending' ? 'col-span-2' : 'col-span-4'">
+            Время обработки
+          </div>
+          <div v-if="activeTab === 'pending'" class="col-span-2">Статус</div>
           <div class="col-span-2">Действие</div>
         </div>
 
@@ -59,9 +61,17 @@
           <div class="col-span-3 flex items-center space-x-3">
             <span>{{ achievement.sport_institution?.name }}</span>
           </div>
-          <div class="col-span-2">{{ achievement.sport?.name }}</div>
-          <div class="col-span-2 text-gray-400">{{ achievement?.created_time }}</div>
+          <div :class="activeTab === 'pending' ? 'col-span-2' : 'col-span-3'">
+            {{ achievement.sport?.name }}
+          </div>
           <div
+            :class="activeTab === 'pending' ? 'col-span-2' : 'col-span-4'"
+            class="text-gray-400"
+          >
+            {{ achievement?.processed_time }}
+          </div>
+          <div
+            v-if="activeTab === 'pending'"
             class="col-span-2 px-2 py-1 rounded text-sm font-medium"
             :class="{
               'text-blue-400': achievement?.status === 'pending',
@@ -107,7 +117,7 @@
           </div>
           <div class="col-span-2">{{ achievement?.new_data?.sport?.name }}</div>
           <div class="col-span-2 text-gray-400">
-            {{ achievement?.created_time }}
+            {{ achievement?.processed_time }}
           </div>
           <div
             class="col-span-2 px-2 py-1 rounded text-sm font-medium"
@@ -267,6 +277,10 @@
 
           <button
             type="submit"
+            :class="
+              isChanged ? 'bg-red-600 hover:bg-red-500' : 'bg-gray-400 cursor-not-allowed'
+            "
+            :disabled="!isChanged"
             class="w-full mt-6 px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg"
           >
             {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
@@ -299,7 +313,7 @@
                 />
               </svg>
             </div>
-            Просмотр достижения
+            Просмотр pабочее место
           </h2>
           <button @click="viewModal = false" class="text-gray-500 hover:text-black">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,16 +329,15 @@
 
         <!-- Body -->
         <div class="p-6 space-y-4 text-gray-800">
-          <!-- Sport -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">🏅 Спорт:</span>
-            <p class="font-medium">{{ viewData.sport?.name }}</p>
-          </div>
-
           <!-- Institution -->
           <div class="flex items-start gap-3">
             <span class="text-gray-500">🏫 Учреждение:</span>
             <p class="font-medium">{{ viewData.sport_institution?.name }}</p>
+          </div>
+          <!-- Sport -->
+          <div class="flex items-start gap-3">
+            <span class="text-gray-500">🏅 Спорт:</span>
+            <p class="font-medium">{{ viewData.sport?.name }}</p>
           </div>
         </div>
       </div>
@@ -354,7 +367,7 @@
                 />
               </svg>
             </div>
-            Просмотр достижения
+            Просмотр pабочее место
           </h2>
           <button @click="viewModall = false" class="text-gray-500 hover:text-black">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -437,6 +450,17 @@ const form = ref({
   region: "",
   district: "",
   sport_institution: "",
+});
+
+const originalForm = ref({ ...form.value });
+
+const isChanged = computed(() => {
+  return (
+    form.value.sport !== originalForm.value.sport ||
+    form.value.region !== originalForm.value.region ||
+    form.value.district !== originalForm.value.district ||
+    form.value.sport_institution !== originalForm.value.sport_institution
+  );
 });
 
 const getSchools = async () => {
@@ -564,9 +588,30 @@ const submitForm = async () => {
 
     await getData();
     await getDataRequest();
+    originalForm.value = { ...form.value };
     resetForm();
-  } catch (e) {
-    console.error("submitForm error:", e);
+  } catch (err) {
+    if (err.response?.data) {
+      const data = err.response.data;
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
+        ElMessage.error(data);
+      }
+    } else {
+      ElMessage.error("Ошибка при создании!");
+    }
   }
 };
 
@@ -588,19 +633,6 @@ const viewItemm = async (id) => {
   } catch (e) {
     console.error("view error:", e);
   }
-};
-
-const editItem = (item) => {
-  isEditing.value = true;
-  editingId.value = item.id;
-  Object.assign(form, {
-    country: item.country,
-    tournament: item.tournament?.id || "",
-    trainer: item.trainer?.id || "",
-    year: item.year,
-    rating: item.rating,
-  });
-  showModal.value = true;
 };
 
 const deleteItem = async (id) => {
@@ -629,13 +661,13 @@ const resetForm = () => {
   showModal.value = false;
   isEditing.value = false;
   editingId.value = null;
-  Object.assign(form, {
-    country: "",
-    tournament: "",
-    trainer: "",
-    year: "",
-    rating: 0,
+  Object.assign(form.value, {
+    sport: "",
+    region: "",
+    district: "",
+    sport_institution: "",
   });
+  originalForm.value = { ...form.value };
 };
 
 getSchools();
