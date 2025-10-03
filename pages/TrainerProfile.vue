@@ -168,7 +168,33 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Карьера и достижения
+                    Достижения
+                  </button>
+
+                  <button
+                    v-if="authStore.userProfile?.data?.trainer_profile?.federation"
+                    @click="activeTabe = 'work'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTabe === 'work'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Рабочее место
+                  </button>
+
+                  <button
+                    v-if="authStore.userProfile?.data?.trainer_profile?.federation"
+                    @click="activeTabe = 'careere'"
+                    :class="[
+                      'w-full text-left py-3 px-4 rounded-md',
+                      activeTabe === 'careere'
+                        ? 'bg-[#E91E63] text-white'
+                        : 'text-gray-300 hover:bg-[#3A3A5A]',
+                    ]"
+                  >
+                    Карьера
                   </button>
 
                   <button
@@ -463,6 +489,11 @@
               <TrainerMedia />
             </div>
 
+            <div v-if="activeTabe === 'work'" class="mt-4">
+              <achievementTrainer />
+              <!-- v-if="authStore.userProfile?.data?.sportsman_profile?.is_result_paid" -->
+            </div>
+
             <!-- <div v-if="activeTabe === 'career'" class="mt-4">
               <achievementManager
                 v-if="authStore.userProfile?.data?.trainer_profile?.is_result_paid"
@@ -525,7 +556,7 @@ import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
 import { omit } from "lodash-es";
-import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
+import achievementTrainer from "~/components/sportsmanProfile/achievementTrainer.vue";
 import TrainerMedia from "~/components/TrainerMedia.vue";
 
 import { Loading } from "@element-plus/icons-vue";
