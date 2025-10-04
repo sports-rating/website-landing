@@ -238,6 +238,9 @@ const getData = async (id: number) => {
 
 const toggle = (id: number) => {
   sportStore.activeCategory = id as any;
+
+  currentPagePlayers.value = 1;
+
   getData(id);
 };
 
