@@ -451,7 +451,9 @@ const filteredRequests = computed(() => {
 
 const getDataRequest = async () => {
   try {
-    const res = await $api.get("/user/requests/?type=sent&request_type=sportsman_result");
+    const res = await $api.get(
+      "/user/requests/?page=1&page_size=1000&type=sent&request_type=sportsman_result"
+    );
     dataRequest.value = res.data.data.data;
   } catch (e) {
     console.error("res error:", e);
@@ -490,7 +492,9 @@ const trainerData = ref([]);
 const getTrainer = async () => {
   try {
     const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
-    const res = await $api.get(`/federation/${federationId}/users/?user_role=trainer`);
+    const res = await $api.get(
+      `/federation/${federationId}/users/?page=1&page_size=1000&user_role=trainer`
+    );
     trainerData.value = res.data.data.data;
   } catch (e) {
     console.log(e);
