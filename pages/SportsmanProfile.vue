@@ -61,8 +61,8 @@
                   class="flex w-6 h-6 mb-4"
                   :src="
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
-                      ? 'verified.png'
-                      : 'cancel.png'
+                      ? '/verified.png'
+                      : '/cancel.png'
                   "
                   alt="verify"
                 />

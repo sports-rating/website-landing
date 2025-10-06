@@ -21,9 +21,19 @@
           <!-- Profile Info -->
           <div class="order-2 lg:order-1 flex flex-col w-full lg:w-[55%]">
             <h1
-              class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
+              class="text-2xl flex gap-2 sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
             >
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
+
+              <img
+                class="flex w-6 h-6 mb-4"
+                :src="
+                  data?.sportsman_profile?.is_sportsman_verified
+                    ? '/verified.png'
+                    : '/cancel.png'
+                "
+                alt="verify"
+              />
             </h1>
 
             <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">

@@ -62,8 +62,8 @@
                   class="flex w-6 h-6 mb-4"
                   :src="
                     authStore.userProfile?.data?.trainer_profile?.is_trainer_verified
-                      ? 'verified.png'
-                      : 'cancel.png'
+                      ? '/verified.png'
+                      : '/cancel.png'
                   "
                   alt="verify"
                 />
