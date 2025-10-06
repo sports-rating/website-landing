@@ -8,11 +8,32 @@
           <span class="text-red-500">{{ complex?.name }}</span>
         </h1>
 
-        <img
-          :src="complex?.media?.[0]?.file"
-          :alt="complex?.name"
-          class="rounded-xl shadow-lg w-full h-[431px] object-cover"
-        />
+        <div v-if="filteredImages.length" class="rounded-xl overflow-hidden">
+          <swiper
+            :modules="[Autoplay, Pagination, Navigation]"
+            :slides-per-view="1"
+            :space-between="10"
+            :loop="true"
+            :autoplay="{ delay: 3000, disableOnInteraction: false }"
+            pagination
+            navigation
+            class="rounded-xl"
+          >
+            <swiper-slide
+              v-for="(img, index) in filteredImages"
+              :key="index"
+              class="flex justify-center"
+            >
+              <img
+                :src="img.file"
+                :alt="complex?.name"
+                class="rounded-xl w-full h-[431px] object-cover shadow-lg"
+              />
+            </swiper-slide>
+          </swiper>
+        </div>
+
+        <div v-else class="text-gray-400 text-center py-10">Изображение недоступно</div>
 
         <!-- Info section -->
         <div class="bg-gray-900 rounded-xl mt-4">
@@ -32,11 +53,24 @@
               {{ complex?.region?.name }}, {{ complex?.district?.name }}
             </span>
           </div>
-          <div class="flex justify-between px-6 py-4">
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
             <span class="font-semibold">Ориентир</span>
             <span class="text-gray-300">
               {{ complex?.address || "Не указано" }}
             </span>
+          </div>
+
+          <div class="flex justify-between px-6 py-4">
+            <span class="font-semibold">Спорт</span>
+            <div class="flex gap-2">
+              <div
+                v-for="sport in complex?.sports"
+                :key="sport.id"
+                class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+              >
+                {{ sport.name }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -114,6 +148,35 @@
                 <MapboxMarker :lng-lat="[complex?.longitude, complex?.latitude]" />
               </MapboxMap>
             </div>
+          </div>
+        </section>
+
+        <!-- Media -->
+        <section class="container mx-auto px-4 mt-12">
+          <h3 class="text-xl font-bold mb-4">Видео</h3>
+
+          <div
+            v-if="videoMedia.length"
+            class="rounded-xl overflow-hidden border border-gray-700"
+          >
+            <div
+              v-for="(video, index) in videoMedia"
+              :key="index"
+              class="h-[300px] w-full mt-2 border rounded-lg overflow-hidden"
+            >
+              <video
+                :src="video.file"
+                controls
+                class="w-full h-full object-cover"
+              ></video>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="text-gray-400 text-center border border-gray-700 rounded-xl py-10"
+          >
+            Нет доступного видео
           </div>
         </section>
 
@@ -202,12 +265,25 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { MapboxMap, MapboxMarker } from "@studiometa/vue-mapbox-gl";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 const route = useRoute();
 const id = route.params.id;
 const complex = ref(null);
 const center = ref([69.279737, 41.311151]);
 const complexes = ref([]);
+
+const filteredImages = computed(() =>
+  (complex.value?.media || []).filter((m) => m.media_type === "image")
+);
+
+const videoMedia = computed(() =>
+  (complex.value?.media || []).filter((m) => m.media_type === "video")
+);
 
 const filteredComplexes = computed(() => {
   if (!complexes.value) return [];
@@ -249,5 +325,10 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.swiper {
+  width: 100%;
+  height: 431px;
 }
 </style>

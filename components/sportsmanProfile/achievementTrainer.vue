@@ -30,6 +30,7 @@
           v-model="statusFilter"
           class="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600"
         >
+          <option value="">Вce</option>
           <option value="pending">В обработке</option>
           <option value="accepted">Одобрено</option>
           <option value="rejected">Отклонено</option>
@@ -172,7 +173,7 @@
       v-if="showModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-lg mx-4">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-xl font-semibold">
             {{ isEditing ? "Редактировать pабочее место" : "Добавить pабочее место" }}
@@ -189,102 +190,177 @@
           </button>
         </div>
 
-        <form @submit.prevent="submitForm" class="space-y-4">
+        <form class="space-y-4">
+          <div class="flex gap-2 w-full">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Название Спорт</label
+              >
+              <el-select
+                v-model="form.sport"
+                placeholder="Выберите Спорт"
+                filterable
+                clearable
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              >
+                <el-option
+                  v-for="item in sports"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                  {{ item.name }}
+                </el-option>
+              </el-select>
+            </div>
+
+            <div class="flex flex-col">
+              <label for="region" class="text-sm text-gray-300 mb-1"
+                >Область / Город</label
+              >
+              <el-select
+                v-model="form.region"
+                filterable
+                clearable
+                placeholder="Выберите город"
+                @change="onRegionChange"
+                class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+              >
+                <el-option
+                  v-for="region in regions"
+                  :key="region.id"
+                  :label="region.name"
+                  :value="region.id"
+                >
+                  {{ region.name }}
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <div class="flex gap-2 w-full">
+            <div class="flex flex-col">
+              <label for="district" class="text-sm text-gray-300 mb-1">Улица </label>
+              <el-select
+                v-model="form.district"
+                filterable
+                clearable
+                placeholder="Выберите Улица"
+                class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+              >
+                <el-option
+                  v-for="district in filteredDistricts"
+                  :key="district.id"
+                  :label="district.name"
+                  :value="district.id"
+                >
+                  {{ district.name }}
+                </el-option>
+              </el-select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Название schools</label
+              >
+              <el-select
+                v-model="form.sport_institution"
+                placeholder="Выберите schools"
+                filterable
+                clearable
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              >
+                <el-option
+                  v-for="item in schools"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                  {{ item.name }}
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Название Спорт</label
-            >
+            <label class="block text-sm font-medium text-gray-300 mb-2"> Ставка </label>
             <el-select
-              v-model="form.sport"
-              placeholder="Выберите Спорт"
-              filterable
+              v-model="form.workload"
+              placeholder="Выберите ставку"
               clearable
-              class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              class="!w-[97%] bg-gray-700 border border-gray-600 rounded-lg text-white"
             >
-              <el-option
-                v-for="item in sports"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              >
-                {{ item.name }}
-              </el-option>
+              <el-option label="0.25" :value="0.25" />
+              <el-option label="0.5" :value="0.5" />
+              <el-option label="1" :value="1" />
             </el-select>
           </div>
 
-          <div class="flex flex-col">
-            <label for="region" class="text-sm text-gray-400 mb-1">Область / Город</label>
-            <el-select
-              v-model="form.region"
-              filterable
-              clearable
-              placeholder="Выберите город"
-              @change="onRegionChange"
-              class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-            >
-              <el-option
-                v-for="region in regions"
-                :key="region.id"
-                :label="region.name"
-                :value="region.id"
-              >
-                {{ region.name }}
-              </el-option>
-            </el-select>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Год начала
+              </label>
+              <el-date-picker
+                v-model="form.start_year"
+                type="year"
+                placeholder="Выберите год"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Месяц начала
+              </label>
+              <el-date-picker
+                v-model="form.start_month"
+                type="month"
+                placeholder="Выберите месяц"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
           </div>
 
-          <div class="flex flex-col">
-            <label for="district" class="text-sm text-gray-400 mb-1">Улица </label>
-            <el-select
-              v-model="form.district"
-              filterable
-              clearable
-              placeholder="Выберите Улица"
-              class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-            >
-              <el-option
-                v-for="district in filteredDistricts"
-                :key="district.id"
-                :label="district.name"
-                :value="district.id"
-              >
-                {{ district.name }}
-              </el-option>
-            </el-select>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Год окончания
+              </label>
+              <el-date-picker
+                v-model="form.end_year"
+                type="year"
+                placeholder="Выберите год"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Месяц окончания
+              </label>
+              <el-date-picker
+                v-model="form.end_month"
+                type="month"
+                placeholder="Выберите месяц"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Название schools</label
-            >
-            <el-select
-              v-model="form.sport_institution"
-              placeholder="Выберите schools"
-              filterable
-              clearable
-              class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
-            >
-              <el-option
-                v-for="item in schools"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              >
-                {{ item.name }}
-              </el-option>
-            </el-select>
-          </div>
-
-          <button
+          <el-button
             type="submit"
+            @click="submitForm"
             :class="
-              isChanged ? 'bg-red-600 hover:bg-red-500' : 'bg-gray-400 cursor-not-allowed'
+              isChanged
+                ? '!bg-red-600 hover:!bg-red-500'
+                : '!bg-gray-400 !cursor-not-allowed'
             "
             :disabled="!isChanged"
-            class="w-full mt-6 px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg"
+            class="!w-[98%] mt-6 px-6 py-3 !bg-red-600 hover:!bg-red-500 !text-white rounded-lg !border-none"
           >
             {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
-          </button>
+          </el-button>
         </form>
       </div>
     </div>
@@ -450,6 +526,11 @@ const form = ref({
   region: "",
   district: "",
   sport_institution: "",
+  workload: "",
+  start_year: "",
+  start_month: "",
+  end_year: "",
+  end_month: "",
 });
 
 const originalForm = ref({ ...form.value });
@@ -459,7 +540,12 @@ const isChanged = computed(() => {
     form.value.sport !== originalForm.value.sport ||
     form.value.region !== originalForm.value.region ||
     form.value.district !== originalForm.value.district ||
-    form.value.sport_institution !== originalForm.value.sport_institution
+    form.value.sport_institution !== originalForm.value.sport_institution ||
+    form.value.workload !== originalForm.value.workload ||
+    form.value.start_year !== originalForm.value.start_year ||
+    form.value.start_month !== originalForm.value.start_month ||
+    form.value.end_year !== originalForm.value.end_year ||
+    form.value.end_month !== originalForm.value.end_month
   );
 });
 
@@ -526,9 +612,12 @@ const onRegionChange = () => {
   }
 };
 
-const statusFilter = ref("pending");
+const statusFilter = ref("");
 
 const filteredRequests = computed(() => {
+  if (statusFilter.value === "") {
+    return dataRequest.value;
+  }
   return dataRequest.value.filter((item) => item.status === statusFilter.value);
 });
 
@@ -562,22 +651,22 @@ const getTournament = async () => {
   }
 };
 
-const trainerData = ref([]);
-const getTrainer = async () => {
-  try {
-    const federationId = authStore.userProfile?.data?.trainer_profile?.federation?.id;
-    const res = await $api.get(`/federation/${federationId}/users/?user_role=trainer`);
-    trainerData.value = res.data.data.data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 const submitForm = async () => {
   try {
     const payload = {
       sport: form.value.sport,
       sport_institution: form.value.sport_institution,
+      workload: form.value.workload,
+      start_year: form.value.start_year
+        ? new Date(form.value.start_year).getFullYear()
+        : null,
+      start_month: form.value.start_month
+        ? new Date(form.value.start_month).getMonth() + 1
+        : null,
+      end_year: form.value.end_year ? new Date(form.value.end_year).getFullYear() : null,
+      end_month: form.value.end_month
+        ? new Date(form.value.end_month).getMonth() + 1
+        : null,
     };
 
     if (isEditing.value) {
@@ -666,6 +755,11 @@ const resetForm = () => {
     region: "",
     district: "",
     sport_institution: "",
+    workload: "",
+    start_year: "",
+    start_month: "",
+    end_year: "",
+    end_month: "",
   });
   originalForm.value = { ...form.value };
 };
@@ -675,7 +769,6 @@ getRegions();
 getDataRequest();
 getData();
 getTournament();
-getTrainer();
 </script>
 
 <style scoped>
@@ -685,6 +778,9 @@ getTrainer();
 :deep(.el-input__wrapper) {
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1)) !important;
   color: white !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0.4rem !important;
 }
 :deep(.el-input__inner) {
   color: white !important;
@@ -692,6 +788,9 @@ getTrainer();
 :deep(.el-select__wrapper) {
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1)) !important;
   color: white !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0.4rem !important;
 }
 :deep(.el-select__selected-item .el-select__placeholder) {
   color: white !important;

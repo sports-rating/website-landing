@@ -8,7 +8,10 @@
           <h2 class="text-xl sm:text-2xl font-bold text-white uppercase">
             Спортивное учреждение
           </h2>
-          <el-button type="default" class="!h-6 !rounded-lg" @click="openDialog">
+          <el-button
+            class="!h-8 !rounded-lg !bg-red-500 !text-white hover:!bg-red-600 !border-none"
+            @click="openDialog"
+          >
             Оставить заявку
           </el-button>
         </div>
@@ -21,161 +24,6 @@
         </button>
       </div>
 
-      <el-dialog
-        v-model="dialogVisible"
-        title="Форма заявки"
-        width="950px"
-        class="!bg-[#2E2F3E] !text-white"
-      >
-        <el-form
-          ref="formRef"
-          :model="formData"
-          :rules="rules"
-          label-width="160px"
-          label-position="top"
-        >
-          <div class="grid grid-cols-4 w-full gap-4">
-            <el-form-item label="Имя менеджера" prop="manager_first_name">
-              <el-input v-model="formData.manager_first_name" placeholder="Имя" />
-            </el-form-item>
-            <el-form-item label="Фамилия менеджера" prop="manager_last_name">
-              <el-input v-model="formData.manager_last_name" placeholder="Фамилия" />
-            </el-form-item>
-            <el-form-item label="Телефон менеджера" prop="manager_phone_number">
-              <vue-tel-input
-                v-model="formData.manager_phone_number"
-                :autoFormat="true"
-                :inputOptions="{
-                  showDialCode: true,
-                  maxlength: 17,
-                  valid: false,
-                  required: true,
-                  type: 'tel',
-                  autocomplete: 'on',
-                  autofocus: true,
-                }"
-                :dropdownOptions="{ showFlags: true }"
-                :onlyCountries="['UZ']"
-                :defaultCountry="'UZ'"
-                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
-              />
-            </el-form-item>
-            <el-form-item label="Название школы" prop="school_name">
-              <el-input v-model="formData.school_name" placeholder="Название школы" />
-            </el-form-item>
-          </div>
-          <div class="grid grid-cols-4 w-full gap-4">
-            <el-form-item label="Телефон школы" prop="school_phone_number">
-              <vue-tel-input
-                v-model="formData.school_phone_number"
-                :autoFormat="true"
-                :inputOptions="{
-                  showDialCode: true,
-                  maxlength: 17,
-                  valid: false,
-                  required: true,
-                  type: 'tel',
-                  autocomplete: 'on',
-                  autofocus: true,
-                }"
-                :dropdownOptions="{ showFlags: true }"
-                :onlyCountries="['UZ']"
-                :defaultCountry="'UZ'"
-                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
-              />
-            </el-form-item>
-            <el-form-item label="Директор школы" prop="school_director">
-              <el-input v-model="formData.school_director" placeholder="Директор школы" />
-            </el-form-item>
-            <el-form-item label="Тип школы" prop="school_type">
-              <el-select v-model="formData.school_type" placeholder="Выберите">
-                <el-option label="Спортивная школа" value="sport_school" />
-                <el-option label="Спортивный клуб" value="sport_club" />
-                <el-option label="Спорткомплекс" value="sport_complex" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Адрес школы" prop="school_address">
-              <el-input v-model="formData.school_address" placeholder="Адрес школы" />
-            </el-form-item>
-          </div>
-          <div class="grid grid-cols-3 w-full gap-4">
-            <el-form-item label="Регион" prop="school_region">
-              <el-select
-                v-model="formData.school_region"
-                placeholder="Регион"
-                filterable
-                clearable
-                @change="onRegionChange"
-              >
-                <el-option
-                  v-for="item in regions"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Район" prop="school_district">
-              <el-select
-                v-model="formData.school_district"
-                placeholder="Район"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in filteredDistricts"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Виды спорта" prop="school_sports">
-              <el-select
-                v-model="formData.school_sports"
-                placeholder="Выберите"
-                multiple
-                filterable
-              >
-                <el-option
-                  v-for="item in sports"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-
-          <div class="col-span-3">
-            <label class="block text-sm font-medium text-white">Локация на карте</label>
-            <div class="h-[200px] w-full mt-2 border rounded-lg overflow-hidden">
-              <MapboxMap
-                access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
-                style="height: 200px"
-                map-style="mapbox://styles/mapbox/streets-v11"
-                :center="center"
-                :zoom="10"
-                @mb-created="onMapClick"
-              >
-                <MapboxMarker
-                  :lng-lat="[formData.school_longitude, formData.school_latitude]"
-                />
-              </MapboxMap>
-            </div>
-            <p class="text-sm text-white mt-1">
-              Latitude: {{ formData.school_latitude }} | Longitude:
-              {{ formData.school_longitude }}
-            </p>
-          </div>
-        </el-form>
-
-        <template #footer>
-          <el-button @click="handleCancel">Отмена</el-button>
-          <el-button type="primary" @click="submitForm"> Отправить </el-button>
-        </template>
-      </el-dialog>
-
       <div class="md:grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
         <nuxt-link
           v-for="complex in filteredComplexes"
@@ -187,15 +35,31 @@
             class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors flex flex-col h-full"
           >
             <!-- Complex Image -->
-            <div class="relative aspect-[16/5] overflow-hidden">
-              <img
-                :src="complex.media[0]?.file || '/default.jpg'"
-                :alt="complex.name"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-              ></div>
+            <div class="relative aspect-[16/6] overflow-hidden">
+              <div class="rounded-xl overflow-hidden">
+                <swiper
+                  :modules="[Autoplay, Pagination, Navigation]"
+                  :slides-per-view="1"
+                  :space-between="10"
+                  :loop="true"
+                  :autoplay="{ delay: 3000, disableOnInteraction: false }"
+                  pagination
+                  navigation
+                  class="rounded-xl"
+                >
+                  <swiper-slide
+                    v-for="(img, index) in getImageMedia(complex.media)"
+                    :key="index"
+                    class="flex justify-center"
+                  >
+                    <img
+                      :src="img.file"
+                      :alt="complex?.name"
+                      class="rounded-xl w-full object-cover shadow-lg"
+                    />
+                  </swiper-slide>
+                </swiper>
+              </div>
             </div>
 
             <!-- Complex Content -->
@@ -206,13 +70,6 @@
                 >
                   {{ complex.name }}
                 </h3>
-                <!-- <span
-                  v-for="sport in complex.sports"
-                  :key="sport.id"
-                  class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
-                >
-                  {{ sport.name }}
-                </span> -->
               </div>
 
               <div class="mt-auto">
@@ -241,6 +98,16 @@
                         ? "Спорткомплекс"
                         : "Учреждение"
                     }}
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <div
+                    v-for="sport in complex.sports"
+                    :key="sport.id"
+                    class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+                  >
+                    {{ sport.name }}
                   </div>
                 </div>
               </div>
@@ -320,23 +187,238 @@
                       }}
                     </div>
                   </div>
+
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <div
+                      v-for="sport in complex.sports"
+                      :key="sport.id"
+                      class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+                    >
+                      {{ sport.name }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </nuxt-link>
         </SwiperSlide>
       </Swiper>
+
+      <el-dialog
+        v-model="dialogVisible"
+        title="Форма заявки"
+        width="950px"
+        class="!bg-[#2E2F3E] !text-white"
+      >
+        <el-form
+          ref="formRef"
+          :model="formData"
+          :rules="rules"
+          label-width="160px"
+          label-position="top"
+        >
+          <div class="grid grid-cols-4 w-full gap-4">
+            <el-form-item label="Имя менеджера" prop="manager_first_name">
+              <el-input
+                v-model="formData.manager_first_name"
+                clearable
+                placeholder="Имя"
+              />
+            </el-form-item>
+            <el-form-item label="Фамилия менеджера" prop="manager_last_name">
+              <el-input
+                v-model="formData.manager_last_name"
+                clearable
+                placeholder="Фамилия"
+              />
+            </el-form-item>
+            <el-form-item label="Телефон менеджера" clearable prop="manager_phone_number">
+              <vue-tel-input
+                v-model="formData.manager_phone_number"
+                :autoFormat="true"
+                :inputOptions="{
+                  showDialCode: true,
+                  maxlength: 17,
+                  valid: false,
+                  required: true,
+                  type: 'tel',
+                  autocomplete: 'on',
+                  autofocus: true,
+                }"
+                :dropdownOptions="{ showFlags: true }"
+                :onlyCountries="['UZ']"
+                :defaultCountry="'UZ'"
+                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+              />
+            </el-form-item>
+            <el-form-item label="Название школы" prop="school_name">
+              <el-input
+                v-model="formData.school_name"
+                clearable
+                placeholder="Название школы"
+              />
+            </el-form-item>
+          </div>
+          <div class="grid grid-cols-4 w-full gap-4">
+            <el-form-item label="Телефон школы" prop="school_phone_number">
+              <vue-tel-input
+                v-model="formData.school_phone_number"
+                :autoFormat="true"
+                :inputOptions="{
+                  showDialCode: true,
+                  maxlength: 17,
+                  valid: false,
+                  required: true,
+                  type: 'tel',
+                  autocomplete: 'on',
+                  autofocus: true,
+                }"
+                :dropdownOptions="{ showFlags: true }"
+                :onlyCountries="['UZ']"
+                :defaultCountry="'UZ'"
+                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+              />
+            </el-form-item>
+            <el-form-item label="Директор школы" prop="school_director">
+              <el-input
+                v-model="formData.school_director"
+                clearable
+                placeholder="Директор школы"
+              />
+            </el-form-item>
+            <el-form-item label="Тип школы" prop="school_type">
+              <el-select v-model="formData.school_type" placeholder="Выберите">
+                <el-option label="Спортивная школа" value="sport_school" />
+                <el-option label="Спортивный клуб" value="sport_club" />
+                <el-option label="Спорткомплекс" value="sport_complex" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Адрес школы" prop="school_address">
+              <el-input
+                v-model="formData.school_address"
+                clearable
+                placeholder="Адрес школы"
+              />
+            </el-form-item>
+          </div>
+          <div class="grid grid-cols-3 w-full gap-4">
+            <el-form-item label="Регион" prop="school_region">
+              <el-select
+                v-model="formData.school_region"
+                placeholder="Регион"
+                filterable
+                clearable
+                @change="onRegionChange"
+              >
+                <el-option
+                  v-for="item in regions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Район" prop="school_district">
+              <el-select
+                v-model="formData.school_district"
+                placeholder="Район"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in filteredDistricts"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Виды спорта" prop="school_sports">
+              <el-select
+                v-model="formData.school_sports"
+                placeholder="Выберите"
+                multiple
+                filterable
+              >
+                <el-option
+                  v-for="item in sports"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+
+          <div class="col-span-3">
+            <label class="block text-sm font-medium text-white">Локация на карте</label>
+            <div class="h-[400px] w-full mt-2 border rounded-lg overflow-hidden">
+              <MapboxMap
+                access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
+                style="height: 400px"
+                map-style="mapbox://styles/mapbox/streets-v11"
+                :center="center"
+                :zoom="10"
+                @mb-created="onMapClick"
+              >
+                <MapboxMarker
+                  :lng-lat="[formData.school_longitude, formData.school_latitude]"
+                />
+              </MapboxMap>
+            </div>
+            <p class="text-sm text-white mt-1">
+              Latitude: {{ formData.school_latitude }} | Longitude:
+              {{ formData.school_longitude }}
+            </p>
+          </div>
+        </el-form>
+
+        <template #footer>
+          <!-- <el-button @click="handleCancel">Отмена</el-button> -->
+          <el-button type="success" @click="submitForm"> Отправить </el-button>
+        </template>
+      </el-dialog>
+
+      <el-dialog
+        v-model="verificationDialogVisible"
+        title="Подтверждение номера телефона"
+        width="400px"
+        class="!bg-[#2E2F3E] !text-white"
+        align-center
+      >
+        <div class="flex flex-col gap-4">
+          <p class="text-gray-300 text-sm">
+            Введите код, отправленный на номер
+            <span class="font-semibold text-white">{{ pendingPhone }}</span>
+          </p>
+
+          <el-input
+            v-model="verificationCode"
+            placeholder="Введите код"
+            maxlength="6"
+            class="!bg-gray-200 rounded-md"
+          />
+        </div>
+
+        <template #footer>
+          <el-button @click="verificationDialogVisible = false">Отмена</el-button>
+          <el-button type="success" @click="verifyCodeAndSubmit">Подтвердить</el-button>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ChevronRight, MapPin, Star } from "lucide-vue-next";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
 import { ElMessage } from "element-plus";
 import { MapboxMap, MapboxMarker } from "@studiometa/vue-mapbox-gl";
 import { useRouter } from "vue-router";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
@@ -348,6 +430,15 @@ const formRef = ref();
 const center = ref([69.279737, 41.311151]);
 const map = ref();
 const complexes = ref([]);
+
+const verificationDialogVisible = ref(false);
+const verificationCode = ref("");
+const isCodeSent = ref(false);
+const pendingPhone = ref("");
+
+const getImageMedia = (media: any) => {
+  return (media || []).filter((m: any) => m.media_type === "image");
+};
 
 const filteredComplexes = computed(() => {
   if (!complexes.value) return [];
@@ -430,8 +521,6 @@ const getSports = async () => {
   }
 };
 
-getSports();
-
 const getSportsAbout = async () => {
   try {
     const sportRes = await $api.get("/sport/sport-institutions/");
@@ -441,20 +530,57 @@ const getSportsAbout = async () => {
   }
 };
 
-onMounted(() => {
-  getSportsAbout();
-});
-
-async function submitForm() {
+async function sendVerificationCode() {
   try {
-    await formRef.value.validate();
+    const phone = formData.value.manager_phone_number.replaceAll(" ", "");
+    if (!phone || phone.length < 9) {
+      ElMessage.error("Введите корректный номер телефона");
+      return;
+    }
 
+    await $api.post("/user/auth/send-code/", {
+      phone_number: phone,
+      action: "sport_institution_verify",
+    });
+
+    pendingPhone.value = phone;
+    verificationDialogVisible.value = true;
+    ElMessage.success("Код отправлен на ваш номер телефона");
+  } catch (err) {
+    console.error(err);
+    ElMessage.error(err.response.data.message);
+  }
+}
+
+async function verifyCodeAndSubmit() {
+  try {
+    if (!verificationCode.value) {
+      ElMessage.error("Введите код подтверждения");
+      return;
+    }
+
+    await $api.post("/user/auth/verify-code/", {
+      code: verificationCode.value,
+      phone_number: pendingPhone.value,
+      action: "sport_institution_verify",
+    });
+
+    verificationDialogVisible.value = false;
+    await createSportInstitutionRequest();
+  } catch (err) {
+    console.error(err);
+    ElMessage.error(err.response.data.message);
+  }
+}
+
+async function createSportInstitutionRequest() {
+  try {
     await $api.post("/sport/sport-institution-request/", {
       ...formData.value,
       manager_phone_number: formData.value.manager_phone_number.replaceAll(" ", ""),
       school_phone_number: formData.value.school_phone_number.replaceAll(" ", ""),
     });
-    ElMessage.success("Успешно создано!");
+    ElMessage.success("Заявка успешно создана!");
     formRef.value.resetFields();
     formData.value = getDefaultFormData();
     dialogVisible.value = false;
@@ -468,7 +594,7 @@ async function submitForm() {
         } else {
           Object.keys(data).forEach((field) => {
             if (Array.isArray(data[field])) {
-              data[field].forEach((msg: string) => {
+              data[field].forEach((msg) => {
                 ElMessage.error(msg);
               });
             }
@@ -476,12 +602,20 @@ async function submitForm() {
         }
       } else if (typeof data === "string") {
         ElMessage.error(data);
-      } else {
-        ElMessage.error("Ошибка при создании!");
       }
     } else {
       ElMessage.error("Ошибка при создании!");
     }
+  }
+}
+
+async function submitForm() {
+  try {
+    await formRef.value.validate();
+    await sendVerificationCode();
+  } catch (err) {
+    console.error(err);
+    ElMessage.error("Заполните форму правильно");
   }
 }
 
@@ -557,11 +691,13 @@ watch(
     }
   }
 );
-onMounted(() => {
-  getRegions();
-});
 
 watch(() => formData.value.school_region, onRegionChange);
+onMounted(() => {
+  getSportsAbout();
+  getSports();
+  getRegions();
+});
 </script>
 
 <style scoped>
@@ -577,6 +713,7 @@ watch(() => formData.value.school_region, onRegionChange);
 :deep(.el-input__wrapper) {
   background-color: #2e2f3e !important;
   color: white !important;
+  border: 1px solid white !important;
 }
 :deep(.el-input__inner) {
   color: white !important;

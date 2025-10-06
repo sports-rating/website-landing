@@ -96,6 +96,21 @@ const viewRequest = async (id) => {
     console.error("Ошибка при просмотре:", err);
   }
 };
+
+const monthNames = ref([
+  "Январь",
+  "Февраль",
+  "Март",
+  "Апрель",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
+]);
 </script>
 
 <template>
@@ -135,6 +150,9 @@ const viewRequest = async (id) => {
         class="w-full sm:w-60 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-blue-500"
       >
         <option value="">Все типы заявки</option>
+        <option value="trainer_workplace_verification">
+          Подтверждение рабочего места тренера
+        </option>
         <option value="trainer">Вступить в членство</option>
         <option value="admin">Присоединяйтесь к администратору</option>
       </select>
@@ -435,6 +453,66 @@ const viewRequest = async (id) => {
               {{
                 selectedRequest.new_data.birth_date
                   ? selectedRequest.new_data.birth_date
+                  : "нет данных"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          v-if="selectedRequest.request_type === 'trainer_workplace_verification_request'"
+          class="flex w-full justify-between"
+        >
+          <!-- Новые данные -->
+          <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+            <h3 class="font-semibold text-purple-400 text-base mb-1">📋 Новые данные</h3>
+
+            <p>
+              <span class="text-gray-400">🏫 Учреждение:</span>
+              {{
+                selectedRequest.new_data.sport_institution?.name
+                  ? selectedRequest.new_data.sport_institution.name
+                  : "нет данных"
+              }}
+            </p>
+
+            <p>
+              <span class="text-gray-400">⚽ Вид спорта:</span>
+              {{
+                selectedRequest.new_data.sport?.name
+                  ? selectedRequest.new_data.sport.name
+                  : "нет данных"
+              }}
+            </p>
+
+            <p>
+              <span class="text-gray-400">📅 Начало работы:</span>
+              {{
+                selectedRequest.new_data.start_year &&
+                selectedRequest.new_data.start_month
+                  ? `${monthNames[selectedRequest.new_data.start_month - 1]} ${
+                      selectedRequest.new_data.start_year
+                    }`
+                  : "нет данных"
+              }}
+            </p>
+
+            <p>
+              <span class="text-gray-400">📆 Конец работы:</span>
+              {{
+                selectedRequest.new_data.end_year && selectedRequest.new_data.end_month
+                  ? `${monthNames[selectedRequest.new_data.end_month - 1]} ${
+                      selectedRequest.new_data.end_year
+                    }`
+                  : "нет данных"
+              }}
+            </p>
+
+            <p>
+              <span class="text-gray-400">⚖️ Ставка:</span>
+              {{
+                selectedRequest.new_data.workload
+                  ? `${selectedRequest.new_data.workload}`
                   : "нет данных"
               }}
             </p>

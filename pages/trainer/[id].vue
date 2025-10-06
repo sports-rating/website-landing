@@ -425,10 +425,7 @@ const filteredResults = computed(() => {
 
 const getTournament = async () => {
   try {
-    const res = await $api.get(
-      `
-      /sport/tournament/`
-    );
+    const res = await $api.get(`/sport/tournament/`);
     dataTournament.value = res.data.data;
   } catch (e) {
     console.log(e);
