@@ -60,6 +60,13 @@
             </span>
           </div>
 
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Ориентир</span>
+            <span class="text-gray-300">
+              {{ complex?.phone_number || "Не указано" }}
+            </span>
+          </div>
+
           <div class="flex justify-between px-6 py-4">
             <span class="font-semibold">Спорт</span>
             <div class="flex gap-2">
@@ -137,10 +144,10 @@
         <section class="container mx-auto px-4 mt-12">
           <h3 class="text-xl font-bold mb-4">На карте</h3>
           <div class="rounded-xl overflow-hidden border border-gray-700">
-            <div class="h-[300px] w-full mt-2 border rounded-lg overflow-hidden">
+            <div class="h-[500px] w-full border rounded-lg overflow-hidden">
               <MapboxMap
                 access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
-                style="height: 300px"
+                style="height: 500px"
                 map-style="mapbox://styles/mapbox/streets-v11"
                 :center="center"
                 :zoom="9"
@@ -153,22 +160,23 @@
 
         <!-- Media -->
         <section class="container mx-auto px-4 mt-12">
-          <h3 class="text-xl font-bold mb-4">Видео</h3>
+          <div v-if="videoMedia.length" class="mt-6">
+            <h3 class="text-lg font-semibold text-white mb-3">🎥 Видео</h3>
 
-          <div
-            v-if="videoMedia.length"
-            class="rounded-xl overflow-hidden border border-gray-700"
-          >
             <div
-              v-for="(video, index) in videoMedia"
-              :key="index"
-              class="h-[300px] w-full mt-2 border rounded-lg overflow-hidden"
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-[700px] overflow-y-auto pr-2 custom-scroll"
             >
-              <video
-                :src="video.file"
-                controls
-                class="w-full h-full object-cover"
-              ></video>
+              <div
+                v-for="(video, index) in videoMedia"
+                :key="index"
+                class="relative bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+              >
+                <video
+                  :src="video.file"
+                  controls
+                  class="w-full aspect-video object-contain"
+                ></video>
+              </div>
             </div>
           </div>
 
@@ -182,7 +190,7 @@
 
         <!-- Other Complexes -->
         <section class="container mx-auto px-4 mt-16">
-          <h2 class="text-2xl font-bold mb-6">ДРУГИЕ Спортивное учреждение</h2>
+          <h2 class="text-2xl font-bold mb-6">Другое спортивное учреждение</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <nuxt-link
               v-for="complex in filteredComplexes"
@@ -270,6 +278,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { ChevronRight, MapPin, Star } from "lucide-vue-next";
 
 const route = useRoute();
 const id = route.params.id;

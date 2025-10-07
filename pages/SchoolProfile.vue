@@ -137,6 +137,16 @@
                       <el-option label="Спорткомплекс" value="sport_complex" />
                     </el-select>
                   </el-form-item>
+
+                  <el-form-item label="Время работы" prop="work_time">
+                    <el-input
+                      v-model="formData.work_time"
+                      :disabled="!uData"
+                      type="text"
+                      placeholder="Время работы"
+                      class="rounded-lg shadow-sm"
+                    />
+                  </el-form-item>
                 </div>
               </el-card>
 
@@ -471,6 +481,7 @@ function mapApiDataToForm(data) {
     phone_number: data?.phone_number,
     director: data?.director,
     type: data?.type,
+    work_time: data?.work_time,
     address: data?.address,
     latitude: data?.latitude,
     longitude: data?.longitude,
@@ -593,6 +604,7 @@ onMounted(() => {
 
 const rules = ref({
   name: [{ required: true, message: "Введите название школы", trigger: "blur" }],
+  work_time: [{ required: true, message: "Введите время работы", trigger: "blur" }],
   phone_number: [{ required: true, message: "Введите телефон школы", trigger: "blur" }],
   director: [{ required: true, message: "Введите директора школы", trigger: "blur" }],
   type: [{ required: true, message: "Выберите тип школы", trigger: "change" }],

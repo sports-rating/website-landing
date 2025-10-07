@@ -54,9 +54,10 @@
               v-for="complex in complexes"
               :key="complex.id"
               :to="`/complexs/${complex.id}`"
-              class="group bg-[#2A2B31] rounded-lg flex overflow-hidden hover:bg-[#3A3B41] transition-colors cursor-pointer"
+              class="group bg-[#2A2B31] rounded-lg flex items-center overflow-hidden hover:bg-[#3A3B41] transition-colors cursor-pointer"
+              @mouseenter="focusOnComplex(complex)"
+              @mouseleave="mapZoom = 12"
             >
-              <!-- @click="focusOnComplex(complex)" -->
               <div class="relative overflow-hidden p-4 rounded-lg">
                 <img
                   :src="complex.media[0]?.file"
@@ -86,6 +87,16 @@
                     }}
                   </span>
                 </div>
+
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <div
+                    v-for="sport in complex.sports"
+                    :key="sport.id"
+                    class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+                  >
+                    {{ sport.name }}
+                  </div>
+                </div>
               </div>
             </nuxt-link>
           </div>
@@ -94,8 +105,8 @@
             <MapboxMap
               access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
               map-style="mapbox://styles/mapbox/streets-v11"
-              :center="[69.2797, 41.3111]"
-              :zoom="12"
+              :center="mapCenter"
+              :zoom="mapZoom"
               style="height: 100%; width: 100%"
             >
               <MapboxMarker
@@ -216,12 +227,16 @@ const selectedRegion = ref([]);
 const regions = ref([]);
 const showMap = ref(false);
 
-// const focusOnComplex = (complex: any) => {
-//   if (complex.longitude && complex.latitude) {
-//     mapCenter.value = [complex.longitude, complex.latitude];
-//     mapZoom.value = 14;
-//   }
-// };
+const mapZoom = ref(12);
+const mapCenter = ref([69.2797, 41.3111]);
+const focusOnComplex = (complex: any) => {
+  console.log(complex, "cass");
+
+  if (complex.longitude && complex.latitude) {
+    mapCenter.value = [complex.longitude, complex.latitude];
+    mapZoom.value = 13;
+  }
+};
 
 const map = () => {
   showMap.value = !showMap.value;
