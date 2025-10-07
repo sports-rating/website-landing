@@ -13,11 +13,11 @@
           class="w-full md:w-auto md:absolute md:top-1/2 md:-translate-y-1/2 md:2xl:right-1/4 md:right-[15rem] p-4 flex justify-center"
         >
           <div class="w-full max-w-[450px] bg-white rounded-2xl xl:p-8 p-4 px-6">
-            <div class="flex justify-center mb-3">
+            <div class="flex justify-center">
               <img
-                src="@/assets/img/login/logo.svg"
+                src="@/assets/img/login/sab.png"
                 alt="Sport Rating"
-                class="2xl:h-10 h-7"
+                class="2xl:h-20 h-12"
               />
             </div>
             <h1 class="text-center text-base font-medium mb-1.5">
@@ -156,29 +156,12 @@
                   >
                     <el-option value="sportsman">Игрок</el-option>
                     <el-option value="trainer">Тренер</el-option>
-                    <!-- <el-option value="federation">Федерация</el-option> -->
                   </el-select>
                   <p v-if="errors.userType" class="text-red-500 text-xs mt-0.5">
                     {{ errors.userType }}
                   </p>
                 </div>
               </div>
-
-              <!-- <div v-if="formData.userType === 'federation'" class="flex flex-col w-full">
-                <label for="trainer" class="text-sm text-gray-400 mb-1">Федерация</label>
-                <el-select
-                  v-model="formData.federation"
-                  placeholder="Выберите federation"
-                  class="w-full cursor-pointer font-light text-sm border-gray-200"
-                >
-                  <el-option
-                    v-for="item in data"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </div> -->
 
               <!-- Phone -->
 
@@ -230,14 +213,6 @@
                     >
                       пользовательского соглашения
                     </a>
-                    <!-- <a
-                      v-else-if="formData.userType === 'federation'"
-                      href="https://telegra.ph/Polzovatelskoe-soglashenie-09-15-15"
-                      target="_blank"
-                      class="text-red-500 underline"
-                    >
-                      пользовательского соглашения
-                    </a> -->
                   </span>
                 </el-checkbox>
               </div>

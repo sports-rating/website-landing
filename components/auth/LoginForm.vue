@@ -15,11 +15,10 @@
         class="w-full md:w-auto md:absolute md:top-1/2 md:-translate-y-1/2 md:2xl:right-1/4 md:right-[15rem] p-4 flex justify-center"
       >
         <div class="w-full max-w-[380px] bg-white rounded-2xl p-8">
-          <div class="flex justify-center mb-8">
-            <!-- <img src="/saber-logos.svg" alt="Sport Rating" class="h-10" /> -->
+          <div class="flex justify-center">
             <nuxt-link to="/" class="text-white font-bold text-2xl">
               <img
-                src="/saber-logos.svg"
+                src="@/assets/img/login/sab.png"
                 alt="Logo"
                 class="md:w-32 w-24 h-auto object-cover"
               />

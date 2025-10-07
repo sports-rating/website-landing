@@ -275,6 +275,8 @@ const getData = async (id: number) => {
   }
 };
 
+
+
 const toggle = (id: number) => {
   sportStore.activeCategory = id as any;
 
@@ -282,6 +284,7 @@ const toggle = (id: number) => {
 
   getData(id);
 };
+
 
 const getSport = async () => {
   try {

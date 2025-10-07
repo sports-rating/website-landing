@@ -321,8 +321,28 @@ const handleAddBranch = async () => {
     };
 
     emit("branch-added");
-  } catch (error) {
-    console.error("Error adding branch:", error);
+  } catch (err) {
+    if (err.response?.data) {
+      const data = err.response.data;
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
+        ElMessage.error(data);
+      }
+    } else {
+      ElMessage.error("Ошибка при создании!");
+    }
   } finally {
     isSubmitting.value = false;
   }

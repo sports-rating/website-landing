@@ -3,67 +3,85 @@
     <div class="bg-[#11101B]">
       <div class="min-h-screen bg-[#11101B] text-white container">
         <!-- Header -->
-        <header class="bg-[#11101B] py-6">
-          <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-bold">
-              Многофункциональный ледовый комплекс
-              <span class="text-red-500">Humo Arena</span>
-            </h1>
-          </div>
-        </header>
+        <h1 class="text-3xl font-bold mb-4">
+          Многофункциональный комплекс
+          <span class="text-red-500">{{ complex?.name }}</span>
+        </h1>
 
-        <!-- Image -->
-        <div class="container mx-auto px-4">
-          <img
-            src="/boks.svg"
-            alt="Humo Arena"
-            class="rounded-xl shadow-lg w-full h-[431px] object-cover"
-          />
+        <div v-if="filteredImages.length" class="rounded-xl overflow-hidden">
+          <swiper
+            :modules="[Autoplay, Pagination, Navigation]"
+            :slides-per-view="1"
+            :space-between="10"
+            :loop="true"
+            :autoplay="{ delay: 3000, disableOnInteraction: false }"
+            pagination
+            navigation
+            class="rounded-xl"
+          >
+            <swiper-slide
+              v-for="(img, index) in filteredImages"
+              :key="index"
+              class="flex justify-center"
+            >
+              <img
+                :src="img.file"
+                :alt="complex?.name"
+                class="rounded-xl w-full h-[431px] object-cover shadow-lg"
+              />
+            </swiper-slide>
+          </swiper>
         </div>
 
-        <!-- Info Section -->
-        <section class="container mx-auto px-4 mt-10">
-          <div class="w-full flex justify-between items-center">
-            <h2 class="text-2xl font-bold mb-6">Информация о комплексе</h2>
+        <div v-else class="text-gray-400 text-center py-10">Изображение недоступно</div>
 
-            <!-- Buy Button -->
-            <div class="flex justify-end mb-6">
-              <button class="font-medium px-4 py-2 rounded-md text-white bg-red-500">
-                Купить абонемент
-              </button>
-            </div>
+        <!-- Info section -->
+        <div class="bg-gray-900 rounded-xl mt-4">
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Название комплекса</span>
+            <span class="text-gray-300">{{ complex?.name }}</span>
+          </div>
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Режим работы</span>
+            <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm">
+              {{ complex?.work_time || "24/7" }}
+            </span>
+          </div>
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Адрес</span>
+            <span class="text-gray-300">
+              {{ complex?.region?.name }}, {{ complex?.district?.name }}
+            </span>
+          </div>
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Ориентир</span>
+            <span class="text-gray-300">
+              {{ complex?.address || "Не указано" }}
+            </span>
           </div>
 
-          <div class="bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
-            <div
-              class="flex items-center justify-between px-6 py-4 border-b border-gray-700"
-            >
-              <span class="font-semibold">Название комплекса</span>
-              <span class="text-gray-300">"Colosseum" Оздоровительный комплекс</span>
-            </div>
-            <div
-              class="flex items-center justify-between px-6 py-4 border-b border-gray-700"
-            >
-              <span class="font-semibold">Режим работы</span>
-              <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm"
-                >24/7</span
+          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
+            <span class="font-semibold">Ориентир</span>
+            <span class="text-gray-300">
+              {{ complex?.phone_number || "Не указано" }}
+            </span>
+          </div>
+
+          <div class="flex justify-between px-6 py-4">
+            <span class="font-semibold">Спорт</span>
+            <div class="flex gap-2">
+              <div
+                v-for="sport in complex?.sports"
+                :key="sport.id"
+                class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
               >
-            </div>
-            <div
-              class="flex items-center justify-between px-6 py-4 border-b border-gray-700"
-            >
-              <span class="font-semibold">Адрес</span>
-              <span class="text-gray-300">Ташкент, Юнусабадский район, 19А</span>
-            </div>
-            <div class="flex items-center justify-between px-6 py-4">
-              <span class="font-semibold">Ориентир</span>
-              <span class="text-gray-300">Рынок "Уч кахрамон"</span>
+                {{ sport.name }}
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        <div class="flex w-full">
-          <!-- About -->
+        <!-- <div class="flex w-full">
           <section class="container mx-auto px-4 mt-12 w-full">
             <h3 class="text-xl font-bold mb-4">О компании</h3>
             <p class="text-gray-300 leading-relaxed">
@@ -89,7 +107,6 @@
             </p>
           </section>
 
-          <!-- Activities -->
           <aside
             class="container mx-auto px-4 py-4 mt-12 w-[40%] bg-[#2E2F3E] rounded-xl border border-gray-700"
           >
@@ -121,42 +138,124 @@
               </li>
             </ul>
           </aside>
-        </div>
+        </div> -->
 
         <!-- Map -->
         <section class="container mx-auto px-4 mt-12">
           <h3 class="text-xl font-bold mb-4">На карте</h3>
           <div class="rounded-xl overflow-hidden border border-gray-700">
-            <iframe
-              src="https://yandex.ru/map-widget/v1/?um=constructor%3A6f8fa...&amp;source=constructor"
-              width="100%"
-              height="300"
-              frameborder="0"
-            ></iframe>
+            <div class="h-[500px] w-full border rounded-lg overflow-hidden">
+              <MapboxMap
+                access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
+                style="height: 500px"
+                map-style="mapbox://styles/mapbox/streets-v11"
+                :center="center"
+                :zoom="9"
+              >
+                <MapboxMarker :lng-lat="[complex?.longitude, complex?.latitude]" />
+              </MapboxMap>
+            </div>
+          </div>
+        </section>
+
+        <!-- Media -->
+        <section class="container mx-auto px-4 mt-12">
+          <div v-if="videoMedia.length" class="mt-6">
+            <h3 class="text-lg font-semibold text-white mb-3">🎥 Видео</h3>
+
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-[700px] overflow-y-auto pr-2 custom-scroll"
+            >
+              <div
+                v-for="(video, index) in videoMedia"
+                :key="index"
+                class="relative bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+              >
+                <video
+                  :src="video.file"
+                  controls
+                  class="w-full aspect-video object-contain"
+                ></video>
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="text-gray-400 text-center border border-gray-700 rounded-xl py-10"
+          >
+            Нет доступного видео
           </div>
         </section>
 
         <!-- Other Complexes -->
         <section class="container mx-auto px-4 mt-16">
-          <h2 class="text-2xl font-bold mb-6">ДРУГИЕ СПОРТИВНЫЕ КОМПЛЕКСЫ</h2>
+          <h2 class="text-2xl font-bold mb-6">Другое спортивное учреждение</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              v-for="complex in otherComplexes"
+            <nuxt-link
+              v-for="complex in filteredComplexes"
               :key="complex.id"
-              class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
+              :to="`/complexs/${complex.id}`"
+              class="group bg-[#2A2B31] rounded-lg overflow-hidden hover:bg-[#3A3B41] transition-colors"
             >
-              <img
-                :src="complex.image"
-                :alt="complex.title"
-                class="h-32 w-full object-cover"
-              />
-              <div class="p-4">
-                <h3 class="text-sm font-bold mb-2 line-clamp-2">{{ complex.title }}</h3>
-                <p class="text-xs text-gray-400 line-clamp-2">
-                  {{ complex.description }}
-                </p>
+              <!-- Complex Card -->
+              <div
+                class="bg-[#2A2B31] rounded-lg overflow-hidden group hover:bg-[#3A3B41] transition-colors flex flex-col h-full"
+              >
+                <!-- Complex Image -->
+                <div class="relative aspect-[16/5] overflow-hidden">
+                  <img
+                    :src="complex.media[0]?.file || '/default.jpg'"
+                    :alt="complex.name"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                  ></div>
+                </div>
+
+                <!-- Complex Content -->
+                <div class="p-4 flex flex-col flex-1">
+                  <div class="flex justify-between w-full gap-2 mb-4">
+                    <h3
+                      class="text-white whitespace-nowrap font-medium text-lg mb-2 line-clamp-2"
+                    >
+                      {{ complex.name }}
+                    </h3>
+                  </div>
+
+                  <div class="mt-auto">
+                    <div
+                      class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0"
+                    >
+                      <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
+                        <MapPin class="w-4 h-4" />
+                        <span class="truncate">
+                          {{ complex.region?.name }}, {{ complex.district?.name }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="flex w-full justify-between">
+                      <div class="mt-3 text-gray-300 text-sm">
+                        📞 {{ complex.phone_number }}
+                      </div>
+                      <div class="mt-3 text-gray-400 text-sm capitalize">
+                        {{
+                          complex.type === "club"
+                            ? "Спортивный клуб"
+                            : complex.type === "school"
+                            ? "Спортивная школа"
+                            : complex.type === "complex"
+                            ? "Спорткомплекс"
+                            : "Учреждение"
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </nuxt-link>
           </div>
         </section>
 
@@ -171,34 +270,62 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { MapboxMap, MapboxMarker } from "@studiometa/vue-mapbox-gl";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { ChevronRight, MapPin, Star } from "lucide-vue-next";
 
-const otherComplexes = ref([
-  {
-    id: 1,
-    title: "Многофункциональный ледовый комплекс Тюмень Арена",
-    description: "Современный ледовый комплекс...",
-    image: "/boks.svg",
-  },
-  {
-    id: 2,
-    title: "Многофункциональный ледовый комплекс Нефтехим Арена",
-    description: "Крупнейший спортивный комплекс региона...",
-    image: "/boks.svg",
-  },
-  {
-    id: 3,
-    title: "Многофункциональный ледовый комплекс Татнефть Арена",
-    description: "Универсальный спортивный комплекс...",
-    image: "/boks.svg",
-  },
-  {
-    id: 4,
-    title: "Многофункциональный ледовый комплекс Трактор Арена",
-    description: "Современная арена с профессиональным оборудованием...",
-    image: "/boks.svg",
-  },
-]);
+const route = useRoute();
+const id = route.params.id;
+const complex = ref(null);
+const center = ref([69.279737, 41.311151]);
+const complexes = ref([]);
+
+const filteredImages = computed(() =>
+  (complex.value?.media || []).filter((m) => m.media_type === "image")
+);
+
+const videoMedia = computed(() =>
+  (complex.value?.media || []).filter((m) => m.media_type === "video")
+);
+
+const filteredComplexes = computed(() => {
+  if (!complexes.value) return [];
+
+  return complexes.value
+    .filter((c) => c.id !== route.params.id)
+    .sort((a, b) => new Date(b.created_time) - new Date(a.created_time))
+    .slice(0, 4);
+});
+const fetchComplex = async () => {
+  try {
+    const { $api } = useNuxtApp();
+    const res = await $api.get(`/sport/sport-institutions/${id}/`);
+    complex.value = res.data.data;
+  } catch (e) {
+    console.error("Complexni yuklashda xatolik:", e);
+  }
+};
+
+const getSportsAbout = async () => {
+  try {
+    const { $api } = useNuxtApp();
+    const sportRes = await $api.get("/sport/sport-institutions/");
+    complexes.value = sportRes.data.data.data;
+  } catch (e) {
+    console.error("Sport error:", e);
+  }
+};
+
+onMounted(() => {
+  getSportsAbout();
+  fetchComplex();
+});
 </script>
 
 <style scoped>
@@ -207,5 +334,10 @@ const otherComplexes = ref([
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.swiper {
+  width: 100%;
+  height: 431px;
 }
 </style>

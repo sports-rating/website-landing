@@ -21,9 +21,19 @@
           <!-- Profile Info (mobilda ikkinchi chiqadi) -->
           <div class="order-2 lg:order-1 flex flex-col w-full lg:w-[55%]">
             <h1
-              class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
+              class="text-2xl flex gap-2 sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
             >
               {{ data?.first_name }} {{ data?.last_name }} {{ data?.middle_name }}
+
+              <img
+                class="flex w-6 h-6 mb-4"
+                :src="
+                  data?.trainer_profile?.is_trainer_verified
+                    ? '/verified.png'
+                    : '/cancel.png'
+                "
+                alt="verify"
+              />
             </h1>
 
             <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
@@ -425,10 +435,7 @@ const filteredResults = computed(() => {
 
 const getTournament = async () => {
   try {
-    const res = await $api.get(
-      `
-      /sport/tournament/`
-    );
+    const res = await $api.get(`/sport/tournament/`);
     dataTournament.value = res.data.data;
   } catch (e) {
     console.log(e);
@@ -454,156 +461,4 @@ const tabs = [
   { id: "photos", name: "Фотографии" },
   { id: "files", name: "Загруженные файлы" },
 ];
-
-const statistics = ref([
-  { label: "Number of Games", value: "93" },
-  { label: "Total Points", value: "1025" },
-  { label: "Season Games", value: "13" },
-  { label: "Average per Game", value: "12" },
-  { label: "Games Played", value: "16" },
-  { label: "Special Games", value: "3" },
-]);
-const statis = ref([
-  { label: "2021-2022", value: "Бронзовый призер чемпионатаУзбекистана" },
-  { label: "2021", value: "Обладатель кубка России" },
-  { label: "2020-2021", value: "Бронзовый призер чемпионата России" },
-  { label: "2019", value: "Обладатель кубка Европы" },
-  { label: "2018", value: "Футболист года по версии РУз" },
-  { label: "2018-2019", value: "Серебряный призер чемпионата Узбекистан" },
-  { label: "2012-2013", value: "Лучший бомбардир Кубка Узбекистана" },
-  { label: "2019", value: "Обладатель супер кубка России" },
-  { label: "2016-2017", value: "Футболист года по версии УФА" },
-]);
-
-const leftStats = [
-  { label: "Количество игр", value: "93" },
-  { label: "Количество минут на поле", value: "1025" },
-  { label: "В старте", value: "13" },
-  { label: "На замену", value: "12" },
-];
-
-const rightStats = [
-  { label: "Количество передач", value: "16" },
-  { label: "Количество голевых передач", value: "3" },
-  { label: "Желтая карточка (ЖК)", value: "2" },
-  { label: "Красная карточка (КК)", value: "-" },
-];
-
-const tableData = ref(
-  Array(10).fill({
-    teamLogo: "/psg.svg",
-    team: "Paris Saint Germain",
-    season: "2007",
-    coach: "Насимов Григорий",
-    championship: "3",
-    cup: "3",
-    euroCup: "0",
-  })
-);
-
-const selectedMatch = ref(null);
-const videoPlayer = ref(null);
-
-const matches = [
-  {
-    id: 1,
-    title: "Обзор матча Пахтакор - Ал-айн",
-    description:
-      "«Город невест» принимает у себя полуфиналов. Организаторам выступает проект «Битвы по Золотому кольцу». «Город невест» принимает у себя полуфиналов.",
-    image: "/psg.svg",
-    hasVideo: true,
-    videoUrl: "https://www.youtube.com/embed/AfpItQBKl04",
-    time: "19:32",
-    date: "28.01.2023",
-  },
-  {
-    id: 2,
-    title: "Обзор матча Пахтакор - Ал-айн",
-    description:
-      "«Город невест» принимает у себя полуфиналов. Организаторам выступает проект «Битвы по Золотому кольцу». «Город невест» принимает у себя полуфиналов.",
-    image: "/psg.svg",
-    hasVideo: false,
-    time: "19:32",
-    date: "28.01.2023",
-  },
-  {
-    id: 3,
-    title: "Обзор матча Пахтакор - Ал-айн",
-    description:
-      "«Город невест» принимает у себя полуфиналов. Организаторам выступает проект «Битвы по Золотому кольцу». «Город невест» принимает у себя полуфиналов.",
-    image: "/psg.svg",
-    hasVideo: true,
-    videoUrl: "https://www.youtube.com/embed/AfpItQBKl04",
-    time: "19:32",
-    date: "28.01.2023",
-  },
-  {
-    id: 4,
-    title: "Обзор матча Пахтакор - Ал-айн",
-    description:
-      "«Город невест» принимает у себя полуфиналов. Организаторам выступает проект «Битвы по Золотому кольцу». «Город невест» принимает у себя полуфиналов.",
-    image: "/psg.svg",
-    hasVideo: false,
-    time: "19:32",
-    date: "28.01.2023",
-  },
-];
-
-const images = ref([
-  {
-    url: "/boy.svg",
-    time: "19:32 / 20.01.2023",
-    description: "Match highlights against Zenit",
-  },
-  {
-    url: "/boy.svg",
-    time: "19:32 / 20.01.2023",
-    description: "Action shot from the game",
-  },
-  {
-    url: "/boy.svg",
-    time: "19:32 / 20.01.2023",
-    description: "Key moment during play",
-  },
-  {
-    url: "/boy.svg",
-    time: "19:32 / 20.01.2023",
-    description: "Match photography highlights",
-  },
-]);
-
-const documents = ref([
-  {
-    title: "Единый государственный реестр судебных решений за 2020 год",
-    url: "#",
-  },
-  {
-    title: "Единый государственный реестр судебных решений за 2020 год",
-    url: "#",
-  },
-  {
-    title: "Единый государственный реестр судебных решений за 2020 год",
-    url: "#",
-  },
-  {
-    title: "Единый государственный реестр судебных решений за 2020 год",
-    url: "#",
-  },
-]);
-
-const openVideo = (match) => {
-  selectedMatch.value = match;
-};
-
-const closeVideo = () => {
-  if (videoPlayer.value) {
-    videoPlayer.value.pause();
-  }
-  selectedMatch.value = null;
-};
-
-const handleAction = (project) => {
-  // console.log('Action clicked for project:', project.id)
-  router.push(project);
-};
 </script>

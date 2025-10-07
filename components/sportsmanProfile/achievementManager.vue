@@ -30,6 +30,7 @@
           v-model="statusFilter"
           class="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600"
         >
+          <option value="">Вce</option>
           <option value="pending">В обработке</option>
           <option value="accepted">Одобрено</option>
           <option value="rejected">Отклонено</option>
@@ -182,73 +183,140 @@
           </button>
         </div>
 
-        <form @submit.prevent="submitForm" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Название турнира</label
-            >
-            <select
-              v-model="form.tournament"
-              class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
-            >
-              <option value="">Выберите турнира</option>
-              <option v-for="item in tournamentData" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
+        <form class="space-y-4">
+          <div class="flex gap-2 w-full">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Название турнира</label
+              >
+              <el-select
+                v-model="form.tournament"
+                placeholder="Выберите турнира"
+                filterable
+                clearable
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
+              >
+                <el-option
+                  v-for="item in tournamentData"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                  {{ item.name }}
+                </el-option>
+              </el-select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Название тренер</label
+              >
+              <el-select
+                v-model="form.trainer"
+                filterable
+                clearable
+                placeholder="Выберите тренер"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
+              >
+                <el-option
+                  v-for="item in trainerData"
+                  :key="item.id"
+                  :label="item.full_name"
+                  :value="item.id"
+                >
+                  {{ item.full_name }}
+                </el-option>
+              </el-select>
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Название тренер</label
-            >
-            <select
-              v-model="form.trainer"
-              class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
-            >
-              <option value="">Выберите тренер</option>
-              <option v-for="item in trainerData" :key="item.id" :value="item.id">
-                {{ item.full_name }}
-              </option>
-            </select>
+          <div class="flex gap-2 w-full">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Название возрастная группа</label
+              >
+              <el-select
+                v-model="form.age_group"
+                placeholder="Выберите возрастная группа"
+                filterable
+                clearable
+                @change="handleAgeGroupChange"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
+              >
+                <el-option
+                  v-for="item in ageGroup"
+                  :key="item.id"
+                  :label="item.age_group.name"
+                  :value="item.id"
+                >
+                  {{ item.age_group.name }}
+                </el-option>
+              </el-select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Название вес
+              </label>
+              <el-select
+                v-model="form.weight"
+                filterable
+                clearable
+                :disabled="!weights.length"
+                placeholder="Выберите вес"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
+              >
+                <el-option
+                  v-for="(w, index) in weights"
+                  :key="index"
+                  :label="w"
+                  :value="w"
+                />
+              </el-select>
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Рейтинг</label>
-            <input
-              v-model="form.rating"
-              type="number"
-              placeholder="Введите Рейтинг"
-              class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
-            />
+          <div class="flex gap-2 w-full">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Рейтинг</label>
+              <el-input
+                v-model="form.rating"
+                type="number"
+                placeholder="Введите Рейтинг"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Город</label>
+              <el-input
+                v-model="form.country"
+                type="text"
+                placeholder="Введите Город"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+              />
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Город</label>
-            <input
-              v-model="form.country"
-              type="text"
-              placeholder="Введите Город"
-              class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
-            />
-          </div>
-
-          <div>
+          <div class="w-full">
             <label class="block text-sm font-medium text-gray-300 mb-2">Год</label>
-            <input
+
+            <el-date-picker
               v-model="form.year"
-              type="text"
+              type="year"
+              value-format="YYYY"
               placeholder="Выберите год"
-              class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
             />
           </div>
 
-          <button
+          <el-button
             type="submit"
-            class="w-full mt-6 px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg"
+            @click="submitForm"
+            class="w-full mt-6 px-6 py-3 !bg-red-600 hover:!bg-red-500 !text-white !rounded-lg !border-red-500"
           >
             {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
-          </button>
+          </el-button>
         </form>
       </div>
     </div>
@@ -443,9 +511,12 @@ const viewDataa = ref({});
 const activeTab = ref("pending");
 const dataRequest = ref([]);
 
-const statusFilter = ref("pending");
+const statusFilter = ref("");
 
 const filteredRequests = computed(() => {
+  if (statusFilter.value === "") {
+    return dataRequest.value;
+  }
   return dataRequest.value.filter((item) => item.status === statusFilter.value);
 });
 
@@ -475,6 +546,8 @@ const form = reactive({
   trainer: "",
   year: "",
   rating: 0,
+  age_group: "",
+  weight: "",
 });
 
 const tournamentData = ref([]);
@@ -486,6 +559,27 @@ const getTournament = async () => {
   } catch (e) {
     console.log(e);
   }
+};
+
+const ageGroup = ref([]);
+const weights = ref([]);
+const getAgeGroup = async () => {
+  try {
+    const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
+    const res = await $api.get(
+      `/federation/${federationId}/age-groups/?page=1&page_size=1000`
+    );
+    ageGroup.value = res.data.data.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const handleAgeGroupChange = (id) => {
+  const selected = ageGroup.value.find((item) => item.id === id);
+
+  weights.value = selected ? selected.age_group?.weights : [];
+  form.weight = "";
 };
 
 const trainerData = ref([]);
@@ -510,8 +604,28 @@ const submitForm = async () => {
     }
     await getData();
     resetForm();
-  } catch (e) {
-    console.error("submitForm error:", e);
+  } catch (err) {
+    if (err.response?.data) {
+      const data = err.response.data;
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
+        ElMessage.error(data);
+      }
+    } else {
+      ElMessage.error("Ошибка при создании!");
+    }
   }
 };
 
@@ -535,19 +649,6 @@ const viewItemm = async (id) => {
   }
 };
 
-const editItem = (item) => {
-  isEditing.value = true;
-  editingId.value = item.id;
-  Object.assign(form, {
-    country: item.country,
-    tournament: item.tournament?.id || "",
-    trainer: item.trainer?.id || "",
-    year: item.year,
-    rating: item.rating,
-  });
-  showModal.value = true;
-};
-
 const deleteItem = async (id) => {
   try {
     await $api.delete(`/user/profile/results/${id}/`);
@@ -563,8 +664,28 @@ const cancelRequest = async (id) => {
     await getDataRequest();
     ElMessage.success("So‘rov bekor qilindi.");
     formData.value.trainer = "";
-  } catch (error) {
-    ElMessage.error("Bekor qilishda xatolik yuz berdi.");
+  } catch (err) {
+    if (err.response?.data) {
+      const data = err.response.data;
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
+        ElMessage.error(data);
+      }
+    } else {
+      ElMessage.error("Ошибка при создании!");
+    }
   } finally {
     await getDataRequest();
   }
@@ -583,8 +704,30 @@ const resetForm = () => {
   });
 };
 
-getDataRequest();
-getData();
-getTournament();
-getTrainer();
+onMounted(() => {
+  getDataRequest();
+  getData();
+  getTournament();
+  getTrainer();
+  getAgeGroup();
+});
 </script>
+
+<style scoped>
+:deep(.el-date-editor.el-input, .el-date-editor.el-input__wrapper) {
+  width: 100% !important;
+}
+:deep(.el-input__wrapper) {
+  background-color: transparent !important;
+}
+:deep(.el-select__wrapper) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+:deep(.el-select__input) {
+  color: white !important;
+}
+:deep(.el-select__selected-item span) {
+  color: white !important;
+}
+</style>
