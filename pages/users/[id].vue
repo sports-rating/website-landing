@@ -168,7 +168,7 @@
                     <div class="flex justify-between items-center text-xs">
                       <span class="text-gray-400">
                         Тренер:
-                        {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
+                        {{ row.trainer_name || "Не указано" }}
                       </span>
 
                       <span class="text-gray-400">
@@ -236,7 +236,7 @@
                     <div class="p-3 col-span-1">{{ row.year }}</div>
                     <div class="p-3 col-span-1">{{ row.country }}</div>
                     <div class="p-3 col-span-2 truncate">
-                      {{ data?.sportsman_profile?.trainer?.name || "Не указано" }}
+                      {{ row.trainer_name || "Не указано" }}
                     </div>
                     <div class="p-3 col-span-2 flex items-center gap-2">
                       <span class="font-semibold">{{ row.score }}</span>
