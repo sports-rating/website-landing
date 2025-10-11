@@ -48,33 +48,47 @@
           </div>
         </div>
 
-        <div v-if="showMap" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="space-y-4 overflow-y-auto max-h-[600px] no-scrollbar pr-2">
+        <div v-if="showMap" class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <!-- Left side: Complex list -->
+          <div class="space-y-4 overflow-y-auto max-h-[600px] no-scrollbar pr-0 sm:pr-2">
             <nuxt-link
               v-for="complex in complexes"
               :key="complex.id"
               :to="`/complexs/${complex.id}`"
-              class="group bg-[#2A2B31] rounded-lg flex items-center overflow-hidden hover:bg-[#3A3B41] transition-colors cursor-pointer"
+              class="group bg-[#2A2B31] rounded-lg flex flex-col sm:flex-row items-start sm:items-center overflow-hidden hover:bg-[#3A3B41] transition-colors cursor-pointer"
               @mouseenter="focusOnComplex(complex)"
               @mouseleave="mapZoom = 12"
             >
-              <div class="relative overflow-hidden p-4 rounded-lg">
+              <!-- Image -->
+              <div class="relative overflow-hidden p-3 sm:p-4 flex-shrink-0">
                 <img
                   :src="complex.media[0]?.file"
                   :alt="complex.name"
-                  class="w-[104px] h-[104px] rounded-lg object-cover group-hover:scale-105 transition-transform duration-300"
+                  class="w-full sm:w-[104px] h-[180px] sm:h-[104px] rounded-lg object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div class="p-4">
-                <h3 class="text-white font-medium text-lg mb-2 line-clamp-2">
+
+              <!-- Info -->
+              <div class="p-3 sm:p-4 w-full">
+                <h3 class="text-white font-medium text-base sm:text-lg mb-2 line-clamp-2">
                   {{ complex.name }}
                 </h3>
-                <div class="flex items-center gap-2 text-gray-400 text-sm truncate">
+
+                <div
+                  class="flex items-center gap-2 text-gray-400 text-xs sm:text-sm truncate"
+                >
                   <MapPin class="w-4 h-4" />
-                  <span>{{ complex.region?.name }}, {{ complex.district?.name }}</span>
+                  <span class="truncate max-w-[200px] sm:max-w-[250px]">
+                    {{ complex.region?.name }}, {{ complex.district?.name }}
+                  </span>
                 </div>
-                <div class="mt-3 flex justify-between text-sm">
-                  <span class="text-gray-300">📞 {{ complex.phone_number }}</span>
+
+                <div
+                  class="mt-2 sm:mt-3 flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1 sm:gap-0"
+                >
+                  <span class="text-gray-300 break-all">
+                    📞 {{ complex.phone_number }}
+                  </span>
                   <span class="text-gray-400 capitalize">
                     {{
                       complex.type === "club"
@@ -88,11 +102,11 @@
                   </span>
                 </div>
 
-                <div class="flex flex-wrap gap-2 mt-3">
+                <div class="flex flex-wrap gap-2 mt-2 sm:mt-3">
                   <div
                     v-for="sport in complex.sports"
                     :key="sport.id"
-                    class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+                    class="px-3 py-1 bg-gray-700 text-gray-200 text-xs sm:text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
                   >
                     {{ sport.name }}
                   </div>
@@ -101,7 +115,8 @@
             </nuxt-link>
           </div>
 
-          <div class="h-[600px]">
+          <!-- Right side: Map -->
+          <div class="h-[300px] sm:h-[400px] lg:h-[600px] mt-4 lg:mt-0">
             <MapboxMap
               access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
               map-style="mapbox://styles/mapbox/streets-v11"
@@ -117,11 +132,13 @@
                 <template #default>
                   <div class="flex items-center space-x-1">
                     <div
-                      class="w-6 h-6 bg-white rounded-full border-2 border-white shadow"
+                      class="w-6 h-6 bg-white rounded-full border-2 border-white shadow overflow-hidden"
                     >
                       <img src="/gantel.png" alt="" />
                     </div>
-                    <span class="text-xs bg-white text-black px-1 rounded shadow">
+                    <span
+                      class="text-[10px] sm:text-xs bg-white text-black px-1 rounded shadow"
+                    >
                       {{ complex.name }}
                     </span>
                   </div>

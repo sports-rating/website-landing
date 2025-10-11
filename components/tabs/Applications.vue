@@ -180,29 +180,29 @@ const monthNames = ref([
 
   <!-- Table -->
   <div class="bg-gray-800 rounded-lg overflow-hidden overflow-x-auto">
-    <table class="w-full min-w-[800px]">
+    <table class="w-full sm:min-w-[800px] min-w-[1000px]">
       <!-- min-width jadval scroll bo‘lishi uchun -->
       <thead class="bg-gray-700 text-sm md:text-base">
         <tr>
-          <th class="px-4 py-3 text-left">№</th>
-          <th class="px-4 py-3 text-left">Наименование</th>
-          <th class="px-4 py-3 text-left">Тема заявки</th>
-          <th class="px-4 py-3 text-left">Вид спорта</th>
-          <th class="px-4 py-3 text-left">Должность</th>
-          <th class="px-4 py-3 text-left">Статус</th>
-          <th class="px-4 py-3 text-left">Дата заявки</th>
-          <th class="px-4 py-3 text-left">Действие</th>
+          <th class="px-4 py-3 text-left text-sm">№</th>
+          <th class="px-4 py-3 text-left text-sm">Наименование</th>
+          <th class="px-4 py-3 text-left text-sm">Тема заявки</th>
+          <th class="px-4 py-3 text-left text-sm">Вид спорта</th>
+          <th class="px-4 py-3 text-left text-sm">Должность</th>
+          <th class="px-4 py-3 text-left text-sm">Статус</th>
+          <th class="px-4 py-3 text-left text-sm">Дата заявки</th>
+          <th class="px-4 py-3 text-left text-sm">Действие</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="(application, index) in data"
           :key="application.id"
-          class="border-b border-gray-700 hover:bg-gray-750"
+          class="border-b border-gray-700 hover:bg-gray-750 text-sm"
         >
-          <td class="px-4 py-3">{{ page - 1 + index + 1 }}</td>
-          <td class="px-4 py-3">{{ application.sender?.full_name }}</td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 text-sm">{{ page - 1 + index + 1 }}</td>
+          <td class="px-4 py-3 text-sm">{{ application.sender?.full_name }}</td>
+          <td class="px-4 py-3 text-sm">
             <span
               :class="getStatusBadgeClass(application.request_type)"
               class="px-2 py-1 rounded text-sm font-medium"
@@ -210,9 +210,9 @@ const monthNames = ref([
               {{ application.request_theme }}
             </span>
           </td>
-          <td class="px-4 py-3">{{ application.sport?.name }}</td>
-          <td class="px-4 py-3">{{ application.sender?.user_role }}</td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 text-sm">{{ application.sport?.name }}</td>
+          <td class="px-4 py-3 text-sm">{{ application.sender?.user_role }}</td>
+          <td class="px-4 py-3 text-sm">
             <span
               class="inline-block px-3 py-1 rounded-full shadow text-xs md:text-sm font-semibold text-white"
               :class="{
@@ -235,28 +235,28 @@ const monthNames = ref([
               }}
             </span>
           </td>
-          <td class="px-4 py-3">{{ application.created_time }}</td>
-          <td class="px-4 py-3">
-            <div class="flex gap-2">
+          <td class="px-4 py-3 text-sm">{{ application.created_time }}</td>
+          <td class="px-4 py-3 text-sm">
+            <div class="flex flex-row sm:gap-2 gap-4">
               <button
                 class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A] flex items-center justify-center"
                 @click="viewRequest(application.id)"
               >
-                <img src="/Eye.svg" alt="eyes" class="w-4" />
+                <img src="/Eye.svg" alt="eyes" class="w-sm:!w-4 w-6" />
               </button>
               <button
                 v-if="application.status === 'pending'"
                 @click="deleteRequest(application.id)"
-                class="bg-red-600 hover:bg-red-700 text-white p-2 rounded"
+                class="bg-red-600 hover:bg-red-700 text-white p-2 rounded flex justify-center items-center"
               >
-                <img src="/x.svg" alt="x" class="w-4" />
+                <img src="/x.svg" alt="x" class="sm:!w-4 w-6" />
               </button>
               <button
                 v-if="application.status === 'pending'"
                 @click="approveRequest(application.id)"
-                class="bg-green-600 hover:bg-green-700 text-white p-2 rounded"
+                class="bg-green-600 hover:bg-green-700 text-white p-2 rounded flex justify-center items-center"
               >
-                <img src="/done.png" alt="done" class="w-4" />
+                <img src="/done.png" alt="done" class="sm:!w-4 w-6" />
               </button>
             </div>
           </td>

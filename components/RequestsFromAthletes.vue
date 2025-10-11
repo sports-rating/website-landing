@@ -58,7 +58,9 @@
 
       <!-- Table -->
       <div class="overflow-x-auto">
-        <table class="min-w-full text-left text-sm text-white border-collapse">
+        <table
+          class="sm:min-w-full min-w-[1000px] text-left text-sm text-white border-collapse"
+        >
           <thead>
             <tr class="bg-[#1C1B29]">
               <th class="py-3 px-4 whitespace-nowrap">№</th>
@@ -102,28 +104,26 @@
                   }}
                 </span>
               </td>
-              <td
-                class="py-3 px-4 md:space-x-2 whitespace-nowrap md:flex mx-auto md:space-y-0 space-y-2"
-              >
+              <td class="py-3 px-4 whitespace-nowrap flex items-center gap-4 mx-auto">
                 <button
                   class="text-white bg-[#2E2F3E] p-2 rounded hover:bg-[#5A5A7A] flex items-center justify-center"
                   @click="viewRequest(item.id)"
                 >
-                  <img src="/Eye.svg" alt="eyes" class="w-4" />
+                  <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
                 </button>
                 <button
                   v-if="item.status === 'pending'"
                   class="bg-[#7CBF0F] p-2 rounded hover:bg-green-700 flex items-center justify-center"
                   @click="approveRequest(item.id)"
                 >
-                  <img src="/done.png" alt="done" class="w-4" />
+                  <img src="/done.png" alt="done" class="sm:!w-4 w-6" />
                 </button>
                 <button
                   v-if="item.status === 'pending'"
                   class="bg-[#E7273D] p-2 rounded hover:bg-red-700 flex items-center justify-center"
                   @click="deleteRequest(item.id)"
                 >
-                  <img src="/x.svg" alt="x" class="w-4" />
+                  <img src="/x.svg" alt="x" class="sm:!w-4 w-6" />
                 </button>
               </td>
             </tr>

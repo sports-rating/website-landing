@@ -1,11 +1,16 @@
 <template>
   <div class="text-white">
-    <div class="flex justify-between items-center mb-6">
-      <div class="flex space-x-8">
+    <div
+      class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 sm:gap-0 mb-6"
+    >
+      <!-- Tabs -->
+      <div
+        class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 text-center sm:text-left"
+      >
         <button
           @click="activeTab = 'pending'"
           :class="[
-            'transition-colors',
+            'transition-colors duration-200 text-sm sm:text-base',
             activeTab === 'pending'
               ? 'text-white border-b-2 border-red-500 pb-1'
               : 'text-gray-400 hover:text-white',
@@ -16,7 +21,7 @@
         <button
           @click="activeTab = 'verified'"
           :class="[
-            'transition-colors',
+            'transition-colors duration-200 text-sm sm:text-base',
             activeTab === 'verified'
               ? 'text-white border-b-2 border-red-500 pb-1'
               : 'text-gray-400 hover:text-white',
@@ -25,10 +30,12 @@
           Подтвержденные результаты
         </button>
       </div>
-      <div v-if="activeTab === 'pending'">
+
+      <!-- Filter -->
+      <div v-if="activeTab === 'pending'" class="w-full sm:w-auto">
         <select
           v-model="statusFilter"
-          class="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600"
+          class="w-full sm:w-auto bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
         >
           <option value="">Вce</option>
           <option value="pending">В обработке</option>
@@ -91,13 +98,13 @@
               @click="viewItem(achievement.id)"
               class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/Eye.svg" alt="eyes" class="w-4" />
+              <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
             </button>
             <button
               @click="deleteItem(achievement.id)"
               class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/delete.svg" alt="x" class="w-4" />
+              <img src="/delete.svg" alt="x" class="sm:!w-4 w-6" />
             </button>
           </div>
         </div>
@@ -140,13 +147,13 @@
               @click="viewItemm(achievement.id)"
               class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/Eye.svg" alt="eyes" class="w-4" />
+              <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
             </button>
             <button
               @click="cancelRequest(achievement.id)"
               class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/e-clos.png" alt="x" class="w-4" />
+              <img src="/e-clos.png" alt="x" class="sm:!w-4 w-6" />
             </button>
           </div>
         </div>
@@ -164,15 +171,23 @@
 
     <div
       v-if="showModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2 sm:px-4"
     >
-      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-semibold">
+      <div
+        class="bg-gray-800 rounded-lg p-4 sm:p-6 w-full max-w-md sm:max-w-2xl mx-auto overflow-y-auto max-h-[90vh]"
+      >
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4 sm:mb-6">
+          <h2 class="text-lg sm:text-xl font-semibold text-white">
             {{ isEditing ? "Редактировать достижение" : "Добавить достижение" }}
           </h2>
           <button @click="resetForm" class="text-gray-400 hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -183,12 +198,14 @@
           </button>
         </div>
 
+        <!-- Form -->
         <form class="space-y-4">
-          <div class="flex gap-2 w-full">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2"
-                >Название турнира</label
-              >
+          <!-- Tournament & Trainer -->
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Название турнира
+              </label>
               <el-select
                 v-model="form.tournament"
                 placeholder="Выберите турнира"
@@ -201,16 +218,14 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                >
-                  {{ item.name }}
-                </el-option>
+                />
               </el-select>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2"
-                >Название тренер</label
-              >
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Название тренер
+              </label>
               <el-select
                 v-model="form.trainer"
                 filterable
@@ -221,20 +236,19 @@
                 <el-option
                   v-for="item in trainerData"
                   :key="item.id"
-                  :label="item.full_name"
+                  :label="item.first_name + ' ' + item.last_name"
                   :value="item.id"
-                >
-                  {{ item.full_name }}
-                </el-option>
+                />
               </el-select>
             </div>
           </div>
 
-          <div class="flex gap-2 w-full">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2"
-                >Название возрастная группа</label
-              >
+          <!-- Age Group & Weight -->
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Название возрастная группа
+              </label>
               <el-select
                 v-model="form.age_group"
                 placeholder="Выберите возрастная группа"
@@ -248,13 +262,11 @@
                   :key="item.id"
                   :label="item.age_group.name"
                   :value="item.id"
-                >
-                  {{ item.age_group.name }}
-                </el-option>
+                />
               </el-select>
             </div>
 
-            <div>
+            <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">
                 Название вес
               </label>
@@ -276,8 +288,9 @@
             </div>
           </div>
 
-          <div class="flex gap-2 w-full">
-            <div>
+          <!-- Rating & City -->
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">Рейтинг</label>
               <el-input
                 v-model="form.rating"
@@ -287,7 +300,7 @@
               />
             </div>
 
-            <div>
+            <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">Город</label>
               <el-input
                 v-model="form.country"
@@ -298,9 +311,9 @@
             </div>
           </div>
 
+          <!-- Year -->
           <div class="w-full">
             <label class="block text-sm font-medium text-gray-300 mb-2">Год</label>
-
             <el-date-picker
               v-model="form.year"
               type="year"
@@ -310,13 +323,15 @@
             />
           </div>
 
-          <el-button
-            type="submit"
-            @click="submitForm"
-            class="w-full mt-6 px-6 py-3 !bg-red-600 hover:!bg-red-500 !text-white !rounded-lg !border-red-500"
-          >
-            {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
-          </el-button>
+          <div class="w-full mx-auto flex justify-center">
+            <el-button
+              type="submit"
+              @click="submitForm"
+              class="w-full sm:w-fit px-6 py-3 !bg-red-600 hover:!bg-red-500 !text-white !rounded-lg !border-red-500"
+            >
+              {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
+            </el-button>
+          </div>
         </form>
       </div>
     </div>
@@ -563,12 +578,14 @@ const getTournament = async () => {
 
 const ageGroup = ref([]);
 const weights = ref([]);
+
 const getAgeGroup = async () => {
   try {
     const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
     const res = await $api.get(
       `/federation/${federationId}/age-groups/?page=1&page_size=1000`
     );
+
     ageGroup.value = res.data.data.data;
   } catch (e) {
     console.log(e);
@@ -585,11 +602,9 @@ const handleAgeGroupChange = (id) => {
 const trainerData = ref([]);
 const getTrainer = async () => {
   try {
-    const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
-    const res = await $api.get(
-      `/federation/${federationId}/users/?page=1&page_size=1000&user_role=trainer`
-    );
-    trainerData.value = res.data.data.data;
+    // const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
+    const res = await $api.get(`/user/trainers/?page=1&page_size=1000`);
+    trainerData.value = res.data.data;
   } catch (e) {
     console.log(e);
   }
