@@ -4,7 +4,6 @@
       <div class="min-h-screen bg-[#11101B] text-white container">
         <!-- Header -->
         <h1 class="text-3xl font-bold mb-4">
-          Многофункциональный комплекс
           <span class="text-red-500">{{ complex?.name }}</span>
         </h1>
 

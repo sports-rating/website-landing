@@ -655,7 +655,6 @@ const getDistricts = async (regionId: any) => {
 
 const onRegionChange = () => {
   const selectedRegionId = formData.value.school_region;
-  console.log(selectedRegionId);
 
   getDistricts(selectedRegionId);
 
@@ -664,7 +663,24 @@ const onRegionChange = () => {
       (district) => district.id === formData.value.school_district?.id
     )
   ) {
-    formData.value.school_district.id;
+    formData.value.school_district = "";
+  }
+
+  const selectedRegion = regions.value.find((region) => region.id === selectedRegionId);
+
+  if (selectedRegion) {
+    formData.value.school_latitude = selectedRegion.latitude;
+    formData.value.school_longitude = selectedRegion.longitude;
+
+    center.value = [selectedRegion.longitude, selectedRegion.latitude];
+
+    if (map.value) {
+      map.value.flyTo({
+        center: [selectedRegion.longitude, selectedRegion.latitude],
+        zoom: 10,
+        essential: true,
+      });
+    }
   }
 };
 
@@ -693,10 +709,10 @@ function resetForm() {
 }
 
 watch(
-  () => formData.value.school_region.region,
-  (newRegion) => {
-    if (newRegion?.id) {
-      getDistricts(newRegion.id);
+  () => formData.value.school_region,
+  (newRegionId) => {
+    if (newRegionId) {
+      getDistricts(newRegionId);
     } else {
       filteredDistricts.value = [];
       formData.value.school_district = null;

@@ -646,6 +646,11 @@ const sportRanks = ref([
     label: "Sport ustaligiga nomzod",
     key: "Candidate for Master of Sport",
   },
+  {
+    value: "MASTER_OF_SPORT",
+    label: "Sport ustasi",
+    key: "Master of Sport",
+  },
 ]);
 const federation = computed(
   () => authStore.userProfile?.data?.sportsman_profile?.federation?.name ?? ""
