@@ -643,7 +643,7 @@ const sportRanks = ref([
   { value: "ADULT_1", label: "Kattalar uchun birinchi daraja", key: "Adult First Rank" },
   {
     value: "CANDIDATE",
-    label: "Sport ustaligiga nomzod",
+    label: "Sport ustasi",
     key: "Candidate for Master of Sport",
   },
   {

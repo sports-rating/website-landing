@@ -14,7 +14,7 @@
       <el-table-column label="Фото" width="90" align="center">
         <template #default="scope">
           <img
-            :src="scope.row.logo || '/default-avatar.png'"
+            :src="scope.row.profile_photo || '/default-avatar.png'"
             alt="logo"
             class="w-10 h-10 rounded-full object-cover border border-gray-600"
           />
@@ -29,7 +29,9 @@
       </el-table-column>
 
       <!-- Вид спорта -->
-      <el-table-column label="Вид спорта" prop="sport" min-width="160" />
+      <el-table-column label="Вид спорта" prop="sport" min-width="160">
+        {{ scope.row.sport ? scope.row.sport : "-" }}
+      </el-table-column>
 
       <!-- Результаты -->
       <el-table-column label="Результаты" min-width="220">
@@ -94,19 +96,21 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-const { $api } = useNuxtApp();
+import { useAuthStore } from "~/stores/auth";
 
+const { $api } = useNuxtApp();
 const data = ref([]);
 const total = ref(0);
 const loading = ref(false);
 const currentPage = ref(1);
 const pageSize = ref(10);
+const authStore = useAuthStore();
 
 const getData = async (page = 1) => {
   loading.value = true;
   try {
     const res = await $api.get(
-      `/user/sportsmen/?page=${page}&page_size=${pageSize.value}`
+      `/user/sportsmen/?page=${page}&page_size=${pageSize.value}&trainer=${authStore.userProfile?.data?.id}`
     );
     data.value = res.data.data || res.data.data.data || [];
     total.value = res.data.count || 0;
