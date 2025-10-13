@@ -30,7 +30,9 @@
 
       <!-- Вид спорта -->
       <el-table-column label="Вид спорта" prop="sport" min-width="160">
-        {{ scope.row.sport ? scope.row.sport : "-" }}
+        <template #default="scope">
+          {{ scope.row.sport ? scope.row.sport : "-" }}
+        </template>
       </el-table-column>
 
       <!-- Результаты -->
