@@ -149,16 +149,15 @@
         </div>
 
         <div v-if="activeTab === 'career'" class="w-full mx-auto mt-5">
-          <div class="overflow-x-scroll rounded-lg shadow">
+          <!-- Desktop table view -->
+          <div class="overflow-x-auto rounded-lg shadow hidden md:block">
             <table class="w-full text-sm text-left text-white bg-[#11101B]">
-              <!-- Header -->
               <thead class="bg-gray-800 text-xs sm:text-sm font-semibold">
                 <tr>
                   <th class="px-4 py-3">ЧЕМПИОНАТ</th>
                   <th class="px-4 py-3">СЕЗОН</th>
                   <th class="px-4 py-3 text-center">Место</th>
 
-                  <!-- Agar “учащихся” bo‘lsa medallar chiqadi -->
                   <th
                     v-if="selectedView === '2'"
                     colspan="3"
@@ -173,7 +172,7 @@
 
                   <th class="px-4 py-3 text-center">Балл</th>
 
-                  <!-- Dropdown -->
+                  <!-- Dropdown (desktop) -->
                   <th class="px-4 py-3 text-right">
                     <el-dropdown @command="handleSelect">
                       <el-button
@@ -199,14 +198,12 @@
                 </tr>
               </thead>
 
-              <!-- Body -->
               <tbody>
                 <tr
                   v-for="(row, index) in data?.results"
                   :key="index"
                   class="border-t border-gray-700 hover:bg-gray-900 transition"
                 >
-                  <!-- Tournament -->
                   <td class="px-4 py-3 flex items-center gap-3">
                     <img
                       class="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-md"
@@ -216,22 +213,18 @@
                     <span class="truncate">{{ row.tournament_name }}</span>
                   </td>
 
-                  <!-- Season -->
                   <td class="px-4 py-3">{{ row.year }}</td>
 
-                  <!-- Country / Place -->
                   <td class="px-4 py-3 text-center">
                     {{ row.country }}
                   </td>
 
-                  <!-- Medal Counts -->
                   <template v-if="selectedView === '2' && !row.rating">
                     <td class="px-1 py-3 text-center">{{ row.gold }}</td>
                     <td class="px-1 py-3 text-center">{{ row.silver }}</td>
                     <td class="px-1 py-3 text-center">{{ row.bronze }}</td>
                   </template>
 
-                  <!-- Rating -->
                   <td
                     v-if="selectedView === '1' && row.rating"
                     class="px-4 py-3 text-center"
@@ -257,19 +250,110 @@
                     {{ row.rating }}
                   </td>
 
-                  <!-- Score -->
                   <td class="px-4 py-3 text-center">{{ row.score }}</td>
 
-                  <!-- Empty last cell for dropdown column -->
                   <td></td>
                 </tr>
               </tbody>
             </table>
 
-            <!-- Agar hech narsa bo‘lmasa -->
             <el-empty
               v-if="!data?.results?.length"
               :image-size="100"
+              description="Нет данных"
+            />
+          </div>
+
+          <!-- Mobile card view -->
+          <div class="md:hidden space-y-4">
+            <!-- Dropdown for mobile -->
+            <div class="flex justify-end mb-3">
+              <el-dropdown @command="handleSelect">
+                <el-button
+                  type="text"
+                  size="small"
+                  class="!text-sm !text-white flex items-center bg-[#11101B] px-3 py-2 rounded-md"
+                >
+                  {{ selectedView === "1" ? "Личное " : "Учащихся " }}
+                  <el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
+                    <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+
+            <div
+              v-for="(row, index) in data?.results"
+              :key="index"
+              class="bg-[#11101B] text-white rounded-xl p-4 shadow border border-gray-700"
+            >
+              <div class="flex items-center gap-3 mb-3">
+                <img
+                  class="w-12 h-12 object-contain rounded-md"
+                  :src="getTournamentLogo(row.tournament_name)"
+                  alt="Tournament Logo"
+                />
+                <h3 class="font-semibold text-base">{{ row.tournament_name }}</h3>
+              </div>
+
+              <p class="text-sm">
+                <span class="font-semibold">Сезон:</span> {{ row.year }}
+              </p>
+              <p class="text-sm">
+                <span class="font-semibold">Место:</span> {{ row.country }}
+              </p>
+
+              <template v-if="selectedView === '2' && !row.rating">
+                <div class="flex justify-between mt-2">
+                  <div class="flex items-center gap-1">
+                    <img src="/gold.png" class="w-5" alt="Gold" /> {{ row.gold }}
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <img src="/silver.png" class="w-5" alt="Silver" /> {{ row.silver }}
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <img src="/bronza.png" class="w-5" alt="Bronze" /> {{ row.bronze }}
+                  </div>
+                </div>
+              </template>
+
+              <template v-else-if="selectedView === '1' && row.rating">
+                <div class="mt-2">
+                  <span class="font-semibold">Рейтинг:</span>
+                  <img
+                    v-if="row.rating === 1"
+                    src="/gold.png"
+                    class="w-5 inline ml-1"
+                    alt="Gold"
+                  />
+                  <img
+                    v-if="row.rating === 2"
+                    src="/silver.png"
+                    class="w-5 inline ml-1"
+                    alt="Silver"
+                  />
+                  <img
+                    v-if="row.rating === 3 || row.rating === 4"
+                    src="/bronza.png"
+                    class="w-5 inline ml-1"
+                    alt="Bronze"
+                  />
+                  {{ row.rating }}
+                </div>
+              </template>
+
+              <p class="text-sm mt-2">
+                <span class="font-semibold">Балл:</span> {{ row.score }}
+              </p>
+            </div>
+
+            <el-empty
+              v-if="!data?.results?.length"
+              :image-size="80"
               description="Нет данных"
             />
           </div>
@@ -362,31 +446,36 @@
 
       <div class="container flex flex-col gap-8 pb-8">
         <div class="mt-5">
-          <h2 class="text-2xl font-medium text-white">Достижения</h2>
+          <h2 class="text-2xl font-medium text-white text-center sm:text-left">
+            Достижения
+          </h2>
         </div>
 
         <template v-if="filteredResults?.length">
-          <div class="bg-[#11101B] overflow-hidden w-full">
-            <div>
-              <dl class="grid grid-cols-3">
-                <div
-                  v-for="(stat, index) in filteredResults"
-                  :key="index"
-                  class="px-4 py-5 border overflow-hidden sm:p-6"
-                >
-                  <dt class="text-2xl font-medium text-white truncate">
-                    {{ stat.tournament_name }}
-                  </dt>
-                  <dd class="mt-1 text-sm font-semibold text-[#8B8992]">
-                    {{ stat.year }}
-                  </dd>
-                </div>
-              </dl>
-            </div>
+          <div class="bg-[#11101B] w-full overflow-hidden">
+            <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px">
+              <div
+                v-for="(stat, index) in filteredResults"
+                :key="index"
+                class="px-4 py-5 sm:p-6 bg-[#11101B] border border-gray-800 hover:bg-gray-900 transition rounded-none rounded-lg"
+              >
+                <dt class="text-lg sm:text-xl font-semibold text-white truncate">
+                  {{ stat.tournament_name }}
+                </dt>
+                <dd class="mt-1 text-sm sm:text-base font-medium text-[#8B8992]">
+                  {{ stat.year }}
+                </dd>
+              </div>
+            </dl>
           </div>
         </template>
 
-        <el-empty v-else :image-size="100" description="Достижения не найдены" />
+        <el-empty
+          v-else
+          :image-size="100"
+          description="Достижения не найдены"
+          class="text-white"
+        />
       </div>
 
       <!-- <Associated/> -->

@@ -4,7 +4,6 @@
       <div class="min-h-screen bg-[#11101B] text-white container">
         <!-- Header -->
         <h1 class="text-3xl font-bold mb-4">
-          Многофункциональный комплекс
           <span class="text-red-500">{{ complex?.name }}</span>
         </h1>
 
@@ -36,44 +35,64 @@
         <div v-else class="text-gray-400 text-center py-10">Изображение недоступно</div>
 
         <!-- Info section -->
-        <div class="bg-gray-900 rounded-xl mt-4">
-          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
-            <span class="font-semibold">Название комплекса</span>
-            <span class="text-gray-300">{{ complex?.name }}</span>
+        <div class="bg-gray-900 rounded-xl mt-4 overflow-hidden">
+          <!-- Har bir satr -->
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-700"
+          >
+            <span class="font-semibold text-sm sm:text-base">Название комплекса</span>
+            <span class="text-gray-300 text-sm sm:text-base break-words">
+              {{ complex?.name }}
+            </span>
           </div>
-          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
-            <span class="font-semibold">Режим работы</span>
-            <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm">
+
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-700"
+          >
+            <span class="font-semibold text-sm sm:text-base">Режим работы</span>
+            <span
+              class="bg-red-600 text-white px-3 py-1 rounded-full text-xs sm:text-sm w-fit sm:w-auto"
+            >
               {{ complex?.work_time || "24/7" }}
             </span>
           </div>
-          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
-            <span class="font-semibold">Адрес</span>
-            <span class="text-gray-300">
+
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-700"
+          >
+            <span class="font-semibold text-sm sm:text-base">Адрес</span>
+            <span class="text-gray-300 text-sm sm:text-base break-words">
               {{ complex?.region?.name }}, {{ complex?.district?.name }}
             </span>
           </div>
-          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
-            <span class="font-semibold">Ориентир</span>
-            <span class="text-gray-300">
+
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-700"
+          >
+            <span class="font-semibold text-sm sm:text-base">Ориентир</span>
+            <span class="text-gray-300 text-sm sm:text-base break-words">
               {{ complex?.address || "Не указано" }}
             </span>
           </div>
 
-          <div class="flex justify-between px-6 py-4 border-b border-gray-700">
-            <span class="font-semibold">Ориентир</span>
-            <span class="text-gray-300">
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-700"
+          >
+            <span class="font-semibold text-sm sm:text-base">Телефон</span>
+            <span class="text-gray-300 text-sm sm:text-base break-words">
               {{ complex?.phone_number || "Не указано" }}
             </span>
           </div>
 
-          <div class="flex justify-between px-6 py-4">
-            <span class="font-semibold">Спорт</span>
-            <div class="flex gap-2">
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 px-4 sm:px-6 py-3 sm:py-4"
+          >
+            <span class="font-semibold text-sm sm:text-base">Спорт</span>
+            <div class="flex flex-wrap gap-2 mt-1 sm:mt-0 justify-start sm:justify-end">
               <div
                 v-for="sport in complex?.sports"
                 :key="sport.id"
-                class="px-3 py-1 bg-gray-700 text-gray-200 text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
+                class="px-3 py-1 bg-gray-700 text-gray-200 text-xs sm:text-sm rounded-full hover:bg-indigo-600 transition-colors cursor-default"
               >
                 {{ sport.name }}
               </div>
@@ -149,7 +168,7 @@
                 access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
                 style="height: 500px"
                 map-style="mapbox://styles/mapbox/streets-v11"
-                :center="center"
+                :center="[complex?.longitude ?? 69.2401, complex?.latitude ?? 41.2995]"
                 :zoom="9"
               >
                 <MapboxMarker :lng-lat="[complex?.longitude, complex?.latitude]" />
@@ -283,7 +302,6 @@ import { ChevronRight, MapPin, Star } from "lucide-vue-next";
 const route = useRoute();
 const id = route.params.id;
 const complex = ref(null);
-const center = ref([69.279737, 41.311151]);
 const complexes = ref([]);
 
 const filteredImages = computed(() =>

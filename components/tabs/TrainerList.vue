@@ -92,7 +92,16 @@
             </td>
             <td class="px-4 py-3">{{ coach.birth_date || "-" }}</td>
             <td class="px-4 py-3">{{ coach.region?.name || "-" }}</td>
-            <td class="px-4 py-3">{{ coach.gender }}</td>
+            <td class="px-4 py-3 text-sm">
+              {{
+                coach.gender === "male"
+                  ? "Мужчина"
+                  : coach.gender === "female"
+                  ? "Женщина"
+                  : "-"
+              }}
+            </td>
+
             <td class="px-4 py-3">{{ coach.phone_number }}</td>
             <td class="px-4 py-3">{{ coach.sport?.name }}</td>
             <td class="px-4 py-3">

@@ -3,10 +3,11 @@
     <div class="min-h-screen bg-[#11101B] text-white p-4 md:p-6 font-sans">
       <div class="sm:container mx-auto">
         <header
-          class="rounded-lg border !border-[#11101B] p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center justify-between w-full mx-auto"
+          class="rounded-lg border !border-[#11101B] bg-[#11101B]/50 p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center md:items-start justify-between w-full mx-auto gap-6 md:gap-8"
         >
+          <!-- Profile image -->
           <div
-            class="relative w-36 h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer mb-10 md:mb-0 group order-1 md:order-2"
+            class="relative w-28 h-28 sm:w-36 sm:h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer group order-1 md:order-2 mx-auto md:mx-0"
           >
             <img
               @click.stop="clickImg"
@@ -15,16 +16,17 @@
                 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
               "
               alt="Profile Picture"
-              class="rounded-full object-cover w-full h-full"
+              class="rounded-full object-cover w-full h-full shadow-md"
             />
 
+            <!-- Camera button -->
             <div
               @click.stop="clickImg"
-              class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
+              class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
+                class="w-4 h-4 sm:w-5 sm:h-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -46,19 +48,21 @@
             </div>
           </div>
 
+          <!-- User info -->
           <div
-            class="flex flex-col md:flex-row items-start md:items-center w-full order-2 md:order-1"
+            class="flex flex-col items-center md:items-start text-center md:text-left order-2 md:order-1 w-full"
           >
-            <div class="flex flex-col md:mr-6 w-full">
+            <div class="flex flex-col w-full">
+              <!-- Name -->
               <h1
-                class="text-2xl md:text-5xl font-bold mb-2 flex flex-wrap items-center relative"
+                class="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 flex flex-wrap items-center justify-center md:justify-start"
               >
-                <div class="flex">
+                <span>
                   {{ authStore.userProfile?.data?.first_name }}
                   {{ authStore.userProfile?.data?.last_name }}
-                </div>
+                </span>
                 <img
-                  class="flex w-6 h-6 mb-4"
+                  class="w-5 h-5 sm:w-6 sm:h-6 ml-2"
                   :src="
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                       ? '/verified.png'
@@ -67,21 +71,25 @@
                   alt="verify"
                 />
               </h1>
-              <div class="flex flex-wrap gap-2">
+
+              <!-- Badges -->
+              <div class="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3">
                 <span
-                  class="bg-[#A0E727] uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+                  class="bg-[#A0E727] uppercase text-white text-xs sm:text-sm px-3 py-1 rounded-full flex items-center"
                 >
                   {{ authStore.userProfile?.data?.user_role }}
                 </span>
+
                 <span
-                  class="bg-[#FFFFFF29]/50 uppercase text-white text-sm px-3 py-1 rounded-full flex items-center"
+                  class="bg-[#FFFFFF29]/50 uppercase text-white text-xs sm:text-sm px-3 py-1 rounded-full flex items-center"
                 >
                   {{ authStore.userProfile?.data?.sportsman_profile?.sport_rank }}
                 </span>
+
                 <span
-                  class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
+                  class="bg-[#E7273D]/50 text-white text-xs sm:text-sm px-3 py-1 rounded-full flex items-center"
                 >
-                  {{ authStore.userProfile?.data?.sportsman_profile?.points }} oчки
+                  {{ authStore.userProfile?.data?.sportsman_profile?.points }} очки
                 </span>
               </div>
             </div>
@@ -461,11 +469,11 @@
                       v-model="formData.sport_rank"
                       class="bg-[#3A3A5A] border !h-12 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
                     >
-                      <option value="">Выберите razzryad</option>
+                      <option value="">Razzryad-ni tanlang</option>
                       <option
                         v-for="rank in sportRanks"
                         :key="rank.value"
-                        :value="rank.label"
+                        :value="rank.key"
                       >
                         {{ rank.label }}
                       </option>
@@ -626,15 +634,23 @@ const createCheckout = async (method) => {
   }
 };
 
-// const activeTab = ref("info");
 const sportRanks = ref([
-  { value: "YOUTH_3", label: "Youth Third Rank" },
-  { value: "YOUTH_2", label: "Youth Second Rank" },
-  { value: "YOUTH_1", label: "Youth First Rank" },
-  { value: "ADULT_3", label: "Adult Third Rank" },
-  { value: "ADULT_2", label: "Adult Second Rank" },
-  { value: "ADULT_1", label: "Adult First Rank" },
-  { value: "CANDIDATE", label: "Candidate for Master of Sport" },
+  { value: "YOUTH_3", label: "Yoshlar uchinchi darajali", key: "Youth Third Rank" },
+  { value: "YOUTH_2", label: "Yoshlar ikkinchi darajali", key: "Youth Second Rank" },
+  { value: "YOUTH_1", label: "Yoshlar birinchi darajali", key: "Youth First Rank" },
+  { value: "ADULT_3", label: "Kattalar uchun uchinchi daraja", key: "Adult Third Rank" },
+  { value: "ADULT_2", label: "Kattalar uchun ikkinchi daraja", key: "Adult Second Rank" },
+  { value: "ADULT_1", label: "Kattalar uchun birinchi daraja", key: "Adult First Rank" },
+  {
+    value: "CANDIDATE",
+    label: "Sport ustasi",
+    key: "Candidate for Master of Sport",
+  },
+  {
+    value: "MASTER_OF_SPORT",
+    label: "Sport ustasi",
+    key: "Master of Sport",
+  },
 ]);
 const federation = computed(
   () => authStore.userProfile?.data?.sportsman_profile?.federation?.name ?? ""

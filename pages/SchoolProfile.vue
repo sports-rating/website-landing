@@ -15,7 +15,7 @@
           </h1>
 
           <p class="text-lg md:text-2xl font-bold">
-            Управляющий федереции:
+            Директор Спортивного Учреждения:
             {{ authStore.userProfile?.data?.first_name }}
             {{ authStore.userProfile?.data?.last_name }}
           </p>

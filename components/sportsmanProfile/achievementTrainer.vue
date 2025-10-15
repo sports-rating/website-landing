@@ -1,11 +1,14 @@
 <template>
   <div class="text-white">
-    <div class="flex justify-between items-center mb-6">
-      <div class="flex space-x-8">
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 w-full"
+    >
+      <!-- Tabs -->
+      <div class="flex flex-col sm:flex-row sm:space-x-8 w-full sm:w-auto text-center">
         <button
           @click="activeTab = 'pending'"
           :class="[
-            'transition-colors',
+            'transition-colors w-full sm:w-auto py-2',
             activeTab === 'pending'
               ? 'text-white border-b-2 border-red-500 pb-1'
               : 'text-gray-400 hover:text-white',
@@ -13,10 +16,11 @@
         >
           Ожидающие запросы
         </button>
+
         <button
           @click="activeTab = 'verified'"
           :class="[
-            'transition-colors',
+            'transition-colors w-full sm:w-auto py-2',
             activeTab === 'verified'
               ? 'text-white border-b-2 border-red-500 pb-1'
               : 'text-gray-400 hover:text-white',
@@ -25,10 +29,15 @@
           Подтвержденные pабочее место
         </button>
       </div>
-      <div v-if="activeTab === 'pending'">
+
+      <!-- Filter -->
+      <div
+        v-if="activeTab === 'pending'"
+        class="w-full sm:w-auto flex justify-start sm:justify-end"
+      >
         <select
           v-model="statusFilter"
-          class="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600"
+          class="bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600 w-full sm:w-auto"
         >
           <option value="">Вce</option>
           <option value="pending">В обработке</option>
@@ -96,13 +105,13 @@
               @click="viewItem(achievement.id)"
               class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/Eye.svg" alt="eyes" class="w-4" />
+              <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
             </button>
             <button
               @click="deleteItem(achievement.id)"
               class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/delete.svg" alt="x" class="w-4" />
+              <img src="/delete.svg" alt="x" class="sm:!w-4 w-6" />
             </button>
           </div>
         </div>
@@ -147,13 +156,13 @@
               @click="viewItemm(achievement.id)"
               class="p-2 bg-gray-600 hover:bg-gray-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/Eye.svg" alt="eyes" class="w-4" />
+              <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
             </button>
             <button
               @click="cancelRequest(achievement.id)"
               class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
-              <img src="/e-clos.png" alt="x" class="w-4" />
+              <img src="/e-clos.png" alt="x" class="sm:!w-4 w-6" />
             </button>
           </div>
         </div>
@@ -171,11 +180,16 @@
 
     <div
       v-if="showModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
     >
-      <div class="bg-gray-800 rounded-lg p-6 w-full max-w-lg mx-4">
+      <div
+        class="bg-gray-800 rounded-xl p-4 sm:p-6 w-full max-w-lg mx-auto overflow-y-auto max-h-[95vh]"
+      >
+        <!-- Header -->
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-semibold">
+          <h2
+            class="text-lg sm:text-xl font-semibold text-white text-center sm:text-left"
+          >
             {{ isEditing ? "Редактировать pабочее место" : "Добавить pабочее место" }}
           </h2>
           <button @click="resetForm" class="text-gray-400 hover:text-white">
@@ -190,8 +204,10 @@
           </button>
         </div>
 
+        <!-- Form -->
         <form class="space-y-4">
-          <div class="flex gap-2 w-full">
+          <!-- 1-qator -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block text-sm font-medium text-gray-300 mb-1"
                 >Название Спорт</label
@@ -208,13 +224,11 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                >
-                  {{ item.name }}
-                </el-option>
+                />
               </el-select>
             </div>
 
-            <div class="flex flex-col">
+            <div>
               <label for="region" class="text-sm text-gray-300 mb-1"
                 >Область / Город</label
               >
@@ -224,48 +238,45 @@
                 clearable
                 placeholder="Выберите город"
                 @change="onRegionChange"
-                class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
               >
                 <el-option
                   v-for="region in regions"
                   :key="region.id"
                   :label="region.name"
                   :value="region.id"
-                >
-                  {{ region.name }}
-                </el-option>
+                />
               </el-select>
             </div>
           </div>
 
-          <div class="flex gap-2 w-full">
-            <div class="flex flex-col">
-              <label for="district" class="text-sm text-gray-300 mb-1">Улица </label>
+          <!-- 2-qator -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="district" class="text-sm text-gray-300 mb-1">Улица</label>
               <el-select
                 v-model="form.district"
                 filterable
                 clearable
                 placeholder="Выберите Улица"
-                class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
               >
                 <el-option
                   v-for="district in filteredDistricts"
                   :key="district.id"
                   :label="district.name"
                   :value="district.id"
-                >
-                  {{ district.name }}
-                </el-option>
+                />
               </el-select>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Название schools</label
+                >Название Schools</label
               >
               <el-select
                 v-model="form.sport_institution"
-                placeholder="Выберите schools"
+                placeholder="Выберите Schools"
                 filterable
                 clearable
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
@@ -275,20 +286,19 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                >
-                  {{ item.name }}
-                </el-option>
+                />
               </el-select>
             </div>
           </div>
 
+          <!-- 3-qator -->
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"> Ставка </label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Ставка</label>
             <el-select
               v-model="form.workload"
               placeholder="Выберите ставку"
               clearable
-              class="!w-[97%] bg-gray-700 border border-gray-600 rounded-lg text-white"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
             >
               <el-option label="0.25" :value="0.25" />
               <el-option label="0.5" :value="0.5" />
@@ -296,68 +306,69 @@
             </el-select>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
+          <!-- 4-qator (start dates) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Год начала
-              </label>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Год начала</label
+              >
               <el-date-picker
                 v-model="form.start_year"
                 type="year"
                 placeholder="Выберите год"
-                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+                class="sm:!w-full !w-[21rem] bg-gray-700 border border-gray-600 rounded-lg text-white"
               />
             </div>
-
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Месяц начала
-              </label>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Месяц начала</label
+              >
               <el-date-picker
                 v-model="form.start_month"
                 type="month"
                 placeholder="Выберите месяц"
-                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+                class="sm:!w-full !w-[21rem] bg-gray-700 border border-gray-600 rounded-lg text-white"
               />
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
+          <!-- 5-qator (end dates) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Год окончания
-              </label>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Год окончания</label
+              >
               <el-date-picker
                 v-model="form.end_year"
                 type="year"
                 placeholder="Выберите год"
-                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+                class="sm:!w-full !w-[21rem] bg-gray-700 border border-gray-600 rounded-lg text-white"
               />
             </div>
-
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Месяц окончания
-              </label>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Месяц окончания</label
+              >
               <el-date-picker
                 v-model="form.end_month"
                 type="month"
                 placeholder="Выберите месяц"
-                class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
+                class="sm:!w-full !w-[21rem] bg-gray-700 border border-gray-600 rounded-lg text-white"
               />
             </div>
           </div>
 
+          <!-- Submit button -->
           <el-button
             type="submit"
             @click="submitForm"
             :class="
               isChanged
-                ? '!bg-red-600 hover:!bg-red-500'
-                : '!bg-gray-400 !cursor-not-allowed'
+                ? '!bg-red-600 hover:!bg-red-500 !text-white '
+                : '!bg-gray-400 !cursor-not-allowed !text-black'
             "
             :disabled="!isChanged"
-            class="!w-[98%] mt-6 px-6 py-3 !bg-red-600 hover:!bg-red-500 !text-white rounded-lg !border-none"
+            class="w-full mt-6 py-3 rounded-lg !border-none"
           >
             {{ isEditing ? "Сохранить изменения" : "Отправить на подтверждение" }}
           </el-button>

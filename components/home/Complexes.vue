@@ -208,7 +208,7 @@
         v-model="dialogVisible"
         title="Форма заявки"
         width="950px"
-        class="!bg-[#2E2F3E] !text-white"
+        class="!bg-[#2E2F3E] !text-white max-w-[95vw] sm:max-w-[750px] md:max-w-[900px]"
       >
         <el-form
           ref="formRef"
@@ -216,8 +216,10 @@
           :rules="rules"
           label-width="160px"
           label-position="top"
+          class="w-full"
         >
-          <div class="grid grid-cols-4 w-full gap-4">
+          <!-- 1-qator -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-4">
             <el-form-item label="Имя менеджера" prop="manager_first_name">
               <el-input
                 v-model="formData.manager_first_name"
@@ -232,7 +234,7 @@
                 placeholder="Фамилия"
               />
             </el-form-item>
-            <el-form-item label="Телефон менеджера" clearable prop="manager_phone_number">
+            <el-form-item label="Телефон менеджера" prop="manager_phone_number">
               <vue-tel-input
                 v-model="formData.manager_phone_number"
                 :autoFormat="true"
@@ -259,7 +261,9 @@
               />
             </el-form-item>
           </div>
-          <div class="grid grid-cols-4 w-full gap-4">
+
+          <!-- 2-qator -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-4">
             <el-form-item label="Телефон школы" prop="school_phone_number">
               <vue-tel-input
                 v-model="formData.school_phone_number"
@@ -301,7 +305,9 @@
               />
             </el-form-item>
           </div>
-          <div class="grid grid-cols-3 w-full gap-4">
+
+          <!-- 3-qator -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-4">
             <el-form-item label="Регион" prop="school_region">
               <el-select
                 v-model="formData.school_region"
@@ -318,6 +324,7 @@
                 />
               </el-select>
             </el-form-item>
+
             <el-form-item label="Район" prop="school_district">
               <el-select
                 v-model="formData.school_district"
@@ -333,6 +340,7 @@
                 />
               </el-select>
             </el-form-item>
+
             <el-form-item label="Виды спорта" prop="school_sports">
               <el-select
                 v-model="formData.school_sports"
@@ -350,12 +358,15 @@
             </el-form-item>
           </div>
 
-          <div class="col-span-3">
+          <!-- Karta -->
+          <div class="mt-6">
             <label class="block text-sm font-medium text-white">Локация на карте</label>
-            <div class="h-[400px] w-full mt-2 border rounded-lg overflow-hidden">
+            <div
+              class="h-[300px] sm:h-[400px] w-full mt-2 border rounded-lg overflow-hidden"
+            >
               <MapboxMap
                 access-token="pk.eyJ1IjoibXVraGFtbWFkaXJtYXRvdiIsImEiOiJjbHoxNHhmZnkyaXRoMmlxc2ExbWJpYTc1In0.CE43UNvdFFRSiDbgPDNoZQ"
-                style="height: 400px"
+                style="height: 100%"
                 map-style="mapbox://styles/mapbox/streets-v11"
                 :center="center"
                 :zoom="10"
@@ -374,8 +385,9 @@
         </el-form>
 
         <template #footer>
-          <!-- <el-button @click="handleCancel">Отмена</el-button> -->
-          <el-button type="success" @click="submitForm"> Отправить </el-button>
+          <el-button type="success" class="w-full sm:w-auto" @click="submitForm">
+            Отправить
+          </el-button>
         </template>
       </el-dialog>
 
@@ -643,7 +655,6 @@ const getDistricts = async (regionId: any) => {
 
 const onRegionChange = () => {
   const selectedRegionId = formData.value.school_region;
-  console.log(selectedRegionId);
 
   getDistricts(selectedRegionId);
 
@@ -652,7 +663,24 @@ const onRegionChange = () => {
       (district) => district.id === formData.value.school_district?.id
     )
   ) {
-    formData.value.school_district.id;
+    formData.value.school_district = "";
+  }
+
+  const selectedRegion = regions.value.find((region) => region.id === selectedRegionId);
+
+  if (selectedRegion) {
+    formData.value.school_latitude = selectedRegion.latitude;
+    formData.value.school_longitude = selectedRegion.longitude;
+
+    center.value = [selectedRegion.longitude, selectedRegion.latitude];
+
+    if (map.value) {
+      map.value.flyTo({
+        center: [selectedRegion.longitude, selectedRegion.latitude],
+        zoom: 10,
+        essential: true,
+      });
+    }
   }
 };
 
@@ -681,10 +709,10 @@ function resetForm() {
 }
 
 watch(
-  () => formData.value.school_region.region,
-  (newRegion) => {
-    if (newRegion?.id) {
-      getDistricts(newRegion.id);
+  () => formData.value.school_region,
+  (newRegionId) => {
+    if (newRegionId) {
+      getDistricts(newRegionId);
     } else {
       filteredDistricts.value = [];
       formData.value.school_district = null;

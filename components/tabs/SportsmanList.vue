@@ -74,6 +74,7 @@
             <tr>
               <th class="px-4 py-3 text-left text-sm font-medium">№</th>
               <th class="px-4 py-3 text-left text-sm font-medium">Ф.И.О</th>
+              <th class="px-4 py-3 text-left text-sm font-medium">Оплаченный</th>
               <th class="px-4 py-3 text-left text-sm font-medium">Дата рождения</th>
               <th class="px-4 py-3 text-left text-sm font-medium">Регион</th>
               <th class="px-4 py-3 text-left text-sm font-medium">Пол</th>
@@ -92,9 +93,39 @@
               <td class="px-4 py-3 text-sm">
                 <div class="font-medium">{{ coach.full_name }}</div>
               </td>
+              <td class="px-4 py-3 text-sm">
+                <span
+                  v-if="coach.is_result_paid === true"
+                  class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-medium"
+                >
+                  Оплачено
+                </span>
+                <span
+                  v-else-if="coach.is_result_paid === false"
+                  class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium"
+                >
+                  Не оплачено
+                </span>
+                <span
+                  v-else
+                  class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-medium"
+                >
+                  -
+                </span>
+              </td>
+
               <td class="px-4 py-3 text-sm">{{ coach.birth_date || "-" }}</td>
               <td class="px-4 py-3 text-sm">{{ coach.region?.name || "-" }}</td>
-              <td class="px-4 py-3 text-sm">{{ coach.gender }}</td>
+              <td class="px-4 py-3 text-sm">
+                {{
+                  coach.gender === "male"
+                    ? "Мужчина"
+                    : coach.gender === "female"
+                    ? "Женщина"
+                    : "-"
+                }}
+              </td>
+
               <td class="px-4 py-3 text-sm">{{ coach.phone_number }}</td>
               <td class="px-4 py-3 text-sm">{{ coach.sport?.name }}</td>
               <td class="px-4 py-3 text-sm">

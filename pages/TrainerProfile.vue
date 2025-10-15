@@ -112,6 +112,18 @@
           </button>
 
           <button
+            :class="[
+              'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
+              activeTab === 'sportsman'
+                ? 'border-[#E91E63] text-[#E91E63]'
+                : 'text-gray-400 hover:text-white border-transparent',
+            ]"
+            @click="activeTab = 'sportsman'"
+          >
+            Список спортсменов
+          </button>
+
+          <button
             v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
             :class="[
               'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
@@ -545,6 +557,8 @@
         </div>
 
         <RequestsFromAthletes v-if="activeTab === 'requests'" />
+
+        <TrainerSportsmanList v-if="activeTab === 'sportsman'" />
       </div>
     </div>
   </NuxtLayout>
@@ -555,6 +569,7 @@ import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { ElMessage } from "element-plus";
 import RequestsFromAthletes from "~/components/RequestsFromAthletes.vue";
+import TrainerSportsmanList from "~/components/TrainerSportsmanList.vue";
 import { omit } from "lodash-es";
 import achievementTrainer from "~/components/sportsmanProfile/achievementTrainer.vue";
 import TrainerMedia from "~/components/TrainerMedia.vue";
