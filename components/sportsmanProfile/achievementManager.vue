@@ -602,8 +602,11 @@ const handleAgeGroupChange = (id) => {
 const trainerData = ref([]);
 const getTrainer = async () => {
   try {
-    // const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
-    const res = await $api.get(`/user/trainers/?page=1&page_size=1000`);
+    const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
+    const res = await $api.get(
+      `/user/trainers/?page=1&page_size=1000&federation=${federationId}`,
+      {}
+    );
     trainerData.value = res.data.data;
   } catch (e) {
     console.log(e);
