@@ -504,7 +504,7 @@
                       />
                     </div>
                     <div class="flex items-end gap-2 w-full">
-                      <div class="flex flex-col md:w-[90%] w-[80%]">
+                      <div class="flex flex-col w-[100%]">
                         <label for="trainer" class="text-sm text-gray-400 mb-1"
                           >Tренер</label
                         >
@@ -524,18 +524,10 @@
                         </select>
                       </div>
 
-                      <div class="w-12 cursor-pointer" @click="openDialog">
-                        <img
-                          src="/history.png"
-                          class="w-8 h-8 object-cover"
-                          alt="history"
-                        />
-                      </div>
-
                       <el-dialog
                         v-model="dialogVisible"
                         title="Отправленные запросы"
-                        class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
+                        class="md:!w-[500px] !w-[350px] text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm max-w-2xl !border-red-500/30 !bg-slate-900 p-6 max-h-[80vh] overflow-y-auto"
                       >
                         <div v-if="isLoading" class="text-center py-4">
                           <Loading class="w-4 h-4" />
@@ -553,15 +545,15 @@
                               <li
                                 v-for="item in requests"
                                 :key="item.id"
-                                class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
+                                class="text-card-foreground flex-col rounded-xl border shadow-sm border-slate-700/50 bg-slate-800/50 p-4 flex items-start justify-between gap-4"
                               >
                                 <div>
-                                  <p class="text-sm text-gray-700 mb-1">
+                                  <p class="text-sm text-white mb-1">
                                     <strong>Имя Отправителя:</strong>
                                     {{ item.receiver.full_name }}
                                   </p>
                                   <p
-                                    class="text-sm text-gray-700 mb-1 flex items-center gap-2"
+                                    class="text-sm text-white mb-1 flex items-center gap-2"
                                   >
                                     <strong>Статус:</strong>
                                     <el-tag
@@ -574,7 +566,7 @@
                                       {{ item.status }}
                                     </el-tag>
                                   </p>
-                                  <p class="text-sm text-gray-700">
+                                  <p class="text-sm text-white">
                                     <strong>Созданный:</strong>
                                     {{ formatDate(item.created_time) }}
                                   </p>
@@ -640,6 +632,28 @@
                 >
                   Отправить на одобрение
                 </button>
+
+                <div
+                  @click="openDialog"
+                  class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border shadow-xs hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 border-red-500/30 text-red-300 hover:bg-red-950/20 bg-transparent ml-auto"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-history w-4 h-4 mr-2"
+                  >
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                    <path d="M12 7v5l4 2"></path></svg
+                  >История запросов
+                </div>
               </div>
             </form>
 
