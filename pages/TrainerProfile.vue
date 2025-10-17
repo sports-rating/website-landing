@@ -635,7 +635,7 @@ if (formData.value.sport) {
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
-    regions.value = res.data.data;
+    regions.value = res.data.data.map(({ id, name }) => ({ id, name }));
   } catch (err) {
     console.error("Regions yuklashda xatolik:", err);
   }

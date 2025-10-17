@@ -213,295 +213,432 @@
               @submit.prevent="handleSubmit"
             >
               <div>
-                <h2 class="text-xl font-semibold mb-4">Личная информация</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="name" class="text-sm text-gray-400 mb-1">Имя</label>
-                    <input
-                      type="text"
-                      id="name"
-                      v-model="formData.firstName"
-                      placeholder="Имя"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="surname" class="text-sm text-gray-400 mb-1"
-                      >Фамилия</label
+                <div class="flex items-center gap-3 mb-4">
+                  <h2 class="text-2xl font-bold text-white">Личная информация</h2>
+                  <div
+                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-circle-check w-4 h-4 text-green-400"
                     >
-                    <input
-                      type="text"
-                      id="surname"
-                      v-model="formData.lastName"
-                      placeholder="Фамилия"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                    <span class="text-xs font-medium text-green-300">Автосохранение</span>
                   </div>
-                  <div class="flex flex-col">
-                    <label for="patronymic" class="text-sm text-gray-400 mb-1"
-                      >Отчество</label
-                    >
-                    <input
-                      type="text"
-                      id="patronymic"
-                      v-model="formData.middleName"
-                      placeholder="Отчество"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="dob" class="text-sm text-gray-400 mb-1"
-                      >Дата рождения</label
-                    >
-                    <div class="relative w-full">
+                </div>
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
+                >
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >Имя</label
+                      ><input
+                        v-model="formData.firstName"
+                        type="text"
+                        id="name"
+                        data-slot="input"
+                        placeholder="Имя"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="surname"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >Фамилия</label
+                      ><input
+                        type="text"
+                        id="surname"
+                        v-model="formData.lastName"
+                        data-slot="input"
+                        placeholder="Фамилия"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="patronymic"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >Отчество</label
+                      ><input
+                        type="text"
+                        id="patronymic"
+                        v-model="formData.middleName"
+                        placeholder="Отчество"
+                        data-slot="input"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="dob"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >Дата рождения</label
+                      >
+
                       <el-input
                         type="date"
                         id="dob"
                         v-model="formData.birthDate"
-                        class="!bg-[#3A3A5A] !border !border-[#4A4A6A] !rounded-md text-white md:!w-full !h-[50px] !w-[95%] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive !bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
-                  </div>
-                  <div class="flex items-center col-span-2">
-                    <label class="text-sm text-gray-400 mr-4">Пол</label>
-                    <div class="flex items-center mr-6">
-                      <input
-                        type="radio"
-                        id="male"
-                        value="male"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="male" class="ml-2 text-white">Мужчина</label>
-                    </div>
-                    <div class="flex items-center">
-                      <input
-                        type="radio"
-                        id="female"
-                        value="female"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="female" class="ml-2 text-white">Женщина</label>
+                    <div class="flex !flex-row items-center">
+                      <label class="text-sm text-gray-400 mr-4">Пол</label>
+                      <div class="flex items-center mr-6">
+                        <input
+                          type="radio"
+                          id="male"
+                          value="male"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="male" class="ml-2 text-white">Мужчина</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          type="radio"
+                          id="female"
+                          value="female"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="female" class="ml-2 text-white">Женщина</label>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="region" class="text-sm text-gray-400 mb-1"
-                      >Область / Город</label
+                <div class="flex items-center gap-3 mb-4">
+                  <h2 class="text-2xl font-bold text-white">Фактический адрес</h2>
+                  <div
+                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-circle-check w-4 h-4 text-green-400"
                     >
-                    <select
-                      id="region"
-                      v-model="formData.region"
-                      @change="onRegionChange"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите город</option>
-                      <option v-for="region in regions" :key="region.id" :value="region">
-                        {{ region.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="district" class="text-sm text-gray-400 mb-1"
-                      >Улица
-                    </label>
-                    <select
-                      id="district"
-                      v-model="formData.district"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Улица</option>
-                      <option
-                        v-for="district in filteredDistricts"
-                        :key="district.id"
-                        :value="district"
-                      >
-                        {{ district.name }}
-                      </option>
-                    </select>
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                    <span class="text-xs font-medium text-green-300">Автосохранение</span>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Спортивные данные</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="athleteType" class="text-sm text-gray-400 mb-1"
-                      >Вид спортсмена</label
-                    >
-                    <select
-                      id="athleteType"
-                      v-model="formData.sport"
-                      class="bg-[#3A3A5A] border !h-11 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Вид спортсмена</option>
-                      <option v-for="item in data" :value="item.id">
-                        {{ item.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="height" class="text-sm text-gray-400 mb-1"
-                      >Рост (см)</label
-                    >
-                    <input
-                      type="number"
-                      id="height"
-                      v-model="formData.height"
-                      step="0.1"
-                      placeholder="Рост (см)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="weight" class="text-sm text-gray-400 mb-1"
-                      >Вес (кг)</label
-                    >
-                    <input
-                      type="number"
-                      id="weight"
-                      step="0.1"
-                      v-model="formData.weight"
-                      placeholder="Вес (кг)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex items-end gap-2 w-full">
-                    <div class="flex flex-col md:w-[90%] w-[80%]">
-                      <label for="trainer" class="text-sm text-gray-400 mb-1"
-                        >Tренер</label
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
+                >
+                  <div class="grid grid-cols-1 md:!grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                      <label for="region" class="text-sm text-gray-400 mb-1"
+                        >Область / Город</label
                       >
                       <select
-                        id="trainer"
-                        v-model="formData.trainer"
-                        class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        id="region"
+                        v-model="formData.region"
+                        @change="onRegionChange"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       >
-                        <option value="">Выберите тренер</option>
+                        <option value="">Выберите город {{ formData.region }}</option>
                         <option
-                          v-for="item in dataTrainer"
-                          :key="item.id"
-                          :value="item.id"
+                          v-for="region in regions"
+                          :key="region.id"
+                          :value="region"
                         >
-                          {{ item.full_name }}
+                          {{ region.name }}
                         </option>
                       </select>
                     </div>
 
-                    <div class="w-12 cursor-pointer" @click="openDialog">
-                      <img
-                        src="/history.png"
-                        class="w-8 h-8 object-cover"
-                        alt="history"
-                      />
-                    </div>
-
-                    <el-dialog
-                      v-model="dialogVisible"
-                      title="Отправленные запросы"
-                      class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
-                    >
-                      <div v-if="isLoading" class="text-center py-4">
-                        <Loading class="w-4 h-4" />
-                      </div>
-                      <div v-else>
-                        <el-empty
-                          v-if="requests.length === 0"
-                          description="Запросов не найдено."
-                        />
-                        <div v-else class="max-h-[400px] overflow-y-auto pr-2">
-                          <ul class="space-y-4">
-                            <li
-                              v-for="item in requests"
-                              :key="item.id"
-                              class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
-                            >
-                              <div>
-                                <p class="text-sm text-gray-700 mb-1">
-                                  <strong>Имя Отправителя:</strong>
-                                  {{ item.receiver.full_name }}
-                                </p>
-                                <p
-                                  class="text-sm text-gray-700 mb-1 flex items-center gap-2"
-                                >
-                                  <strong>Статус:</strong>
-                                  <el-tag
-                                    :type="item.status === 'pending' ? 'warning' : 'info'"
-                                    size="small"
-                                    effect="light"
-                                  >
-                                    {{ item.status }}
-                                  </el-tag>
-                                </p>
-                                <p class="text-sm text-gray-700">
-                                  <strong>Созданный:</strong>
-                                  {{ formatDate(item.created_time) }}
-                                </p>
-                              </div>
-                              <div v-if="item.status === 'pending'">
-                                <el-button
-                                  type="danger"
-                                  size="small"
-                                  @click="cancelRequest(item.id)"
-                                >
-                                  Отмена
-                                </el-button>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </el-dialog>
-                  </div>
-
-                  <div class="flex flex-col w-full">
-                    <label for="trainer" class="text-sm text-gray-400 mb-1">Pазряд</label>
-                    <select
-                      id="sport_rank"
-                      v-model="formData.sport_rank"
-                      class="bg-[#3A3A5A] border !h-12 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Razzryad-ni tanlang</option>
-                      <option
-                        v-for="rank in sportRanks"
-                        :key="rank.value"
-                        :value="rank.key"
+                    <div class="flex flex-col">
+                      <label for="district" class="text-sm text-gray-400 mb-1"
+                        >Улица
+                      </label>
+                      <select
+                        id="district"
+                        v-model="formData.district"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       >
-                        {{ rank.label }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="federation" class="text-sm text-gray-400 mb-1"
-                      >Федерация</label
-                    >
-                    <input
-                      type="text"
-                      id="federation"
-                      disabled
-                      v-model="federation"
-                      placeholder="Федерация"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
+                        <option value="">Выберите Улица</option>
+                        <option
+                          v-for="district in filteredDistricts"
+                          :key="district.id"
+                          :value="district"
+                        >
+                          {{ district.name }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="flex md:justify-end justify-center pt-4">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <h2 class="text-2xl font-bold text-white">Спортивные данные</h2>
+                  <div
+                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-clock w-4 h-4 text-amber-400"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline></svg
+                    ><span class="text-xs font-medium text-amber-300"
+                      >Требует одобрения тренера</span
+                    >
+                  </div>
+                </div>
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm mb-4 border-amber-500/40 bg-amber-950/30 p-4 ring-1 ring-amber-500/20"
+                >
+                  <div class="flex gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-circle-alert w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" x2="12" y1="8" y2="12"></line>
+                      <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                    </svg>
+                    <div>
+                      <p class="text-amber-200 font-semibold">
+                        Внимание: Требуется одобрение тренера
+                      </p>
+                      <p class="text-amber-300/90 text-sm mt-1">
+                        Все изменения в этом разделе будут отправлены вашему тренеру на
+                        одобрение. Они вступят в силу только после одобрения.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
+                >
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                      <label for="athleteType" class="text-sm text-gray-400 mb-1"
+                        >Вид спортсмена</label
+                      >
+                      <select
+                        id="athleteType"
+                        v-model="formData.sport"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      >
+                        <option value="">Выберите Вид спортсмена</option>
+                        <option v-for="item in data" :value="item.id">
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="flex flex-col">
+                      <label for="height" class="text-sm text-gray-400 mb-1"
+                        >Рост (см)</label
+                      >
+                      <input
+                        type="number"
+                        id="height"
+                        v-model="formData.height"
+                        step="0.1"
+                        placeholder="Рост (см)"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="weight" class="text-sm text-gray-400 mb-1"
+                        >Вес (кг)</label
+                      >
+                      <input
+                        type="number"
+                        id="weight"
+                        step="0.1"
+                        v-model="formData.weight"
+                        placeholder="Вес (кг)"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                      <div class="flex flex-col md:w-[90%] w-[80%]">
+                        <label for="trainer" class="text-sm text-gray-400 mb-1"
+                          >Tренер</label
+                        >
+                        <select
+                          id="trainer"
+                          v-model="formData.trainer"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">Выберите тренер</option>
+                          <option
+                            v-for="item in dataTrainer"
+                            :key="item.id"
+                            :value="item.id"
+                          >
+                            {{ item.full_name }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="w-12 cursor-pointer" @click="openDialog">
+                        <img
+                          src="/history.png"
+                          class="w-8 h-8 object-cover"
+                          alt="history"
+                        />
+                      </div>
+
+                      <el-dialog
+                        v-model="dialogVisible"
+                        title="Отправленные запросы"
+                        class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
+                      >
+                        <div v-if="isLoading" class="text-center py-4">
+                          <Loading class="w-4 h-4" />
+                        </div>
+                        <div v-else>
+                          <el-empty
+                            v-if="requests.length === 0"
+                            description="Запросов не найдено."
+                          />
+                          <div
+                            v-else
+                            class="max-h-[400px] overflow-y-auto no-scrollbar pr-2"
+                          >
+                            <ul class="space-y-4">
+                              <li
+                                v-for="item in requests"
+                                :key="item.id"
+                                class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
+                              >
+                                <div>
+                                  <p class="text-sm text-gray-700 mb-1">
+                                    <strong>Имя Отправителя:</strong>
+                                    {{ item.receiver.full_name }}
+                                  </p>
+                                  <p
+                                    class="text-sm text-gray-700 mb-1 flex items-center gap-2"
+                                  >
+                                    <strong>Статус:</strong>
+                                    <el-tag
+                                      :type="
+                                        item.status === 'pending' ? 'warning' : 'info'
+                                      "
+                                      size="small"
+                                      effect="light"
+                                    >
+                                      {{ item.status }}
+                                    </el-tag>
+                                  </p>
+                                  <p class="text-sm text-gray-700">
+                                    <strong>Созданный:</strong>
+                                    {{ formatDate(item.created_time) }}
+                                  </p>
+                                </div>
+                                <div v-if="item.status === 'pending'">
+                                  <el-button
+                                    type="danger"
+                                    size="small"
+                                    @click="cancelRequest(item.id)"
+                                  >
+                                    Отмена
+                                  </el-button>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </el-dialog>
+                    </div>
+
+                    <div class="flex flex-col w-full">
+                      <label for="trainer" class="text-sm text-gray-400 mb-1"
+                        >Pазряд</label
+                      >
+                      <select
+                        id="sport_rank"
+                        v-model="formData.sport_rank"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      >
+                        <option value="">Razzryad-ni tanlang</option>
+                        <option
+                          v-for="rank in sportRanks"
+                          :key="rank.value"
+                          :value="rank.key"
+                        >
+                          {{ rank.label }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="flex flex-col">
+                      <label for="federation" class="text-sm text-gray-400 mb-1"
+                        >Федерация</label
+                      >
+                      <input
+                        type="text"
+                        id="federation"
+                        disabled
+                        v-model="federation"
+                        placeholder="Федерация"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex md:justify-end justify-center">
                 <button
                   type="submit"
-                  class="bg-[#E91E63] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#C2185B] transition-colors"
+                  data-slot="button"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                 >
-                  Сохранить данные
+                  Отправить на одобрение
                 </button>
               </div>
             </form>
@@ -726,7 +863,7 @@ await getTrainer();
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
-    regions.value = res.data.data;
+    regions.value = res.data.data.map(({ id, name }) => ({ id, name }));
   } catch (err) {
     console.error("Regions yuklashda xatolik:", err);
   }
@@ -1001,7 +1138,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 </style>
 <style>
 .el-input__wrapper {
-  background-color: #3a3a5a !important;
+  background-color: transparent !important;
   box-shadow: none !important;
 }
 
@@ -1010,5 +1147,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .el-input__inner {
   color: white !important;
+}
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: white !important;
+  border: 1px solid white;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 2px;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* scrollbar-width: thin; */
+  /* margin: inherit; */
+  scroll-margin-block-start: 0;
 }
 </style>

@@ -280,7 +280,7 @@
                 :dropdownOptions="{ showFlags: true }"
                 :onlyCountries="['UZ']"
                 :defaultCountry="'UZ'"
-                class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
+                class="!bg-[#11101B] !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
               />
             </el-form-item>
             <el-form-item label="Директор школы" prop="school_director">
@@ -385,7 +385,10 @@
         </el-form>
 
         <template #footer>
-          <el-button type="success" class="w-full sm:w-auto" @click="submitForm">
+          <el-button
+            class="w-full sm:w-auto !bg-[#E7273D] !border-none !text-white"
+            @click="submitForm"
+          >
             Отправить
           </el-button>
         </template>
@@ -739,15 +742,16 @@ onMounted(() => {
   color: white !important;
 }
 :deep(.el-input__wrapper) {
-  background-color: #2e2f3e !important;
   color: white !important;
-  border: 1px solid white !important;
+  background-color: #11101b !important;
+  box-shadow: none !important;
 }
 :deep(.el-input__inner) {
   color: white !important;
 }
 :deep(.el-select__wrapper) {
-  background-color: #2e2f3e !important;
+  background-color: #11101b !important;
+  box-shadow: none !important;
   color: white !important;
 }
 :deep(.el-select__selected-item .el-select__placeholder) {
@@ -757,11 +761,23 @@ onMounted(() => {
   color: white !important;
 }
 :deep(.vti__input) {
-  background-color: #2e2f3e !important;
+  background-color: #11101b !important;
+  box-shadow: none !important;
+  color: white !important;
+  border: none !important;
+}
+:deep(.vue-tel-input) {
+  background-color: #11101b !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+:deep(.vti__dropdown-item.highlighted) {
+  background-color: #11101b !important;
   color: white !important;
 }
 :deep(.vti__dropdown) {
-  background-color: #2e2f3e !important;
+  background-color: #11101b !important;
+  box-shadow: none !important;
   color: white !important;
 }
 /* Add any component-specific styles here */
