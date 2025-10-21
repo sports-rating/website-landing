@@ -159,7 +159,7 @@
         v-model="dialogVisible"
         title="Детали заявки"
         :before-close="() => (dialogVisible = false)"
-        class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-xl !w-[90%]"
+        class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-3xl !w-[90%]"
       >
         <div
           v-if="selectedRequest"
@@ -170,23 +170,6 @@
             <p>
               <span class="text-gray-400">📅 Дата подачи:</span>
               {{ selectedRequest.created_time }}
-            </p>
-          </div>
-
-          <!-- Receiver -->
-          <div class="pt-2 border-t border-gray-700">
-            <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
-            <p>
-              <span class="text-gray-400">👤 ФИО:</span>
-              {{ selectedRequest.receiver.full_name }}
-            </p>
-            <p>
-              <span class="text-gray-400">📞 Телефон:</span>
-              {{ selectedRequest.receiver.phone_number }}
-            </p>
-            <p>
-              <span class="text-gray-400">🎯 Роль:</span>
-              {{ selectedRequest.receiver.user_role }}
             </p>
           </div>
 
@@ -308,8 +291,69 @@
             </div>
           </div>
 
-          <div v-if="currentTabb.request_type === 'sportsman_result'">
-            <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+          <div v-if="currentTabb.request_type === 'sportsman_result'" class="flex gap-4">
+            <div
+              v-if="
+                selectedRequest?.old_data &&
+                Object.keys(selectedRequest.old_data).length > 0
+              "
+              class="pt-2 border-t border-gray-700"
+            >
+              <h3 class="font-semibold text-purple-400 text-base mb-1">
+                📋 Старый результат
+              </h3>
+
+              <p v-if="selectedRequest.old_data.country">
+                <span class="text-gray-400">⚽ Страна:</span>
+                {{ selectedRequest.old_data.country }}
+              </p>
+              <p v-if="selectedRequest.old_data.tournament">
+                <span class="text-gray-400">📏 Турнир:</span>
+                {{ selectedRequest.old_data.tournament.name }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.age_group?.name">
+                <span class="text-gray-400">👶 Возрастная:</span>
+                {{ selectedRequest.old_data.age_group.name }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.weight">
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{ selectedRequest.old_data.weight }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.year">
+                <span class="text-gray-400">📅 Год:</span>
+                {{ selectedRequest.old_data.year }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.rating">
+                <span class="text-gray-400">⭐ Рейтинг:</span>
+                {{ selectedRequest.old_data.rating }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.score">
+                <span class="text-gray-400">🏆 Счет:</span>
+                {{ selectedRequest.old_data.score }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
+                <span class="text-gray-400">📄 Документ:</span>
+                <img
+                  :src="selectedRequest.old_data.file_url"
+                  alt="viewData.file"
+                  class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                  @click="openImageModal(selectedRequest.old_data.file_url)"
+                />
+              </p>
+            </div>
+            <div
+              v-if="
+                selectedRequest?.new_data &&
+                Object.keys(selectedRequest.new_data).length > 0
+              "
+              class="pt-2 border-t border-gray-700"
+            >
               <h3 class="font-semibold text-purple-400 text-base mb-1">
                 📋 Новые результат
               </h3>
@@ -322,17 +366,39 @@
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.new_data.tournament.name }}
               </p>
+              <p v-if="selectedRequest.new_data.age_group?.name">
+                <span class="text-gray-400">👶 Возрастная:</span>
+                {{ selectedRequest.new_data.age_group.name }}
+              </p>
+
+              <p v-if="selectedRequest.new_data.weight">
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{ selectedRequest.new_data.weight }}
+              </p>
+
               <p v-if="selectedRequest.new_data.year">
-                <span class="text-gray-400">⚖️ Год:</span>
+                <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.new_data.year }}
               </p>
+
               <p v-if="selectedRequest.new_data.rating">
-                <span class="text-gray-400">🥋 Рейтинг:</span>
+                <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.new_data.rating }}
               </p>
+
               <p v-if="selectedRequest.new_data.score">
-                <span class="text-gray-400">🥋 Счет:</span>
+                <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.new_data.score }}
+              </p>
+
+              <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
+                <span class="text-gray-400">📄 Документ:</span>
+                <img
+                  :src="selectedRequest.new_data.file_url"
+                  alt="viewData.file"
+                  class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                  @click="openImageModal(selectedRequest.new_data.file_url)"
+                />
               </p>
             </div>
           </div>
@@ -365,6 +431,28 @@
 
         <!-- Loading -->
         <div v-else class="text-center py-8 text-gray-300 text-sm">⏳ Загрузка...</div>
+      </el-dialog>
+
+      <el-dialog
+        v-model="showImageModal"
+        width="80vw"
+        align-center
+        class="flex justify-center items-center !bg-transparent"
+        :show-close="false"
+      >
+        <div class="relative">
+          <img
+            :src="previewImage"
+            alt="Fullscreen Image"
+            class="max-h-[80vh] max-w-[80vw] object-contain rounded-lg"
+          />
+          <button
+            @click="showImageModal = false"
+            class="absolute top-2 right-2 bg-black/60 text-white px-3 py-1 rounded-lg hover:bg-black/80"
+          >
+            ✕
+          </button>
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -516,6 +604,14 @@ const changePage = (page) => {
     currentPage.value = page;
     window.scrollTo(0, 0);
   }
+};
+
+const showImageModal = ref(false);
+const previewImage = ref(null);
+
+const openImageModal = (url) => {
+  previewImage.value = url;
+  showImageModal.value = true;
 };
 </script>
 

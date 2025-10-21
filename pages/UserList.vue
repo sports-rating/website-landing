@@ -224,11 +224,14 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (id: number) => {
+const getData = async (id?: number) => {
   try {
-    const res = await $api.get(
-      `/user/profile/sportsman/?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
-    );
+    const baseUrl = `/user/profile/sportsman/`;
+    const queryParams = id
+      ? `?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
+      : `?page=${currentPagePlayers.value}&page_size=${pageSize.value}`;
+
+    const res = await $api.get(baseUrl + queryParams);
     count.value = res.data.data.count;
     data.value = res.data.data.data;
   } catch (e) {
@@ -248,10 +251,6 @@ const getSport = async () => {
   try {
     const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
-
-    if (!sportStore.activeCategory && sports.value.length > 0) {
-      sportStore.activeCategory = sports.value[0].id;
-    }
   } catch (e) {
     console.log(e);
   }
@@ -259,7 +258,7 @@ const getSport = async () => {
 
 onMounted(async () => {
   await getSport();
-
+  getData();
   if (sportStore.activeCategory) {
     toggle(sportStore.activeCategory);
   }

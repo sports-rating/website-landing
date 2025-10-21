@@ -213,33 +213,36 @@
               @submit.prevent="handleSubmit"
             >
               <div>
-                <div class="flex items-center gap-3 mb-4">
-                  <h2 class="text-2xl font-bold text-white">Личная информация</h2>
-                  <div
-                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-circle-check w-4 h-4 text-green-400"
-                    >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span class="text-xs font-medium text-green-300">Автосохранение</span>
-                  </div>
-                </div>
                 <div
                   data-slot="card"
                   class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
                 >
+                  <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold text-white">Личная информация</h2>
+                    <div
+                      class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-circle-check w-4 h-4 text-green-400"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m9 12 2 2 4-4"></path>
+                      </svg>
+                      <span class="text-xs font-medium text-green-300"
+                        >Автосохранение</span
+                      >
+                    </div>
+                  </div>
+
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label
@@ -321,84 +324,96 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div>
-                <div class="flex items-center gap-3 mb-4">
-                  <h2 class="text-2xl font-bold text-white">Фактический адрес</h2>
-                  <div
-                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-circle-check w-4 h-4 text-green-400"
+                  <div class="mt-10">
+                    <div class="flex items-center gap-3 mb-4">
+                      <h2 class="text-2xl font-bold text-white">Фактический адрес</h2>
+                      <div
+                        class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-circle-check w-4 h-4 text-green-400"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                        <span class="text-xs font-medium text-green-300"
+                          >Автосохранение</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:!grid-cols-2 gap-6">
+                      <div class="flex flex-col">
+                        <label for="region" class="text-sm text-gray-400 mb-2"
+                          >Область / Город</label
+                        >
+                        <select
+                          id="region"
+                          v-model="formData.region"
+                          @change="onRegionChange"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">Выберите город {{ formData.region }}</option>
+                          <option
+                            v-for="region in regions"
+                            :key="region.id"
+                            :value="region"
+                          >
+                            {{ region.name }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="flex flex-col">
+                        <label for="district" class="text-sm text-gray-400 mb-2"
+                          >Улица
+                        </label>
+                        <select
+                          id="district"
+                          v-model="formData.district"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">Выберите Улица</option>
+                          <option
+                            v-for="district in filteredDistricts"
+                            :key="district.id"
+                            :value="district"
+                          >
+                            {{ district.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex md:justify-end justify-center">
+                    <button
+                      type="submit"
+                      data-slot="button"
+                      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                     >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span class="text-xs font-medium text-green-300">Автосохранение</span>
-                  </div>
-                </div>
-
-                <div
-                  data-slot="card"
-                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
-                >
-                  <div class="grid grid-cols-1 md:!grid-cols-2 gap-6">
-                    <div class="flex flex-col">
-                      <label for="region" class="text-sm text-gray-400 mb-1"
-                        >Область / Город</label
-                      >
-                      <select
-                        id="region"
-                        v-model="formData.region"
-                        @change="onRegionChange"
-                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
-                      >
-                        <option value="">Выберите город {{ formData.region }}</option>
-                        <option
-                          v-for="region in regions"
-                          :key="region.id"
-                          :value="region"
-                        >
-                          {{ region.name }}
-                        </option>
-                      </select>
-                    </div>
-
-                    <div class="flex flex-col">
-                      <label for="district" class="text-sm text-gray-400 mb-1"
-                        >Улица
-                      </label>
-                      <select
-                        id="district"
-                        v-model="formData.district"
-                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
-                      >
-                        <option value="">Выберите Улица</option>
-                        <option
-                          v-for="district in filteredDistricts"
-                          :key="district.id"
-                          :value="district"
-                        >
-                          {{ district.name }}
-                        </option>
-                      </select>
-                    </div>
+                      Сохранять
+                    </button>
                   </div>
                 </div>
               </div>
+            </form>
 
-              <div>
+            <form
+              v-if="activeTab === 'info'"
+              class="space-y-8"
+              @submit.prevent="handleSubmitt"
+            >
+              <div class="mt-12">
                 <div class="flex items-center gap-3 mb-4">
                   <h2 class="text-2xl font-bold text-white">Спортивные данные</h2>
                   <div
@@ -919,14 +934,6 @@ const handleSubmit = async () => {
       gender: formData.value.gender,
       region: formData.value.region?.id || null,
       district: formData.value.district?.id || null,
-      sportsman_profile: {
-        sport_id: formData.value.sport,
-        trainer_id: formData.value.trainer,
-        sport_rank: formData.value.sport_rank,
-        height: String(formData.value.height),
-        weight: String(formData.value.weight),
-        send_request: true,
-      },
     };
 
     if (uploadedImageId.value) {
@@ -985,6 +992,67 @@ const handleSubmit = async () => {
   }
 };
 
+const handleSubmitt = async () => {
+  try {
+    const payload = {
+      sportsman_profile: {
+        sport_id: formData.value.sport,
+        trainer_id: formData.value.trainer,
+        sport_rank: formData.value.sport_rank,
+        height: String(formData.value.height),
+        weight: String(formData.value.weight),
+        send_request: true,
+      },
+    };
+    await $api.patch("/user/profile/", payload);
+
+    await authStore.fetchUserProfile();
+
+    ElMessage({
+      message: "Профиль успешно обновлен",
+      type: "success",
+      duration: 3000,
+    });
+  } catch (error) {
+    console.error("Ошибка при обновлении профиля:", error);
+
+    let message = "Произошла ошибка при обновлении профиля.";
+
+    if (error.response?.data) {
+      const errors = error.response.data;
+
+      if (typeof errors.message === "string") {
+        message = errors.message;
+      } else {
+        const allErrors = [];
+
+        for (const key in errors) {
+          const value = errors[key];
+          if (Array.isArray(value)) {
+            allErrors.push(...value);
+          } else if (typeof value === "object" && value !== null) {
+            for (const nestedKey in value) {
+              const nestedVal = value[nestedKey];
+              if (Array.isArray(nestedVal)) {
+                allErrors.push(...nestedVal);
+              }
+            }
+          }
+        }
+
+        if (allErrors.length) {
+          message = allErrors.join("\n");
+        }
+      }
+    }
+
+    ElMessage({
+      message,
+      type: "error",
+      duration: 4000,
+    });
+  }
+};
 const clickImg = () => {
   if (isDialogOpen) return;
   isDialogOpen = true;

@@ -106,6 +106,13 @@
             >
               <img src="/delete.svg" alt="x" class="sm:!w-4 w-6" />
             </button>
+
+            <button
+              @click="updateItem(achievement.id)"
+              class="p-2 bg-gray-200 hover:bg-gray-400 rounded transition-colors w-8 h-8 flex justify-center items-center"
+            >
+              <img src="/pen.png" alt="x" class="sm:!w-4 w-6" />
+            </button>
           </div>
         </div>
 
@@ -150,6 +157,7 @@
               <img src="/Eye.svg" alt="eyes" class="sm:!w-4 w-6" />
             </button>
             <button
+              v-if="achievement?.status === 'pending'"
               @click="cancelRequest(achievement.id)"
               class="p-2 bg-red-600 hover:bg-red-500 rounded transition-colors w-8 h-8 flex justify-center items-center"
             >
@@ -162,7 +170,13 @@
 
     <div class="flex justify-end mt-6" v-if="activeTab === 'pending'">
       <button
-        @click="showModal = true"
+        @click="
+          () => {
+            showModal = true;
+            isEditing = false;
+            resetForm();
+          }
+        "
         class="px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
       >
         Добавить новую Достижение
@@ -312,7 +326,7 @@
           </div>
 
           <!-- Year -->
-          <div class="w-full">
+          <div class="flex-1">
             <label class="block text-sm font-medium text-gray-300 mb-2">Год</label>
             <el-date-picker
               v-model="form.year"
@@ -321,6 +335,37 @@
               placeholder="Выберите год"
               class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
             />
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Загрузите изображение или файл</label
+              >
+              <el-upload
+                class="upload-demo w-full"
+                action="#"
+                :auto-upload="false"
+                :limit="1"
+                :on-change="handleFileChange"
+                :file-list="fileList"
+                :on-remove="handleRemove"
+                accept="image/*"
+                drag
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text text-gray-300">
+                  Перетащите файл сюда или <em>выбирать</em>
+                </div>
+              </el-upload>
+
+              <div v-if="previewUrl" class="mt-3">
+                <img
+                  :src="previewUrl"
+                  alt="Preview"
+                  class="w-40 h-40 object-cover rounded-lg border border-gray-600"
+                />
+              </div>
+            </div>
           </div>
 
           <div class="w-full mx-auto flex justify-center">
@@ -409,6 +454,21 @@
             <span class="text-gray-500">📅 Год:</span>
             <p class="font-medium">{{ viewData.year }}</p>
           </div>
+
+          <!-- Image -->
+          <div
+            v-if="viewData.file !== null && viewData.file"
+            class="flex items-center gap-3"
+          >
+            <span class="text-gray-500">📄 Документ:</span>
+
+            <img
+              :src="viewData.file"
+              alt="viewData.file"
+              class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+              @click="openImageModal(viewData.file)"
+            />
+          </div>
         </div>
 
         <!-- Score -->
@@ -494,6 +554,21 @@
             <span class="text-gray-500">📅 Год:</span>
             <p class="font-medium">{{ viewDataa.new_data?.year }}</p>
           </div>
+
+          <!-- Image -->
+          <div
+            v-if="viewDataa.new_data?.file_url !== null && viewDataa.new_data?.file_url"
+            class="flex items-center gap-3"
+          >
+            <span class="text-gray-500">📄 Документ:</span>
+
+            <img
+              :src="viewDataa.new_data?.file_url"
+              alt="viewData.file"
+              class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+              @click="openImageModal(viewDataa.new_data?.file_url)"
+            />
+          </div>
         </div>
 
         <!-- Score -->
@@ -505,6 +580,28 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      v-model="showImageModal"
+      width="80vw"
+      align-center
+      class="flex justify-center items-center !bg-transparent"
+      :show-close="false"
+    >
+      <div class="relative">
+        <img
+          :src="previewImage"
+          alt="Fullscreen Image"
+          class="max-h-[80vh] max-w-[80vw] object-contain rounded-lg"
+        />
+        <button
+          @click="showImageModal = false"
+          class="absolute top-2 right-2 bg-black/60 text-white px-3 py-1 rounded-lg hover:bg-black/80"
+        >
+          ✕
+        </button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -555,7 +652,7 @@ const getData = async () => {
   }
 };
 
-const form = reactive({
+const form = ref({
   country: "",
   tournament: "",
   trainer: "",
@@ -563,7 +660,29 @@ const form = reactive({
   rating: 0,
   age_group: "",
   weight: "",
+  file: null,
 });
+
+const fileList = ref([]);
+const previewUrl = ref(null);
+const isLoading = ref(false);
+
+function handleFileChange(file) {
+  form.value.file = file.raw;
+  fileList.value = [file];
+
+  if (file.raw && file.raw.type.startsWith("image/")) {
+    previewUrl.value = URL.createObjectURL(file.raw);
+  } else {
+    previewUrl.value = null;
+  }
+}
+
+function handleRemove() {
+  form.value.file = null;
+  fileList.value = [];
+  previewUrl.value = null;
+}
 
 const tournamentData = ref([]);
 const getTournament = async () => {
@@ -615,35 +734,71 @@ const getTrainer = async () => {
 
 const submitForm = async () => {
   try {
-    if (isEditing.value) {
-      await $api.patch(`/user/profile/results/${editingId.value}/`, { ...form });
-    } else {
-      await $api.post("/user/profile/results/", { ...form });
+    if (!form.value.file) {
+      ElMessage.warning("Iltimos, fayl yuklang!");
+      return;
     }
-    await getData();
+
+    isLoading.value = true;
+
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(form.value)) {
+      formData.append(key, value);
+    }
+
+    if (isEditing.value) {
+      await $api.patch(`/user/profile/results/${editingId.value}/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    } else {
+      await $api.post(`/user/profile/results/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    }
+
+    ElMessage.success("Fayl muvaffaqiyatli yuborildi!");
     resetForm();
   } catch (err) {
     if (err.response?.data) {
       const data = err.response.data;
-
-      if (typeof data === "object" && !Array.isArray(data)) {
-        if (data.message && typeof data.message === "string") {
-          ElMessage.error(data.message);
-        } else {
-          Object.keys(data).forEach((field) => {
-            if (Array.isArray(data[field])) {
-              data[field].forEach((msg) => {
-                ElMessage.error(msg);
-              });
-            }
-          });
-        }
-      } else if (typeof data === "string") {
+      if (typeof data === "string") {
         ElMessage.error(data);
+      } else {
+        Object.values(data)
+          .flat()
+          .forEach((msg) => ElMessage.error(msg));
       }
-    } else {
-      ElMessage.error("Ошибка при создании!");
     }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const updateItem = async (id) => {
+  try {
+    const res = await $api.get(`/user/profile/results/${id}/`);
+    const item = res.data.data;
+
+    form.value = {
+      country: item.country || "",
+      tournament: item.tournament?.id || "",
+      trainer: item.trainer?.id || "",
+      year: item.year?.toString() || "",
+      rating: item.rating || 0,
+      age_group: item.age_group?.id || "",
+      weight: item.weight || "",
+      file: null,
+    };
+
+    previewUrl.value = item.file || null;
+    fileList.value = item.file ? [{ name: "Current File", url: item.file }] : [];
+
+    isEditing.value = true;
+    editingId.value = id;
+    showModal.value = true;
+  } catch (err) {
+    console.error("updateItem error:", err);
+    ElMessage.error("Ошибка при загрузке данных для редактирования!");
   }
 };
 
@@ -713,6 +868,9 @@ const resetForm = () => {
   showModal.value = false;
   isEditing.value = false;
   editingId.value = null;
+  form.value.file = null;
+  fileList.value = [];
+  previewUrl.value = null;
   Object.assign(form, {
     country: "",
     tournament: "",
@@ -729,6 +887,14 @@ onMounted(() => {
   getTrainer();
   getAgeGroup();
 });
+
+const showImageModal = ref(false);
+const previewImage = ref(null);
+
+const openImageModal = (url) => {
+  previewImage.value = url;
+  showImageModal.value = true;
+};
 </script>
 
 <style scoped>
@@ -746,6 +912,14 @@ onMounted(() => {
   color: white !important;
 }
 :deep(.el-select__selected-item span) {
+  color: white !important;
+}
+
+:deep(.el-upload-dragger) {
+  background-color: transparent !important;
+}
+
+:deep(.el-upload-dragger .el-upload__text) {
   color: white !important;
 }
 </style>

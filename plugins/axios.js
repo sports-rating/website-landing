@@ -3,20 +3,18 @@ import { useAuthStore } from "@/stores/auth";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
-
   const api = axios.create({
     baseURL: config.public.apiBase,
-    headers: {
-      "Accept-Language": process.client
-        ? localStorage.getItem("locale") || "en"
-        : "en",
-    },
   });
+
+  
 
   if (process.client) {
     const authStore = useAuthStore();
 
     api.interceptors.request.use((config) => {
+       const lang = localStorage.getItem("lang") || "ru"; 
+        config.headers["Accept-Language"] = lang;
       if (authStore.token) {
         config.headers.Authorization = `Bearer ${authStore.token}`;
       }

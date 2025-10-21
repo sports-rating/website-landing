@@ -89,7 +89,7 @@
               :key="coach.id"
               class="border-t border-gray-700 hover:bg-gray-750 transition-colors"
             >
-              <td class="px-4 py-3">{{ page - 1 + index + 1 }}</td>
+              <td class="px-4 py-3 text-sm">{{ (page - 1) * 10 + index + 1 }}</td>
               <td class="px-4 py-3 text-sm">
                 <div class="font-medium">{{ coach.full_name }}</div>
               </td>

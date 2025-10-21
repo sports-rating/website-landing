@@ -200,7 +200,7 @@ const monthNames = ref([
           :key="application.id"
           class="border-b border-gray-700 hover:bg-gray-750 text-sm"
         >
-          <td class="px-4 py-3 text-sm">{{ page - 1 + index + 1 }}</td>
+          <td class="px-4 py-3 text-sm">{{ (page - 1) * 10 + index + 1 }}</td>
           <td class="px-4 py-3 text-sm">{{ application.sender?.full_name }}</td>
           <td class="px-4 py-3 text-sm">
             <span
@@ -210,7 +210,7 @@ const monthNames = ref([
               {{ application.request_theme }}
             </span>
           </td>
-          <td class="px-4 py-3 text-sm">{{ application.sport?.name }}</td>
+          <td class="px-4 py-3 text-sm">{{ application.new_data?.sport?.name }}</td>
           <td class="px-4 py-3 text-sm">{{ application.sender?.user_role }}</td>
           <td class="px-4 py-3 text-sm">
             <span

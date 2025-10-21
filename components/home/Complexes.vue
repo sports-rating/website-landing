@@ -6,20 +6,20 @@
       >
         <div class="flex flex-wrap items-center gap-3">
           <h2 class="text-xl sm:text-2xl font-bold text-white uppercase">
-            Спортивное учреждение
+            {{ t("institutionSport") }}
           </h2>
           <el-button
             class="!h-8 !rounded-lg !bg-red-500 !text-white hover:!bg-red-600 !border-none"
             @click="openDialog"
           >
-            Оставить заявку
+            {{ t("request") }}
           </el-button>
         </div>
         <button
           @click="goToRatings"
           class="text-gray-400 hover:text-white flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
         >
-          Посмотреть все
+          {{ t("allFound") }}
           <ChevronRight class="w-4 h-4" />
         </button>
       </div>
@@ -91,12 +91,12 @@
                   <div class="mt-3 text-gray-400 text-sm capitalize">
                     {{
                       complex.type === "club"
-                        ? "Спортивный клуб"
+                        ? t("sportClub")
                         : complex.type === "school"
-                        ? "Спортивная школа"
+                        ? t("sportSchool")
                         : complex.type === "complex"
-                        ? "Спорткомплекс"
-                        : "Учреждение"
+                        ? t("complex")
+                        : t("establishment")
                     }}
                   </div>
                 </div>
@@ -178,12 +178,12 @@
                     <div class="mt-3 text-gray-400 text-sm capitalize">
                       {{
                         complex.type === "club"
-                          ? "Спортивный клуб"
+                          ? t("sportClub")
                           : complex.type === "school"
-                          ? "Спортивная школа"
+                          ? t("sportSchool")
                           : complex.type === "complex"
-                          ? "Спорткомплекс"
-                          : "Учреждение"
+                          ? t("complex")
+                          : t("establishment")
                       }}
                     </div>
                   </div>
@@ -206,7 +206,7 @@
 
       <el-dialog
         v-model="dialogVisible"
-        title="Форма заявки"
+        :title="t('form')"
         width="950px"
         class="!bg-[#2E2F3E] !text-white max-w-[95vw] sm:max-w-[750px] md:max-w-[900px]"
       >
@@ -220,21 +220,21 @@
         >
           <!-- 1-qator -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-4">
-            <el-form-item label="Имя менеджера" prop="manager_first_name">
+            <el-form-item :label="t('manager_first_name')" prop="manager_first_name">
               <el-input
                 v-model="formData.manager_first_name"
                 clearable
-                placeholder="Имя"
+                :placeholder="t('firstManager')"
               />
             </el-form-item>
-            <el-form-item label="Фамилия менеджера" prop="manager_last_name">
+            <el-form-item :label="t('manager_last_name')" prop="manager_last_name">
               <el-input
                 v-model="formData.manager_last_name"
                 clearable
-                placeholder="Фамилия"
+                :placeholder="t('lastManager')"
               />
             </el-form-item>
-            <el-form-item label="Телефон менеджера" prop="manager_phone_number">
+            <el-form-item :label="t('manager_phone_number')" prop="manager_phone_number">
               <vue-tel-input
                 v-model="formData.manager_phone_number"
                 :autoFormat="true"
@@ -253,18 +253,18 @@
                 class="!bg-gray-200 !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
               />
             </el-form-item>
-            <el-form-item label="Название школы" prop="school_name">
+            <el-form-item :label="t('school_name')" prop="school_name">
               <el-input
                 v-model="formData.school_name"
                 clearable
-                placeholder="Название школы"
+                :placeholder="t('school_name')"
               />
             </el-form-item>
           </div>
 
           <!-- 2-qator -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-4">
-            <el-form-item label="Телефон школы" prop="school_phone_number">
+            <el-form-item :label="t('school_phone_number')" prop="school_phone_number">
               <vue-tel-input
                 v-model="formData.school_phone_number"
                 :autoFormat="true"
@@ -283,35 +283,35 @@
                 class="!bg-[#11101B] !h-8 w-full rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200"
               />
             </el-form-item>
-            <el-form-item label="Директор школы" prop="school_director">
+            <el-form-item :label="t('school_director')" prop="school_director">
               <el-input
                 v-model="formData.school_director"
                 clearable
-                placeholder="Директор школы"
+                :placeholder="t('school_director')"
               />
             </el-form-item>
-            <el-form-item label="Тип школы" prop="school_type">
-              <el-select v-model="formData.school_type" placeholder="Выберите">
-                <el-option label="Спортивная школа" value="sport_school" />
-                <el-option label="Спортивный клуб" value="sport_club" />
-                <el-option label="Спорткомплекс" value="sport_complex" />
+            <el-form-item :label="t('school_type')" prop="school_type">
+              <el-select v-model="formData.school_type" :placeholder="t('select')">
+                <el-option :label="t('sport_school')" value="sport_school" />
+                <el-option :label="t('sport_club')" value="sport_club" />
+                <el-option :label="t('sport_complex')" value="sport_complex" />
               </el-select>
             </el-form-item>
-            <el-form-item label="Адрес школы" prop="school_address">
+            <el-form-item :label="t('school_address')" prop="school_address">
               <el-input
                 v-model="formData.school_address"
                 clearable
-                placeholder="Адрес школы"
+                :placeholder="t('school_address')"
               />
             </el-form-item>
           </div>
 
           <!-- 3-qator -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-4">
-            <el-form-item label="Регион" prop="school_region">
+            <el-form-item :label="t('school_region')" prop="school_region">
               <el-select
                 v-model="formData.school_region"
-                placeholder="Регион"
+                :placeholder="t('school_region')"
                 filterable
                 clearable
                 @change="onRegionChange"
@@ -325,10 +325,10 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Район" prop="school_district">
+            <el-form-item :label="t('school_district')" prop="school_district">
               <el-select
                 v-model="formData.school_district"
-                placeholder="Район"
+                :placeholder="t('school_district')"
                 filterable
                 clearable
               >
@@ -341,10 +341,10 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="Виды спорта" prop="school_sports">
+            <el-form-item :label="t('school_sports')" prop="school_sports">
               <el-select
                 v-model="formData.school_sports"
-                placeholder="Выберите"
+                :placeholder="t('school_sports')"
                 multiple
                 filterable
               >
@@ -360,7 +360,9 @@
 
           <!-- Karta -->
           <div class="mt-6">
-            <label class="block text-sm font-medium text-white">Локация на карте</label>
+            <label class="block text-sm font-medium text-white">{{
+              t("location")
+            }}</label>
             <div
               class="h-[300px] sm:h-[400px] w-full mt-2 border rounded-lg overflow-hidden"
             >
@@ -378,7 +380,7 @@
               </MapboxMap>
             </div>
             <p class="text-sm text-white mt-1">
-              Latitude: {{ formData.school_latitude }} | Longitude:
+              {{ t("lat") }}: {{ formData.school_latitude }} | {{ t("lon") }}:
               {{ formData.school_longitude }}
             </p>
           </div>
@@ -389,35 +391,39 @@
             class="w-full sm:w-auto !bg-[#E7273D] !border-none !text-white"
             @click="submitForm"
           >
-            Отправить
+            {{ t("sent") }}
           </el-button>
         </template>
       </el-dialog>
 
       <el-dialog
         v-model="verificationDialogVisible"
-        title="Подтверждение номера телефона"
+        :title="t('sendPhone')"
         width="400px"
         class="!bg-[#2E2F3E] !text-white"
         align-center
       >
         <div class="flex flex-col gap-4">
           <p class="text-gray-300 text-sm">
-            Введите код, отправленный на номер
+            {{ t("pendingPhone") }}
             <span class="font-semibold text-white">{{ pendingPhone }}</span>
           </p>
 
           <el-input
             v-model="verificationCode"
-            placeholder="Введите код"
+            :placeholder="t('code')"
             maxlength="6"
             class="!bg-gray-200 rounded-md"
           />
         </div>
 
         <template #footer>
-          <el-button @click="verificationDialogVisible = false">Отмена</el-button>
-          <el-button type="success" @click="verifyCodeAndSubmit">Подтвердить</el-button>
+          <el-button @click="verificationDialogVisible = false">
+            {{ t("close") }}</el-button
+          >
+          <el-button type="success" @click="verifyCodeAndSubmit">
+            {{ t("confirm") }}</el-button
+          >
         </template>
       </el-dialog>
     </div>
@@ -434,6 +440,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const { $api } = useNuxtApp();
 const router = useRouter();
@@ -491,26 +500,36 @@ const formData = ref(getDefaultFormData());
 
 const rules = ref({
   manager_first_name: [
-    { required: true, message: "Введите имя менеджера", trigger: "blur" },
+    { required: true, message: t("required_manager_first_name"), trigger: "blur" },
   ],
   manager_last_name: [
-    { required: true, message: "Введите фамилию менеджера", trigger: "blur" },
+    { required: true, message: t("required_manager_last_name"), trigger: "blur" },
   ],
   manager_phone_number: [
-    { required: true, message: "Введите телефон менеджера", trigger: "blur" },
+    { required: true, message: t("required_manager_phone_number"), trigger: "blur" },
   ],
-  school_name: [{ required: true, message: "Введите название школы", trigger: "blur" }],
+  school_name: [{ required: true, message: t("required_school_name"), trigger: "blur" }],
   school_phone_number: [
-    { required: true, message: "Введите телефон школы", trigger: "blur" },
+    { required: true, message: t("required_school_phone_number"), trigger: "blur" },
   ],
   school_director: [
-    { required: true, message: "Введите директора школы", trigger: "blur" },
+    { required: true, message: t("required_school_director"), trigger: "blur" },
   ],
-  school_type: [{ required: true, message: "Выберите тип школы", trigger: "change" }],
-  school_address: [{ required: true, message: "Введите адрес школы", trigger: "blur" }],
-  school_region: [{ required: true, message: "Выберите регион", trigger: "change" }],
-  school_district: [{ required: true, message: "Выберите район", trigger: "change" }],
-  school_sports: [{ required: true, message: "Выберите виды спорта", trigger: "change" }],
+  school_type: [
+    { required: true, message: t("required_school_type"), trigger: "change" },
+  ],
+  school_address: [
+    { required: true, message: t("required_school_address"), trigger: "blur" },
+  ],
+  school_region: [
+    { required: true, message: t("required_school_region"), trigger: "change" },
+  ],
+  school_district: [
+    { required: true, message: t("required_school_district"), trigger: "change" },
+  ],
+  school_sports: [
+    { required: true, message: t("required_school_sports"), trigger: "change" },
+  ],
 });
 
 const onMapClick = (mapboxInstance: any) => {
