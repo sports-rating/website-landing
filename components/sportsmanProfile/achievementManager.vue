@@ -173,8 +173,6 @@
         @click="
           () => {
             showModal = true;
-            isEditing = false;
-            resetForm();
           }
         "
         class="px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
@@ -624,6 +622,12 @@ const activeTab = ref("pending");
 const dataRequest = ref([]);
 
 const statusFilter = ref("");
+
+const handleAdd = () => {
+  showModal.value = true;
+  isEditing.value = false;
+  resetForm();
+};
 
 const filteredRequests = computed(() => {
   if (statusFilter.value === "") {
