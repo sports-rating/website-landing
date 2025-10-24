@@ -271,7 +271,7 @@
                         comment.user?.profile_picture ||
                         'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
                       "
-                      class="w-8 h-8"
+                      class="w-8 h-8 rounded-full"
                       alt="comment.user?.first_name"
                     />
                     {{
