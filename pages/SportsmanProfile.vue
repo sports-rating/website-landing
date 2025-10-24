@@ -5,7 +5,6 @@
         <header
           class="rounded-lg border !border-[#11101B] bg-[#11101B]/50 p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center md:items-start justify-between w-full mx-auto gap-6 md:gap-8"
         >
-          <!-- Profile image -->
           <div
             class="relative w-28 h-28 sm:w-36 sm:h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer group order-1 md:order-2 mx-auto md:mx-0"
           >
@@ -19,7 +18,6 @@
               class="rounded-full object-cover w-full h-full shadow-md"
             />
 
-            <!-- Camera button -->
             <div
               @click.stop="clickImg"
               class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
@@ -48,12 +46,10 @@
             </div>
           </div>
 
-          <!-- User info -->
           <div
             class="flex flex-col items-center md:items-start text-center md:text-left order-2 md:order-1 w-full"
           >
             <div class="flex flex-col w-full">
-              <!-- Name -->
               <h1
                 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 flex flex-wrap items-center justify-center md:justify-start"
               >
@@ -72,7 +68,6 @@
                 />
               </h1>
 
-              <!-- Badges -->
               <div class="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3">
                 <span
                   class="bg-[#A0E727] uppercase text-white text-xs sm:text-sm px-3 py-1 rounded-full flex items-center"
@@ -102,12 +97,12 @@
           <button
             class="py-3 px-4 text-lg font-semibold border-b-2 border-[#E91E63] text-[#E91E63] flex-shrink-0"
           >
-            Основные
+            {{ t("basic") }}
           </button>
           <template
             v-if="authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified"
           >
-            <button
+            <!-- <button
               class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white flex-shrink-0"
             >
               Фонд "Бирлик"
@@ -121,13 +116,13 @@
               class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white flex-shrink-0"
             >
               Питание
-            </button>
+            </button> -->
           </template>
         </nav>
 
         <div class="flex flex-col lg:flex-row gap-6">
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-300">{{ t("info") }}</h2>
             <div class="flex gap-6">
               <!-- Tabs -->
               <nav class="space-y-2 w-64">
@@ -140,7 +135,7 @@
                       : 'text-gray-300 hover:bg-[#3A3A5A]',
                   ]"
                 >
-                  Личные данные
+                  {{ t("basicAbout") }}
                 </button>
 
                 <template
@@ -148,7 +143,7 @@
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                   "
                 >
-                  <button
+                  <!-- <button
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
                       activeTab === 'education'
@@ -158,7 +153,7 @@
                     @click="activeTab = 'education'"
                   >
                     Образование
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
@@ -170,10 +165,10 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Достижения
+                    {{ t("achievementst") }}
                   </button>
 
-                  <button
+                  <!-- <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'careere'"
                     :class="[
@@ -184,7 +179,7 @@
                     ]"
                   >
                     Карьера
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="
@@ -199,7 +194,7 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Медиа
+                    {{ t("media") }}
                   </button>
                 </template>
               </nav>
@@ -218,7 +213,7 @@
                   class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
                 >
                   <div class="flex items-center gap-3 mb-4">
-                    <h2 class="text-2xl font-bold text-white">Личная информация</h2>
+                    <h2 class="text-2xl font-bold text-white">{{ t("infoUser") }}</h2>
                     <div
                       class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
                     >
@@ -237,9 +232,9 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="m9 12 2 2 4-4"></path>
                       </svg>
-                      <span class="text-xs font-medium text-green-300"
-                        >Автосохранение</span
-                      >
+                      <span class="text-xs font-medium text-green-300">{{
+                        t("autoSave")
+                      }}</span>
                     </div>
                   </div>
 
@@ -248,13 +243,13 @@
                       <label
                         for="name"
                         class="block text-sm font-medium text-slate-300 mb-2"
-                        >Имя</label
+                        >{{ t("firstManager") }}</label
                       ><input
                         v-model="formData.firstName"
                         type="text"
                         id="name"
                         data-slot="input"
-                        placeholder="Имя"
+                        :placeholder="t('firstManager')"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
@@ -262,13 +257,13 @@
                       <label
                         for="surname"
                         class="block text-sm font-medium text-slate-300 mb-2"
-                        >Фамилия</label
+                        >{{ t("lastManager") }}</label
                       ><input
                         type="text"
                         id="surname"
                         v-model="formData.lastName"
                         data-slot="input"
-                        placeholder="Фамилия"
+                        :placeholder="t('lastManager')"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
@@ -276,12 +271,12 @@
                       <label
                         for="patronymic"
                         class="block text-sm font-medium text-slate-300 mb-2"
-                        >Отчество</label
+                        >{{ t("surname") }}</label
                       ><input
                         type="text"
                         id="patronymic"
                         v-model="formData.middleName"
-                        placeholder="Отчество"
+                        :placeholder="t('surname')"
                         data-slot="input"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
@@ -290,7 +285,7 @@
                       <label
                         for="dob"
                         class="block text-sm font-medium text-slate-300 mb-2"
-                        >Дата рождения</label
+                        >{{ t("userDate") }}</label
                       >
 
                       <el-input
@@ -301,7 +296,7 @@
                       />
                     </div>
                     <div class="flex !flex-row items-center">
-                      <label class="text-sm text-gray-400 mr-4">Пол</label>
+                      <label class="text-sm text-gray-400 mr-4">{{ t("role") }}</label>
                       <div class="flex items-center mr-6">
                         <input
                           type="radio"
@@ -310,7 +305,7 @@
                           v-model="formData.gender"
                           class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
                         />
-                        <label for="male" class="ml-2 text-white">Мужчина</label>
+                        <label for="male" class="ml-2 text-white">{{ t("male") }}</label>
                       </div>
                       <div class="flex items-center">
                         <input
@@ -320,14 +315,16 @@
                           v-model="formData.gender"
                           class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
                         />
-                        <label for="female" class="ml-2 text-white">Женщина</label>
+                        <label for="female" class="ml-2 text-white">{{
+                          t("female")
+                        }}</label>
                       </div>
                     </div>
                   </div>
 
                   <div class="mt-10">
                     <div class="flex items-center gap-3 mb-4">
-                      <h2 class="text-2xl font-bold text-white">Фактический адрес</h2>
+                      <h2 class="text-2xl font-bold text-white">{{ t("userAdress") }}</h2>
                       <div
                         class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
                       >
@@ -346,24 +343,26 @@
                           <circle cx="12" cy="12" r="10"></circle>
                           <path d="m9 12 2 2 4-4"></path>
                         </svg>
-                        <span class="text-xs font-medium text-green-300"
-                          >Автосохранение</span
-                        >
+                        <span class="text-xs font-medium text-green-300">{{
+                          t("autoSave")
+                        }}</span>
                       </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:!grid-cols-2 gap-6">
                       <div class="flex flex-col">
-                        <label for="region" class="text-sm text-gray-400 mb-2"
-                          >Область / Город</label
-                        >
+                        <label for="region" class="text-sm text-gray-400 mb-2">{{
+                          t("region")
+                        }}</label>
                         <select
                           id="region"
                           v-model="formData.region"
                           @change="onRegionChange"
                           class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                         >
-                          <option value="">Выберите город {{ formData.region }}</option>
+                          <option value="">
+                            {{ t("firstRegion") }} {{ formData.region }}
+                          </option>
                           <option
                             v-for="region in regions"
                             :key="region.id"
@@ -376,14 +375,14 @@
 
                       <div class="flex flex-col">
                         <label for="district" class="text-sm text-gray-400 mb-2"
-                          >Улица
+                          >{{ t("district") }}
                         </label>
                         <select
                           id="district"
                           v-model="formData.district"
                           class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                         >
-                          <option value="">Выберите Улица</option>
+                          <option value="">{{ t("firstDistrict") }}</option>
                           <option
                             v-for="district in filteredDistricts"
                             :key="district.id"
@@ -401,7 +400,7 @@
                       data-slot="button"
                       class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                     >
-                      Сохранять
+                      {{ t("saveUser") }}
                     </button>
                   </div>
                 </div>
@@ -415,7 +414,7 @@
             >
               <div class="mt-12">
                 <div class="flex items-center gap-3 mb-4">
-                  <h2 class="text-2xl font-bold text-white">Спортивные данные</h2>
+                  <h2 class="text-2xl font-bold text-white">{{ t("sportAbout") }}</h2>
                   <div
                     class="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30"
                   >
@@ -433,9 +432,9 @@
                     >
                       <circle cx="12" cy="12" r="10"></circle>
                       <polyline points="12 6 12 12 16 14"></polyline></svg
-                    ><span class="text-xs font-medium text-amber-300"
-                      >Требует одобрения тренера</span
-                    >
+                    ><span class="text-xs font-medium text-amber-300">{{
+                      t("sportTrainer")
+                    }}</span>
                   </div>
                 </div>
                 <div
@@ -461,11 +460,10 @@
                     </svg>
                     <div>
                       <p class="text-amber-200 font-semibold">
-                        Внимание: Требуется одобрение тренера
+                        {{ t("note") }}
                       </p>
                       <p class="text-amber-300/90 text-sm mt-1">
-                        Все изменения в этом разделе будут отправлены вашему тренеру на
-                        одобрение. Они вступят в силу только после одобрения.
+                        {{ t("noteDescription") }}
                       </p>
                     </div>
                   </div>
@@ -477,15 +475,15 @@
                 >
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col">
-                      <label for="athleteType" class="text-sm text-gray-400 mb-1"
-                        >Вид спортсмена</label
-                      >
+                      <label for="athleteType" class="text-sm text-gray-400 mb-1">{{
+                        t("athleteType")
+                      }}</label>
                       <select
                         id="athleteType"
                         v-model="formData.sport"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       >
-                        <option value="">Выберите Вид спортсмена</option>
+                        <option value="">{{ t("athleteTypeOption") }}</option>
                         <option v-for="item in data" :value="item.id">
                           {{ item.name }}
                         </option>
@@ -493,42 +491,42 @@
                     </div>
 
                     <div class="flex flex-col">
-                      <label for="height" class="text-sm text-gray-400 mb-1"
-                        >Рост (см)</label
-                      >
+                      <label for="height" class="text-sm text-gray-400 mb-1">{{
+                        t("height")
+                      }}</label>
                       <input
                         type="number"
                         id="height"
                         v-model="formData.height"
                         step="0.1"
-                        placeholder="Рост (см)"
+                        :placeholder="t('height')"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
                     <div class="flex flex-col">
-                      <label for="weight" class="text-sm text-gray-400 mb-1"
-                        >Вес (кг)</label
-                      >
+                      <label for="weight" class="text-sm text-gray-400 mb-1">{{
+                        t("weight")
+                      }}</label>
                       <input
                         type="number"
                         id="weight"
                         step="0.1"
                         v-model="formData.weight"
-                        placeholder="Вес (кг)"
+                        :placeholder="t('weight')"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
                     <div class="flex items-end gap-2 w-full">
                       <div class="flex flex-col w-[100%]">
-                        <label for="trainer" class="text-sm text-gray-400 mb-1"
-                          >Tренер</label
-                        >
+                        <label for="trainer" class="text-sm text-gray-400 mb-1">{{
+                          t("trainerss")
+                        }}</label>
                         <select
                           id="trainer"
                           v-model="formData.trainer"
                           class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                         >
-                          <option value="">Выберите тренер</option>
+                          <option value="">{{ t("trainerOption") }}</option>
                           <option
                             v-for="item in dataTrainer"
                             :key="item.id"
@@ -541,7 +539,7 @@
 
                       <el-dialog
                         v-model="dialogVisible"
-                        title="Отправленные запросы"
+                        :title="t('sentUser')"
                         class="md:!w-[500px] !w-[350px] text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm max-w-2xl !border-red-500/30 !bg-slate-900 p-6 max-h-[80vh] overflow-y-auto"
                       >
                         <div v-if="isLoading" class="text-center py-4">
@@ -550,7 +548,7 @@
                         <div v-else>
                           <el-empty
                             v-if="requests.length === 0"
-                            description="Запросов не найдено."
+                            :description="t('sentNo')"
                           />
                           <div
                             v-else
@@ -564,13 +562,13 @@
                               >
                                 <div>
                                   <p class="text-sm text-white mb-1">
-                                    <strong>Имя Отправителя:</strong>
+                                    <strong>{{ t("nameSent") }}</strong>
                                     {{ item.receiver.full_name }}
                                   </p>
                                   <p
                                     class="text-sm text-white mb-1 flex items-center gap-2"
                                   >
-                                    <strong>Статус:</strong>
+                                    <strong>{{ t("statusSent") }}</strong>
                                     <el-tag
                                       :type="
                                         item.status === 'pending' ? 'warning' : 'info'
@@ -582,7 +580,7 @@
                                     </el-tag>
                                   </p>
                                   <p class="text-sm text-white">
-                                    <strong>Созданный:</strong>
+                                    <strong>{{ t("createSent") }}</strong>
                                     {{ formatDate(item.created_time) }}
                                   </p>
                                 </div>
@@ -592,7 +590,7 @@
                                     size="small"
                                     @click="cancelRequest(item.id)"
                                   >
-                                    Отмена
+                                    {{ t("close") }}
                                   </el-button>
                                 </div>
                               </li>
@@ -603,15 +601,15 @@
                     </div>
 
                     <div class="flex flex-col w-full">
-                      <label for="trainer" class="text-sm text-gray-400 mb-1"
-                        >Pазряд</label
-                      >
+                      <label for="trainer" class="text-sm text-gray-400 mb-1">{{
+                        t("discharge")
+                      }}</label>
                       <select
                         id="sport_rank"
                         v-model="formData.sport_rank"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       >
-                        <option value="">Razzryad-ni tanlang</option>
+                        <option value="">{{ t("selectDischarge") }}</option>
                         <option
                           v-for="rank in sportRanks"
                           :key="rank.value"
@@ -623,15 +621,15 @@
                     </div>
 
                     <div class="flex flex-col">
-                      <label for="federation" class="text-sm text-gray-400 mb-1"
-                        >Федерация</label
-                      >
+                      <label for="federation" class="text-sm text-gray-400 mb-1">{{
+                        t("federation")
+                      }}</label>
                       <input
                         type="text"
                         id="federation"
                         disabled
                         v-model="federation"
-                        placeholder="Федерация"
+                        :placeholder="t('federation')"
                         class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
@@ -643,10 +641,13 @@
                 <button
                   type="submit"
                   data-slot="button"
-                  :disabled="authStore.userProfile?.data?.sportsman_profile?.request_status === 'pending'"
+                  :disabled="
+                    authStore.userProfile?.data?.sportsman_profile?.request_status ===
+                    'pending'
+                  "
                   class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                 >
-                  Отправить на одобрение
+                  {{ t("nameSentDischarge") }}
                 </button>
 
                 <div
@@ -668,7 +669,7 @@
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                     <path d="M3 3v5h5"></path>
                     <path d="M12 7v5l4 2"></path></svg
-                  >История запросов
+                  >{{ t("history") }}
                 </div>
               </div>
             </form>
@@ -687,9 +688,7 @@
                 ></div>
 
                 <!-- Title -->
-                <p class="text-2xl font-semibold relative z-10">
-                  🔒 Заплатите, чтобы разблокировать отправку результатов
-                </p>
+                <p class="text-2xl font-semibold relative z-10">🔒 {{ t("quic") }}</p>
 
                 <!-- Payment Options -->
                 <div class="flex justify-center gap-6 flex-wrap relative z-10">
@@ -722,7 +721,7 @@
 
                 <!-- Note -->
                 <p class="text-sm text-gray-400 relative z-10">
-                  Безопасная оплата через надежных поставщиков
+                  {{ t("quicNote") }}
                 </p>
               </div>
             </div>
@@ -746,7 +745,9 @@ import { Loading } from "@element-plus/icons-vue";
 import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
 import SportsmanMedia from "~/components/SportsmanMedia.vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
@@ -801,21 +802,21 @@ const createCheckout = async (method) => {
   }
 };
 
-const sportRanks = ref([
-  { value: "YOUTH_3", label: "Yoshlar uchinchi darajali", key: "Youth Third Rank" },
-  { value: "YOUTH_2", label: "Yoshlar ikkinchi darajali", key: "Youth Second Rank" },
-  { value: "YOUTH_1", label: "Yoshlar birinchi darajali", key: "Youth First Rank" },
-  { value: "ADULT_3", label: "Kattalar uchun uchinchi daraja", key: "Adult Third Rank" },
-  { value: "ADULT_2", label: "Kattalar uchun ikkinchi daraja", key: "Adult Second Rank" },
-  { value: "ADULT_1", label: "Kattalar uchun birinchi daraja", key: "Adult First Rank" },
+const sportRanks = computed(() => [
+  { value: "YOUTH_3", label: t("rankThird"), key: "Youth Third Rank" },
+  { value: "YOUTH_2", label: t("rankSecond"), key: "Youth Second Rank" },
+  { value: "YOUTH_1", label: t("rankFirst"), key: "Youth First Rank" },
+  { value: "ADULT_3", label: t("adultThird"), key: "Adult Third Rank" },
+  { value: "ADULT_2", label: t("adultSecond"), key: "Adult Second Rank" },
+  { value: "ADULT_1", label: t("adultFirst"), key: "Adult First Rank" },
   {
     value: "CANDIDATE",
-    label: "Sport ustasi",
+    label: t("candidate"),
     key: "Candidate for Master of Sport",
   },
   {
     value: "MASTER_OF_SPORT",
-    label: "Sport ustasi",
+    label: t("master"),
     key: "Master of Sport",
   },
 ]);
@@ -1058,15 +1059,11 @@ const clickImg = () => {
   if (isDialogOpen) return;
   isDialogOpen = true;
 
-  ElMessageBox.confirm(
-    "Пожалуйста, загружайте только фотографию в формате спортсмена!",
-    "Загрузить изображение",
-    {
-      confirmButtonText: "Понятно",
-      cancelButtonText: "Отмена",
-      type: "warning",
-    }
-  )
+  ElMessageBox.confirm(t("imgDescription"), t("imgUser"), {
+    confirmButtonText: t("confirmButtonText"),
+    cancelButtonText: t("cancelButtonText"),
+    type: "warning",
+  })
     .then(() => {
       fileInput.value?.click();
     })

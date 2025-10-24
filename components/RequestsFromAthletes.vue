@@ -464,8 +464,12 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const { $api } = useNuxtApp();
 
 const tabs = [
-  { key: "sportsman", label: "Список спортсменов", request_type: "sportsman_trainer" },
-  { key: "result", label: "Список rезультат", request_type: "sportsman_result" },
+  { key: "sportsman", label: "Запросы на тренера", request_type: "sportsman_trainer" },
+  {
+    key: "result",
+    label: "Запросы на подтверждение результата",
+    request_type: "sportsman_result",
+  },
 ];
 
 const activeTab = ref("sportsman");

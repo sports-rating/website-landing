@@ -100,65 +100,6 @@
           </div>
         </div>
 
-        <!-- <div class="flex w-full">
-          <section class="container mx-auto px-4 mt-12 w-full">
-            <h3 class="text-xl font-bold mb-4">О компании</h3>
-            <p class="text-gray-300 leading-relaxed">
-              Все началось в начале 2013 года, когда Пулатов Мавлонбек решил встретиться с
-              группой пахтакористов с целью посмотреть матчи и, возможно, создать новую
-              группу болельщиков в ближайшем будущем. В то же время и в том же городе
-              колумбийец Маджин Хемер Сьерра встречался с другой группой мадридистов с той
-              же целью. По совпадению, они нашли друг друга в твиттере и решили
-              встретиться и объединить свои группы, чтобы создать одну большую группу
-              сторонников в городе.В августе того же года у них состоялась первая
-              официальная встреча недавно созданного клуба болельщиков, они подписали
-              учредительное документы, устав, членов совета директоров и постоянное место
-              встречи. Г-н Андрес Лопес, Хулио Морено и Томас А. Бейкер также участвовал в
-              этой встрече и считается основателями Пеньи. С момента своего основания,Peña
-              Madridista Atlanta была зарегистрирована под названием "Madridistas Atlanta
-              Inc" в качестве некоммерческой организации в своем родном штате Джорджия, а
-              также в соответствии с федеральными законами Соединенных Штатов для работы в
-              качестве таковой. В настоящее время в клубе 78 членов, которые собираются в
-              своем официальном домашнем ирландском пабе Olde Blind Dog в Брукхейвене,
-              чтобы посмотреть все матчи, и их целью с момента его создания было
-              объединить мадридистов в Атланте и ее столичном регионе, чтобы сделать еще
-              больше наш легендарный клуб.
-            </p>
-          </section>
-
-          <aside
-            class="container mx-auto px-4 py-4 mt-12 w-[40%] bg-[#2E2F3E] rounded-xl border border-gray-700"
-          >
-            <h3 class="text-xl font-bold">Основные деятельности компании:</h3>
-            <ul class="max-w-sm p-4 px-0">
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Оздоровительные учреждения
-              </li>
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Клиники, санатории
-              </li>
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Фитнес-центры
-              </li>
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Залы, сцены
-              </li>
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Торговые комплексы
-              </li>
-              <li class="py-2 flex gap-1 items-center">
-                <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                Лаборатории, бассейны, сауны
-              </li>
-            </ul>
-          </aside>
-        </div> -->
-
         <!-- Map -->
         <section class="container mx-auto px-4 mt-12">
           <h3 class="text-xl font-bold mb-4">На карте</h3>
@@ -278,6 +219,97 @@
           </div>
         </section>
 
+        <!-- Comments Section -->
+        <section class="container mx-auto px-4 mt-12">
+          <div class="bg-[#11101B] min-h-screen text-white py-10">
+            <div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 mb-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold mb-3">Оставить комментарий</h2>
+
+                <div class="flex items-center gap-1 mb-3">
+                  <span
+                    v-for="star in 5"
+                    :key="star"
+                    class="cursor-pointer text-2xl transition"
+                    :class="{
+                      'text-yellow-400': star <= rating,
+                      'text-gray-500 hover:text-yellow-300': star > rating,
+                    }"
+                    @click="rating = star"
+                  >
+                    ★
+                  </span>
+                  <span class="ml-2 text-sm text-gray-400"> {{ rating }} / 5 </span>
+                </div>
+              </div>
+
+              <textarea
+                v-model="newComment"
+                rows="3"
+                placeholder="Напишите комментарий..."
+                class="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-red-500 outline-none"
+              ></textarea>
+              <button
+                @click="postComment"
+                :disabled="loading"
+                class="mt-3 bg-red-600 hover:bg-red-700 transition px-5 py-2 rounded-lg font-medium"
+              >
+                {{ loading ? "Отправка..." : "Отправить комментарий" }}
+              </button>
+            </div>
+
+            <div v-if="comments.length">
+              <div
+                v-for="(comment, index) in comments"
+                :key="index"
+                class="bg-gray-800 rounded-xl p-4 mb-3 border border-gray-700"
+              >
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-semibold text-white flex gap-4 items-center">
+                    <img
+                      :src="
+                        comment.user?.profile_picture ||
+                        'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                      "
+                      class="w-8 h-8"
+                      alt="comment.user?.first_name"
+                    />
+                    {{
+                      comment.user?.first_name || comment.user?.last_name
+                        ? `${comment.user.first_name || ""} ${
+                            comment.user.last_name || ""
+                          }`.trim()
+                        : "Анонимный"
+                    }}
+                  </span>
+
+                  <span class="text-gray-400 text-sm">
+                    {{ new Date(comment.created_time).toLocaleString() }}
+                  </span>
+                </div>
+
+                <div class="flex mb-2">
+                  <span
+                    v-for="star in 5"
+                    :key="star"
+                    class="text-lg"
+                    :class="star <= comment.rating ? 'text-yellow-400' : 'text-gray-600'"
+                  >
+                    ★
+                  </span>
+                </div>
+
+                <p class="text-gray-300 text-sm leading-relaxed">
+                  {{ comment.text }}
+                </p>
+              </div>
+            </div>
+            <div v-else class="text-gray-400 text-center py-10">
+              Комментариев пока нет.
+            </div>
+          </div>
+        </section>
+
         <footer
           class="mt-16 py-8 text-center text-gray-500 text-sm border-t border-gray-800"
         >
@@ -298,6 +330,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { ChevronRight, MapPin, Star } from "lucide-vue-next";
+import { ElMessage } from "element-plus";
 
 const route = useRoute();
 const id = route.params.id;
@@ -340,9 +373,67 @@ const getSportsAbout = async () => {
   }
 };
 
+const comments = ref([]);
+const newComment = ref("");
+const rating = ref(0);
+const loading = ref(false);
+
+const fetchComments = async () => {
+  try {
+    const { $api } = useNuxtApp();
+    const res = await $api.get(`/review/comment/`);
+    comments.value = res.data.data.data || [];
+  } catch (e) {
+    console.error("Kommentlarni yuklashda xatolik:", e);
+  }
+};
+
+const postComment = async () => {
+  if (!newComment.value.trim() || rating.value === 0) return;
+
+  try {
+    loading.value = true;
+    const { $api } = useNuxtApp();
+
+    const res = await $api.post(`/review/comment/`, {
+      sport_institution: id,
+      text: newComment.value,
+      rating: rating.value,
+    });
+
+    comments.value.unshift(res.data.data);
+
+    newComment.value = "";
+    rating.value = 0;
+  } catch (err) {
+    if (err.response?.data) {
+      const data = err.response.data;
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
+        ElMessage.error(data);
+      }
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
 onMounted(() => {
   getSportsAbout();
   fetchComplex();
+  fetchComments();
 });
 </script>
 

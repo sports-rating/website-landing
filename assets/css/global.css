@@ -18,7 +18,7 @@ button:focus {
 
 .no-scrollbar::-webkit-scrollbar {
   width: 10px;
-   height: 2px;
+   height: 5px;
 }
 
 .no-scrollbar {

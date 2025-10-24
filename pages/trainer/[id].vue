@@ -1,10 +1,8 @@
 <template>
   <NuxtLayout name="custom">
     <div class="min-h-screen bg-[#11101B]">
-      <!-- Player Info Section -->
       <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div class="flex flex-col lg:flex-row md:gap-48 gap-8">
-          <!-- Profile Image (mobilda birinchi chiqishi uchun order-1 qo‘ydim) -->
           <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
             <div class="relative">
               <img
@@ -18,7 +16,6 @@
             </div>
           </div>
 
-          <!-- Profile Info (mobilda ikkinchi chiqadi) -->
           <div class="order-2 lg:order-1 flex flex-col w-full lg:w-[55%]">
             <h1
               class="text-2xl flex gap-2 sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-white text-center lg:text-left"
@@ -46,7 +43,7 @@
               <span
                 class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
               >
-                {{ data?.trainer_profile?.points }} очки
+                {{ data?.trainer_profile?.points }} {{ t("glasses") }}
               </span>
             </div>
 
@@ -54,53 +51,53 @@
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("birthPlace") }}</p>
                 <p class="text-white">
-                  {{ data?.region?.name || "Не указано" }}
+                  {{ data?.region?.name || t("notSpecified") }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Гражданство</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("citizenship") }}</p>
                 <p class="text-white">
-                  {{ data?.trainer_profile?.address?.citizenship || "Не указано" }}
+                  {{ data?.trainer_profile?.address?.citizenship || t("birthPlace") }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">День рождения</p>
-                <p class="text-white">{{ data?.birth_date || "Не указано" }}</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("birthday") }}</p>
+                <p class="text-white">{{ data?.birth_date || t("birthPlace") }}</p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Рост</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("height") }}</p>
                 <p class="text-white">
                   {{
                     data?.trainer_profile?.height
                       ? Number(data?.trainer_profile?.height).toFixed(0) + " см"
-                      : "Не указано"
+                      : t("birthPlace")
                   }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Вес</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("weight") }}</p>
                 <p class="text-white">
                   {{
                     data?.trainer_profile?.weight
                       ? Number(data?.trainer_profile?.weight).toFixed(0) + " кг"
-                      : "Не указано"
+                      : t("birthPlace")
                   }}
                 </p>
               </div>
               <div class="flex flex-col sm:flex-row sm:justify-between">
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Федерация</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("federation") }}</p>
                 <p class="text-white">
-                  {{ data?.trainer_profile?.federation?.name || "Не указано" }}
+                  {{ data?.trainer_profile?.federation?.name || t("birthPlace") }}
                 </p>
               </div>
             </div>
@@ -154,9 +151,9 @@
             <table class="w-full text-sm text-left text-white bg-[#11101B]">
               <thead class="bg-gray-800 text-xs sm:text-sm font-semibold">
                 <tr>
-                  <th class="px-4 py-3">ЧЕМПИОНАТ</th>
-                  <th class="px-4 py-3">СЕЗОН</th>
-                  <th class="px-4 py-3 text-center">Место</th>
+                  <th class="px-4 py-3">{{ t("championship") }}</th>
+                  <th class="px-4 py-3">{{ t("season") }}</th>
+                  <th class="px-4 py-3 text-center">{{ t("country") }}</th>
 
                   <th
                     v-if="selectedView === '2'"
@@ -170,7 +167,7 @@
                     </div>
                   </th>
 
-                  <th class="px-4 py-3 text-center">Балл</th>
+                  <th class="px-4 py-3 text-center">{{ t("points") }}</th>
 
                   <!-- Dropdown (desktop) -->
                   <th class="px-4 py-3 text-right">
@@ -180,17 +177,17 @@
                         size="small"
                         class="!text-sm !text-white flex items-center"
                       >
-                        {{ selectedView === "1" ? "Личное " : "Учащихся " }}
+                        {{ selectedView === "1" ? t("personal") : t("students") }}
                         <el-icon class="el-icon--right"><arrow-down /></el-icon>
                       </el-button>
                       <template #dropdown>
                         <el-dropdown-menu>
-                          <el-dropdown-item command="1"
-                            >Личное достижение</el-dropdown-item
-                          >
-                          <el-dropdown-item command="2"
-                            >Достижения учащихся</el-dropdown-item
-                          >
+                          <el-dropdown-item command="1">{{
+                            t("achievementPersonal")
+                          }}</el-dropdown-item>
+                          <el-dropdown-item command="2">{{
+                            t("achievementStudents")
+                          }}</el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
                     </el-dropdown>
@@ -274,13 +271,17 @@
                   size="small"
                   class="!text-sm !text-white flex items-center bg-[#11101B] px-3 py-2 rounded-md"
                 >
-                  {{ selectedView === "1" ? "Личное " : "Учащихся " }}
+                  {{ selectedView === "1" ? t("personal") : t("students") }}
                   <el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                    <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+                    <el-dropdown-item command="1">{{
+                      t("achievementPersonal")
+                    }}</el-dropdown-item>
+                    <el-dropdown-item command="2">{{
+                      t("achievementStudents")
+                    }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -301,10 +302,10 @@
               </div>
 
               <p class="text-sm">
-                <span class="font-semibold">Сезон:</span> {{ row.year }}
+                <span class="font-semibold">{{ t("season") }}:</span> {{ row.year }}
               </p>
               <p class="text-sm">
-                <span class="font-semibold">Место:</span> {{ row.country }}
+                <span class="font-semibold">{{ t("country") }}:</span> {{ row.country }}
               </p>
 
               <template v-if="selectedView === '2' && !row.rating">
@@ -323,7 +324,7 @@
 
               <template v-else-if="selectedView === '1' && row.rating">
                 <div class="mt-2">
-                  <span class="font-semibold">Рейтинг:</span>
+                  <span class="font-semibold">{{ t("rating") }}:</span>
                   <img
                     v-if="row.rating === 1"
                     src="/gold.png"
@@ -347,14 +348,14 @@
               </template>
 
               <p class="text-sm mt-2">
-                <span class="font-semibold">Балл:</span> {{ row.score }}
+                <span class="font-semibold">{{ t("points") }}:</span> {{ row.score }}
               </p>
             </div>
 
             <el-empty
               v-if="!data?.results?.length"
               :image-size="80"
-              description="Нет данных"
+              :description="t('noValue')"
             />
           </div>
         </div>
@@ -378,7 +379,7 @@
               </div>
             </div>
           </template>
-          <el-empty v-else :image-size="100" description="Нет видео" />
+          <el-empty v-else :image-size="100" :description="t('noVideos')" />
         </div>
 
         <!-- Photos Tab -->
@@ -404,7 +405,7 @@
               </template>
 
               <!-- Agar rasm topilmasa -->
-              <el-empty v-else :image-size="100" description="Нет изображения" />
+              <el-empty v-else :image-size="100" :description="t('noImages')" />
             </div>
           </div>
         </div>
@@ -436,7 +437,9 @@
                   class="bg-white rounded-lg border hover:shadow-md transition-shadow duration-200 p-4"
                 >
                   <img src="/pdf.svg" alt="PDF Not Found" />
-                  <h3 class="text-sm text-gray-900 font-medium my-2">PDF Not Found</h3>
+                  <h3 class="text-sm text-gray-900 font-medium my-2">
+                    {{ t("noFiles") }}
+                  </h3>
                 </div>
               </template>
             </div>
@@ -447,7 +450,7 @@
       <div class="container flex flex-col gap-8 pb-8">
         <div class="mt-5">
           <h2 class="text-2xl font-medium text-white text-center sm:text-left">
-            Достижения
+            {{ t("achievements") }}
           </h2>
         </div>
 
@@ -473,7 +476,7 @@
         <el-empty
           v-else
           :image-size="100"
-          description="Достижения не найдены"
+          :description="t('achievementsNotFound')"
           class="text-white"
         />
       </div>
@@ -491,7 +494,9 @@ const { $api } = useNuxtApp();
 import Associated from "~/components/home/Associated.vue";
 import Statistic from "~/components/home/Statistic.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const activeTab = ref("career");
@@ -542,12 +547,12 @@ onMounted(() => {
   getTournament();
 });
 
-const tabs = [
+const tabs = computed(() => [
   // { id: 'overview', name: 'Заявка игрока' },
-  // { id: 'statistics', name: 'Статистика' },
-  { id: "career", name: "Карьера" },
-  { id: "videos", name: "Видео материалы" },
-  { id: "photos", name: "Фотографии" },
-  { id: "files", name: "Загруженные файлы" },
-];
+  // { id: 'statistics', name: t('statistics') },
+  { id: "career", name: t("career") },
+  { id: "videos", name: t("videos") },
+  { id: "photos", name: t("photos") },
+  { id: "files", name: t("files") },
+]);
 </script>

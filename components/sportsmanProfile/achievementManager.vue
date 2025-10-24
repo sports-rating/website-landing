@@ -336,10 +336,13 @@
           </div>
           <div class="flex flex-col sm:flex-row gap-3 w-full">
             <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-300 mb-2"
-                >Загрузите изображение или файл</label
-              >
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Загрузите изображение или файл
+              </label>
+
+              <!-- Upload qismi -->
               <el-upload
+                v-if="!previewUrl"
                 class="upload-demo w-full"
                 action="#"
                 :auto-upload="false"
@@ -356,12 +359,21 @@
                 </div>
               </el-upload>
 
-              <div v-if="previewUrl" class="mt-3">
+              <!-- Preview qismi -->
+              <div v-if="previewUrl" class="mt-3 relative inline-block">
                 <img
                   :src="previewUrl"
                   alt="Preview"
                   class="w-40 h-40 object-cover rounded-lg border border-gray-600"
                 />
+                <!-- Remove tugmasi -->
+                <button
+                  @click="handleRemove"
+                  type="button"
+                  class="absolute top-1 right-1 bg-black/50 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-black/70"
+                >
+                  ✕
+                </button>
               </div>
             </div>
           </div>
@@ -460,12 +472,37 @@
           >
             <span class="text-gray-500">📄 Документ:</span>
 
-            <img
-              :src="viewData.file"
-              alt="viewData.file"
-              class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
-              @click="openImageModal(viewData.file)"
-            />
+            <!-- Agar fayl rasm bo‘lsa -->
+            <template v-if="isImageFile(viewData.file)">
+              <img
+                :src="viewData.file"
+                alt="preview"
+                class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                @click="openImageModal(viewData.file)"
+              />
+            </template>
+
+            <!-- Agar fayl PDF bo‘lsa -->
+            <template v-else-if="isPdfFile(viewData.file)">
+              <div
+                class="flex items-center gap-2 cursor-pointer hover:text-blue-400 transition"
+                @click="openPdf(viewData.file)"
+              >
+                <i class="el-icon-document text-red-500 text-2xl"></i>
+                <span class="underline text-sm break-all">Открыть PDF</span>
+              </div>
+            </template>
+
+            <!-- Boshqa formatlar uchun -->
+            <template v-else>
+              <a
+                :href="viewData.file"
+                target="_blank"
+                class="underline text-sm text-blue-400 hover:text-blue-600 break-all"
+              >
+                Скачать файл
+              </a>
+            </template>
           </div>
         </div>
 
@@ -553,19 +590,40 @@
             <p class="font-medium">{{ viewDataa.new_data?.year }}</p>
           </div>
 
-          <!-- Image -->
           <div
-            v-if="viewDataa.new_data?.file_url !== null && viewDataa.new_data?.file_url"
+            v-if="viewDataa.new_data.file_url !== null && viewDataa.new_data.file_url"
             class="flex items-center gap-3"
           >
             <span class="text-gray-500">📄 Документ:</span>
 
-            <img
-              :src="viewDataa.new_data?.file_url"
-              alt="viewData.file"
-              class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
-              @click="openImageModal(viewDataa.new_data?.file_url)"
-            />
+            <template v-if="isImageFile(viewDataa.new_data.file_url)">
+              <img
+                :src="viewDataa.new_data.file_url"
+                alt="preview"
+                class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                @click="openImageModal(viewDataa.new_data.file_url)"
+              />
+            </template>
+
+            <template v-else-if="isPdfFile(viewDataa.new_data.file_url)">
+              <div
+                class="flex items-center gap-2 cursor-pointer hover:text-blue-400 transition"
+                @click="openPdf(viewDataa.new_data.file_url)"
+              >
+                <i class="el-icon-document text-red-500 text-2xl"></i>
+                <span class="underline text-sm break-all">Открыть PDF</span>
+              </div>
+            </template>
+
+            <template v-else>
+              <a
+                :href="viewDataa.new_data.file_url"
+                target="_blank"
+                class="underline text-sm text-blue-400 hover:text-blue-600 break-all"
+              >
+                Скачать файл
+              </a>
+            </template>
           </div>
         </div>
 
@@ -606,7 +664,9 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
@@ -765,12 +825,21 @@ const submitForm = async () => {
   } catch (err) {
     if (err.response?.data) {
       const data = err.response.data;
-      if (typeof data === "string") {
+
+      if (typeof data === "object" && !Array.isArray(data)) {
+        if (data.message && typeof data.message === "string") {
+          ElMessage.error(data.message);
+        } else {
+          Object.keys(data).forEach((field) => {
+            if (Array.isArray(data[field])) {
+              data[field].forEach((msg) => {
+                ElMessage.error(msg);
+              });
+            }
+          });
+        }
+      } else if (typeof data === "string") {
         ElMessage.error(data);
-      } else {
-        Object.values(data)
-          .flat()
-          .forEach((msg) => ElMessage.error(msg));
       }
     }
   } finally {
@@ -884,6 +953,23 @@ const resetForm = () => {
   });
 };
 
+const isImageFile = (fileUrl) => {
+  return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileUrl);
+};
+
+const isPdfFile = (fileUrl) => {
+  return /\.pdf$/i.test(fileUrl);
+};
+
+const openImageModal = (url) => {
+  previewImage.value = url;
+  showImageModal.value = true;
+};
+
+const openPdf = (url) => {
+  window.open(url, "_blank");
+};
+
 onMounted(() => {
   getDataRequest();
   getData();
@@ -894,11 +980,6 @@ onMounted(() => {
 
 const showImageModal = ref(false);
 const previewImage = ref(null);
-
-const openImageModal = (url) => {
-  previewImage.value = url;
-  showImageModal.value = true;
-};
 </script>
 
 <style scoped>

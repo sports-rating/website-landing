@@ -64,12 +64,26 @@
 
             <!-- Complex Content -->
             <div class="p-4 flex flex-col flex-1">
-              <div class="flex justify-between w-full gap-2 mb-4">
+              <div class="flex justify-between w-full gap-2 mb-4 items-center">
                 <h3
                   class="text-white whitespace-nowrap font-medium text-lg mb-2 line-clamp-2"
                 >
                   {{ complex.name }}
                 </h3>
+
+                <div class="flex items-center gap-1 mb-3">
+                  <span
+                    v-for="star in 5"
+                    :key="star"
+                    class="cursor-pointer text-2xl transition"
+                    :class="{
+                      'text-yellow-400': star <= complex.rating,
+                      'text-gray-500': star > complex.rating,
+                    }"
+                  >
+                    ★
+                  </span>
+                </div>
               </div>
 
               <div class="mt-auto">
@@ -144,19 +158,26 @@
 
               <!-- Complex Content -->
               <div class="p-4 flex flex-col flex-1">
-                <div class="flex justify-between w-full gap-2 mb-4">
+                <div class="flex justify-between w-full gap-2 mb-6 items-center">
                   <h3
-                    class="text-white whitespace-nowrap font-medium text-lg mb-2 line-clamp-2"
+                    class="text-white whitespace-nowrap font-medium text-lg line-clamp-2"
                   >
                     {{ complex.name }}
                   </h3>
-                  <!-- <span
-                  v-for="sport in complex.sports"
-                  :key="sport.id"
-                  class="text-xs bg-[#1A1B1F] text-gray-400 px-2 py-1 rounded"
-                >
-                  {{ sport.name }}
-                </span> -->
+
+                  <div class="flex items-center gap-1">
+                    <span
+                      v-for="star in 5"
+                      :key="star"
+                      class="cursor-pointer text-2xl transition"
+                      :class="{
+                        'text-yellow-400': star <= complex.rating,
+                        'text-gray-500': star > complex.rating,
+                      }"
+                    >
+                      ★
+                    </span>
+                  </div>
                 </div>
 
                 <div class="mt-auto">
