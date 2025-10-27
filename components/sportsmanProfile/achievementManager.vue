@@ -257,37 +257,60 @@
 
           <!-- Age Group & Weight -->
           <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <!-- 1. Sport Type -->
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">
-                Название возрастная группа
+                Тип спорта
               </label>
               <el-select
-                v-model="form.age_group"
-                placeholder="Выберите возрастная группа"
+                v-model="form.sport_type"
+                placeholder="Выберите вид спорта"
                 filterable
                 clearable
-                @change="handleAgeGroupChange"
+                @change="handleSportTypeChange"
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
               >
                 <el-option
-                  v-for="item in ageGroup"
+                  v-for="item in sportType"
                   :key="item.id"
-                  :label="item.age_group.name"
+                  :label="item.name"
                   :value="item.id"
                 />
               </el-select>
             </div>
 
+            <!-- 2. Age Group -->
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">
-                Название вес
+                Возрастная группа
               </label>
               <el-select
+                v-model="form.age_group"
+                placeholder="Выберите возрастную группу"
+                filterable
+                clearable
+                :disabled="!ageGroups.length"
+                @change="handleAgeGroupChange"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
+              >
+                <el-option
+                  v-for="age in ageGroups"
+                  :key="age.id"
+                  :label="age.age_group.name"
+                  :value="age.id"
+                />
+              </el-select>
+            </div>
+
+            <!-- 3. Weight -->
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-300 mb-2">Bес</label>
+              <el-select
                 v-model="form.weight"
+                placeholder="Выберите вес"
                 filterable
                 clearable
                 :disabled="!weights.length"
-                placeholder="Выберите вес"
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
               >
                 <el-option
@@ -683,11 +706,7 @@ const dataRequest = ref([]);
 
 const statusFilter = ref("");
 
-const handleAdd = () => {
-  showModal.value = true;
-  isEditing.value = false;
-  resetForm();
-};
+
 
 const filteredRequests = computed(() => {
   if (statusFilter.value === "") {
@@ -722,6 +741,7 @@ const form = ref({
   trainer: "",
   year: "",
   rating: 0,
+  sport_type: "",
   age_group: "",
   weight: "",
   file: null,
@@ -759,27 +779,38 @@ const getTournament = async () => {
   }
 };
 
-const ageGroup = ref([]);
+const sportType = ref([]);
+const ageGroups = ref([]);
 const weights = ref([]);
 
-const getAgeGroup = async () => {
+const getSportType = async () => {
   try {
     const federationId = authStore.userProfile?.data?.sportsman_profile?.federation?.id;
     const res = await $api.get(
-      `/federation/${federationId}/age-groups/?page=1&page_size=1000`
+      `/federation/${federationId}/sport-types/?page=1&page_size=1000`
     );
-
-    ageGroup.value = res.data.data.data;
+    sportType.value = res.data.data || [];
   } catch (e) {
-    console.log(e);
+    console.error("Sport turini olishda xatolik:", e);
   }
 };
 
-const handleAgeGroupChange = (id) => {
-  const selected = ageGroup.value.find((item) => item.id === id);
+const handleSportTypeChange = (sportTypeId) => {
+  const selectedSport = sportType.value.find((s) => s.id === sportTypeId);
+  ageGroups.value = selectedSport?.age_groups || [];
 
-  weights.value = selected ? selected.age_group?.weights : [];
-  form.weight = "";
+  weights.value = [];
+  form.value.age_group = "";
+  form.value.weight = "";
+};
+
+const handleAgeGroupChange = (ageGroupId) => {
+  const selectedAgeGroup = ageGroups.value.find((g) => g.id === ageGroupId);
+  console.log(selectedAgeGroup);
+
+  weights.value = selectedAgeGroup?.age_group?.weights || [];
+
+  form.value.weight = "";
 };
 
 const trainerData = ref([]);
@@ -796,6 +827,7 @@ const getTrainer = async () => {
   }
 };
 
+
 const submitForm = async () => {
   try {
     if (!form.value.file) {
@@ -806,8 +838,15 @@ const submitForm = async () => {
     isLoading.value = true;
 
     const formData = new FormData();
+
     for (const [key, value] of Object.entries(form.value)) {
-      formData.append(key, value);
+      if (key === "file") {
+        if (value instanceof File || value instanceof Blob) {
+          formData.append("file", value);
+        }
+      } else {
+        formData.append(key, value);
+      }
     }
 
     if (isEditing.value) {
@@ -820,7 +859,8 @@ const submitForm = async () => {
       });
     }
 
-    ElMessage.success("Fayl muvaffaqiyatli yuborildi!");
+    ElMessage.success("Ma'lumot muvaffaqiyatli saqlandi!");
+    getData();
     resetForm();
   } catch (err) {
     if (err.response?.data) {
@@ -847,10 +887,13 @@ const submitForm = async () => {
   }
 };
 
+
 const updateItem = async (id) => {
   try {
     const res = await $api.get(`/user/profile/results/${id}/`);
     const item = res.data.data;
+
+    await getSportType();
 
     form.value = {
       country: item.country || "",
@@ -858,10 +901,23 @@ const updateItem = async (id) => {
       trainer: item.trainer?.id || "",
       year: item.year?.toString() || "",
       rating: item.rating || 0,
+      sport_type: item.sport_type?.id || "",
       age_group: item.age_group?.id || "",
       weight: item.weight || "",
-      file: null,
+      file: item.file || null,
     };
+
+    const selectedSport = sportType.value.find(
+      (s) => s.id === form.value.sport_type
+    );
+    ageGroups.value = selectedSport?.age_groups || [];
+
+    const selectedAgeGroup = ageGroups.value.find(
+      (g) => g.id === form.value.age_group
+    );
+
+    weights.value =
+      selectedAgeGroup?.weights || selectedAgeGroup?.age_group?.weights || [];
 
     previewUrl.value = item.file || null;
     fileList.value = item.file ? [{ name: "Current File", url: item.file }] : [];
@@ -874,6 +930,7 @@ const updateItem = async (id) => {
     ElMessage.error("Ошибка при загрузке данных для редактирования!");
   }
 };
+
 
 const viewItem = async (id) => {
   try {
@@ -941,17 +998,25 @@ const resetForm = () => {
   showModal.value = false;
   isEditing.value = false;
   editingId.value = null;
-  form.value.file = null;
-  fileList.value = [];
-  previewUrl.value = null;
-  Object.assign(form, {
+
+  form.value = {
     country: "",
     tournament: "",
     trainer: "",
     year: "",
     rating: 0,
-  });
+    sport_type: "",
+    age_group: "",
+    weight: "",
+    file: null,
+  };
+
+  fileList.value = [];
+  previewUrl.value = null;
+  ageGroups.value = [];
+  weights.value = [];
 };
+
 
 const isImageFile = (fileUrl) => {
   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileUrl);
@@ -975,7 +1040,7 @@ onMounted(() => {
   getData();
   getTournament();
   getTrainer();
-  getAgeGroup();
+  getSportType();
 });
 
 const showImageModal = ref(false);

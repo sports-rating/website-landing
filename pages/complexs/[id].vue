@@ -389,7 +389,7 @@ const fetchComments = async () => {
 };
 
 const postComment = async () => {
-  if (!newComment.value.trim() || rating.value === 0) return;
+  if (!newComment.value.trim()) return;
 
   try {
     loading.value = true;
