@@ -46,8 +46,8 @@
       </div>
     </div>
 
-    <div class="bg-gray-800 rounded-lg overflow-hidden overflow-x-auto">
-      <div class="min-w-[800px]">
+    <div class="bg-gray-800 rounded-lg overflow-hidden overflow-x-auto no-scrollbar">
+      <div class="min-w-[800px] h-[23rem] overflow-y-auto no-scrollbar">
         <div
           class="grid grid-cols-12 gap-4 p-4 bg-gray-700 text-sm font-medium text-gray-300"
         >
@@ -80,6 +80,7 @@
               'text-blue-400': achievement?.status === 'pending',
               'text-green-400': achievement?.status === 'verified',
               'text-red-400': achievement?.status === 'rejected',
+              'text-red-400': achievement?.status === 'cancelled',
             }"
           >
             {{
@@ -89,6 +90,8 @@
                 ? "Подтверждено"
                 : achievement?.status === "rejected"
                 ? "Отклонено"
+                : achievement?.status === "cancelled"
+                ? "Отменено"
                 : "Неизвестно"
             }}
           </div>
@@ -543,29 +546,19 @@
       v-if="viewModall"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-      <div class="bg-white rounded-2xl shadow-lg w-full max-w-md mx-4 overflow-hidden">
+      <div
+        class="!bg-gray-800 rounded-2xl shadow-lg w-full mx-4 overflow-hidden transition-all duration-300"
+        :class="
+          Object.keys(viewDataa.old_data || {}).length > 0 ? 'max-w-4xl' : 'max-w-md'
+        "
+      >
         <!-- Header -->
-        <div class="flex items-center justify-between px-5 py-4 border-b">
-          <div class="flex items-center gap-2">
-            <div class="bg-red-500 p-2 rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6l4 2"
-                />
-              </svg>
-            </div>
-            <h2 class="text-lg font-semibold text-black">Просмотр достижения</h2>
-          </div>
-          <button @click="viewModall = false" class="text-gray-500 hover:text-black">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-gray-700">
+          <h2 class="text-lg font-semibold text-white">Посмотреть запрос</h2>
+          <button
+            @click="viewModall = false"
+            class="text-gray-400 hover:text-white transition"
+          >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -578,84 +571,110 @@
         </div>
 
         <!-- Body -->
-        <div class="p-6 space-y-4 text-gray-800">
-          <!-- Tournament -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">🏆 Турнир:</span>
-            <p class="font-medium">{{ viewDataa?.new_data?.tournament?.name }}</p>
-          </div>
-
-          <!-- Trainer -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">👤 Тренер:</span>
-            <p class="font-medium">{{ viewDataa.receiver?.full_name }}</p>
-          </div>
-
-          <!-- Rating -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">⭐ Рейтинг:</span>
-            <span
-              class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-200 text-sm font-semibold"
-            >
-              {{ viewDataa.new_data?.rating }}
-            </span>
-          </div>
-
-          <!-- Country -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">📍 Страна:</span>
-            <p class="font-medium">{{ viewDataa.new_data?.country }}</p>
-          </div>
-
-          <!-- Year -->
-          <div class="flex items-start gap-3">
-            <span class="text-gray-500">📅 Год:</span>
-            <p class="font-medium">{{ viewDataa.new_data?.year }}</p>
-          </div>
-
+        <div
+          class="grid gap-4 p-6 text-gray-800"
+          :class="
+            Object.keys(viewDataa.old_data || {}).length > 0
+              ? 'md:grid-cols-2'
+              : 'md:grid-cols-1'
+          "
+        >
+          <!-- OLD DATA -->
           <div
-            v-if="viewDataa.new_data.file_url !== null && viewDataa.new_data.file_url"
-            class="flex items-center gap-3"
+            v-if="viewDataa.old_data && Object.keys(viewDataa.old_data).length > 0"
+            class="bg-gray-900 text-white rounded-xl p-5"
           >
-            <span class="text-gray-500">📄 Документ:</span>
+            <h3
+              class="text-purple-400 font-semibold text-lg mb-3 flex items-center gap-2"
+            >
+              🧾 Старый результат
+            </h3>
+            <p>
+              📍 <span class="font-medium">Страна:</span> {{ viewDataa.old_data.country }}
+            </p>
+            <p>
+              🏆 <span class="font-medium">Турнир:</span>
+              {{ viewDataa.old_data.tournament?.name }}
+            </p>
+            <p>
+              👶 <span class="font-medium">Возрастная:</span>
+              {{ viewDataa.old_data.age_group.name }}
+            </p>
+            <p>
+              ⚖️ <span class="font-medium">Вес:</span> {{ viewDataa.old_data.weight }}
+            </p>
+            <p>📅 <span class="font-medium">Год:</span> {{ viewDataa.old_data.year }}</p>
+            <p>
+              ⭐ <span class="font-medium">Рейтинг:</span> {{ viewDataa.old_data.rating }}
+            </p>
+            <p>
+              🏆 <span class="font-medium">Счёт:</span> {{ viewDataa.old_data.score }}
+            </p>
 
-            <template v-if="isImageFile(viewDataa.new_data.file_url)">
+            <div v-if="viewDataa.old_data.file_url" class="mt-3">
+              <span class="block font-medium text-gray-300 mb-1">📄 Документ:</span>
               <img
+                v-if="isImageFile(viewDataa.old_data.file_url)"
+                :src="viewDataa.old_data.file_url"
+                class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
+                @click="openImageModal(viewDataa.old_data.file_url)"
+              />
+              <a
+                v-else
+                :href="viewDataa.old_data.file_url"
+                target="_blank"
+                class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                >Открыть документ</a
+              >
+            </div>
+          </div>
+
+          <!-- NEW DATA -->
+          <div class="bg-gray-900 text-white rounded-xl p-5">
+            <h3
+              class="text-purple-400 font-semibold text-lg mb-3 flex items-center gap-2"
+            >
+              🆕 Новые результат
+            </h3>
+            <p>
+              📍 <span class="font-medium">Страна:</span> {{ viewDataa.new_data.country }}
+            </p>
+            <p>
+              🏆 <span class="font-medium">Турнир:</span>
+              {{ viewDataa.new_data.tournament?.name }}
+            </p>
+            <p>
+              👶 <span class="font-medium">Возрастная:</span>
+              {{ viewDataa.new_data.age_group.name }}
+            </p>
+            <p>
+              ⚖️ <span class="font-medium">Вес:</span> {{ viewDataa.new_data.weight }}
+            </p>
+            <p>📅 <span class="font-medium">Год:</span> {{ viewDataa.new_data.year }}</p>
+            <p>
+              ⭐ <span class="font-medium">Рейтинг:</span> {{ viewDataa.new_data.rating }}
+            </p>
+            <p>
+              🏆 <span class="font-medium">Счёт:</span> {{ viewDataa.new_data.score }}
+            </p>
+
+            <div v-if="viewDataa.new_data.file_url" class="mt-3">
+              <span class="block font-medium text-gray-300 mb-1">📄 Документ:</span>
+              <img
+                v-if="isImageFile(viewDataa.new_data.file_url)"
                 :src="viewDataa.new_data.file_url"
-                alt="preview"
-                class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
                 @click="openImageModal(viewDataa.new_data.file_url)"
               />
-            </template>
-
-            <template v-else-if="isPdfFile(viewDataa.new_data.file_url)">
-              <div
-                class="flex items-center gap-2 cursor-pointer hover:text-blue-400 transition"
-                @click="openPdf(viewDataa.new_data.file_url)"
-              >
-                <i class="el-icon-document text-red-500 text-2xl"></i>
-                <span class="underline text-sm break-all">Открыть PDF</span>
-              </div>
-            </template>
-
-            <template v-else>
               <a
+                v-else
                 :href="viewDataa.new_data.file_url"
                 target="_blank"
-                class="underline text-sm text-blue-400 hover:text-blue-600 break-all"
+                class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                >Открыть документ</a
               >
-                Скачать файл
-              </a>
-            </template>
+            </div>
           </div>
-        </div>
-
-        <!-- Score -->
-        <div class="bg-red-100 px-6 py-4 flex items-center justify-between">
-          <span class="text-gray-700 font-medium">Баллы</span>
-          <p class="text-2xl font-bold text-red-600">
-            {{ viewDataa.new_data?.score }}
-          </p>
         </div>
       </div>
     </div>
@@ -685,7 +704,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useI18n } from "vue-i18n";
 
@@ -705,8 +724,6 @@ const activeTab = ref("pending");
 const dataRequest = ref([]);
 
 const statusFilter = ref("");
-
-
 
 const filteredRequests = computed(() => {
   if (statusFilter.value === "") {
@@ -734,6 +751,14 @@ const getData = async () => {
     console.error("res error:", e);
   }
 };
+
+watch(activeTab, (newVal) => {
+  if (newVal === "pending") {
+    getDataRequest();
+  } else if (newVal === "verified") {
+    getData();
+  }
+});
 
 const form = ref({
   country: "",
@@ -827,10 +852,9 @@ const getTrainer = async () => {
   }
 };
 
-
 const submitForm = async () => {
   try {
-    if (!form.value.file) {
+    if (!form.value.file && !isEditing.value) {
       ElMessage.warning("Iltimos, fayl yuklang!");
       return;
     }
@@ -843,6 +867,16 @@ const submitForm = async () => {
       if (key === "file") {
         if (value instanceof File || value instanceof Blob) {
           formData.append("file", value);
+        } else if (
+          isEditing.value &&
+          typeof value === "string" &&
+          value.startsWith("http")
+        ) {
+          const response = await fetch(value);
+          const blob = await response.blob();
+          const filename = value.split("/").pop() || "file.jpg";
+          const file = new File([blob], filename, { type: blob.type });
+          formData.append("file", file);
         }
       } else {
         formData.append(key, value);
@@ -861,11 +895,11 @@ const submitForm = async () => {
 
     ElMessage.success("Ma'lumot muvaffaqiyatli saqlandi!");
     getData();
+    getDataRequest();
     resetForm();
   } catch (err) {
     if (err.response?.data) {
       const data = err.response.data;
-
       if (typeof data === "object" && !Array.isArray(data)) {
         if (data.message && typeof data.message === "string") {
           ElMessage.error(data.message);
@@ -887,7 +921,6 @@ const submitForm = async () => {
   }
 };
 
-
 const updateItem = async (id) => {
   try {
     const res = await $api.get(`/user/profile/results/${id}/`);
@@ -907,14 +940,10 @@ const updateItem = async (id) => {
       file: item.file || null,
     };
 
-    const selectedSport = sportType.value.find(
-      (s) => s.id === form.value.sport_type
-    );
+    const selectedSport = sportType.value.find((s) => s.id === form.value.sport_type);
     ageGroups.value = selectedSport?.age_groups || [];
 
-    const selectedAgeGroup = ageGroups.value.find(
-      (g) => g.id === form.value.age_group
-    );
+    const selectedAgeGroup = ageGroups.value.find((g) => g.id === form.value.age_group);
 
     weights.value =
       selectedAgeGroup?.weights || selectedAgeGroup?.age_group?.weights || [];
@@ -930,7 +959,6 @@ const updateItem = async (id) => {
     ElMessage.error("Ошибка при загрузке данных для редактирования!");
   }
 };
-
 
 const viewItem = async (id) => {
   try {
@@ -986,8 +1014,6 @@ const cancelRequest = async (id) => {
       } else if (typeof data === "string") {
         ElMessage.error(data);
       }
-    } else {
-      ElMessage.error("Ошибка при создании!");
     }
   } finally {
     await getDataRequest();
@@ -1016,7 +1042,6 @@ const resetForm = () => {
   ageGroups.value = [];
   weights.value = [];
 };
-
 
 const isImageFile = (fileUrl) => {
   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileUrl);

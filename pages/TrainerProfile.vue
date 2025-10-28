@@ -123,7 +123,7 @@
             Список спортсменов
           </button>
 
-          <button
+          <!-- <button
             v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
             :class="[
               'py-3 px-4 text-lg font-semibold border-b-2 flex-shrink-0',
@@ -134,7 +134,7 @@
             @click="activeTab = 'fund'"
           >
             Фонд "Бирлик"
-          </button>
+          </button> -->
         </nav>
 
         <div v-if="activeTab === 'main'" class="flex flex-col lg:flex-row gap-6">
@@ -158,7 +158,7 @@
                 <template
                   v-if="authStore.userProfile?.data?.trainer_profile?.is_trainer_verified"
                 >
-                  <button
+                  <!-- <button
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
                       activeTabe === 'education'
@@ -168,9 +168,9 @@
                     @click="activeTabe = 'education'"
                   >
                     Образование
-                  </button>
+                  </button> -->
 
-                  <button
+                  <!-- <button
                     v-if="authStore.userProfile?.data?.trainer_profile?.federation"
                     @click="activeTabe = 'career'"
                     :class="[
@@ -181,7 +181,7 @@
                     ]"
                   >
                     Достижения
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="authStore.userProfile?.data?.trainer_profile?.federation"
@@ -196,7 +196,7 @@
                     Рабочее место
                   </button>
 
-                  <button
+                  <!-- <button
                     v-if="authStore.userProfile?.data?.trainer_profile?.federation"
                     @click="activeTabe = 'careere'"
                     :class="[
@@ -207,7 +207,7 @@
                     ]"
                   >
                     Карьера
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="
