@@ -226,6 +226,7 @@
                 placeholder="Выберите турнира"
                 filterable
                 clearable
+                :disabled="isEditing"
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
               >
                 <el-option
@@ -245,6 +246,7 @@
                 v-model="form.trainer"
                 filterable
                 clearable
+                :disabled="isEditing"
                 placeholder="Выберите тренер"
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg !text-white"
               >
@@ -485,6 +487,27 @@
             <p class="font-medium">{{ viewData.country }}</p>
           </div>
 
+          <p>
+            👶 <span class="font-medium">Возрастная:</span>
+            {{ viewData.age_group.name }}
+          </p>
+          <p>⚖️ <span class="font-medium">Вес:</span> {{ viewData.weight }}</p>
+
+          <p class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 text-blue-500"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+              />
+            </svg>
+            <span class="text-gray-500">Тип спорта:</span>
+            {{ viewData.sport_type?.name }}
+          </p>
+
           <!-- Year -->
           <div class="flex items-start gap-3">
             <span class="text-gray-500">📅 Год:</span>
@@ -611,6 +634,21 @@
               🏆 <span class="font-medium">Счёт:</span> {{ viewDataa.old_data.score }}
             </p>
 
+            <p class="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-blue-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                />
+              </svg>
+              <span class="text-gray-400">Тип спорта:</span>
+              {{ viewDataa.old_data.sport_type?.name }}
+            </p>
+
             <div v-if="viewDataa.old_data.file_url" class="mt-3">
               <span class="block font-medium text-gray-300 mb-1">📄 Документ:</span>
               <img
@@ -656,6 +694,21 @@
             </p>
             <p>
               🏆 <span class="font-medium">Счёт:</span> {{ viewDataa.new_data.score }}
+            </p>
+
+            <p class="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-blue-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                />
+              </svg>
+              <span class="text-gray-400">Тип спорта:</span>
+              {{ viewDataa.new_data.sport_type?.name }}
             </p>
 
             <div v-if="viewDataa.new_data.file_url" class="mt-3">
@@ -822,7 +875,12 @@ const getSportType = async () => {
 
 const handleSportTypeChange = (sportTypeId) => {
   const selectedSport = sportType.value.find((s) => s.id === sportTypeId);
-  ageGroups.value = selectedSport?.age_groups || [];
+
+  if (selectedSport) {
+    ageGroups.value = selectedSport.age_groups || [];
+  } else {
+    ageGroups.value = ageGroups.value.length ? ageGroups.value : [];
+  }
 
   weights.value = [];
   form.value.age_group = "";
@@ -941,7 +999,17 @@ const updateItem = async (id) => {
     };
 
     const selectedSport = sportType.value.find((s) => s.id === form.value.sport_type);
-    ageGroups.value = selectedSport?.age_groups || [];
+
+    if (selectedSport) {
+      ageGroups.value = selectedSport.age_groups || [];
+    } else {
+      ageGroups.value = [
+        {
+          id: item.age_group?.id,
+          age_group: { name: item.age_group?.name || "" },
+        },
+      ];
+    }
 
     const selectedAgeGroup = ageGroups.value.find((g) => g.id === form.value.age_group);
 

@@ -337,6 +337,24 @@
                 {{ selectedRequest.old_data.score }}
               </p>
 
+              <p
+                v-if="selectedRequest.old_data.sport_type"
+                class="flex items-center gap-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-blue-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                  />
+                </svg>
+                <span class="text-gray-400">Тип спорта:</span>
+                {{ selectedRequest.old_data.sport_type?.name }}
+              </p>
+
               <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
                 <img
@@ -389,6 +407,24 @@
               <p v-if="selectedRequest.new_data.score">
                 <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.new_data.score }}
+              </p>
+
+              <p
+                v-if="selectedRequest.new_data.sport_type"
+                class="flex items-center gap-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-blue-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                  />
+                </svg>
+                <span class="text-gray-400">Тип спорта:</span>
+                {{ selectedRequest.new_data.sport_type?.name }}
               </p>
 
               <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
