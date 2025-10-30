@@ -357,12 +357,20 @@
 
               <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
+
                 <img
+                  v-if="isImageFile(selectedRequest.old_data.file_url)"
                   :src="selectedRequest.old_data.file_url"
-                  alt="viewData.file"
-                  class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                  class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
                   @click="openImageModal(selectedRequest.old_data.file_url)"
                 />
+                <a
+                  v-else
+                  :href="selectedRequest.old_data.file_url"
+                  target="_blank"
+                  class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                  >Открыть документ</a
+                >
               </p>
             </div>
             <div
@@ -430,11 +438,18 @@
               <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
                 <img
+                  v-if="isImageFile(selectedRequest.new_data.file_url)"
                   :src="selectedRequest.new_data.file_url"
-                  alt="viewData.file"
-                  class="w-14 h-14 object-cover rounded-lg mt-2 cursor-pointer hover:opacity-80 transition"
+                  class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
                   @click="openImageModal(selectedRequest.new_data.file_url)"
                 />
+                <a
+                  v-else
+                  :href="selectedRequest.new_data.file_url"
+                  target="_blank"
+                  class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                  >Открыть документ</a
+                >
               </p>
             </div>
           </div>
@@ -549,6 +564,10 @@ const reset = () => {
   search = "";
   selectedStatus = "";
   selectedDate = "";
+};
+
+const isImageFile = (fileUrl) => {
+  return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileUrl);
 };
 
 watch([currentPage, search, selectedStatus, selectedDate], fetchRequests);
