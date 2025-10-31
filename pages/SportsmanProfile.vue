@@ -5,7 +5,6 @@
         <header
           class="rounded-lg border !border-[#11101B] bg-[#11101B]/50 p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center md:items-start justify-between w-full mx-auto gap-6 md:gap-8"
         >
-          <!-- Profile image -->
           <div
             class="relative w-28 h-28 sm:w-36 sm:h-36 md:w-60 md:h-60 flex-shrink-0 cursor-pointer group order-1 md:order-2 mx-auto md:mx-0"
           >
@@ -19,7 +18,6 @@
               class="rounded-full object-cover w-full h-full shadow-md"
             />
 
-            <!-- Camera button -->
             <div
               @click.stop="clickImg"
               class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 border border-blue-600 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center shadow-md group-hover:scale-110 transition duration-200 ease-in-out"
@@ -48,12 +46,10 @@
             </div>
           </div>
 
-          <!-- User info -->
           <div
             class="flex flex-col items-center md:items-start text-center md:text-left order-2 md:order-1 w-full"
           >
             <div class="flex flex-col w-full">
-              <!-- Name -->
               <h1
                 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 flex flex-wrap items-center justify-center md:justify-start"
               >
@@ -72,7 +68,6 @@
                 />
               </h1>
 
-              <!-- Badges -->
               <div class="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3">
                 <span
                   class="bg-[#A0E727] uppercase text-white text-xs sm:text-sm px-3 py-1 rounded-full flex items-center"
@@ -102,12 +97,12 @@
           <button
             class="py-3 px-4 text-lg font-semibold border-b-2 border-[#E91E63] text-[#E91E63] flex-shrink-0"
           >
-            Основные
+            {{ t("basic") }}
           </button>
           <template
             v-if="authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified"
           >
-            <button
+            <!-- <button
               class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white flex-shrink-0"
             >
               Фонд "Бирлик"
@@ -121,13 +116,13 @@
               class="py-3 px-4 text-lg font-semibold text-gray-400 hover:text-white flex-shrink-0"
             >
               Питание
-            </button>
+            </button> -->
           </template>
         </nav>
 
         <div class="flex flex-col lg:flex-row gap-6">
           <aside class="w-full h-fit lg:w-64 bg-[#2C2C4A] rounded-lg p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-300">Информация</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-300">{{ t("info") }}</h2>
             <div class="flex gap-6">
               <!-- Tabs -->
               <nav class="space-y-2 w-64">
@@ -140,7 +135,7 @@
                       : 'text-gray-300 hover:bg-[#3A3A5A]',
                   ]"
                 >
-                  Личные данные
+                  {{ t("basicAbout") }}
                 </button>
 
                 <template
@@ -148,7 +143,7 @@
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                   "
                 >
-                  <button
+                  <!-- <button
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
                       activeTab === 'education'
@@ -158,7 +153,7 @@
                     @click="activeTab = 'education'"
                   >
                     Образование
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
@@ -170,10 +165,10 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Достижения
+                    {{ t("achievementst") }}
                   </button>
 
-                  <button
+                  <!-- <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'careere'"
                     :class="[
@@ -184,7 +179,7 @@
                     ]"
                   >
                     Карьера
-                  </button>
+                  </button> -->
 
                   <button
                     v-if="
@@ -199,7 +194,7 @@
                         : 'text-gray-300 hover:bg-[#3A3A5A]',
                     ]"
                   >
-                    Медиа
+                    {{ t("media") }}
                   </button>
                 </template>
               </nav>
@@ -213,296 +208,469 @@
               @submit.prevent="handleSubmit"
             >
               <div>
-                <h2 class="text-xl font-semibold mb-4">Личная информация</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="name" class="text-sm text-gray-400 mb-1">Имя</label>
-                    <input
-                      type="text"
-                      id="name"
-                      v-model="formData.firstName"
-                      placeholder="Имя"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="surname" class="text-sm text-gray-400 mb-1"
-                      >Фамилия</label
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
+                >
+                  <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold text-white">{{ t("infoUser") }}</h2>
+                    <div
+                      class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
                     >
-                    <input
-                      type="text"
-                      id="surname"
-                      v-model="formData.lastName"
-                      placeholder="Фамилия"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-circle-check w-4 h-4 text-green-400"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m9 12 2 2 4-4"></path>
+                      </svg>
+                      <span class="text-xs font-medium text-green-300">{{
+                        t("autoSave")
+                      }}</span>
+                    </div>
                   </div>
-                  <div class="flex flex-col">
-                    <label for="patronymic" class="text-sm text-gray-400 mb-1"
-                      >Отчество</label
-                    >
-                    <input
-                      type="text"
-                      id="patronymic"
-                      v-model="formData.middleName"
-                      placeholder="Отчество"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] md:w-full w-[95%] rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="dob" class="text-sm text-gray-400 mb-1"
-                      >Дата рождения</label
-                    >
-                    <div class="relative w-full">
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >{{ t("firstManager") }}</label
+                      ><input
+                        v-model="formData.firstName"
+                        type="text"
+                        id="name"
+                        data-slot="input"
+                        :placeholder="t('firstManager')"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="surname"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >{{ t("lastManager") }}</label
+                      ><input
+                        type="text"
+                        id="surname"
+                        v-model="formData.lastName"
+                        data-slot="input"
+                        :placeholder="t('lastManager')"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="patronymic"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >{{ t("surname") }}</label
+                      ><input
+                        type="text"
+                        id="patronymic"
+                        v-model="formData.middleName"
+                        :placeholder="t('surname')"
+                        data-slot="input"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="dob"
+                        class="block text-sm font-medium text-slate-300 mb-2"
+                        >{{ t("userDate") }}</label
+                      >
+
                       <el-input
                         type="date"
                         id="dob"
                         v-model="formData.birthDate"
-                        class="!bg-[#3A3A5A] !border !border-[#4A4A6A] !rounded-md text-white md:!w-full !h-[50px] !w-[95%] focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive !bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
-                  </div>
-                  <div class="flex items-center col-span-2">
-                    <label class="text-sm text-gray-400 mr-4">Пол</label>
-                    <div class="flex items-center mr-6">
-                      <input
-                        type="radio"
-                        id="male"
-                        value="male"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="male" class="ml-2 text-white">Мужчина</label>
+                    <div class="flex !flex-row items-center">
+                      <label class="text-sm text-gray-400 mr-4">{{ t("role") }}</label>
+                      <div class="flex items-center mr-6">
+                        <input
+                          type="radio"
+                          id="male"
+                          value="male"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="male" class="ml-2 text-white">{{ t("male") }}</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          type="radio"
+                          id="female"
+                          value="female"
+                          v-model="formData.gender"
+                          class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
+                        />
+                        <label for="female" class="ml-2 text-white">{{
+                          t("female")
+                        }}</label>
+                      </div>
                     </div>
-                    <div class="flex items-center">
-                      <input
-                        type="radio"
-                        id="female"
-                        value="female"
-                        v-model="formData.gender"
-                        class="form-radio h-5 w-5 text-[#E91E63] bg-[#3A3A5A] border-[#4A4A6A] focus:ring-[#E91E63]"
-                      />
-                      <label for="female" class="ml-2 text-white">Женщина</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Фактический адрес</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="region" class="text-sm text-gray-400 mb-1"
-                      >Область / Город</label
-                    >
-                    <select
-                      id="region"
-                      v-model="formData.region"
-                      @change="onRegionChange"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите город</option>
-                      <option v-for="region in regions" :key="region.id" :value="region">
-                        {{ region.name }}
-                      </option>
-                    </select>
                   </div>
 
-                  <div class="flex flex-col">
-                    <label for="district" class="text-sm text-gray-400 mb-1"
-                      >Улица
-                    </label>
-                    <select
-                      id="district"
-                      v-model="formData.district"
-                      class="bg-[#3A3A5A] !h-9.5 border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Улица</option>
-                      <option
-                        v-for="district in filteredDistricts"
-                        :key="district.id"
-                        :value="district"
+                  <div class="mt-10">
+                    <div class="flex items-center gap-3 mb-4">
+                      <h2 class="text-2xl font-bold text-white">{{ t("userAdress") }}</h2>
+                      <div
+                        class="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30"
                       >
-                        {{ district.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h2 class="text-xl font-semibold mb-4">Спортивные данные</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="flex flex-col">
-                    <label for="athleteType" class="text-sm text-gray-400 mb-1"
-                      >Вид спортсмена</label
-                    >
-                    <select
-                      id="athleteType"
-                      v-model="formData.sport"
-                      class="bg-[#3A3A5A] border !h-11 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Выберите Вид спортсмена</option>
-                      <option v-for="item in data" :value="item.id">
-                        {{ item.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="flex flex-col">
-                    <label for="height" class="text-sm text-gray-400 mb-1"
-                      >Рост (см)</label
-                    >
-                    <input
-                      type="number"
-                      id="height"
-                      v-model="formData.height"
-                      step="0.1"
-                      placeholder="Рост (см)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label for="weight" class="text-sm text-gray-400 mb-1"
-                      >Вес (кг)</label
-                    >
-                    <input
-                      type="number"
-                      id="weight"
-                      step="0.1"
-                      v-model="formData.weight"
-                      placeholder="Вес (кг)"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
-                  </div>
-                  <div class="flex items-end gap-2 w-full">
-                    <div class="flex flex-col md:w-[90%] w-[80%]">
-                      <label for="trainer" class="text-sm text-gray-400 mb-1"
-                        >Tренер</label
-                      >
-                      <select
-                        id="trainer"
-                        v-model="formData.trainer"
-                        class="bg-[#3A3A5A] border !h-9.5 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                      >
-                        <option value="">Выберите тренер</option>
-                        <option
-                          v-for="item in dataTrainer"
-                          :key="item.id"
-                          :value="item.id"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-circle-check w-4 h-4 text-green-400"
                         >
-                          {{ item.full_name }}
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                        <span class="text-xs font-medium text-green-300">{{
+                          t("autoSave")
+                        }}</span>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:!grid-cols-2 gap-6">
+                      <div class="flex flex-col">
+                        <label for="region" class="text-sm text-gray-400 mb-2">{{
+                          t("region")
+                        }}</label>
+                        <select
+                          id="region"
+                          v-model="formData.region"
+                          @change="onRegionChange"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">
+                            {{ t("firstRegion") }} {{ formData.region }}
+                          </option>
+                          <option
+                            v-for="region in regions"
+                            :key="region.id"
+                            :value="region"
+                          >
+                            {{ region.name }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="flex flex-col">
+                        <label for="district" class="text-sm text-gray-400 mb-2"
+                          >{{ t("district") }}
+                        </label>
+                        <select
+                          id="district"
+                          v-model="formData.district"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">{{ t("firstDistrict") }}</option>
+                          <option
+                            v-for="district in filteredDistricts"
+                            :key="district.id"
+                            :value="district"
+                          >
+                            {{ district.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex md:justify-end justify-center">
+                    <button
+                      type="submit"
+                      data-slot="button"
+                      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      {{ t("saveUser") }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <form
+              v-if="activeTab === 'info'"
+              class="space-y-8"
+              @submit.prevent="handleSubmitt"
+            >
+              <div class="mt-12">
+                <div class="flex items-center gap-3 mb-4">
+                  <h2 class="text-2xl font-bold text-white">{{ t("sportAbout") }}</h2>
+                  <div
+                    class="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-clock w-4 h-4 text-amber-400"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline></svg
+                    ><span class="text-xs font-medium text-amber-300">{{
+                      t("sportTrainer")
+                    }}</span>
+                  </div>
+                </div>
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm mb-4 border-amber-500/40 bg-amber-950/30 p-4 ring-1 ring-amber-500/20"
+                >
+                  <div class="flex gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-circle-alert w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" x2="12" y1="8" y2="12"></line>
+                      <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                    </svg>
+                    <div>
+                      <p class="text-amber-200 font-semibold">
+                        {{ t("note") }}
+                      </p>
+                      <p class="text-amber-300/90 text-sm mt-1">
+                        {{ t("noteDescription") }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  data-slot="card"
+                  class="text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm border-green-500/20 bg-slate-800/30 p-6"
+                >
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                      <label for="athleteType" class="text-sm text-gray-400 mb-1">{{
+                        t("athleteType")
+                      }}</label>
+                      <select
+                        id="athleteType"
+                        v-model="formData.sport"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      >
+                        <option value="">{{ t("athleteTypeOption") }}</option>
+                        <option v-for="item in data" :value="item.id">
+                          {{ item.name }}
                         </option>
                       </select>
                     </div>
 
-                    <div class="w-12 cursor-pointer" @click="openDialog">
-                      <img
-                        src="/history.png"
-                        class="w-8 h-8 object-cover"
-                        alt="history"
+                    <div class="flex flex-col">
+                      <label for="height" class="text-sm text-gray-400 mb-1">{{
+                        t("height")
+                      }}</label>
+                      <input
+                        type="number"
+                        id="height"
+                        v-model="formData.height"
+                        step="0.1"
+                        :placeholder="t('height')"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
                       />
                     </div>
-
-                    <el-dialog
-                      v-model="dialogVisible"
-                      title="Отправленные запросы"
-                      class="md:!w-[500px] !w-[350px] !bg-[#1f1f1f]"
-                    >
-                      <div v-if="isLoading" class="text-center py-4">
-                        <Loading class="w-4 h-4" />
+                    <div class="flex flex-col">
+                      <label for="weight" class="text-sm text-gray-400 mb-1">{{
+                        t("weight")
+                      }}</label>
+                      <input
+                        type="number"
+                        id="weight"
+                        step="0.1"
+                        v-model="formData.weight"
+                        :placeholder="t('weight')"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                      <div class="flex flex-col w-[100%]">
+                        <label for="trainer" class="text-sm text-gray-400 mb-1">{{
+                          t("trainerss")
+                        }}</label>
+                        <select
+                          id="trainer"
+                          v-model="formData.trainer"
+                          class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                        >
+                          <option value="">{{ t("trainerOption") }}</option>
+                          <option
+                            v-for="item in dataTrainer"
+                            :key="item.id"
+                            :value="item.id"
+                          >
+                            {{ item.full_name }}
+                          </option>
+                        </select>
                       </div>
-                      <div v-else>
-                        <el-empty
-                          v-if="requests.length === 0"
-                          description="Запросов не найдено."
-                        />
-                        <div v-else class="max-h-[400px] overflow-y-auto pr-2">
-                          <ul class="space-y-4">
-                            <li
-                              v-for="item in requests"
-                              :key="item.id"
-                              class="p-4 border rounded-lg shadow-sm bg-white flex justify-between items-start"
-                            >
-                              <div>
-                                <p class="text-sm text-gray-700 mb-1">
-                                  <strong>Имя Отправителя:</strong>
-                                  {{ item.receiver.full_name }}
-                                </p>
-                                <p
-                                  class="text-sm text-gray-700 mb-1 flex items-center gap-2"
-                                >
-                                  <strong>Статус:</strong>
-                                  <el-tag
-                                    :type="item.status === 'pending' ? 'warning' : 'info'"
-                                    size="small"
-                                    effect="light"
-                                  >
-                                    {{ item.status }}
-                                  </el-tag>
-                                </p>
-                                <p class="text-sm text-gray-700">
-                                  <strong>Созданный:</strong>
-                                  {{ formatDate(item.created_time) }}
-                                </p>
-                              </div>
-                              <div v-if="item.status === 'pending'">
-                                <el-button
-                                  type="danger"
-                                  size="small"
-                                  @click="cancelRequest(item.id)"
-                                >
-                                  Отмена
-                                </el-button>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </el-dialog>
-                  </div>
 
-                  <div class="flex flex-col w-full">
-                    <label for="trainer" class="text-sm text-gray-400 mb-1">Pазряд</label>
-                    <select
-                      id="sport_rank"
-                      v-model="formData.sport_rank"
-                      class="bg-[#3A3A5A] border !h-12 border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    >
-                      <option value="">Razzryad-ni tanlang</option>
-                      <option
-                        v-for="rank in sportRanks"
-                        :key="rank.value"
-                        :value="rank.key"
+                      <el-dialog
+                        v-model="dialogVisible"
+                        :title="t('sentUser')"
+                        class="md:!w-[500px] !w-[350px] text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm max-w-2xl !border-red-500/30 !bg-slate-900 p-6 max-h-[80vh] overflow-y-auto"
                       >
-                        {{ rank.label }}
-                      </option>
-                    </select>
-                  </div>
+                        <div v-if="isLoading" class="text-center py-4">
+                          <Loading class="w-4 h-4" />
+                        </div>
+                        <div v-else>
+                          <el-empty
+                            v-if="requests.length === 0"
+                            :description="t('sentNo')"
+                          />
+                          <div
+                            v-else
+                            class="max-h-[400px] overflow-y-auto no-scrollbar pr-2"
+                          >
+                            <ul class="space-y-4">
+                              <li
+                                v-for="item in requests"
+                                :key="item.id"
+                                class="text-card-foreground flex-col rounded-xl border shadow-sm border-slate-700/50 bg-slate-800/50 p-4 flex items-start justify-between gap-4"
+                              >
+                                <div>
+                                  <p class="text-sm text-white mb-1">
+                                    <strong>{{ t("nameSent") }}</strong>
+                                    {{ item.receiver.full_name }}
+                                  </p>
+                                  <p
+                                    class="text-sm text-white mb-1 flex items-center gap-2"
+                                  >
+                                    <strong>{{ t("statusSent") }}</strong>
+                                    <el-tag
+                                      :type="
+                                        item.status === 'pending' ? 'warning' : 'info'
+                                      "
+                                      size="small"
+                                      effect="light"
+                                    >
+                                      {{ item.status }}
+                                    </el-tag>
+                                  </p>
+                                  <p class="text-sm text-white">
+                                    <strong>{{ t("createSent") }}</strong>
+                                    {{ formatDate(item.created_time) }}
+                                  </p>
+                                </div>
+                                <div v-if="item.status === 'pending'">
+                                  <el-button
+                                    type="danger"
+                                    size="small"
+                                    @click="cancelRequest(item.id)"
+                                  >
+                                    {{ t("close") }}
+                                  </el-button>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </el-dialog>
+                    </div>
 
-                  <div class="flex flex-col">
-                    <label for="federation" class="text-sm text-gray-400 mb-1"
-                      >Федерация</label
-                    >
-                    <input
-                      type="text"
-                      id="federation"
-                      disabled
-                      v-model="federation"
-                      placeholder="Федерация"
-                      class="bg-[#3A3A5A] border border-[#4A4A6A] rounded-md p-3 md:w-full w-[95%] text-white focus:outline-none focus:ring-2 focus:ring-[#E91E63]"
-                    />
+                    <div class="flex flex-col w-full">
+                      <label for="trainer" class="text-sm text-gray-400 mb-1">{{
+                        t("discharge")
+                      }}</label>
+                      <select
+                        id="sport_rank"
+                        v-model="formData.sport_rank"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      >
+                        <option value="">{{ t("selectDischarge") }}</option>
+                        <option
+                          v-for="rank in sportRanks"
+                          :key="rank.value"
+                          :value="rank.key"
+                        >
+                          {{ rank.label }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="flex flex-col">
+                      <label for="federation" class="text-sm text-gray-400 mb-1">{{
+                        t("federation")
+                      }}</label>
+                      <input
+                        type="text"
+                        id="federation"
+                        disabled
+                        v-model="federation"
+                        :placeholder="t('federation')"
+                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-slate-700/50 border-slate-600 text-white"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="flex md:justify-end justify-center pt-4">
+              <div class="flex md:justify-end justify-center">
                 <button
                   type="submit"
-                  class="bg-[#E91E63] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#C2185B] transition-colors"
+                  data-slot="button"
+                  :disabled="
+                    authStore.userProfile?.data?.sportsman_profile?.request_status ===
+                    'pending'
+                  "
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                 >
-                  Сохранить данные
+                  {{ t("nameSentDischarge") }}
                 </button>
+
+                <div
+                  @click="openDialog"
+                  class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border shadow-xs hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 border-red-500/30 text-red-300 hover:bg-red-950/20 bg-transparent ml-auto"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-history w-4 h-4 mr-2"
+                  >
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                    <path d="M12 7v5l4 2"></path></svg
+                  >{{ t("history") }}
+                </div>
               </div>
             </form>
 
@@ -520,9 +688,7 @@
                 ></div>
 
                 <!-- Title -->
-                <p class="text-2xl font-semibold relative z-10">
-                  🔒 Заплатите, чтобы разблокировать отправку результатов
-                </p>
+                <p class="text-2xl font-semibold relative z-10">🔒 {{ t("quic") }}</p>
 
                 <!-- Payment Options -->
                 <div class="flex justify-center gap-6 flex-wrap relative z-10">
@@ -555,7 +721,7 @@
 
                 <!-- Note -->
                 <p class="text-sm text-gray-400 relative z-10">
-                  Безопасная оплата через надежных поставщиков
+                  {{ t("quicNote") }}
                 </p>
               </div>
             </div>
@@ -579,7 +745,9 @@ import { Loading } from "@element-plus/icons-vue";
 import achievementManager from "~/components/sportsmanProfile/achievementManager.vue";
 import SportsmanMedia from "~/components/SportsmanMedia.vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { $api } = useNuxtApp();
 
@@ -634,21 +802,21 @@ const createCheckout = async (method) => {
   }
 };
 
-const sportRanks = ref([
-  { value: "YOUTH_3", label: "Yoshlar uchinchi darajali", key: "Youth Third Rank" },
-  { value: "YOUTH_2", label: "Yoshlar ikkinchi darajali", key: "Youth Second Rank" },
-  { value: "YOUTH_1", label: "Yoshlar birinchi darajali", key: "Youth First Rank" },
-  { value: "ADULT_3", label: "Kattalar uchun uchinchi daraja", key: "Adult Third Rank" },
-  { value: "ADULT_2", label: "Kattalar uchun ikkinchi daraja", key: "Adult Second Rank" },
-  { value: "ADULT_1", label: "Kattalar uchun birinchi daraja", key: "Adult First Rank" },
+const sportRanks = computed(() => [
+  { value: "YOUTH_3", label: t("rankThird"), key: "Youth Third Rank" },
+  { value: "YOUTH_2", label: t("rankSecond"), key: "Youth Second Rank" },
+  { value: "YOUTH_1", label: t("rankFirst"), key: "Youth First Rank" },
+  { value: "ADULT_3", label: t("adultThird"), key: "Adult Third Rank" },
+  { value: "ADULT_2", label: t("adultSecond"), key: "Adult Second Rank" },
+  { value: "ADULT_1", label: t("adultFirst"), key: "Adult First Rank" },
   {
     value: "CANDIDATE",
-    label: "Sport ustasi",
+    label: t("candidate"),
     key: "Candidate for Master of Sport",
   },
   {
     value: "MASTER_OF_SPORT",
-    label: "Sport ustasi",
+    label: t("master"),
     key: "Master of Sport",
   },
 ]);
@@ -726,7 +894,7 @@ await getTrainer();
 const getRegions = async () => {
   try {
     const res = await $api.get("/user/regions/");
-    regions.value = res.data.data;
+    regions.value = res.data.data.map(({ id, name }) => ({ id, name }));
   } catch (err) {
     console.error("Regions yuklashda xatolik:", err);
   }
@@ -768,14 +936,6 @@ const handleSubmit = async () => {
       gender: formData.value.gender,
       region: formData.value.region?.id || null,
       district: formData.value.district?.id || null,
-      sportsman_profile: {
-        sport_id: formData.value.sport,
-        trainer_id: formData.value.trainer,
-        sport_rank: formData.value.sport_rank,
-        height: String(formData.value.height),
-        weight: String(formData.value.weight),
-        send_request: true,
-      },
     };
 
     if (uploadedImageId.value) {
@@ -834,19 +994,76 @@ const handleSubmit = async () => {
   }
 };
 
+const handleSubmitt = async () => {
+  try {
+    const payload = {
+      sportsman_profile: {
+        sport_id: formData.value.sport,
+        trainer_id: formData.value.trainer,
+        sport_rank: formData.value.sport_rank,
+        height: String(formData.value.height),
+        weight: String(formData.value.weight),
+        send_request: true,
+      },
+    };
+    await $api.patch("/user/profile/", payload);
+
+    await authStore.fetchUserProfile();
+
+    ElMessage({
+      message: "Профиль успешно обновлен",
+      type: "success",
+      duration: 3000,
+    });
+  } catch (error) {
+    console.error("Ошибка при обновлении профиля:", error);
+
+    let message = "Произошла ошибка при обновлении профиля.";
+
+    if (error.response?.data) {
+      const errors = error.response.data;
+
+      if (typeof errors.message === "string") {
+        message = errors.message;
+      } else {
+        const allErrors = [];
+
+        for (const key in errors) {
+          const value = errors[key];
+          if (Array.isArray(value)) {
+            allErrors.push(...value);
+          } else if (typeof value === "object" && value !== null) {
+            for (const nestedKey in value) {
+              const nestedVal = value[nestedKey];
+              if (Array.isArray(nestedVal)) {
+                allErrors.push(...nestedVal);
+              }
+            }
+          }
+        }
+
+        if (allErrors.length) {
+          message = allErrors.join("\n");
+        }
+      }
+    }
+
+    ElMessage({
+      message,
+      type: "error",
+      duration: 4000,
+    });
+  }
+};
 const clickImg = () => {
   if (isDialogOpen) return;
   isDialogOpen = true;
 
-  ElMessageBox.confirm(
-    "Пожалуйста, загружайте только фотографию в формате спортсмена!",
-    "Загрузить изображение",
-    {
-      confirmButtonText: "Понятно",
-      cancelButtonText: "Отмена",
-      type: "warning",
-    }
-  )
+  ElMessageBox.confirm(t("imgDescription"), t("imgUser"), {
+    confirmButtonText: t("confirmButtonText"),
+    cancelButtonText: t("cancelButtonText"),
+    type: "warning",
+  })
     .then(() => {
       fileInput.value?.click();
     })
@@ -1001,7 +1218,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 </style>
 <style>
 .el-input__wrapper {
-  background-color: #3a3a5a !important;
+  background-color: transparent !important;
   box-shadow: none !important;
 }
 
@@ -1010,5 +1227,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .el-input__inner {
   color: white !important;
+}
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: white !important;
+  border: 1px solid white;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 2px;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* scrollbar-width: thin; */
+  /* margin: inherit; */
+  scroll-margin-block-start: 0;
 }
 </style>

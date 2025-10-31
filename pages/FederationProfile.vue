@@ -95,7 +95,7 @@
           :data="dataFederation"
         />
 
-        <Judges
+        <!-- <Judges
           v-if="activeTab === 'judges'"
           v-model:search="search"
           v-model:region="selectedRegion"
@@ -104,7 +104,7 @@
           v-model:page="currentTrainer"
           :total-pages="totalPages"
           :data="data"
-        />
+        /> -->
         <!-- <StatsList v-if="activeTab === 'statistics'" /> -->
       </div>
 
@@ -232,6 +232,9 @@ onMounted(async () => {
 });
 
 watch(activeTab, (newTab) => {
+  currentPage.value = 1;
+  currentTrainer.value = 1;
+
   if (!authStore.userProfile?.data?.federation?.id) return;
   if (newTab !== "applications") {
     getData();

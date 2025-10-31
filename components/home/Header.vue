@@ -21,13 +21,13 @@
           <div class="flex items-center">
             <div class="hidden md:flex space-x-8">
               <nuxt-link to="/about" class="nav-link" active-class="active-link">
-                О нас
+                {{ t("about") }}
               </nuxt-link>
               <nuxt-link to="/userList" class="nav-link" active-class="active-link">
-                Рейтинг спортсменов
+                {{ t("athletes") }}
               </nuxt-link>
               <nuxt-link to="/trainerList" class="nav-link" active-class="active-link">
-                Рейтинг тренеров
+                {{ t("trainers") }}
               </nuxt-link>
               <!-- <a
               class="text-white"
@@ -43,7 +43,36 @@
           </div>
 
           <!-- Profile Dropdown -->
-          <div v-if="authStore.userProfile?.data" class="relative">
+          <div
+            v-if="authStore.userProfile?.data"
+            class="relative flex items-center gap-4"
+          >
+            <!-- <el-dropdown trigger="click" @command="changeLang">
+              <span
+                class="el-dropdown-link flex items-center justify-center cursor-pointer"
+              >
+                <img
+                  src="/public/lang.svg"
+                  alt="lang"
+                  class="w-10 h-10 flex dark:hidden"
+                />
+                <img src="/dark-lang.svg" alt="lang" class="w-10 h-10 hidden dark:flex" />
+              </span>
+
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="lang in languages"
+                    :key="lang.code"
+                    :command="lang.code"
+                  >
+                    <span class="flex items-center justify-center gap-2">
+                      <img :src="lang.icon" :alt="lang.label" class="w-6 h-6" />
+                    </span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown> -->
             <el-dropdown trigger="click">
               <span
                 class="el-dropdown-link cursor-pointer flex items-center space-x-3 text-white"
@@ -69,8 +98,12 @@
 
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="goToProfile">Профиль</el-dropdown-item>
-                  <el-dropdown-item divided @click="handleLogout">Выйти</el-dropdown-item>
+                  <el-dropdown-item @click="goToProfile">{{
+                    t("profile")
+                  }}</el-dropdown-item>
+                  <el-dropdown-item divided @click="handleLogout">{{
+                    t("logout")
+                  }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -78,14 +111,42 @@
 
           <!-- Auth Buttons -->
           <div v-else class="flex items-center space-x-4 md:text-base text-xs">
+            <!-- <el-dropdown trigger="click" @command="changeLang">
+              <span
+                class="el-dropdown-link flex items-center justify-center cursor-pointer"
+              >
+                <img
+                  src="/public/lang.svg"
+                  alt="lang"
+                  class="w-10 h-10 flex dark:hidden"
+                />
+                <img src="/dark-lang.svg" alt="lang" class="w-10 h-10 hidden dark:flex" />
+              </span>
+
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="lang in languages"
+                    :key="lang.code"
+                    :command="lang.code"
+                  >
+                    <span class="flex items-center justify-center gap-2">
+                      <img :src="lang.icon" :alt="lang.label" class="w-6 h-6" />
+                    </span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown> -->
             <NuxtLink to="/login">
-              <button class="text-white hover:text-gray-300 transition">Войти</button>
+              <button class="text-white hover:text-gray-300 transition">
+                {{ t("login") }}
+              </button>
             </NuxtLink>
             <NuxtLink to="/register">
               <button
                 class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
               >
-                Зарегистрироваться
+                {{ t("register") }}
               </button>
             </NuxtLink>
           </div>
@@ -94,8 +155,8 @@
     </div>
 
     <div class="relative z-20 flex items-center mt-32 container">
-      <h1 class="text-4xl md:text-[60px] font-bold text-white max-w-xl leading-[68px]">
-        ГЛАВНЫЙ РЕЙТИНГ СПОРТСМЕНОВ В ОДНОМ МЕСТЕ!
+      <h1 class="text-4xl md:text-[60px] font-bold text-white max-w-2xl leading-[68px]">
+        {{ t("header") }}
       </h1>
     </div>
   </div>
@@ -105,10 +166,22 @@
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
 import { computed, onMounted } from "vue";
-
+import { useI18n } from "vue-i18n";
 const authStore = useAuthStore();
 const router = useRouter();
 
+const { locale, t } = useI18n();
+
+const languages = [
+  { code: "uz", label: t("uz"), icon: "/uz.png" },
+  { code: "ru", label: t("ru"), icon: "/ru.png" },
+  { code: "en", label: t("en"), icon: "/en.png" },
+];
+
+const changeLang = (lang) => {
+  locale.value = lang;
+  localStorage.setItem("lang", lang);
+};
 onMounted(() => {
   const acToken = localStorage.getItem("access_token");
   if (acToken) {
@@ -118,12 +191,12 @@ onMounted(() => {
 
 const userRoleText = computed(() => {
   const role = authStore.userProfile?.data?.user_role;
-  if (role === "sportsman") return "Спортсмен";
-  if (role === "trainer") return "Тренер";
-  if (role === "federation") return "Федерация";
-  if (role === "sport_institution_admin") return "Администратор спортивного учреждения";
-  if (role === "ordinary") return "Oбычный";
-  if (role === "admin") return "Aдминистратор";
+  if (role === "sportsman") return t("sportsman");
+  if (role === "trainer") return t("trainer");
+  if (role === "federation") return t("federation");
+  if (role === "sport_institution_admin") return t("institution");
+  if (role === "ordinary") return t("ordinary");
+  if (role === "admin") return t("admin");
   return "";
 });
 

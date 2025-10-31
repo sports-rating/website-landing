@@ -159,7 +159,7 @@
         v-model="dialogVisible"
         title="Детали заявки"
         :before-close="() => (dialogVisible = false)"
-        class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-xl !w-[90%]"
+        class="!bg-[#1f1f1f] !text-white rounded-xl sm:max-w-lg md:max-w-3xl !w-[90%]"
       >
         <div
           v-if="selectedRequest"
@@ -170,23 +170,6 @@
             <p>
               <span class="text-gray-400">📅 Дата подачи:</span>
               {{ selectedRequest.created_time }}
-            </p>
-          </div>
-
-          <!-- Receiver -->
-          <div class="pt-2 border-t border-gray-700">
-            <h3 class="font-semibold text-green-400 text-base mb-1">📥 Получатель</h3>
-            <p>
-              <span class="text-gray-400">👤 ФИО:</span>
-              {{ selectedRequest.receiver.full_name }}
-            </p>
-            <p>
-              <span class="text-gray-400">📞 Телефон:</span>
-              {{ selectedRequest.receiver.phone_number }}
-            </p>
-            <p>
-              <span class="text-gray-400">🎯 Роль:</span>
-              {{ selectedRequest.receiver.user_role }}
             </p>
           </div>
 
@@ -308,8 +291,95 @@
             </div>
           </div>
 
-          <div v-if="currentTabb.request_type === 'sportsman_result'">
-            <div v-if="selectedRequest?.new_data" class="pt-2 border-t border-gray-700">
+          <div v-if="currentTabb.request_type === 'sportsman_result'" class="flex gap-4">
+            <div
+              v-if="
+                selectedRequest?.old_data &&
+                Object.keys(selectedRequest.old_data).length > 0
+              "
+              class="pt-2 border-t border-gray-700"
+            >
+              <h3 class="font-semibold text-purple-400 text-base mb-1">
+                📋 Старый результат
+              </h3>
+
+              <p v-if="selectedRequest.old_data.country">
+                <span class="text-gray-400">⚽ Страна:</span>
+                {{ selectedRequest.old_data.country }}
+              </p>
+              <p v-if="selectedRequest.old_data.tournament">
+                <span class="text-gray-400">📏 Турнир:</span>
+                {{ selectedRequest.old_data.tournament.name }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.age_group?.name">
+                <span class="text-gray-400">👶 Возрастная:</span>
+                {{ selectedRequest.old_data.age_group.name }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.weight">
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{ selectedRequest.old_data.weight }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.year">
+                <span class="text-gray-400">📅 Год:</span>
+                {{ selectedRequest.old_data.year }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.rating">
+                <span class="text-gray-400">⭐ Рейтинг:</span>
+                {{ selectedRequest.old_data.rating }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.score">
+                <span class="text-gray-400">🏆 Счет:</span>
+                {{ selectedRequest.old_data.score }}
+              </p>
+
+              <p
+                v-if="selectedRequest.old_data.sport_type"
+                class="flex items-center gap-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-blue-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                  />
+                </svg>
+                <span class="text-gray-400">Тип спорта:</span>
+                {{ selectedRequest.old_data.sport_type?.name }}
+              </p>
+
+              <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
+                <span class="text-gray-400">📄 Документ:</span>
+
+                <img
+                  v-if="isImageFile(selectedRequest.old_data.file_url)"
+                  :src="selectedRequest.old_data.file_url"
+                  class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
+                  @click="openImageModal(selectedRequest.old_data.file_url)"
+                />
+                <a
+                  v-else
+                  :href="selectedRequest.old_data.file_url"
+                  target="_blank"
+                  class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                  >Открыть документ</a
+                >
+              </p>
+            </div>
+            <div
+              v-if="
+                selectedRequest?.new_data &&
+                Object.keys(selectedRequest.new_data).length > 0
+              "
+              class="pt-2 border-t border-gray-700"
+            >
               <h3 class="font-semibold text-purple-400 text-base mb-1">
                 📋 Новые результат
               </h3>
@@ -322,17 +392,64 @@
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.new_data.tournament.name }}
               </p>
+              <p v-if="selectedRequest.new_data.age_group?.name">
+                <span class="text-gray-400">👶 Возрастная:</span>
+                {{ selectedRequest.new_data.age_group.name }}
+              </p>
+
+              <p v-if="selectedRequest.new_data.weight">
+                <span class="text-gray-400">⚖️ Вес:</span>
+                {{ selectedRequest.new_data.weight }}
+              </p>
+
               <p v-if="selectedRequest.new_data.year">
-                <span class="text-gray-400">⚖️ Год:</span>
+                <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.new_data.year }}
               </p>
+
               <p v-if="selectedRequest.new_data.rating">
-                <span class="text-gray-400">🥋 Рейтинг:</span>
+                <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.new_data.rating }}
               </p>
+
               <p v-if="selectedRequest.new_data.score">
-                <span class="text-gray-400">🥋 Счет:</span>
+                <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.new_data.score }}
+              </p>
+
+              <p
+                v-if="selectedRequest.new_data.sport_type"
+                class="flex items-center gap-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-blue-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
+                  />
+                </svg>
+                <span class="text-gray-400">Тип спорта:</span>
+                {{ selectedRequest.new_data.sport_type?.name }}
+              </p>
+
+              <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
+                <span class="text-gray-400">📄 Документ:</span>
+                <img
+                  v-if="isImageFile(selectedRequest.new_data.file_url)"
+                  :src="selectedRequest.new_data.file_url"
+                  class="w-24 h-24 rounded-lg object-cover cursor-pointer hover:opacity-80 transition"
+                  @click="openImageModal(selectedRequest.new_data.file_url)"
+                />
+                <a
+                  v-else
+                  :href="selectedRequest.new_data.file_url"
+                  target="_blank"
+                  class="underline text-sm text-blue-400 hover:text-blue-500 break-all"
+                  >Открыть документ</a
+                >
               </p>
             </div>
           </div>
@@ -366,6 +483,28 @@
         <!-- Loading -->
         <div v-else class="text-center py-8 text-gray-300 text-sm">⏳ Загрузка...</div>
       </el-dialog>
+
+      <el-dialog
+        v-model="showImageModal"
+        width="80vw"
+        align-center
+        class="flex justify-center items-center !bg-transparent"
+        :show-close="false"
+      >
+        <div class="relative">
+          <img
+            :src="previewImage"
+            alt="Fullscreen Image"
+            class="max-h-[80vh] max-w-[80vw] object-contain rounded-lg"
+          />
+          <button
+            @click="showImageModal = false"
+            class="absolute top-2 right-2 bg-black/60 text-white px-3 py-1 rounded-lg hover:bg-black/80"
+          >
+            ✕
+          </button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -376,8 +515,12 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const { $api } = useNuxtApp();
 
 const tabs = [
-  { key: "sportsman", label: "Список спортсменов", request_type: "sportsman_trainer" },
-  { key: "result", label: "Список rезультат", request_type: "sportsman_result" },
+  { key: "sportsman", label: "Запросы на тренера", request_type: "sportsman_trainer" },
+  {
+    key: "result",
+    label: "Запросы на подтверждение результата",
+    request_type: "sportsman_result",
+  },
 ];
 
 const activeTab = ref("sportsman");
@@ -421,6 +564,10 @@ const reset = () => {
   search = "";
   selectedStatus = "";
   selectedDate = "";
+};
+
+const isImageFile = (fileUrl) => {
+  return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileUrl);
 };
 
 watch([currentPage, search, selectedStatus, selectedDate], fetchRequests);
@@ -516,6 +663,14 @@ const changePage = (page) => {
     currentPage.value = page;
     window.scrollTo(0, 0);
   }
+};
+
+const showImageModal = ref(false);
+const previewImage = ref(null);
+
+const openImageModal = (url) => {
+  previewImage.value = url;
+  showImageModal.value = true;
 };
 </script>
 

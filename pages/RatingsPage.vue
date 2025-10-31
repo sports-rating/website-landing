@@ -6,7 +6,7 @@
           <div class="container mx-auto px-4 pb-8">
             <!-- Header with Title and View All -->
             <div class="flex mb-6">
-              <h2 class="text-2xl font-bold text-white">РЕЙТИНГИ ИГРОКОВ И ТРЕНЕРОВ</h2>
+              <h2 class="text-2xl font-bold text-white">{{ t("games") }}</h2>
             </div>
 
             <!-- Sports Categories -->
@@ -42,8 +42,8 @@
                   <div
                     class="bg-[#212226] md:min-w-[580px] min-w-[610px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,220px,70px,70px,70px,70px]"
                   >
-                    <div class="flex items-center">РТГ</div>
-                    <div class="flex items-center">ИГРОК</div>
+                    <div class="flex items-center">{{ t("rtg") }}</div>
+                    <div class="flex items-center">{{ t("game") }}</div>
                     <div class="flex items-center justify-center">
                       <img src="/gold.png" class="w-5 mr-1" />
                     </div>
@@ -53,7 +53,7 @@
                     <div class="flex items-center justify-center">
                       <img src="/bronza.png" class="w-5 mr-1" />
                     </div>
-                    <div class="flex items-center justify-center">Балл</div>
+                    <div class="flex items-center justify-center">{{ t("point") }}</div>
                   </div>
                   <!-- Players Rows -->
                   <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
@@ -105,7 +105,7 @@
                         </div>
                       </nuxt-link>
                     </div>
-                    <el-empty v-else :image-size="50" description="Нет данных" />
+                    <el-empty v-else :image-size="50" :description="t('noValue')" />
                   </TransitionGroup>
                 </div>
 
@@ -131,8 +131,8 @@
                     :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
                     class="px-4 text-xs md:min-w-[580px] min-w-[610px] h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,200px,60px,60px,60px,60px,60px]"
                   >
-                    <div>РТГ</div>
-                    <div>ТРЕНЕР</div>
+                    <div>{{ t("rtg") }}</div>
+                    <div>{{ t("gameTrainer") }}</div>
                     <div class="flex justify-center gap-1">
                       <img src="/gold.png" class="w-4 h-4" />
                     </div>
@@ -142,7 +142,7 @@
                     <div class="flex justify-center gap-1">
                       <img src="/bronza.png" class="w-4 h-4" />
                     </div>
-                    <div class="text-center">Балл</div>
+                    <div class="text-center">{{ t("point") }}</div>
 
                     <!-- Dropdown -->
                     <div class="ml-auto mt-[2px]">
@@ -152,17 +152,17 @@
                           size="small"
                           class="!text-gray-400 text-xs !pb-[2.3rem]"
                         >
-                          {{ selectedView === "1" ? "Личное" : "Учащихся" }}
+                          {{ selectedView === "1" ? t("personal") : t("students") }}
                           <el-icon><arrow-down /></el-icon>
                         </el-button>
                         <template #dropdown>
                           <el-dropdown-menu>
-                            <el-dropdown-item command="1"
-                              >Личное достижение</el-dropdown-item
-                            >
-                            <el-dropdown-item command="2"
-                              >Достижения учащихся</el-dropdown-item
-                            >
+                            <el-dropdown-item command="1">{{
+                              t("achievementPersonal")
+                            }}</el-dropdown-item>
+                            <el-dropdown-item command="2">{{
+                              t("achievementStudents")
+                            }}</el-dropdown-item>
                           </el-dropdown-menu>
                         </template>
                       </el-dropdown>
@@ -237,7 +237,7 @@
                       </nuxt-link>
                     </div>
 
-                    <el-empty v-else :image-size="50" description="Нет данных" />
+                    <el-empty v-else :image-size="50" :description="t('noValue')" />
                   </TransitionGroup>
                 </div>
 
@@ -264,6 +264,9 @@ import { ref, computed, onMounted } from "vue";
 
 import { ArrowDown } from "@element-plus/icons-vue";
 import { useSportStore } from "@/stores/sport";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const { $api } = useNuxtApp();
 const sportStore = useSportStore();
@@ -299,12 +302,14 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (id: number) => {
-  if (!id) return;
+const getData = async (id?: number) => {
   try {
-    const res = await $api.get(
-      `/user/profile/sportsman/?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
-    );
+    const baseUrl = `/user/profile/sportsman/`;
+    const queryParams = id
+      ? `?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
+      : `?page=${currentPagePlayers.value}&page_size=${pageSize.value}`;
+
+    const res = await $api.get(baseUrl + queryParams);
     count.value = res.data.data.count;
     data.value = res.data.data.data;
   } catch (e) {
@@ -312,12 +317,14 @@ const getData = async (id: number) => {
   }
 };
 
-const getTrainer = async (id: number) => {
-  if (!id) return;
+const getTrainer = async (id?: number) => {
   try {
-    const res = await $api.get(
-      `/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
-    );
+    const baseUrl = `/user/profile/trainer/`;
+    const queryParams = id
+      ? `?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
+      : `?page=${currentPageTrainers.value}&page_size=${pageSize.value}`;
+
+    const res = await $api.get(baseUrl + queryParams);
     count1.value = res.data.data.count;
     data1.value = res.data.data.data;
   } catch (e) {
@@ -339,10 +346,6 @@ const getSport = async () => {
   try {
     const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
-
-    if (!sportStore.activeCategory && sports.value.length > 0) {
-      sportStore.activeCategory = sports.value[0].id;
-    }
   } catch (e) {
     console.log(e);
   }
@@ -350,6 +353,8 @@ const getSport = async () => {
 
 onMounted(async () => {
   await getSport();
+  getData();
+  getTrainer();
 
   if (sportStore.activeCategory) {
     toggle(sportStore.activeCategory);

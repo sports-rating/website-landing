@@ -4,13 +4,13 @@
       <!-- Header -->
       <div class="flex flex-wrap justify-between items-center mb-6">
         <h2 class="text-xl sm:text-2xl font-bold text-white">
-          РЕЙТИНГИ ИГРОКОВ И ТРЕНЕРОВ
+          {{ t("games") }}
         </h2>
         <button
           @click="goToRatings"
           class="text-gray-400 hover:text-white flex items-center gap-1 whitespace-nowrap mt-2 sm:mt-0"
         >
-          Перейти к рейтингу
+          {{ t("all") }}
           <ChevronRight class="w-4 h-4" />
         </button>
       </div>
@@ -44,8 +44,8 @@
             <div
               class="bg-[#212226] min-w-[600px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[50px,220px,80px,80px,80px,80px]"
             >
-              <div class="flex items-center">РТГ</div>
-              <div class="flex items-center">ИГРОК</div>
+              <div class="flex items-center">{{ t("rtg") }}</div>
+              <div class="flex items-center">{{ t("game") }}</div>
               <div class="flex items-center justify-center">
                 <img src="/gold.png" class="w-5 mr-1" />
               </div>
@@ -55,7 +55,7 @@
               <div class="flex items-center justify-center">
                 <img src="/bronza.png" class="w-5 mr-1" />
               </div>
-              <div class="flex items-center justify-center">Балл</div>
+              <div class="flex items-center justify-center">{{ t("point") }}</div>
             </div>
             <!-- Players Rows -->
             <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
@@ -105,7 +105,7 @@
                   </div>
                 </nuxt-link>
               </div>
-              <el-empty v-else :image-size="50" description="Нет данных" />
+              <el-empty v-else :image-size="50" :description="t('noValue')" />
             </TransitionGroup>
           </div>
         </div>
@@ -121,8 +121,8 @@
               :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
               class="px-4 text-xs h-11 text-gray-400 min-w-[600px] bg-[#212226] py-4 grid grid-cols-[40px,220px,60px,60px,60px,60px,80px]"
             >
-              <div>РТГ</div>
-              <div>ТРЕНЕР</div>
+              <div>{{ t("rtg") }}</div>
+              <div>{{ t("gameTrainer") }}</div>
               <div class="flex justify-center gap-1">
                 <img src="/gold.png" class="w-4 h-4" />
               </div>
@@ -132,7 +132,7 @@
               <div class="flex justify-center gap-1">
                 <img src="/bronza.png" class="w-4 h-4" />
               </div>
-              <div class="text-center">Балл</div>
+              <div class="text-center">{{ t("point") }}</div>
 
               <!-- Dropdown -->
               <div class="ml-auto mt-[2px]">
@@ -142,13 +142,17 @@
                     size="small"
                     class="!text-gray-400 text-xs !pb-[2.3rem]"
                   >
-                    {{ selectedView === "1" ? "Личное" : "Учащихся" }}
+                    {{ selectedView === "1" ? t("personal") : t("students") }}
                     <el-icon><arrow-down /></el-icon>
                   </el-button>
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                      <el-dropdown-item command="2">Достижения учащихся</el-dropdown-item>
+                      <el-dropdown-item command="1">{{
+                        t("achievementPersonal")
+                      }}</el-dropdown-item>
+                      <el-dropdown-item command="2">{{
+                        t("achievementStudents")
+                      }}</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -218,7 +222,7 @@
                 </nuxt-link>
               </div>
 
-              <el-empty v-else :image-size="50" description="Нет данных" />
+              <el-empty v-else :image-size="50" :description="t('noValue')" />
             </TransitionGroup>
           </div>
         </div>
@@ -233,7 +237,9 @@ import { ChevronRight } from "lucide-vue-next";
 import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
 import { useSportStore } from "@/stores/sport";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const { $api } = useNuxtApp();
 const sportStore = useSportStore();
 const router = useRouter();
@@ -265,20 +271,22 @@ const goToRatings = () => {
   router.push("/RatingsPage");
 };
 
-const getData = async (id: number) => {
-  if (!id) return;
+const getData = async (id?: number) => {
   try {
-    const res = await $api.get(`/user/profile/sportsman/?sport=${id}`);
+    const url = id ? `/user/profile/sportsman/?sport=${id}` : `/user/profile/sportsman/`;
+
+    const res = await $api.get(url);
     data.value = res.data.data;
   } catch (e) {
     console.log(e);
   }
 };
 
-const getTrainer = async (id: number) => {
-  if (!id) return;
+const getTrainer = async (id?: number) => {
   try {
-    const res = await $api.get(`/user/profile/trainer/?sport=${id}`);
+    const url = id ? `/user/profile/trainer/?sport=${id}` : `/user/profile/trainer/`;
+
+    const res = await $api.get(url);
     data1.value = res.data.data;
   } catch (e) {
     console.log(e);
@@ -296,9 +304,9 @@ const getSport = async () => {
     const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
 
-    if (!sportStore.activeCategory && sports.value.length > 0) {
-      sportStore.activeCategory = sports.value[0].id;
-    }
+    // if (!sportStore.activeCategory && sports.value.length > 0) {
+    //   sportStore.activeCategory = sports.value[0].id;
+    // }
   } catch (e) {
     console.log(e);
   }
@@ -306,6 +314,8 @@ const getSport = async () => {
 
 onMounted(async () => {
   await getSport();
+  getData();
+  getTrainer();
 
   if (sportStore.activeCategory) {
     toggle(sportStore.activeCategory);

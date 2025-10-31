@@ -13,15 +13,14 @@
               <h1
                 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight"
               >
-                О нас —
+                {{ t("aboutTitle") }}
                 <span
                   class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent"
                   >7Saber Rating</span
                 >
               </h1>
               <p class="mt-3 text-sm sm:text-base text-gray-300 max-w-xl">
-                Национальная спортивная рейтинговая платформа, объединяющая спортсменов,
-                тренеров, клубы и федерации.
+                {{ t("aboutDescription") }}
               </p>
             </div>
             <div class="flex items-center">
@@ -53,90 +52,76 @@
             <!-- Left content -->
             <div class="lg:col-span-2 space-y-8 leading-relaxed">
               <article class="prose prose-invert max-w-none">
-                <p class="text-gray-300">
-                  7Saber Rating — это национальная спортивная рейтинговая платформа,
-                  созданная для того, чтобы объединить спортсменов, тренеров, клубы и
-                  федерации в единую цифровую систему учёта и продвижения спортивных
-                  достижений.
-                </p>
+                <p class="text-gray-300">{{ t("introText") }}</p>
 
                 <h3 class="text-lg sm:text-xl font-semibold text-indigo-400">
-                  Наша миссия
+                  {{ t("missionTitle") }}
                 </h3>
                 <ul class="space-y-2 marker:text-indigo-400 text-sm sm:text-base">
-                  <li>Каждый спортсмен может отследить свой рейтинг и прогресс.</li>
-                  <li>Тренеры получают инструмент для анализа результатов.</li>
-                  <li>
-                    Федерации и клубы могут вести статистику и организовывать турниры.
-                  </li>
-                  <li>Спонсоры и партнёры получают доступ к проверенной информации.</li>
+                  <li>{{ t("mission1") }}</li>
+                  <li>{{ t("mission2") }}</li>
+                  <li>{{ t("mission3") }}</li>
+                  <li>{{ t("mission4") }}</li>
                 </ul>
 
                 <h3 class="text-lg sm:text-xl font-semibold text-indigo-400 my-1">
-                  Что мы предлагаем
+                  {{ t("offerTitle") }}
                 </h3>
                 <ol
                   class="list-decimal pl-5 sm:pl-6 space-y-1 marker:text-purple-400 text-sm sm:text-base"
                 >
-                  <li><strong>Единая база данных спортсменов и тренеров</strong></li>
-                  <li><strong>Рейтинги в реальном времени</strong></li>
-                  <li><strong>Организация и учёт соревнований</strong></li>
-                  <li><strong>Медиа-поддержка</strong></li>
-                  <li><strong>Инновации</strong></li>
+                  <li>{{ t("offer1") }}</li>
+                  <li>{{ t("offer2") }}</li>
+                  <li>{{ t("offer3") }}</li>
+                  <li>{{ t("offer4") }}</li>
+                  <li>{{ t("offer5") }}</li>
                 </ol>
 
                 <h3 class="text-lg sm:text-xl font-semibold text-indigo-400 my-1">
-                  Наши ценности
+                  {{ t("valuesTitle") }}
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div
                     class="p-4 bg-gradient-to-br from-gray-800/70 to-gray-900/50 rounded-xl shadow hover:shadow-lg transition text-sm sm:text-base"
                   >
-                    Честность и прозрачность — рейтинг только по результатам.
+                    {{ t("value1") }}
                   </div>
                   <div
                     class="p-4 bg-gradient-to-br from-gray-800/70 to-gray-900/50 rounded-xl shadow hover:shadow-lg transition text-sm sm:text-base"
                   >
-                    Развитие спорта — поддержка профессионалов и начинающих.
+                    {{ t("value2") }}
                   </div>
                   <div
                     class="p-4 bg-gradient-to-br from-gray-800/70 to-gray-900/50 rounded-xl shadow hover:shadow-lg transition text-sm sm:text-base"
                   >
-                    Инновации — передовые IT-решения.
+                    {{ t("value3") }}
                   </div>
                   <div
                     class="p-4 bg-gradient-to-br from-gray-800/70 to-gray-900/50 rounded-xl shadow hover:shadow-lg transition text-sm sm:text-base"
                   >
-                    Открытость — сотрудничество с федерациями и клубами.
+                    {{ t("value4") }}
                   </div>
                 </div>
               </article>
 
               <section>
                 <h4 class="text-base sm:text-lg font-semibold mb-4 text-indigo-300">
-                  Кому полезен 7Saber Rating
+                  {{ t("usefulTitle") }}
                 </h4>
                 <div class="flex flex-wrap gap-2 sm:gap-3">
                   <span
+                    v-for="(item, index) in [
+                      'athletess',
+                      'trainerss',
+                      'federations',
+                      'clubs',
+                      'sponsors',
+                    ]"
+                    :key="index"
                     class="px-3 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 rounded-full text-xs sm:text-sm transition"
-                    >Спортсмены</span
                   >
-                  <span
-                    class="px-3 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 rounded-full text-xs sm:text-sm transition"
-                    >Тренеры</span
-                  >
-                  <span
-                    class="px-3 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 rounded-full text-xs sm:text-sm transition"
-                    >Федерации</span
-                  >
-                  <span
-                    class="px-3 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 rounded-full text-xs sm:text-sm transition"
-                    >Клубы</span
-                  >
-                  <span
-                    class="px-3 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 rounded-full text-xs sm:text-sm transition"
-                    >Спонсоры</span
-                  >
+                    {{ t(item) }}
+                  </span>
                 </div>
               </section>
             </div>
@@ -148,27 +133,24 @@
                 class="p-5 sm:p-6 bg-gray-800/60 rounded-2xl shadow hover:shadow-lg transition"
               >
                 <h5 class="text-xs sm:text-sm font-medium text-gray-300 mb-3">
-                  Наши достижения
+                  {{ t("achievementsTitle") }}
                 </h5>
                 <ul class="space-y-2 text-xs sm:text-sm">
-                  <li>
-                    • Сотрудничество с
-                    <span class="font-semibold text-indigo-300">114 федерациями</span>.
-                  </li>
-                  <li>• Поддержка национальных и международных турниров.</li>
-                  <li>• Интеграция с современными IT-сервисами.</li>
+                  <li>{{ t("achievement1") }}</li>
+                  <li>{{ t("achievement2") }}</li>
+                  <li>{{ t("achievement3") }}</li>
                 </ul>
               </div>
 
               <!-- Contacts -->
               <div class="p-5 sm:p-6 bg-gray-800/60 rounded-2xl shadow">
                 <h5 class="text-xs sm:text-sm font-medium text-gray-300 mb-3">
-                  Контакты
+                  {{ t("contactTitle") }}
                 </h5>
                 <div class="text-xs sm:text-sm space-y-2 text-gray-300">
                   <div>+998 99 005 43 21 (Telegram / WhatsApp)</div>
                   <div>srhub04@gmail.com</div>
-                  <div>г. Ташкент — Пн–Пт: 9:00–18:00</div>
+                  <div>{{ t("address") }}</div>
                 </div>
 
                 <div class="mt-5 flex gap-2 sm:gap-3 flex-wrap">
@@ -201,14 +183,14 @@
                 class="p-5 sm:p-6 bg-gradient-to-r from-indigo-700 to-purple-600 rounded-2xl text-center shadow-lg"
               >
                 <div class="font-semibold text-white text-base sm:text-lg">
-                  Готовы начать?
+                  {{ t("readyTitle") }}
                 </div>
                 <div class="mt-4">
                   <a
                     href="tel:+998990054321"
                     class="inline-block px-4 sm:px-5 py-2.5 rounded-lg bg-white text-indigo-700 font-medium hover:bg-gray-100 transition transform hover:scale-105 text-sm sm:text-base"
                   >
-                    Связаться с нами
+                    {{ t("contactUs") }}
                   </a>
                 </div>
               </div>
@@ -216,7 +198,7 @@
           </div>
 
           <footer class="mt-10 sm:mt-12 text-center text-[10px] sm:text-xs text-gray-500">
-            © 7Saber Rating — Все права защищены.
+            {{ t("footer") }}
           </footer>
         </div>
       </div>
@@ -224,7 +206,11 @@
   </NuxtLayout>
 </template>
 
-<script setup></script>
+<script setup>
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
 
 <style scoped>
 .prose p {

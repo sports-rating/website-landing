@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
 
+
+
+
 button:focus {
     outline: none !important;
     outline-offset: 0px !important;
@@ -15,7 +18,7 @@ button:focus {
 
 .no-scrollbar::-webkit-scrollbar {
   width: 10px;
-   height: 2px;
+   height: 5px;
 }
 
 .no-scrollbar {

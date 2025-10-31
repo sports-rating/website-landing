@@ -4,7 +4,6 @@
       <!-- Header Section -->
       <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div class="flex flex-col lg:flex-row md:gap-48 gap-8">
-          <!-- Profile Image (MOBILE birinchi, DESKTOP o‘ngda) -->
           <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
             <div class="relative">
               <img
@@ -50,7 +49,7 @@
               <span
                 class="bg-[#E7273D]/50 text-white text-sm px-3 py-1 rounded-full flex items-center"
               >
-                {{ data?.sportsman_profile?.points }} oчки
+                {{ data?.sportsman_profile?.points }} {{ t("glasses") }}
               </span>
             </div>
 
@@ -59,53 +58,53 @@
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Место рождения</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("birthPlace") }}</p>
                 <p class="text-white">
-                  {{ data?.region?.name || "Не указано" }}
+                  {{ data?.region?.name || t("notSpecified") }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Гражданство</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("citizenship") }}</p>
                 <p class="text-white">
-                  {{ data?.sportsman_profile?.address?.citizenship || "Не указано" }}
+                  {{ data?.sportsman_profile?.address?.citizenship || t("notSpecified") }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">День рождения</p>
-                <p class="text-white">{{ data?.birth_date || "Не указано" }}</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("birthday") }}</p>
+                <p class="text-white">{{ data?.birth_date || t("notSpecified") }}</p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Рост</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("height") }}</p>
                 <p class="text-white">
                   {{
                     data?.sportsman_profile?.height
                       ? Number(data?.sportsman_profile?.height).toFixed(0) + " см"
-                      : "Не указано"
+                      : t("notSpecified")
                   }}
                 </p>
               </div>
               <div
                 class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-700 pb-2"
               >
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Вес</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("weight") }}</p>
                 <p class="text-white">
                   {{
                     data?.sportsman_profile?.weight
                       ? Number(data?.sportsman_profile?.weight).toFixed(0) + " кг"
-                      : "Не указано"
+                      : t("notSpecified")
                   }}
                 </p>
               </div>
               <div class="flex flex-col sm:flex-row sm:justify-between">
-                <p class="text-[#8B8992] mb-1 sm:mb-0">Воспитанник</p>
+                <p class="text-[#8B8992] mb-1 sm:mb-0">{{ t("trainere") }}</p>
                 <p class="text-white">
-                  {{ data?.sportsman_profile?.trainer?.full_name || "Не указано" }}
+                  {{ data?.sportsman_profile?.trainer?.full_name || t("notSpecified") }}
                 </p>
               </div>
             </div>
@@ -168,12 +167,12 @@
                     <div class="flex justify-between items-center text-xs">
                       <span class="text-gray-400">
                         Тренер:
-                        {{ row.trainer_name || "Не указано" }}
+                        {{ row.trainer_name || t("notSpecified") }}
                       </span>
 
                       <span class="text-gray-400">
                         Балл:
-                        {{ row.score || "Не указано" }}
+                        {{ row.score || t("notSpecified") }}
                       </span>
                       <div class="flex items-center gap-2">
                         <img
@@ -210,12 +209,12 @@
                 <div
                   class="bg-gray-800 text-white grid grid-cols-12 text-sm font-medium rounded-t-lg"
                 >
-                  <div class="p-3 col-span-4">ЧЕМПИОНАТ</div>
-                  <div class="p-3 col-span-1">СЕЗОН</div>
-                  <div class="p-3 col-span-1">СТРАНА</div>
-                  <div class="p-3 col-span-2">ТРЕНЕР</div>
-                  <div class="p-3 col-span-2">Балл</div>
-                  <div class="p-3 col-span-2">Рейтинг</div>
+                  <div class="p-3 col-span-4">{{ t("championship") }}</div>
+                  <div class="p-3 col-span-1">{{ t("season") }}</div>
+                  <div class="p-3 col-span-1">{{ t("country") }}</div>
+                  <div class="p-3 col-span-2">{{ t("trainerCol") }}</div>
+                  <div class="p-3 col-span-2">{{ t("points") }}</div>
+                  <div class="p-3 col-span-2">{{ t("rating") }}</div>
                 </div>
 
                 <div class="bg-[#11101B] divide-y divide-gray-700 rounded-b-lg">
@@ -236,7 +235,7 @@
                     <div class="p-3 col-span-1">{{ row.year }}</div>
                     <div class="p-3 col-span-1">{{ row.country }}</div>
                     <div class="p-3 col-span-2 truncate">
-                      {{ row.trainer_name || "Не указано" }}
+                      {{ row.trainer_name || t("notSpecified") }}
                     </div>
                     <div class="p-3 col-span-2 flex items-center gap-2">
                       <span class="font-semibold">{{ row.score }}</span>
@@ -254,7 +253,7 @@
             </template>
 
             <!-- Empty State -->
-            <el-empty v-else :image-size="100" description="Результаты не найдены." />
+            <el-empty v-else :image-size="100" :description="t('resultsNotFound')" />
           </div>
         </div>
 
@@ -277,7 +276,7 @@
               </div>
             </div>
           </template>
-          <el-empty v-else :image-size="100" description="Нет видео" />
+          <el-empty v-else :image-size="100" :description="t('noVideos')" />
         </div>
 
         <!-- Photos Tab -->
@@ -303,7 +302,7 @@
               </template>
 
               <!-- Agar rasm topilmasa -->
-              <el-empty v-else :image-size="100" description="Нет изображения" />
+              <el-empty v-else :image-size="100" :description="t('noImages')" />
             </div>
           </div>
         </div>
@@ -337,7 +336,7 @@
               </div>
             </template>
 
-            <el-empty v-else :image-size="100" description="PDF-файл не найден" />
+            <el-empty v-else :image-size="100" :description="t('noFiles')" />
           </div>
         </div>
       </div>
@@ -345,7 +344,9 @@
       <!-- Achievements Section -->
       <div class="container flex flex-col gap-6 lg:gap-8 pb-8 px-4 sm:px-6">
         <div class="mt-5">
-          <h2 class="text-xl sm:text-2xl font-medium text-white">Достижения</h2>
+          <h2 class="text-xl sm:text-2xl font-medium text-white">
+            {{ t("achievements") }}
+          </h2>
         </div>
 
         <template v-if="filteredResults?.length">
@@ -372,7 +373,7 @@
         </template>
 
         <!-- Empty State -->
-        <el-empty v-else :image-size="100" description="Достижения не найдены" />
+        <el-empty v-else :image-size="100" :description="t('achievementsNotFound')" />
       </div>
     </div>
   </NuxtLayout>
@@ -385,7 +386,9 @@ import { useRoute, useRouter } from "vue-router";
 const { $api } = useNuxtApp();
 import Associated from "~/components/home/Associated.vue";
 import Statistic from "~/components/home/Statistic.vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const activeTab = ref("career");
@@ -429,14 +432,14 @@ onMounted(() => {
   getTournament();
 });
 
-const tabs = [
+const tabs = computed(() => [
   // { id: 'overview', name: 'Заявка игрока' },
-  // { id: 'statistics', name: 'Статистика' },
-  { id: "career", name: "Карьера" },
-  { id: "videos", name: "Видео материалы" },
-  { id: "photos", name: "Фотографии" },
-  { id: "files", name: "Загруженные файлы" },
-];
+  // { id: 'statistics', name: t('statistics') },
+  { id: "career", name: t("career") },
+  { id: "videos", name: t("videos") },
+  { id: "photos", name: t("photos") },
+  { id: "files", name: t("files") },
+]);
 </script>
 
 <style>

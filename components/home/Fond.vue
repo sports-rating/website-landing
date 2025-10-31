@@ -5,18 +5,18 @@
       <div class="flex flex-col sm:flex-row justify-between gap-4 sm:items-center mb-8">
         <div class="flex flex-wrap items-end gap-2 sm:gap-4">
           <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white">
-            ФОНД "БИРДАМЛИК"
+            {{ t("found") }}
           </h2>
           <span
             class="text-red-500 text-sm sm:text-base px-3 sm:px-4 py-1 border-2 border-red-500 rounded-lg"
           >
-            В процессе...
+            {{ t("progress") }}
           </span>
         </div>
         <button
           class="text-gray-400 hover:text-white flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
         >
-          Посмотреть все
+          {{ t("allFound") }}
           <ChevronRight class="w-4 h-4" />
         </button>
       </div>
@@ -90,11 +90,13 @@
                 <div class="text-white font-medium">
                   {{ formatPrice(card.currentAmount) }}
                 </div>
-                <div class="text-gray-400">{{ formatPrice(card.targetAmount) }} сум</div>
+                <div class="text-gray-400">
+                  {{ formatPrice(card.targetAmount) }} {{ t("sum") }}
+                </div>
               </div>
               <div class="text-end sm:text-right">
                 <div class="text-white font-medium">{{ card.daysLeft }}</div>
-                <div class="text-gray-400">дней</div>
+                <div class="text-gray-400">{{ t("days") }}</div>
               </div>
             </div>
           </div>
@@ -173,12 +175,12 @@
                     {{ formatPrice(card.currentAmount) }}
                   </div>
                   <div class="text-gray-400">
-                    {{ formatPrice(card.targetAmount) }} сум
+                    {{ formatPrice(card.targetAmount) }} {{ t("sum") }}
                   </div>
                 </div>
                 <div class="text-end sm:text-right">
                   <div class="text-white font-medium">{{ card.daysLeft }}</div>
-                  <div class="text-gray-400">дней</div>
+                  <div class="text-gray-400">{{ t("days") }}</div>
                 </div>
               </div>
             </div>
@@ -193,6 +195,10 @@
 import { ChevronRight, MapPin } from "lucide-vue-next";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
+
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 interface FundingCard {
   id: number;

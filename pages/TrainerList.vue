@@ -6,11 +6,10 @@
           <div
             class="bg-green-500 text-black px-10 w-fit mx-auto py-2 font-bold uppercase text-4xl skew-x-[-10deg]"
           >
-            <span class="inline-block skew-x-[10deg]">Рейтинг игроков и тренеров</span>
+            <span class="inline-block skew-x-[10deg]">{{ t("scoreSportsman") }}</span>
           </div>
           <p class="mt-4 text-gray-400 sm:text-lg sm:w-[60%] mx-auto">
-            Рейтинг спортсменов и тренеров представляет собой систему оценки и
-            классификации, основанную на их достижениях, навыках и вкладе в спорт.
+            {{ t("scoreSportsmanDescription") }}
           </p>
         </div>
 
@@ -59,7 +58,7 @@
                   class="bg-blue-600 text-white px-4 py-2 mt-2 w-full rounded hover:bg-blue-500 transition duration-200 ease-in-out"
                   @click="applyRegionFilter"
                 >
-                  Применить
+                  {{ t("scoreSportsmanButton") }}
                 </button>
               </div>
 
@@ -92,7 +91,7 @@
                   class="bg-blue-600 text-white px-4 py-2 mt-2 w-full rounded hover:bg-blue-500 transition duration-200 ease-in-out"
                   @click="applyRatingFilter"
                 >
-                  Применить
+                  {{ t("scoreSportsmanButton") }}
                 </button>
               </div>
 
@@ -117,8 +116,8 @@
                 :class="paginatedTrainers.length ? 'py-0' : '!py-2.5'"
                 class="px-4 min-w-[800px] text-xs h-11 text-gray-400 bg-[#212226] py-4 grid grid-cols-[40px,220px,90px,90px,90px,90px,auto]"
               >
-                <div>РТГ</div>
-                <div>ТРЕНЕР</div>
+                <div>{{ t("rtg") }}</div>
+                <div>{{ t("trainer") }}</div>
                 <div class="flex justify-center gap-1">
                   <img src="/gold.png" class="w-4 h-4" />
                 </div>
@@ -128,7 +127,7 @@
                 <div class="flex justify-center gap-1">
                   <img src="/bronza.png" class="w-4 h-4" />
                 </div>
-                <div class="text-center">Балл</div>
+                <div class="text-center">{{ t("point") }}</div>
 
                 <!-- Dropdown -->
                 <div class="ml-auto mt-[2px]">
@@ -138,15 +137,17 @@
                       size="small"
                       class="!text-gray-400 text-xs !pb-[2.3rem]"
                     >
-                      {{ selectedView === "1" ? "Личное" : "Учащихся" }}
+                      {{ selectedView === "1" ? t("personal") : t("students") }}
                       <el-icon><arrow-down /></el-icon>
                     </el-button>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item command="1">Личное достижение</el-dropdown-item>
-                        <el-dropdown-item command="2"
-                          >Достижения учащихся</el-dropdown-item
-                        >
+                        <el-dropdown-item command="1">{{
+                          t("achievementPersonal")
+                        }}</el-dropdown-item>
+                        <el-dropdown-item command="2">{{
+                          t("achievementStudents")
+                        }}</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
@@ -242,7 +243,9 @@ import { ref, computed } from "vue";
 
 import { ArrowDown } from "@element-plus/icons-vue";
 import { useSportStore } from "@/stores/sport";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const { $api } = useNuxtApp();
 const sportStore = useSportStore();
 
@@ -263,19 +266,20 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (id: number) => {
+const getData = async (id?: number) => {
   try {
-    const res = await $api.get(
-      `/user/profile/trainer/?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
-    );
+    const baseUrl = `/user/profile/trainer/`;
+    const queryParams = id
+      ? `?sport=${id}&page=${currentPageTrainers.value}&page_size=${pageSize.value}`
+      : `?page=${currentPageTrainers.value}&page_size=${pageSize.value}`;
+
+    const res = await $api.get(baseUrl + queryParams);
     count.value = res.data.data.count;
     data.value = res.data.data.data;
   } catch (e) {
     console.log(e);
   }
 };
-
-
 
 const toggle = (id: number) => {
   sportStore.activeCategory = id as any;
@@ -285,15 +289,10 @@ const toggle = (id: number) => {
   getData(id);
 };
 
-
 const getSport = async () => {
   try {
     const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
-
-    if (!sportStore.activeCategory && sports.value.length > 0) {
-      sportStore.activeCategory = sports.value[0].id;
-    }
   } catch (e) {
     console.log(e);
   }
@@ -301,6 +300,7 @@ const getSport = async () => {
 
 onMounted(() => {
   getSport();
+  getData();
 });
 
 interface Filter {

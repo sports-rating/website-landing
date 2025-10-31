@@ -7,11 +7,10 @@
           <div
             class="bg-green-500 text-black px-6 sm:px-10 w-fit mx-auto py-2 font-bold uppercase text-2xl sm:text-4xl skew-x-[-10deg]"
           >
-            <span class="inline-block skew-x-[10deg]">Рейтинг игроков и cпортсмен</span>
+            <span class="inline-block skew-x-[10deg]">{{ t("scoreSportsman") }}</span>
           </div>
           <p class="mt-4 text-gray-400 text-sm sm:text-lg max-w-xl mx-auto">
-            Рейтинг спортсменов и тренеров представляет собой систему оценки и
-            классификации, основанную на их достижениях, навыках и вкладе в спорт.
+            {{ t("scoreSportsmanDescription") }}
           </p>
         </div>
 
@@ -61,7 +60,7 @@
                   class="bg-blue-600 text-white px-4 py-2 mt-2 w-full rounded hover:bg-blue-500 transition duration-200 ease-in-out"
                   @click="applyRegionFilter"
                 >
-                  Применить
+                  {{ t("scoreSportsmanButton") }}
                 </button>
               </div>
 
@@ -94,7 +93,7 @@
                   class="bg-blue-600 text-white px-4 py-2 mt-2 w-full rounded hover:bg-blue-500 transition duration-200 ease-in-out"
                   @click="applyRatingFilter"
                 >
-                  Применить
+                  {{ t("scoreSportsmanButton") }}
                 </button>
               </div>
 
@@ -118,8 +117,8 @@
               <div
                 class="bg-[#212226] min-w-[800px] px-4 py-3 grid text-xs text-gray-400 grid-cols-[40px,240px,100px,100px,100px,100px]"
               >
-                <div class="flex items-center">РТГ</div>
-                <div class="flex items-center">ИГРОК</div>
+                <div class="flex items-center">{{ t("rtg") }}</div>
+                <div class="flex items-center">{{ t("game") }}</div>
                 <div class="flex items-center justify-center">
                   <img src="/gold.png" class="w-5 mr-1" />
                 </div>
@@ -129,7 +128,7 @@
                 <div class="flex items-center justify-center">
                   <img src="/bronza.png" class="w-5 mr-1" />
                 </div>
-                <div class="flex items-center justify-center">Балл</div>
+                <div class="flex items-center justify-center">{{ t("point") }}</div>
               </div>
               <!-- Players Rows -->
               <TransitionGroup name="list" tag="div" class="divide-y divide-gray-700">
@@ -204,6 +203,9 @@
 import { ref, computed } from "vue";
 const { $api } = useNuxtApp();
 import { useSportStore } from "@/stores/sport";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const sportStore = useSportStore();
 
@@ -224,11 +226,14 @@ function handleSelect(command: any) {
   selectedView.value = command;
 }
 
-const getData = async (id: number) => {
+const getData = async (id?: number) => {
   try {
-    const res = await $api.get(
-      `/user/profile/sportsman/?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
-    );
+    const baseUrl = `/user/profile/sportsman/`;
+    const queryParams = id
+      ? `?sport=${id}&page=${currentPagePlayers.value}&page_size=${pageSize.value}`
+      : `?page=${currentPagePlayers.value}&page_size=${pageSize.value}`;
+
+    const res = await $api.get(baseUrl + queryParams);
     count.value = res.data.data.count;
     data.value = res.data.data.data;
   } catch (e) {
@@ -248,10 +253,6 @@ const getSport = async () => {
   try {
     const res = await $api.get(`/sport/`);
     sports.value = res.data.data;
-
-    if (!sportStore.activeCategory && sports.value.length > 0) {
-      sportStore.activeCategory = sports.value[0].id;
-    }
   } catch (e) {
     console.log(e);
   }
@@ -259,7 +260,7 @@ const getSport = async () => {
 
 onMounted(async () => {
   await getSport();
-
+  getData();
   if (sportStore.activeCategory) {
     toggle(sportStore.activeCategory);
   }

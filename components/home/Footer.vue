@@ -8,25 +8,25 @@
             <img src="/saber-logos.svg" alt="Sports Rating" class="h-10" />
           </a>
           <p class="text-gray-400 text-sm">
-            Подробная статистика<br />
-            Рейтинги по параметрам<br />
-            От + до -
+            {{ t("statisticaFooter") }}<br />
+            {{ t("reytingFooter") }}<br />
+            {{ t("date") }}
           </p>
         </div>
 
         <!-- First Nav Column -->
         <div>
-          <h3 class="text-white font-medium mb-4">О проекте</h3>
+          <h3 class="text-white font-medium mb-4">{{ t("aboutFooter") }}</h3>
           <ul class="space-y-2">
             <nuxt-link to="/about" class="nav-link" active-class="active-link">
-              О нас
+              {{ t("about") }}
             </nuxt-link>
             <li>
               <a
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                s-rating in English
+                {{ t("english") }}
               </a>
             </li>
             <li>
@@ -34,7 +34,7 @@
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                Использование услуг
+                {{ t("services") }}
               </a>
             </li>
             <li>
@@ -42,7 +42,7 @@
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                Обработка данных
+                {{ t("processing") }}
               </a>
             </li>
             <li>
@@ -50,7 +50,7 @@
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                Связаться с командой
+                {{ t("team") }}
               </a>
             </li>
           </ul>
@@ -58,14 +58,14 @@
 
         <!-- Second Nav Column -->
         <div>
-          <h3 class="text-white font-medium mb-4">Мнение спортсменов</h3>
+          <h3 class="text-white font-medium mb-4">{{ t("opinions") }}</h3>
           <ul class="space-y-2">
             <li>
               <a
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                Рейтинг тренеров
+                {{ t("trainers") }}
               </a>
             </li>
             <!-- <li>
@@ -78,7 +78,7 @@
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                Отзывы
+               {{ t('reviews') }}
               </a>
             </li>
             <li>
@@ -86,7 +86,7 @@
                 href="#"
                 class="text-gray-400 hover:text-white text-sm transition-colors"
               >
-                YouTube
+               {{ t('youtube') }}
               </a>
             </li>
           </ul>
@@ -94,10 +94,9 @@
 
         <!-- Social Media Section -->
         <div>
-          <h3 class="text-white font-medium mb-4">Подпишитесь на наши страницы</h3>
+          <h3 class="text-white font-medium mb-4">{{ t('footerText') }}</h3>
           <p class="text-gray-400 text-sm mb-4">
-            Получайте обновляемую информацию, подсказки и новости прямо из своей новостной
-            ленты
+           {{ t('footerDescription') }}
           </p>
 
           <!-- Social Icons -->
@@ -138,14 +137,14 @@
       <div class="mt-12 pt-4 border-t flex justify-around border-gray-800">
         <div class="text-white flex gap-4 text-sm">
           <nuxt-link to="/PrivacyPolicy" class="nav-link" active-class="active-link">
-            Политика конфиденциальности
+            {{ t('footerPrivacy') }}
           </nuxt-link>
           <nuxt-link to="/UserTerms" class="nav-link" active-class="active-link">
-            Условия эксплуатации
+            {{ t('footerTerms') }}
           </nuxt-link>
         </div>
         <p class="text-center text-gray-400 text-sm">
-          © {{ new Date().getFullYear() }} Sports Rating. Все права защищены
+          © {{ new Date().getFullYear() }} {{ t('copy') }}
         </p>
       </div>
     </div>
@@ -154,6 +153,9 @@
 
 <script setup lang="ts">
 import { Facebook, Instagram, Youtube, Send } from "lucide-vue-next";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 </script>
 
 <style>

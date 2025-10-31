@@ -7,11 +7,11 @@
           class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0"
         >
           <div class="flex flex-wrap items-end gap-3">
-            <h2 class="text-xl sm:text-2xl font-bold text-white">ФАН-КЛУБЫ</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-white">{{ t("fanClub") }}</h2>
             <span
               class="text-red-500 text-sm sm:text-base px-3 py-1 border-2 border-red-500 rounded-lg whitespace-nowrap"
             >
-              В процессе...
+              {{ t("progress") }}
             </span>
           </div>
         </div>
@@ -36,7 +36,7 @@
           <button
             class="text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap"
           >
-            Перейти к рейтингу
+            {{ t("all") }}
             <ChevronRight class="w-4 h-4" />
           </button>
         </div>
@@ -49,7 +49,6 @@
           :key="club.id"
           class="bg-[#2A2B31] rounded-lg p-4 hover:bg-[#3A3B41] transition-colors flex flex-col"
         >
-          <!-- Club Type Badge -->
           <div class="mb-4">
             <span class="bg-red-600 text-white text-xs px-2 py-1 rounded select-none">
               {{ club.type }}
@@ -82,11 +81,10 @@
             </div>
           </div>
 
-          <!-- Action Button -->
           <button
             class="mt-auto w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
           >
-            Посмотреть клуб подробнее
+            {{ t("viewClub") }}
           </button>
         </div>
       </div>
@@ -141,7 +139,7 @@
             <button
               class="mt-auto w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
             >
-              Посмотреть клуб подробнее
+              {{ t("viewClub") }}
             </button>
           </div>
         </SwiperSlide>
@@ -154,6 +152,9 @@ import { ref } from "vue";
 import { ChevronRight, MapPin, Phone } from "lucide-vue-next";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 interface Category {
   id: number;

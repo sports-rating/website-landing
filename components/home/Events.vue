@@ -7,18 +7,18 @@
       >
         <div class="flex flex-wrap items-end gap-3">
           <h2 class="text-xl sm:text-2xl font-bold text-white">
-            ГОДОВЫЕ СПОРТИВНЫЕ СОЗТЕЗАНИЕ
+            {{ t("competitions") }}
           </h2>
           <span
             class="text-red-500 text-sm sm:text-base px-3 py-1 border-2 border-red-500 rounded-lg whitespace-nowrap"
           >
-            В процессе...
+            {{ t("progress") }}
           </span>
         </div>
         <button
           class="text-gray-400 hover:text-white flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
         >
-          Посмотреть все
+          {{ t("allFound") }}
           <ChevronRight class="w-4 h-4" />
         </button>
       </div>
@@ -187,6 +187,9 @@
 import { ChevronRight, Users } from "lucide-vue-next";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 interface Event {
   id: number;
