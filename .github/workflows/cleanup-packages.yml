@@ -18,11 +18,11 @@ jobs:
         with:
           package-name: dev-sports-rating-landing
           package-type: container
-          min-versions-to-keep: 5
+          min-versions-to-keep: 10
 
       - name: Delete old versions of prod-sports-rating-landing
         uses: actions/delete-package-versions@v4
         with:
           package-name: prod-sports-rating-landing
           package-type: container
-          min-versions-to-keep: 5
+          min-versions-to-keep: 10
