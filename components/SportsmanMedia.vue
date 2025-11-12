@@ -25,7 +25,8 @@
         <div
           v-for="(photo, index) in photos"
           :key="'photo-' + index"
-          class="relative aspect-video rounded-lg overflow-hidden group"
+          @click="openInNewTab(photo.url)"
+          class="relative aspect-video cursor-pointer rounded-lg overflow-hidden group"
         >
           <img :src="photo.url" :alt="photo.name" class="w-full h-full object-cover" />
           <div
@@ -64,32 +65,80 @@
 
     <div v-else-if="activeTab === 'videos'">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Upload Progress Bar -->
+        <div
+          v-if="isUploadingVideo"
+          class="flex flex-col items-center justify-center p-4 border rounded-lg bg-pink-50 col-span-1"
+        >
+          <p class="text-sm text-gray-700 mb-2">Видео загружается...</p>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div
+              class="bg-pink-500 h-2 rounded-full transition-all duration-300"
+              :style="{ width: videoUploadProgress + '%' }"
+            ></div>
+          </div>
+          <span class="text-xs mt-1 text-gray-600">{{ videoUploadProgress }}%</span>
+        </div>
+
+        <!-- Videos list -->
         <div
           v-for="(video, index) in videos"
           :key="'video-' + index"
-          class="relative aspect-video rounded-lg overflow-hidden group"
+          class="relative aspect-video cursor-pointer rounded-2xl overflow-hidden group shadow-lg border border-gray-700 bg-gray-900"
+          @click="handleVideoClick(video)"
         >
-          <img
-            :src="video.thumbnail"
-            :alt="video.name"
-            class="w-full h-full object-cover"
-          />
+          <!-- Video preview (controls olib tashlandi) -->
+          <video
+            :src="video.url"
+            class="w-full h-full object-cover transition duration-300 group-hover:scale-105 pointer-events-none"
+          ></video>
+
+          <!-- View count — doim ko'rinadi -->
+
+          <!-- Overlay (har doim mavjud, hover bilan opacity o'zgarmaydi) -->
           <div
-            class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-end p-2 transition"
+            class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-between p-3"
           >
-            <div class="flex justify-between w-full text-white text-sm">
-              <span class="truncate">{{ video.name }}</span>
+            <!-- Top info -->
+            <div class="flex justify-end items-center">
+              <!-- Delete button -->
               <button
-                @click="deleteVideo(video, index)"
-                class="text-red-400 hover:text-red-600 font-bold"
+                @click.stop="deleteVideo(video, index)"
+                class="text-red-400 hover:text-red-600 font-semibold text-xs bg-black/50 px-2 py-1 rounded-md"
               >
-                Удалить
+                ✖ Удалить
               </button>
+            </div>
+
+            <!-- Bottom info -->
+            <div class="text-white text-sm font-medium truncate">
+              {{ video.name }}
+            </div>
+
+            <div
+              class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm"
+            >
+              👁️ {{ video.view_count }}
+            </div>
+          </div>
+
+          <!-- Play icon on hover -->
+          <div
+            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"
+          >
+            <div class="bg-black/60 p-3 rounded-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="white"
+                viewBox="0 0 24 24"
+                class="w-8 h-8"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </div>
           </div>
         </div>
 
-        <!-- Add Video -->
         <label
           class="cursor-pointer aspect-video flex flex-col items-center justify-center bg-pink-50 rounded-lg border-2 border-dashed border-pink-200 hover:bg-pink-100 transition-colors"
         >
@@ -112,7 +161,8 @@
         <div
           v-for="(pdf, index) in pdfs"
           :key="'pdf-' + index"
-          class="relative bg-gray-100 rounded-lg p-4 group"
+          @click="openInNewTab(pdf.url)"
+          class="relative bg-gray-100 cursor-pointer rounded-lg p-4 group"
         >
           <div class="flex flex-col items-center">
             <img src="/pdf.svg" alt="PDF Icon" class="w-12 h-12" />
@@ -150,6 +200,8 @@
 import { ref, onMounted } from "vue";
 const { $api } = useNuxtApp();
 
+const videoUploadProgress = ref(0);
+const isUploadingVideo = ref(false);
 const localMediaIds = ref([]);
 const photos = ref([]);
 const videos = ref([]);
@@ -162,6 +214,42 @@ const tabs = [
   { key: "pdfs", label: "PDF" },
 ];
 
+const openInNewTab = (url) => {
+  if (process.client) {
+    window.open(url, "_blank");
+  }
+};
+
+const handleVideoClick = async (video) => {
+  if (process.client) {
+    window.open(video.url, "_blank");
+  }
+  // 2️⃣ Track view
+  const videoEl = document.querySelector(`video[src="${video.url}"]`);
+  if (!videoEl || videoEl.dataset.tracked) return;
+
+  videoEl.dataset.tracked = "true";
+
+  const startTracking = () => {
+    const watchTime = videoEl.duration < 10 ? videoEl.duration / 2 : 10;
+
+    const timer = setTimeout(async () => {
+      try {
+        await $api.get(`/user/media/track-view/?media_id=${video.id}`);
+        console.log(`Tracked video view: ${video.id}`);
+      } catch (err) {
+        console.error("Track view failed:", err);
+      }
+    }, watchTime * 1000);
+
+    videoEl.addEventListener("pause", () => clearTimeout(timer));
+    videoEl.addEventListener("ended", () => clearTimeout(timer));
+  };
+
+  if (videoEl.readyState >= 1) startTracking();
+  else videoEl.addEventListener("loadedmetadata", startTracking);
+};
+
 onMounted(async () => {
   try {
     const { data } = await $api.get("/user/profile/media/");
@@ -171,7 +259,7 @@ onMounted(async () => {
       .map((m) => ({
         id: m.id,
         url: m.file,
-        name: m.file.split("/").pop(),
+        name: m.file?.split("/").pop(),
       }));
 
     const videoItems = data.data.filter((m) => m.media_type === "video");
@@ -181,9 +269,10 @@ onMounted(async () => {
         id: m.id,
         url: m.file,
         thumbnail,
-        name: m.file.split("/").pop(),
+        name: m.file?.split("/").pop(),
         created_time: m.created_time,
         size: m.size,
+        view_count: m.view_count,
       });
     }
 
@@ -191,7 +280,7 @@ onMounted(async () => {
       .filter((m) => m.media_type === "pdf")
       .map((m) => ({
         id: m.id,
-        name: m.file.split("/").pop(),
+        name: m.file?.split("/").pop(),
         url: m.file,
       }));
   } catch (err) {
@@ -272,6 +361,7 @@ const handlePhotoUpload = async (event) => {
 const handleVideoUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
+
   const videoURL = URL.createObjectURL(file);
   const videoElement = document.createElement("video");
   videoElement.src = videoURL;
@@ -291,18 +381,31 @@ const handleVideoUpload = async (event) => {
     formData.append("type", "user");
     formData.append("is_profile_photo", false);
 
+    isUploadingVideo.value = true;
+    videoUploadProgress.value = 0;
+
     try {
       const response = await $api.post("/user/media-upload/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          videoUploadProgress.value = percent;
+        },
       });
+
       localMediaIds.value.push(response.data.data.id);
       videos.value.push({
         id: response.data.data.id,
         thumbnail,
         name: file.name,
+        url: response.data.data.file,
+        view_count: response.data.data.view_count,
       });
     } catch (error) {
       console.error("Video upload failed:", error.response?.data || error.message);
+    } finally {
+      isUploadingVideo.value = false;
+      videoUploadProgress.value = 0;
     }
   });
 };

@@ -351,7 +351,7 @@
                     d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                   />
                 </svg>
-                <span class="text-gray-400">Тип спорта:</span>
+                <span class="text-gray-400">Вид соревнования:</span>
                 {{ selectedRequest.old_data.sport_type?.name }}
               </p>
 
@@ -431,7 +431,7 @@
                     d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                   />
                 </svg>
-                <span class="text-gray-400">Тип спорта:</span>
+                <span class="text-gray-400">Вид соревнования:</span>
                 {{ selectedRequest.new_data.sport_type?.name }}
               </p>
 
@@ -515,7 +515,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const { $api } = useNuxtApp();
 
 const tabs = [
-  { key: "sportsman", label: "Запросы на тренера", request_type: "sportsman_trainer" },
+  {
+    key: "sportsman",
+    label: "Запросы на подтверждение спортсмена",
+    request_type: "sportsman_trainer",
+  },
   {
     key: "result",
     label: "Запросы на подтверждение результата",

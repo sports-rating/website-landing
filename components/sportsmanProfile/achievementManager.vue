@@ -265,7 +265,7 @@
             <!-- 1. Sport Type -->
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-300 mb-2">
-                Тип спорта
+                Вид соревнования
               </label>
               <el-select
                 v-model="form.sport_type"
@@ -335,6 +335,7 @@
               <el-input
                 v-model="form.rating"
                 type="number"
+                :min="1"
                 placeholder="Введите Рейтинг"
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg text-white"
               />
@@ -504,7 +505,7 @@
                 d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
               />
             </svg>
-            <span class="text-gray-500">Тип спорта:</span>
+            <span class="text-gray-500">Вид соревнования:</span>
             {{ viewData.sport_type?.name }}
           </p>
 
@@ -645,7 +646,7 @@
                   d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                 />
               </svg>
-              <span class="text-gray-400">Тип спорта:</span>
+              <span class="text-gray-400">Вид соревнования:</span>
               {{ viewDataa.old_data.sport_type?.name }}
             </p>
 
@@ -707,7 +708,7 @@
                   d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                 />
               </svg>
-              <span class="text-gray-400">Тип спорта:</span>
+              <span class="text-gray-400">Вид соревнования:</span>
               {{ viewDataa.new_data.sport_type?.name }}
             </p>
 

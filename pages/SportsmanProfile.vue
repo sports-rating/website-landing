@@ -143,7 +143,7 @@
                     authStore.userProfile?.data?.sportsman_profile?.is_sportsman_verified
                   "
                 >
-                  <!-- <button
+                  <button
                     :class="[
                       'w-full text-left py-3 px-4 rounded-md',
                       activeTab === 'education'
@@ -153,7 +153,7 @@
                     @click="activeTab = 'education'"
                   >
                     Образование
-                  </button> -->
+                  </button>
 
                   <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
@@ -168,7 +168,7 @@
                     {{ t("achievementst") }}
                   </button>
 
-                  <!-- <button
+                  <button
                     v-if="authStore.userProfile?.data?.sportsman_profile?.trainer"
                     @click="activeTab = 'careere'"
                     :class="[
@@ -179,7 +179,7 @@
                     ]"
                   >
                     Карьера
-                  </button> -->
+                  </button>
 
                   <button
                     v-if="
@@ -642,8 +642,13 @@
                   type="submit"
                   data-slot="button"
                   :disabled="
+                    !formData.trainer ||
+                    !formData.weight ||
+                    !formData.sport ||
+                    !formData.height ||
+                    !formData.sport_rank ||
                     authStore.userProfile?.data?.sportsman_profile?.request_status ===
-                    'pending'
+                      'pending'
                   "
                   class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-red-600 hover:bg-red-700 text-white"
                 >
