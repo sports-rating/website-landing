@@ -303,44 +303,41 @@
                 📋 Старый результат
               </h3>
 
-              <p v-if="selectedRequest.old_data.country">
+              <p>
                 <span class="text-gray-400">⚽ Страна:</span>
                 {{ selectedRequest.old_data.country }}
               </p>
-              <p v-if="selectedRequest.old_data.tournament">
+              <p>
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.old_data.tournament.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.age_group?.name">
+              <p>
                 <span class="text-gray-400">👶 Возрастная:</span>
                 {{ selectedRequest.old_data.age_group.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.weight">
+              <p>
                 <span class="text-gray-400">⚖️ Вес:</span>
                 {{ selectedRequest.old_data.weight }}
               </p>
 
-              <p v-if="selectedRequest.old_data.year">
+              <p>
                 <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.old_data.year }}
               </p>
 
-              <p v-if="selectedRequest.old_data.rating">
+              <p>
                 <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.old_data.rating }}
               </p>
 
-              <p v-if="selectedRequest.old_data.score">
+              <p>
                 <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.old_data.score }}
               </p>
 
-              <p
-                v-if="selectedRequest.old_data.sport_type"
-                class="flex items-center gap-1"
-              >
+              <p class="flex items-center gap-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 text-blue-500"
@@ -355,7 +352,7 @@
                 {{ selectedRequest.old_data.sport_type?.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
+              <p class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
 
                 <img
@@ -384,43 +381,40 @@
                 📋 Новые результат
               </h3>
 
-              <p v-if="selectedRequest.new_data.country">
+              <p>
                 <span class="text-gray-400">⚽ Страна:</span>
                 {{ selectedRequest.new_data.country }}
               </p>
-              <p v-if="selectedRequest.new_data.tournament">
+              <p>
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.new_data.tournament.name }}
               </p>
-              <p v-if="selectedRequest.new_data.age_group?.name">
+              <p>
                 <span class="text-gray-400">👶 Возрастная:</span>
                 {{ selectedRequest.new_data.age_group.name }}
               </p>
 
-              <p v-if="selectedRequest.new_data.weight">
+              <p>
                 <span class="text-gray-400">⚖️ Вес:</span>
                 {{ selectedRequest.new_data.weight }}
               </p>
 
-              <p v-if="selectedRequest.new_data.year">
+              <p>
                 <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.new_data.year }}
               </p>
 
-              <p v-if="selectedRequest.new_data.rating">
+              <p>
                 <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.new_data.rating }}
               </p>
 
-              <p v-if="selectedRequest.new_data.score">
+              <p>
                 <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.new_data.score }}
               </p>
 
-              <p
-                v-if="selectedRequest.new_data.sport_type"
-                class="flex items-center gap-1"
-              >
+              <p class="flex items-center gap-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 text-blue-500"
@@ -435,7 +429,7 @@
                 {{ selectedRequest.new_data.sport_type?.name }}
               </p>
 
-              <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
+              <p class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
                 <img
                   v-if="isImageFile(selectedRequest.new_data.file_url)"
