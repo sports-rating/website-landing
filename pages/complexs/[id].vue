@@ -220,7 +220,7 @@
         </section>
 
         <!-- Comments Section -->
-        <section class="container mx-auto px-4 mt-12">
+        <section v-if="authStore.userProfile?.data" class="container mx-auto px-4 mt-12">
           <div class="bg-[#11101B] min-h-screen text-white py-10">
             <div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 mb-6">
               <div class="flex items-center justify-between">
@@ -331,7 +331,9 @@ import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { ChevronRight, MapPin, Star } from "lucide-vue-next";
 import { ElMessage } from "element-plus";
+import { useAuthStore } from "~/stores/auth";
 
+const authStore = useAuthStore();
 const route = useRoute();
 const id = route.params.id;
 const complex = ref(null);
@@ -381,7 +383,7 @@ const loading = ref(false);
 const fetchComments = async () => {
   try {
     const { $api } = useNuxtApp();
-    const res = await $api.get(`/review/comment/`);
+    const res = await $api.get(`/review/comment/?sport_institution=${id}`);
     comments.value = res.data.data.data || [];
   } catch (e) {
     console.error("Kommentlarni yuklashda xatolik:", e);

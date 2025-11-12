@@ -303,44 +303,41 @@
                 📋 Старый результат
               </h3>
 
-              <p v-if="selectedRequest.old_data.country">
+              <p>
                 <span class="text-gray-400">⚽ Страна:</span>
                 {{ selectedRequest.old_data.country }}
               </p>
-              <p v-if="selectedRequest.old_data.tournament">
+              <p>
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.old_data.tournament.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.age_group?.name">
+              <p>
                 <span class="text-gray-400">👶 Возрастная:</span>
                 {{ selectedRequest.old_data.age_group.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.weight">
+              <p>
                 <span class="text-gray-400">⚖️ Вес:</span>
                 {{ selectedRequest.old_data.weight }}
               </p>
 
-              <p v-if="selectedRequest.old_data.year">
+              <p>
                 <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.old_data.year }}
               </p>
 
-              <p v-if="selectedRequest.old_data.rating">
+              <p>
                 <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.old_data.rating }}
               </p>
 
-              <p v-if="selectedRequest.old_data.score">
+              <p>
                 <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.old_data.score }}
               </p>
 
-              <p
-                v-if="selectedRequest.old_data.sport_type"
-                class="flex items-center gap-1"
-              >
+              <p class="flex items-center gap-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 text-blue-500"
@@ -351,11 +348,11 @@
                     d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                   />
                 </svg>
-                <span class="text-gray-400">Тип спорта:</span>
+                <span class="text-gray-400">Вид соревнования:</span>
                 {{ selectedRequest.old_data.sport_type?.name }}
               </p>
 
-              <p v-if="selectedRequest.old_data.file_url" class="flex gap-4 items-center">
+              <p class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
 
                 <img
@@ -384,43 +381,40 @@
                 📋 Новые результат
               </h3>
 
-              <p v-if="selectedRequest.new_data.country">
+              <p>
                 <span class="text-gray-400">⚽ Страна:</span>
                 {{ selectedRequest.new_data.country }}
               </p>
-              <p v-if="selectedRequest.new_data.tournament">
+              <p>
                 <span class="text-gray-400">📏 Турнир:</span>
                 {{ selectedRequest.new_data.tournament.name }}
               </p>
-              <p v-if="selectedRequest.new_data.age_group?.name">
+              <p>
                 <span class="text-gray-400">👶 Возрастная:</span>
                 {{ selectedRequest.new_data.age_group.name }}
               </p>
 
-              <p v-if="selectedRequest.new_data.weight">
+              <p>
                 <span class="text-gray-400">⚖️ Вес:</span>
                 {{ selectedRequest.new_data.weight }}
               </p>
 
-              <p v-if="selectedRequest.new_data.year">
+              <p>
                 <span class="text-gray-400">📅 Год:</span>
                 {{ selectedRequest.new_data.year }}
               </p>
 
-              <p v-if="selectedRequest.new_data.rating">
+              <p>
                 <span class="text-gray-400">⭐ Рейтинг:</span>
                 {{ selectedRequest.new_data.rating }}
               </p>
 
-              <p v-if="selectedRequest.new_data.score">
+              <p>
                 <span class="text-gray-400">🏆 Счет:</span>
                 {{ selectedRequest.new_data.score }}
               </p>
 
-              <p
-                v-if="selectedRequest.new_data.sport_type"
-                class="flex items-center gap-1"
-              >
+              <p class="flex items-center gap-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 text-blue-500"
@@ -431,11 +425,11 @@
                     d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.32 6h-2.49A5.99 5.99 0 0 0 12 6a5.99 5.99 0 0 0-3.83 1.33L6.68 8A8 8 0 1 1 18.32 8zM12 8a4 4 0 1 1-4 4a4 4 0 0 1 4-4z"
                   />
                 </svg>
-                <span class="text-gray-400">Тип спорта:</span>
+                <span class="text-gray-400">Вид соревнования:</span>
                 {{ selectedRequest.new_data.sport_type?.name }}
               </p>
 
-              <p v-if="selectedRequest.new_data.file_url" class="flex gap-4 items-center">
+              <p class="flex gap-4 items-center">
                 <span class="text-gray-400">📄 Документ:</span>
                 <img
                   v-if="isImageFile(selectedRequest.new_data.file_url)"
@@ -515,7 +509,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const { $api } = useNuxtApp();
 
 const tabs = [
-  { key: "sportsman", label: "Запросы на тренера", request_type: "sportsman_trainer" },
+  {
+    key: "sportsman",
+    label: "Запросы на подтверждение спортсмена",
+    request_type: "sportsman_trainer",
+  },
   {
     key: "result",
     label: "Запросы на подтверждение результата",
